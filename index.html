@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>An Empty World</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+</head>
+
+<body>
+    <div class="sideContainer" id="messagesContainer">
+        <h2 class="header">Messages</h2>
+        <div id="messages"></div>
+    </div>
+    <div id="progressContainer">
+        <span style="display: inline-flex">
+            <h3 id="name">K0ng</h3>
+            <span style="display: inline-flex">
+                <h4 class="subheader" id="levelSubheadr">Level:</h4>
+                <h4 style="margin-top:4px; padding-left:5px;" id="lvl">0</h4>
+            </span>
+        </span>
+        <div id="progressBar">
+            <div style="width: 0px;" id="progress"></div>
+        </div>
+    </div>
+    <div class="container">
+        <h2 class="header" id="activitiesHeader">Activities</h2>
+
+        <button id="treeButton" class="button" onclick="tree()">Cut Down Tree</button>
+        <button id="goFishingButton" class="button" onclick="goFishing()">Go Fishing</button>
+        <button style="visibility: hidden;" id="goHuntingButton" class="button" onclick="goHunting()">Go
+            Hunting</button>
+        <button style="visibility: hidden;" id="goMiningButton" class="button" onclick="goMining()">Go Mining</button>
+    </div>
+    <div id="inventoryContainer" class="container">
+        <h2 class="header" id="inventoryHeader">Inventory</h2>
+        <!-- <[inventory]> -->
+        <p id="goldHeader">Gold: <span id="gold">0</span></p>
+        <!-- <p id="gold"></p> -->
+        <br>
+        <span style="display: inline-flex;">
+            <p id="itemsSubheader">Items:</p>
+            <div id="inventory"></div>
+        </span>
+    </div>
+    <div id="storeContainer" class="container">
+        <h2 class="header" id="storeHeader">Store</h2>
+        <span style="display: inline-flex">
+            <h3 class="subheader" id="buyHeader">Buy</h3>
+            <button id="axe" class="store button" onclick="buyAxe()">Buy Axe [ 20 ]</button>
+            <button id="fishingPole" class="store button" onclick="buyFishingPole()">Buy Fishing Pole [ 50 ]</button>
+            <button style="visibility: hidden;" id="huntingRifle" class="store button" onclick="buyHuntingRifle()">Buy
+                Hunting Rifle [ 300
+                ]</button>
+            <button style="visibility: hidden;" id="pickaxe" class="store button" onclick="buyPickaxe()">Buy Pickaxe [
+                1200
+                ]</button>
+            <h3 class="subheader">Special Deals</h3>
+            <button id="specialDeal" class="store button" onclick="buySpecialDeal()">Buy
+                Random Armor Piece [
+                1000
+                ]</button>
+        </span>
+        <br><br>
+        <span style="display: inline-flex">
+            <h3 class="subheader" id="sellHeader">Sell</h3>
+            <button id="sellWood" class="store button" onclick="sell('Wood')">Sell Wood</button>
+            <button id="sellFish" class="store button" onclick="sell('Fish')">Sell Fish</button>
+            <button style="visibility: hidden;" id="sellMeat" class="store button" onclick="sell('Meat')">Sell
+                Meat</button>
+            <button style="visibility: hidden;" id="sellStone" class="store button" onclick="sell('Stone')">Sell
+                Stone</button>
+            <button style="visibility: hidden;" id="sellOres" class="store button" onclick="sell('Ores')">Sell
+                Ores</button>
+
+        </span>
+    </div>
+    <div id="combatContainer" class="container">
+        <h2 class="header" id="combatHeader">Combat</h2>
+        <div style="display: flex; justify-content: space-evenly;" id=" statsContainer">
+
+            <div id="enemyStats">
+                <h4 style="text-decoration: underline; " id="enemyHeader">Enemy</h4>
+                <p id="health">Health: <span id="healthValue">0</span></p>
+                <p id="attack">Attack: <span id="attackValue">0</span></p>
+                <p id="defense">Defense: <span id="defenseValue">0</span></p>
+                <p id="speed">Speed: <span id="speedValue">0</span></p>
+            </div>
+            <div style="float:right; " id="playerStats">
+                <h4 style="text-decoration: underline; " id="playerHeader">Player</h4>
+                <p id="playerHealth">Health: <span id="playerHealthValue">100/100</span></p>
+                <p id="playerAttack">Attack: <span id="playerAttackValue">2</span></p>
+                <p id="playerDefense">Defense: <span id="playerDefenseValue">2</span></p>
+                <p id="playerSpeed">Speed: <span id="playerSpeedValue">5</span></p>
+            </div>
+        </div>
+        <!-- select opponent-->
+        <div id="controlsContainer">
+            <select id="opponentSelector">
+                <option value="">Select an opponent</option>
+                <option value="goblin">Goblin</option>
+                <option value="troll">Troll</option>
+                <option value="skeleton">Skeleton</option>
+                <option value="knight">Knight</option>
+                <option value="king">King</option>
+            </select>
+            <button id="fightButton" class="button"
+                onclick="doCombat(document.getElementById('opponentSelector').value)">Fight</button>
+            <button style="visibility: hidden;" id="attackButton" class="button" onclick="doAttack()">Attack</button>
+            <button style="visibility: hidden;" id="fleeButton" class="button" onclick="doFlee()">Flee</button>
+            <button style="visibility: hidden;" id="defendButton" class="button" onclick="defend()">Defend</button>
+            <button style="visibility: hidden;" id="specialButton" class="button" onclick="special()">Run</button>
+        </div>
+    </div>
+
+    <div id="armorContainer" class="container">
+        <h2 class="header" id="armorHeader">Armor</h2>
+        <div id="armor">
+            <span style="display: inline-flex">
+                <p>Helmet &nbsp;</p>
+                <select id="helmetSelect">
+                    <option value="">None</option>
+                </select>
+            </span>
+            <br>
+            <span style="display: inline-flex">
+                <p>Chestplate &nbsp;</p>
+                <select id="chestSelect">
+                    <option value="">None</option>
+                </select>
+            </span>
+            <br>
+            <span style="display: inline-flex">
+                <p>Leggings &nbsp;</p>
+                <select id="legsSelect">
+                    <option value="">None</option>
+                </select>
+            </span>
+            <br>
+            <span style="display: inline-flex">
+                <p>Boots &nbsp;</p>
+                <select id="bootsSelect">
+                    <option value="">None</option>
+                </select>
+        </div>
+    </div>
+
+    <div id="craftingContainer" class="container">
+        <h2 class="header" id="craftingHeader">Crafting</h2>
+        <span style="display:  inline-flex; ">
+            <h3 id="itemToCraft">Item to Craft: &nbsp;</h3><select id="craftingSelect">
+                <option value="">Select an item</option>
+                <option value="wooden Helmet">Wooden Helmet</option>
+            </select>
+            <div id="requiredMaterials">
+                <!--inside here, check inventory for needed materials. If has all, craft button is clickable.-->
+            </div>
+        </span>
+        <button id="craftingButton" class="button" onclick="doCrafting()">Craft</button>
+    </div>
+
+    <footer class="footer">
+        <a>github</a>
+        <a>save</a>
+        <a>share</a>
+        <a>restart</a>
+        <!-- <p>&copy; Idle Game</p> -->
+</body>
+<script type="text/javascript" src="js/activities.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/store.js"></script>
+<script type="text/javascript" src="js/events.js"></script>
+<script type="text/javascript" src="js/items.js"></script>
+<script type="text/javascript" src="js/enemies.js"></script>
+
+<!-- <script type="text/javascript">
+    window.glob = "inventory";
+</script> -->
+
+
+</html>

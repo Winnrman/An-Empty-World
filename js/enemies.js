@@ -1,0 +1,25 @@
+goblin = {
+    name: "Goblin",
+    health: 10,
+    attack: 2,
+    defeatExperience: 5,
+    defense: 1,
+    gold: Math.floor(Math.random() * 25) + 1,
+    speed: 1,
+},
+    troll = {
+        name: "Troll",
+        health: 30,
+        attack: 7,
+        defense: 20,
+        speed: 0.4,
+        defeatExperience: 10,
+    },
+    skeleton = {
+        name: "Skeleton",
+        health: 30,
+        attack: 15,
+        defense: 10,
+        speed: 1,
+        defeatExperience: 10,
+    }
