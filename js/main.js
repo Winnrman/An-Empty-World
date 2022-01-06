@@ -4,7 +4,10 @@ let neededLevelUpXP = 0;
 let inventory = [];
 let gold = 100;
 // let messages = [];
-
+var fishCaught = 0;
+var woodObtained = 0;
+var stoneObtained = 0;
+meatObtained = 0;
 let hitLevel2 = false;
 let hitLevel3 = false;
 let hitLevel4 = false;
@@ -13,11 +16,22 @@ let hitLevel5 = false;
 setInterval(function () {
     document.getElementById("inventory").innerHTML = inventory;
     document.getElementById("gold").innerHTML = gold;
-    // document.getElementById("messages").innerHTML = messages;
     inventory.sort();
     checkLevelUnlocks();
     checkDarkMode();
-}, 100)
+    localStorage.setItem("inventory", inventory);
+    localStorage.setItem("gold", gold);
+    localStorage.setItem("xp", xp);
+    localStorage.setItem("level", level);
+}, 1000)
+
+// function loadSave() {
+//     inventory = localStorage.getItem("inventory");
+//     // inventory = localStorage.getItem("inventory");
+//     gold = localStorage.getItem("gold");
+//     xp = localStorage.getItem("xp");
+//     level = localStorage.getItem("level");
+// }
 
 setInterval(function () {
     //remove messages after 5 seconds

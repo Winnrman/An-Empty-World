@@ -54,6 +54,7 @@ function tree() {
             // alert("You cut down a tree!");
             inventory.push("Wood");
             axeHealth -= 1;
+            woodObtained++;
             // console.log('axe health' + axeHealth);
             // alert("Current XP: " + xp);
             // console.log("Needed XP: " + neededLevelUpXP);
@@ -93,6 +94,7 @@ function goFishing() {
             // alert("You caught a fish!");
             inventory.push("Fish");
             fishingPoleHealth -= 1;
+            fishObtained++;
             xp += 15;
         }
     }
@@ -129,6 +131,7 @@ function goHunting() {
             // alert("You caught a fish!");
             inventory.push("Meat");
             huntingRifleHealth -= 1;
+            meatObtained++;
             xp += 50;
         }
     }
@@ -248,6 +251,7 @@ function goMining() {
                     break;
                 default:
                     inventory.push("Stone");
+                    stoneObtained++;
                     // var StoneMessage = "You mined some " + oreDictionary[8] + "!";
                     // document.getElementById("messages").innerHTML += "<br>";
                     // var message = document.createElement("li");
@@ -520,5 +524,26 @@ function doCrafting(item) {
                     //add item in select to correct armor slot
                 }
             }
+    }
+}
+function buySpecialDeal() {
+    if (gold >= 1000) {
+        randomLootDrop();
+        var lootMessage = "You bought a random item and recieved " + finalItem.name + "!";
+        //add page break after level up message
+        document.getElementById("messages").innerHTML += "<br>";
+        var message = document.createElement("li");
+        message.appendChild(document.createTextNode(lootMessage));
+        document.getElementById("messages").appendChild(message);
+        gold -= 1000;
+        document.getElementById("goldValue").innerHTML = gold;
+    }
+    else {
+        var poorMessage = "You do not have enough gold to buy this item!";
+        //add page break after level up message
+        document.getElementById("messages").innerHTML += "<br>";
+        var message = document.createElement("li");
+        message.appendChild(document.createTextNode(poorMessage));
+        document.getElementById("messages").appendChild(message);
     }
 }
