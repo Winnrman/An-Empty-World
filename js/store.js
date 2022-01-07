@@ -1,11 +1,21 @@
 function buyAxe() {
-    if (inventory.includes("Axe")) {
-        console.log("You already have an axe!");
-    }
-    else {
-        inventory.push("Axe");
-        // alert("You bought an axe!");
-        gold -= 20;
+    if (gold >= 20) {
+        if (inventory.includes("Axe")) {
+            console.log("You already have an axe!");
+        }
+        else {
+            inventory.push("Axe");
+            // alert("You bought an axe!");
+            gold -= 20;
+        }
+    } else {
+        //add to messages
+        var notEnoughGoldMessage = "You don't have enough gold to buy an axe!";
+        //add page break after level up message
+        document.getElementById("messages").innerHTML += "<br>";
+        var message = document.createElement("li");
+        message.appendChild(document.createTextNode(notEnoughGoldMessage));
+        document.getElementById("messages").appendChild(message);
     }
 }
 
