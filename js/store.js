@@ -122,7 +122,7 @@ function sell(item) {
             }
             else if (inventory[i] == 'Diamond') {
                 inventory.splice(i, 1);
-                gold += 500;
+                gold += 1000;
             }
             else if (inventory[i] == "Emerald") {
                 inventory.splice(i, 1);

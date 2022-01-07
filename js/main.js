@@ -19,11 +19,11 @@ setInterval(function () {
     inventory.sort();
     checkLevelUnlocks();
     checkDarkMode();
-    localStorage.setItem("inventory", inventory);
-    localStorage.setItem("gold", gold);
-    localStorage.setItem("xp", xp);
-    localStorage.setItem("level", level);
-}, 1000)
+    // localStorage.setItem("inventory", inventory);
+    // localStorage.setItem("gold", gold);
+    // localStorage.setItem("xp", xp);
+    // localStorage.setItem("level", level);
+}, 100)
 
 // function loadSave() {
 //     inventory = localStorage.getItem("inventory");
