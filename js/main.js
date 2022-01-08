@@ -41,7 +41,7 @@ setInterval(function () {
 
 let clearMessageInterval = setInterval(function () {
     document.getElementById("messages").innerHTML = [];
-}, 15000);
+}, 15000); //clears messages every 15 seconds
 
 function checkLevelUnlocks() {
     if (level >= 2) {

@@ -170,11 +170,11 @@ function sell(item) {
             }
             else if (inventory[i] == 'Diamond') {
                 inventory.splice(i, 1);
-                gold += 1000;
+                gold += 100;
             }
             else if (inventory[i] == "Emerald") {
                 inventory.splice(i, 1);
-                gold += 300;
+                gold += 30;
             }
             else if (inventory[i] == "Copper") {
                 inventory.splice(i, 1);
@@ -186,11 +186,11 @@ function sell(item) {
             }
             else if (inventory[i] == "Silver") {
                 inventory.splice(i, 1);
-                gold += 150;
+                gold += 50;
             }
             else if (inventory[i] == "Ruby") {
                 inventory.splice(i, 1);
-                gold += 600;
+                gold += 60;
             }
         }
     }
