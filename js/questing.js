@@ -7,6 +7,12 @@ var readFirstMessage = false;
 var isQuesting = false;
 
 async function doQuest() {
+    //check to see if player is wearing armor
+    // if ((document.getElementById("helmetSelect").value != "") || (document.getElementById("chestSelect").value != "") || (document.getElementById("legsSelect").value != "") || (document.getElementById("bootsSelect").value != "")) {
+    //     addMessage("You must have armor on to go on a quest!");
+    //     isQuesting = false;
+    // }
+    // else {
     // addMessage("<continuing...>")
     //random chance to find a chest, loot it and get loot and gold
     //random chance to find a monster, fight it and get xp and gold
@@ -57,10 +63,23 @@ async function doQuest() {
                 // await sleep(2000)
                 doQuest();
             }
+            else {
+                addMessage("You find nothing and leave the cave.");
+                // await sleep(2000)
+                doQuest();
+            }
         }
         else if (randomEvent <= 50 && randomEvent > 40) {
             addMessage("While you're walking, you get ambushed by a pack of thieves, and you are forced to flee!");
-            gold -= Math.floor(Math.random() * 1000) + 200;
+            goldTolose = Math.floor(Math.random() * 1000) + 200;
+            if (goldTolose < gold) {
+                gold -= goldTolose;
+                addMessage("You lose " + goldTolose + " gold.");
+            }
+            else {
+                gold = 0;
+                addMessage("You lose all of your gold!");
+            }
             await sleep(2000);
             addMessage("After running for a while, you continue on your way.");
             doQuest();
@@ -143,3 +162,4 @@ function basicLootDrop() {
 function endQuest() {
     addMessage("Your quest ended in failure, you retreat home having lost everything could have.");
 }
+// }
