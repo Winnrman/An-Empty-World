@@ -3,9 +3,29 @@
 Main Story:
 You wake up in a strange place, surrounded by debris. Unaware of how you got there, it becomes immediately aware that you're not where you should be. Your objective becomes one thing and one thing only; survive. Using your knowledge of tool building, combat, and various other skills, you must find a way to survive and escape this empty world.
 
-## Goal: Survive
-
+## Goal: Survive ##
+------
 ## Changelog:
+ - [X] **January 8, 2022**:
+
+    ### New Feature: Questing ###
+    - Added questing system, unlocked when the player reaches level 7
+    - Added sleep integration, so messages show slower than normal adding tension
+    - Future plans to introduce stamina so quests don't last forever
+    
+    ### Enemies ###
+    - Added a new enemy type, the "Dragon" which can drop scales useful in high-level crafting recipes
+    
+    ### Bug Fixes ###
+    - Fixed a bug where player didn't get experience when selling ores
+    - Adjusted pickaxe health to be more consistent with other tools
+    - Overall semi-colon cleaning, general ESLinting
+
+    ### Combat ###
+    - Fixed a bug where the player could not attack enemies
+    - Fixed a bug where the enimies would attack, but not damage the player
+
+
  - [X] **January 7, 2022**: 
 
     ### Item Shop ###
