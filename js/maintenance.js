@@ -32,7 +32,15 @@ let bootsItems = [];
 
 function isInInventory(itemName, itemType) {
     if (itemType == 'Helmet') {
-        if (!helmetItems.includes(itemName)) {
+        if (helmetItems.includes(itemName)) {
+            console.log(helmetItems);
+            addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
+            gold += 1000;
+            return true;
+        }
+        else {
+            var lootMessage = "You bought a random item and recieved " + finalItem.name + "!";
+            addMessage(lootMessage);
             helmetItems.push(itemName);
             var helmetSelect = document.getElementById("helmetSelect");
             var newOption = document.createElement("option");
@@ -40,13 +48,16 @@ function isInInventory(itemName, itemType) {
             helmetSelect.add(newOption);
             return false;
         }
-        else if (helmetItems.includes(itemName)) {
-            //do nothing
-            return true;
-        }
     }
     else if (itemType == 'Chestplate') {
-        if (!chestItems.includes(itemName)) {
+        if (chestItems.includes(itemName)) {
+            addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
+            gold += 1000;
+            return true;
+        }
+        else {
+            var lootMessage = "You bought a random item and recieved " + finalItem.name + "!";
+            addMessage(lootMessage);
             chestItems.push(itemName);
             var chestplateSelect = document.getElementById("chestSelect");
             var newOption = document.createElement("option");
@@ -54,38 +65,40 @@ function isInInventory(itemName, itemType) {
             chestplateSelect.add(newOption);
             return false;
         }
-        else if (chestItems.includes(itemName)) {
-            //do nothing
-            return true;
-        }
     }
     else if (itemType == 'Leggings') {
-        if (!leggingItems.includes(itemName)) {
+        if (leggingItems.includes(itemName)) {
+            addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
+            gold += 1000;
+            // return true;
+        }
+        else {
+            var lootMessage = "You bought a random item and recieved " + finalItem.name + "!";
+            addMessage(lootMessage);
             leggingItems.push(itemName);
             var leggingSelect = document.getElementById("legsSelect");
             var newOption = document.createElement("option");
             newOption.text = itemName;
             leggingSelect.add(newOption);
-            return false;
-        }
-        else if (leggingItems.includes(itemName)) {
-            //do nothing
-            return true;
+            // return false;
         }
     }
     else if (itemType == 'Boots') {
-        if (!bootsItems.includes(itemName)) {
+        if (bootsItems.includes(itemName)) {
+            addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
+            gold += 1000;
+            // return true;
+        }
+        else {
+            var lootMessage = "You bought a random item and recieved " + finalItem.name + "!";
+            addMessage(lootMessage);
             bootsItems.push(itemName);
             var bootSelect = document.getElementById("bootsSelect");
             var newOption = document.createElement("option");
             newOption.text = itemName;
             bootSelect.add(newOption);
-            return false;
-        }
-        else if (bootsItems.includes(itemName)) {
-            //do nothing
-            return true;
+            // return false;
         }
     }
-    return false;
+    // return false;
 }

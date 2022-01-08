@@ -85,15 +85,33 @@ function buyPickaxe() {
     }
 }
 boughtTimes = 0;
+
+function buySpecialDeal() {
+    if (gold >= 1000) {
+        randomLootDrop();
+        //add page break after level up message
+        isInInventory(finalItem.name, finalItem.type); //this handles adding item and displaying message
+        gold -= 1000;
+    }
+    else {
+        var poorMessage = "You do not have enough gold to buy this item!";
+        addMessage(poorMessage);
+    }
+}
+
 function buyInventoryUpgrade() {
     if (boughtTimes < 3) {
         var price = 10000 + (10000 * boughtTimes);
         if (gold >= price) {
             maxInventorySize += 24;
             boughtTimes++;
+            gold -= price;
             document.getElementById("inventoryUpgrade").innerHTML = "Buy Inventory Upgrade  [" + price + "<br><br>"
                 + "(" + boughtTimes + " / 3)";
             addMessage("Inventory Space increased by 24! [Currently " + maxInventorySize + "]");
+        }
+        else {
+            addMessage("You don't have enough gold to buy an inventory upgrade!");
         }
     }
     else {

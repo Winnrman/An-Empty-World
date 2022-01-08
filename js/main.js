@@ -132,69 +132,66 @@ function checkDarkMode() {
     }
 }
 
-document.getElementById("helmetSelect").addEventListener("change", function () {
-    console.log('change event');
-    //add necessary item armor to total player armor
-    let helmey = document.getElementById("helmetSelect").value;
-    console.log(helmey);
-    for (let i = 0; i <= obtainableItems["Helmets"].length; i++) {
-        if (obtainableItems["Helmets"][i].name == helmey) {
-            playerDefense += obtainableItems["Helmets"][i].armor;
-            document.getElementById("playerDefenseValue").innerHTML = playerDefense;
-        }
-        else {
-            //nothing
-        }
-    }
-});
+// TODO: Rework Needed!
+// document.getElementById("helmetSelect").addEventListener("change", function () {
+//     console.log('change event');
+//     //add necessary item armor to total player armor
+//     // let helmet = document.getElementById("helmetSelect").value;
+//     // console.log(helmet);
+//     for (let i = 0; i <= obtainableItems["Helmets"].length; i++) {
+//         // if (obtainableItems["Helmets"][i].name == helmet) {
+//         // playerDefense += obtainableItems["Helmets"][i].armor;
+//         document.getElementById("playerDefenseValue").innerHTML = playerDefense;
+//     }
+// });
 
-document.getElementById("chestSelect").addEventListener("change", function () {
-    console.log('change event');
-    //add necessary item armor to total player armor
-    let chestey = document.getElementById("chestSelect").value;
-    console.log(chestey);
-    for (let i = 0; i <= obtainableItems["Chestplates"].length; i++) {
-        if (obtainableItems["Chestplates"][i].name == chestey) {
-            playerDefense += obtainableItems["Chestplates"][i].armor;
-            document.getElementById("playerDefenseValue").innerHTML = playerDefense;
-        }
-        else {
-            //nothing
-        }
-    }
-}
-);
+// document.getElementById("chestSelect").addEventListener("change", function () {
+//     console.log('change event');
+//     //add necessary item armor to total player armor
+//     let chestey = document.getElementById("chestSelect").value;
+//     console.log(chestey);
+//     for (let i = 0; i <= obtainableItems["Chestplates"].length; i++) {
+//         if (obtainableItems["Chestplates"][i].name == chestey) {
+//             playerDefense += obtainableItems["Chestplates"][i].armor;
+//             document.getElementById("playerDefenseValue").innerHTML = playerDefense;
+//         }
+//         else {
+//             //nothing
+//         }
+//     }
+// }
+// );
 
-document.getElementById("legsSelect").addEventListener("change", function () {
-    console.log('change event');
-    //add necessary item armor to total player armor
-    let legs = document.getElementById("legsSelect").value;
-    console.log(legs);
-    for (let i = 0; i <= obtainableItems["Leggings"].length; i++) {
-        if (obtainableItems["Leggings"][i].name == legs) {
-            playerDefense += obtainableItems["Leggings"][i].armor;
-            document.getElementById("playerDefenseValue").innerHTML = playerDefense;
-        }
-        else {
-            //nothing
-        }
-    }
-}
-);
+// document.getElementById("legsSelect").addEventListener("change", function () {
+//     console.log('change event');
+//     //add necessary item armor to total player armor
+//     let legs = document.getElementById("legsSelect").value;
+//     console.log(legs);
+//     for (let i = 0; i <= obtainableItems["Leggings"].length; i++) {
+//         if (obtainableItems["Leggings"][i].name == legs) {
+//             playerDefense += obtainableItems["Leggings"][i].armor;
+//             document.getElementById("playerDefenseValue").innerHTML = playerDefense;
+//         }
+//         else {
+//             //nothing
+//         }
+//     }
+// }
+// );
 
-document.getElementById("bootsSelect").addEventListener("change", function () {
-    console.log('change event');
-    //add necessary item armor to total player armor
-    let bootsey = document.getElementById("bootsSelect").value;
-    console.log(bootsey);
-    for (let i = 0; i <= obtainableItems["Boots"].length; i++) {
-        if (obtainableItems["Boots"][i].name == bootsey) {
-            playerDefense += obtainableItems["Boots"][i].armor;
-            document.getElementById("playerDefenseValue").innerHTML = playerDefense;
-        }
-        else {
-            //nothing
-        }
-    }
-}
-);
+// document.getElementById("bootsSelect").addEventListener("change", function () {
+//     console.log('change event');
+//     //add necessary item armor to total player armor
+//     let bootsey = document.getElementById("bootsSelect").value;
+//     console.log(bootsey);
+//     for (let i = 0; i <= obtainableItems["Boots"].length; i++) {
+//         if (obtainableItems["Boots"][i].name == bootsey) {
+//             playerDefense += obtainableItems["Boots"][i].armor;
+//             document.getElementById("playerDefenseValue").innerHTML = playerDefense;
+//         }
+//         else {
+//             //nothing
+//         }
+//     }
+// }
+// );

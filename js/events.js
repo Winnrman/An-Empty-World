@@ -33,6 +33,6 @@ function randomLootDrop() {
     }
 
     finalItem = obtainableItems[itemType][Math.floor(Math.random() * obtainableItems[itemType].length)];
-    console.log("Enemy dropped: " + finalItem.name);
-    isInInventory(finalItem.name, finalItem.type);
+    // console.log("Enemy dropped: " + finalItem.name);
+    // isInInventory(finalItem.name, finalItem.type);
 }

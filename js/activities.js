@@ -176,45 +176,54 @@ function goMining() {
                         inventory.push(oreDictionary[0]);
                         var IronMessage = "You mined some " + oreDictionary[0] + "!";
                         addMessage(IronMessage);
+                        xp += 110;
                         break;
                     case 1:
                         inventory.push(oreDictionary[1]);
                         var CopperMessage = "You mined some " + oreDictionary[1] + "!";
                         addMessage(CopperMessage);
+                        xp += 112;
                         break;
                     case 2:
                         inventory.push(oreDictionary[2]);
                         var TinMessage = "You mined some " + oreDictionary[2] + "!";
                         addMessage(TinMessage);
+                        xp += 113;
                         break;
                     case 3:
                         inventory.push("Silver");
                         var SilverMessage = "You mined some " + oreDictionary[3] + "!";
                         addMessage(SilverMessage);
+                        xp += 119;
                         break;
                     case 4:
                         inventory.push("Gold");
                         var GoldMessage = "You mined some " + oreDictionary[4] + "!";
                         addMessage(GoldMessage);
+                        xp += 125;
                         break;
                     case 5:
                         inventory.push("Emerald");
                         var EmeraldMessage = "You mined some " + oreDictionary[5] + "!";
                         addMessage(EmeraldMessage);
+                        xp += 130;
                         break;
                     case 6:
                         inventory.push("Ruby");
                         var RubyMessage = "You mined some " + oreDictionary[6] + "!";
                         addMessage(RubyMessage);
+                        xp += 150;
                         break;
                     case 7:
                         inventory.push("Diamond");
                         var DiamondMessage = "You mined some " + oreDictionary[7] + "!";
                         addMessage(DiamondMessage);
+                        xp += 200;
                         break;
                     default:
                         inventory.push("Stone");
                         stoneObtained++;
+                        xp++;
                         break;
                 }
 
@@ -447,26 +456,5 @@ function doCrafting(item) {
                     //add item in select to correct armor slot
                 }
             }
-    }
-}
-function buySpecialDeal() {
-    if (gold >= 1000) {
-        randomLootDrop();
-        //add page break after level up message
-        isInInventory(finalItem.name, finalItem.type);
-        if (isInInventory) {
-            // alert("FALSE");
-            var lootMessage = "You bought a random item and recieved " + finalItem.name + "!";
-            addMessage(lootMessage);
-        }
-        else if (!isInInventory) {
-            // alert("TRUE");
-            addMessage("You already have this item! " + finalItem.name);
-        }
-        gold -= 1000;
-    }
-    else {
-        var poorMessage = "You do not have enough gold to buy this item!";
-        addMessage(poorMessage);
     }
 }
