@@ -7,7 +7,7 @@ You wake up in a strange place, surrounded by debris. Unaware of how you got the
 
 ## Changelog:
  - [X] **January 7, 2021**: 
-----------------------------------------------------
+
     ### Item Shop ###
     - Worked on refund system if item you recieve from a battle or random drop you already own
     - Shop now sees if you already own the item before adding it to your inventory
