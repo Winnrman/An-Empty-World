@@ -6,7 +6,7 @@ You wake up in a strange place, surrounded by debris. Unaware of how you got the
 ## Goal: Survive
 
 ## Changelog:
- - [X] **January 7, 2021**: 
+ - [X] **January 7, 2022**: 
 
     ### Item Shop ###
     - Worked on refund system if item you recieve from a battle or random drop you already own
@@ -26,4 +26,11 @@ You wake up in a strange place, surrounded by debris. Unaware of how you got the
     - Added max height of messages div to be 85% height of screen
     - Added durability box to inventory container
 
+- [X] **January 6, 2022**
+
+    ### Back-End ###
+    - Added localhost saves for reload protection
+
+    ### Other ###
+    - Removed photos from GitHub repo
 
