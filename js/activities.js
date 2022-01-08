@@ -188,6 +188,8 @@ function goMining() {
 
 
 //TODO: fix this!
+// Use enemy data in enemies.js to fetch!
+// Bonus points to not do it here, but in each function
 var enemyHealth = 1;
 var enemyAttack = 5;
 var enemyDefense = 1;
@@ -202,51 +204,14 @@ var defaultPlayerAttack = 2;
 var defaultPlayerDefense = 2;
 var defaultPlayerSpeed = 5;
 
+let isAttacking = false;
+var fled = false;
 
 function doCombat(enemy) {
     console.log("Enemy: " + enemy);
-    switch (enemy) {
-        case "goblin":
-            enemyHealth = goblin.health;
-            enemyAttack = goblin.attack;
-            enemyDefense = goblin.defense;
-            enemyName = "Goblin";
-            enemySpeed = goblin.speed;
-            setGUI(enemyHealth, enemyAttack, enemyDefense, enemyName, enemySpeed);
-            break;
-        case "troll":
-            enemyHealth = troll.health;
-            enemyAttack = troll.attack;
-            enemyDefense = troll.defense;
-            enemyName = "Troll";
-            enemySpeed = troll.speed;
-            setGUI(enemyHealth, enemyAttack, enemyDefense, enemyName, enemySpeed);
-            break;
-        case "skeleton":
-            var enemyHealth = skeleton.health;
-            var enemyAttack = skeleton.attack;
-            var enemyDefense = skeleton.defense;
-            var enemyName = skeleton.name;
-            var enemySpeed = skeleton.speed;
-            setGUI(enemyHealth, enemyAttack, enemyDefense, enemyName, enemySpeed);
-            break;
-        case "knight":
-            var enemyHealth = knight.health;
-            var enemyAttack = knight.attack;
-            var enemyDefense = knight.defense;
-            var enemyName = knight.name;
-            var enemySpeed = knight.speed;
-            setGUI(enemyHealth, enemyAttack, enemyDefense, enemyName, enemySpeed);
-            break;
-        case "king":
-            var enemyHealth = king.health;
-            var enemyAttack = king.attack;
-            var enemyDefense = king.defense;
-            var enemyName = king.name;
-            var enemySpeed = king.speed;
-            setGUI(enemyHealth, enemyAttack, enemyDefense, enemyName, enemySpeed);
-            break;
-    }
+	if (!enemy_dictionary[enemy]) {return}
+	var data = enemy_dictionary[enemy]
+	setGUI(data.health, data.attack, data.defense, data.name, data.speed)
 }
 
 function setGUI(health, attack, defense, name, speed) {
@@ -262,9 +227,6 @@ function setGUI(health, attack, defense, name, speed) {
     document.getElementById("defendButton").style.visibility = "visible";
     document.getElementById("specialButton").style.visibility = "visible";
 }
-
-let isAttacking = false;
-var fled = false;
 
 function checkAttackStatus() {
     if (isAttacking == true) {
@@ -286,10 +248,10 @@ function doAttack() {
     checkAttackStatus();
     var refresh = setInterval(function () {
         if (newEnemyHealth > 0 && fled == false) {
-            newEnemyHealth = newEnemyHealth - (playerAttack - enemyDefense);
+            newEnemyHealth = newEnemyHealth - Math.max(0,playerAttack - enemyDefense);
             console.log("new enemy health:" + newEnemyHealth);
-            document.getElementById("healthValue").innerHTML = newEnemyHealth;
-            // console.log("You attacked the enemy for " + (playerAttack - enemyDefense) + " damage!");
+            document.getElementById("healthValue").innerHTML = Math.max(0,newEnemyHealth);
+            // console.log("You attacked the enemy for " + Math.max(0,playerAttack - enemyDefense) + " damage!");
         }
         if (newEnemyHealth <= 0 && fled == false) {
             clearInterval(refresh);
@@ -345,19 +307,12 @@ function doFlee() {
 }
 
 function doEnemyAttack() {
-    if (playerDefense > enemyAttack) {
-        //do no damage
-        console.log(enemyName + " did no damage!");
-        var newPlayerHealth = playerHealth;
-    }
-    else {
-        var newPlayerHealth = playerHealth - (enemyAttack - playerDefense);
-        document.getElementById("playerHealthValue").innerHTML = newPlayerHealth + '/100';
-    }
+    var newPlayerHealth = playerHealth - Math.max(0, enemyAttack - playerDefense);
+    document.getElementById("playerHealthValue").innerHTML = Math.max(0,newPlayerHealth) + '/100';
+	
     if (newPlayerHealth <= 0) {
         // alert("You lose!");
         //player health set to 0
-        document.getElementById("playerHealthValue").innerHTML = 0;
         document.getElementById("messages").innerHTML = "You lose!";
         document.getElementById("fightButton").style.display = "block";
         document.getElementById("opponentSelector").style.display = "block";
@@ -368,7 +323,6 @@ function doEnemyAttack() {
     }
     else {
         playerHealth = newPlayerHealth;
-        document.getElementById("playerHealthValue").innerHTML = playerHealth + '/100';
         document.getElementById("healthValue").innerHTML = enemyHealth;
     }
 }
