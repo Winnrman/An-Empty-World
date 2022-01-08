@@ -41,7 +41,7 @@ function tree() {
         // if successful, add wood to inventory.
 
         if (axeHealth <= 0) {
-            addMessage(Your axe broke!");
+            addMessage("Your axe broke!");
             axeHealth = 20;
             const index = inventory.indexOf('Axe');
             if (index > -1) {
@@ -156,26 +156,26 @@ function goMining() {
                 };
                 let oreRandomizer = Math.floor(Math.random() * 10);
                 console.log(oreRandomizer);
-				
-				let xpTable = {
-					"Stone": 1,
-					"Iron": 110,
-					"Copper":112,
-					"Tin":113,
-					"Silver": 119,
-					"Gold": 125,
-					"Emerald": 130,
-					"Ruby": 150,
-					"Diamond": 200
-				};
-				if (xpTable[oreDictionary[oreRandomizer]] > 1) {
-					addMessage("You mined some " + oreDictionary[oreRandomizer] + "!");
-				} else {
-					stoneObtained++;
-				}
-				inventory.push(oreDictionary[oreRandomizer]);
-				xp += xpTable[oreDictionary[oreRandomizer]];
-				
+
+                let xpTable = {
+                    "Stone": 1,
+                    "Iron": 110,
+                    "Copper": 112,
+                    "Tin": 113,
+                    "Silver": 119,
+                    "Gold": 125,
+                    "Emerald": 130,
+                    "Ruby": 150,
+                    "Diamond": 200
+                };
+                if (xpTable[oreDictionary[oreRandomizer]] > 1) {
+                    addMessage("You mined some " + oreDictionary[oreRandomizer] + "!");
+                } else {
+                    stoneObtained++;
+                }
+                inventory.push(oreDictionary[oreRandomizer]);
+                xp += xpTable[oreDictionary[oreRandomizer]];
+
                 pickaxeHealth -= 1;
             } else {
                 addMessage("Your inventory is full. You can't carry any more items.");
@@ -185,18 +185,15 @@ function goMining() {
         addMessage("You need a pickaxe to mine!");
     }
 }
-
-
-//TODO: fix this!
-// Use enemy data in enemies.js to fetch!
+// Use enemy data in enemies.js to fetch! --> enemy_dictionary is not defined ???
 // Bonus points to not do it here, but in each function
-var enemyHealth = 1;
-var enemyAttack = 5;
-var enemyDefense = 1;
-var enemySpeed = 1;
-var enemyName = "Goblin"
-var enemyGold = 100;
-var enemyExperience = 10;
+var enemyHealth = enemy_dictionary[document.getElementById("enemyHeader").innerHTML].health;
+var enemyAttack = enemy_dictionary[document.getElementById("opponentSelector").value].attack;
+var enemyDefense = enemy_dictionary[document.getElementById("opponentSelector").value].defense;
+var enemySpeed = enemy_dictionary[document.getElementById("opponentSelector").value].speed;
+var enemyName = enemy_dictionary[document.getElementById("opponentSelector").value].name;
+var enemyGold = enemy_dictionary[document.getElementById("opponentSelector").value].gold;
+var enemyExperience = enemy_dictionary[document.getElementById("opponentSelector").value].defeatExperience;
 
 //default player stats
 var defaultPlayerHealth = 100;
@@ -204,14 +201,15 @@ var defaultPlayerAttack = 2;
 var defaultPlayerDefense = 2;
 var defaultPlayerSpeed = 5;
 
-let isAttacking = false;
+var isAttacking = false;
 var fled = false;
 
 function doCombat(enemy) {
     console.log("Enemy: " + enemy);
-	if (!enemy_dictionary[enemy]) {return}
-	var data = enemy_dictionary[enemy]
-	setGUI(data.health, data.attack, data.defense, data.name, data.speed)
+    console.log("Enemy Health:" + enemyHealth);
+    if (!enemy_dictionary[enemy]) { return }
+    var data = enemy_dictionary[enemy]
+    setGUI(data.health, data.attack, data.defense, data.name, data.speed)
 }
 
 function setGUI(health, attack, defense, name, speed) {
@@ -248,9 +246,9 @@ function doAttack() {
     checkAttackStatus();
     var refresh = setInterval(function () {
         if (newEnemyHealth > 0 && fled == false) {
-            newEnemyHealth = newEnemyHealth - Math.max(0,playerAttack - enemyDefense);
+            newEnemyHealth = newEnemyHealth - Math.max(0, playerAttack - enemyDefense);
             console.log("new enemy health:" + newEnemyHealth);
-            document.getElementById("healthValue").innerHTML = Math.max(0,newEnemyHealth);
+            document.getElementById("healthValue").innerHTML = Math.max(0, newEnemyHealth);
             // console.log("You attacked the enemy for " + Math.max(0,playerAttack - enemyDefense) + " damage!");
         }
         if (newEnemyHealth <= 0 && fled == false) {
@@ -260,12 +258,12 @@ function doAttack() {
             xp += enemyExperience;
             gold += enemyGold;
             document.getElementById("gold").innerHTML = gold;
-            addMessage("You defeated the " + enemyName + " and earned " + enemyGold + " gold" + " and " + enemyExperience + " XP!";);
+            addMessage("You defeated the " + enemyName + " and earned " + enemyGold + " gold" + " and " + enemyExperience + " XP!");
 
             var droppedRandomLoot = Math.floor(Math.random() * 100);
             if (droppedRandomLoot < 25) {
                 randomLootDrop();
-                addMessage("The " + enemyName + " dropped " + finalItem.name + "!";)
+                addMessage("The " + enemyName + " dropped " + finalItem.name + "!");
             }
             document.getElementById("fightButton").style.display = "block";
             document.getElementById("opponentSelector").style.display = "block";
@@ -308,8 +306,8 @@ function doFlee() {
 
 function doEnemyAttack() {
     var newPlayerHealth = playerHealth - Math.max(0, enemyAttack - playerDefense);
-    document.getElementById("playerHealthValue").innerHTML = Math.max(0,newPlayerHealth) + '/100';
-	
+    document.getElementById("playerHealthValue").innerHTML = Math.max(0, newPlayerHealth) + '/100';
+
     if (newPlayerHealth <= 0) {
         // alert("You lose!");
         //player health set to 0

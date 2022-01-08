@@ -53,7 +53,7 @@ function isInInventory(itemName, itemType) {
             gold += 1000;
             return true;
         } else {
-            addMessage("You bought a random item and recieved " + finalItem.name + "!";);
+            addMessage("You bought a random item and recieved " + finalItem.name + "!");
             chestItems.push(itemName);
             var chestplateSelect = document.getElementById("chestSelect");
             var newOption = document.createElement("option");

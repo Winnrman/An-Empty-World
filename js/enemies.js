@@ -1,14 +1,14 @@
-let enemy_dictionary = {
-	"goblin":{
-		name: "Goblin",
-		health: 10,
-		attack: 2,
-		defeatExperience: 5,
-		defense: 1,
-		gold: Math.floor(Math.random() * 25) + 1,
-		speed: 1,
-	},
-    "troll":{
+var enemy_dictionary = {
+    "goblin": {
+        name: "Goblin",
+        health: 10,
+        attack: 2,
+        defeatExperience: 5,
+        defense: 1,
+        gold: Math.floor(Math.random() * 25) + 1,
+        speed: 1,
+    },
+    "troll": {
         name: "Troll",
         health: 30,
         attack: 7,
@@ -16,7 +16,7 @@ let enemy_dictionary = {
         speed: 0.4,
         defeatExperience: 10,
     },
-    "skeleton":{
+    "skeleton": {
         name: "Skeleton",
         health: 30,
         attack: 15,
