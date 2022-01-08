@@ -52,11 +52,16 @@ function tree() {
             }
         }
         else {
-            // alert("You cut down a tree!");
-            inventory.push("Wood");
-            axeHealth -= 1;
-            // woodObtained++;
-            xp += 10;
+            if (fullInventory == false) {
+                // alert("You cut down a tree!");
+                inventory.push("Wood");
+                axeHealth -= 1;
+                // woodObtained++;
+                xp += 10;
+            }
+            else {
+                addMessage("Your inventory is full. You can't carry any more items.");
+            }
         }
     }
     else {
@@ -80,11 +85,13 @@ function goFishing() {
             }
         }
         else {
-            // alert("You caught a fish!");
-            inventory.push("Fish");
-            fishingPoleHealth -= 1;
-            fishObtained++;
-            xp += 15;
+            if (fullInventory == false) {
+                // alert("You caught a fish!");
+                inventory.push("Fish");
+                fishingPoleHealth -= 1;
+                xp += 15;
+                fishObtained++;
+            }
         }
     }
     else {
@@ -109,11 +116,17 @@ function goHunting() {
             }
         }
         else {
-            // alert("You caught a fish!");
-            inventory.push("Meat");
-            huntingRifleHealth -= 1;
-            meatObtained++;
-            xp += 50;
+            if (fullInventory == false) {
+                // alert("You caught a fish!");
+                inventory.push("Meat");
+                huntingRifleHealth -= 1;
+                meatObtained++;
+                xp += 50;
+            }
+            else {
+                addMessage("Your inventory is full. You can't carry any more items.");
+                // addMessage(inventoryFullMessage);
+            }
         }
     }
     else {
@@ -142,69 +155,74 @@ function goMining() {
             }
         }
         else {
-            // alert("You mined some ore!");
-            let oreDictionary = {
-                0: "Iron",
-                1: "Copper",
-                2: "Tin",
-                3: "Silver",
-                4: "Gold",
-                5: "Emerald",
-                6: "Ruby",
-                7: "Diamond",
-                8: "Stone",
-            };
-            let oreRandomizer = Math.floor(Math.random() * 10);
-            console.log(oreRandomizer);
+            if (fullInventory == false) {
+                // alert("You mined some ore!");
+                let oreDictionary = {
+                    0: "Iron",
+                    1: "Copper",
+                    2: "Tin",
+                    3: "Silver",
+                    4: "Gold",
+                    5: "Emerald",
+                    6: "Ruby",
+                    7: "Diamond",
+                    8: "Stone",
+                };
+                let oreRandomizer = Math.floor(Math.random() * 10);
+                console.log(oreRandomizer);
 
-            switch (oreRandomizer) {
-                case 0:
-                    inventory.push(oreDictionary[0]);
-                    var IronMessage = "You mined some " + oreDictionary[0] + "!";
-                    addMessage(IronMessage);
-                    break;
-                case 1:
-                    inventory.push(oreDictionary[1]);
-                    var CopperMessage = "You mined some " + oreDictionary[1] + "!";
-                    addMessage(CopperMessage);
-                    break;
-                case 2:
-                    inventory.push(oreDictionary[2]);
-                    var TinMessage = "You mined some " + oreDictionary[2] + "!";
-                    addMessage(TinMessage);
-                    break;
-                case 3:
-                    inventory.push("Silver");
-                    var SilverMessage = "You mined some " + oreDictionary[3] + "!";
-                    addMessage(SilverMessage);
-                    break;
-                case 4:
-                    inventory.push("Gold");
-                    var GoldMessage = "You mined some " + oreDictionary[4] + "!";
-                    addMessage(GoldMessage);
-                    break;
-                case 5:
-                    inventory.push("Emerald");
-                    var EmeraldMessage = "You mined some " + oreDictionary[5] + "!";
-                    addMessage(EmeraldMessage);
-                    break;
-                case 6:
-                    inventory.push("Ruby");
-                    var RubyMessage = "You mined some " + oreDictionary[6] + "!";
-                    addMessage(RubyMessage);
-                    break;
-                case 7:
-                    inventory.push("Diamond");
-                    var DiamondMessage = "You mined some " + oreDictionary[7] + "!";
-                    addMessage(DiamondMessage);
-                    break;
-                default:
-                    inventory.push("Stone");
-                    stoneObtained++;
-                    break;
+                switch (oreRandomizer) {
+                    case 0:
+                        inventory.push(oreDictionary[0]);
+                        var IronMessage = "You mined some " + oreDictionary[0] + "!";
+                        addMessage(IronMessage);
+                        break;
+                    case 1:
+                        inventory.push(oreDictionary[1]);
+                        var CopperMessage = "You mined some " + oreDictionary[1] + "!";
+                        addMessage(CopperMessage);
+                        break;
+                    case 2:
+                        inventory.push(oreDictionary[2]);
+                        var TinMessage = "You mined some " + oreDictionary[2] + "!";
+                        addMessage(TinMessage);
+                        break;
+                    case 3:
+                        inventory.push("Silver");
+                        var SilverMessage = "You mined some " + oreDictionary[3] + "!";
+                        addMessage(SilverMessage);
+                        break;
+                    case 4:
+                        inventory.push("Gold");
+                        var GoldMessage = "You mined some " + oreDictionary[4] + "!";
+                        addMessage(GoldMessage);
+                        break;
+                    case 5:
+                        inventory.push("Emerald");
+                        var EmeraldMessage = "You mined some " + oreDictionary[5] + "!";
+                        addMessage(EmeraldMessage);
+                        break;
+                    case 6:
+                        inventory.push("Ruby");
+                        var RubyMessage = "You mined some " + oreDictionary[6] + "!";
+                        addMessage(RubyMessage);
+                        break;
+                    case 7:
+                        inventory.push("Diamond");
+                        var DiamondMessage = "You mined some " + oreDictionary[7] + "!";
+                        addMessage(DiamondMessage);
+                        break;
+                    default:
+                        inventory.push("Stone");
+                        stoneObtained++;
+                        break;
+                }
+
+                pickaxeHealth -= 1;
             }
-
-            pickaxeHealth -= 1;
+            else {
+                addMessage("Your inventory is full. You can't carry any more items.");
+            }
         }
     }
     else {
@@ -215,13 +233,13 @@ function goMining() {
 
 
 //TODO: fix this!
-var enemyHealth;
-var enemyAttack;
-var enemyDefense;
-var enemySpeed;
-var enemyName;
-var enemyGold;
-var enemyExperience;
+var enemyHealth = 1;
+var enemyAttack = 5;
+var enemyDefense = 1;
+var enemySpeed = 1;
+var enemyName = "Goblin"
+var enemyGold = 100;
+var enemyExperience = 10;
 
 //default player stats
 var defaultPlayerHealth = 100;
@@ -306,7 +324,7 @@ function checkAttackStatus() {
 }
 
 function doAttack() {
-    // var newEnemyHealth = enemyHealth;
+    var newEnemyHealth = enemyHealth;
     // var newEnemyHealth = document.getElementById("healthValue").innerHTML - (playerAttack - enemyDefense);
     // console.log("Enemy health: " + );
     isAttacking = true;
@@ -325,8 +343,7 @@ function doAttack() {
             //increment XP by enemyExperience
             xp += enemyExperience;
             gold += enemyGold;
-            document.getElementById("xpValue").innerHTML = xp;
-            document.getElementById("goldValue").innerHTML = gold;
+            document.getElementById("gold").innerHTML = gold;
             addMessage(winMessage);
 
             var droppedRandomLoot = Math.floor(Math.random() * 100);
@@ -435,21 +452,21 @@ function doCrafting(item) {
 function buySpecialDeal() {
     if (gold >= 1000) {
         randomLootDrop();
-        var lootMessage = "You bought a random item and recieved " + finalItem.name + "!";
         //add page break after level up message
-        document.getElementById("messages").innerHTML += "<br>";
-        var message = document.createElement("li");
-        message.appendChild(document.createTextNode(lootMessage));
-        document.getElementById("messages").appendChild(message);
+        isInInventory(finalItem.name, finalItem.type);
+        if (isInInventory) {
+            // alert("FALSE");
+            var lootMessage = "You bought a random item and recieved " + finalItem.name + "!";
+            addMessage(lootMessage);
+        }
+        else if (!isInInventory) {
+            // alert("TRUE");
+            addMessage("You already have this item! " + finalItem.name);
+        }
         gold -= 1000;
-        document.getElementById("goldValue").innerHTML = gold;
     }
     else {
         var poorMessage = "You do not have enough gold to buy this item!";
-        //add page break after level up message
-        document.getElementById("messages").innerHTML += "<br>";
-        var message = document.createElement("li");
-        message.appendChild(document.createTextNode(poorMessage));
-        document.getElementById("messages").appendChild(message);
+        addMessage(poorMessage);
     }
 }

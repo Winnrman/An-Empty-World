@@ -4,10 +4,10 @@ let neededLevelUpXP = 0;
 let inventory = [];
 let gold = 100;
 // let messages = [];
-var fishCaught = 0;
+var fishObtained = 0;
 var woodObtained = 0;
 var stoneObtained = 0;
-meatObtained = 0;
+var meatObtained = 0;
 let hitLevel2 = false;
 let hitLevel3 = false;
 let hitLevel4 = false;
@@ -19,6 +19,12 @@ setInterval(function () {
     inventory.sort();
     checkLevelUnlocks();
     checkDarkMode();
+    document.getElementById("axeDurability").innerHTML = "Axe: " + axeHealth + "&nbsp;";
+    document.getElementById("pickaxeDurability").innerHTML = "Pickaxe: " + pickaxeHealth + "&nbsp;";
+    document.getElementById("rifleDurability").innerHTML = "Rifle: " + huntingRifleHealth + "&nbsp;";
+    document.getElementById("fishingPoleDurability").innerHTML = "Fishing Pole: " + fishingPoleHealth + "&nbsp;";
+    document.getElementById("inventoryHeader").innerHTML = "Inventory (" + inventory.length + "/24)";
+    // document.getElementById("pickaxeDurability").innerHTML = pickaxeHealth;
     // localStorage.setItem("inventory", inventory);
     // localStorage.setItem("gold", gold);
     // localStorage.setItem("xp", xp);
@@ -33,9 +39,7 @@ setInterval(function () {
 //     level = localStorage.getItem("level");
 // }
 
-setInterval(function () {
-    //remove messages after 5 seconds
-    // messages.shift();
+let clearMessageInterval = setInterval(function () {
     document.getElementById("messages").innerHTML = [];
 }, 15000);
 
@@ -163,10 +167,10 @@ document.getElementById("chestSelect").addEventListener("change", function () {
 document.getElementById("legsSelect").addEventListener("change", function () {
     console.log('change event');
     //add necessary item armor to total player armor
-    let legsey = document.getElementById("legsSelect").value;
-    console.log(legsey);
+    let legs = document.getElementById("legsSelect").value;
+    console.log(legs);
     for (let i = 0; i <= obtainableItems["Leggings"].length; i++) {
-        if (obtainableItems["Leggings"][i].name == legsey) {
+        if (obtainableItems["Leggings"][i].name == legs) {
             playerDefense += obtainableItems["Leggings"][i].armor;
             document.getElementById("playerDefenseValue").innerHTML = playerDefense;
         }

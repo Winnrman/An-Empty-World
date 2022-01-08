@@ -33,42 +33,6 @@ function randomLootDrop() {
     }
 
     finalItem = obtainableItems[itemType][Math.floor(Math.random() * obtainableItems[itemType].length)];
-    // return finalItem.name;
-    console.log(itemType);
     console.log("Enemy dropped: " + finalItem.name);
-
-    //add item to inventory
-    if (itemType == "Helmets") {
-        // inventory.push(finalItem.name);
-        //add item to 'helmetSelect select as an option
-        var helmetSelect = document.getElementById("helmetSelect");
-        var newOption = document.createElement("option");
-        newOption.text = finalItem.name;
-        helmetSelect.add(newOption);
-    }
-    if (itemType == "Chestplates") {
-        // inventory.push(finalItem.name);
-        //add item to 'chestplateSelect select as an option
-        var chestplateSelect = document.getElementById("chestSelect");
-        var newOption = document.createElement("option");
-        newOption.text = finalItem.name;
-        chestplateSelect.add(newOption);
-    }
-    if (itemType == "Leggings") {
-        // inventory.push(finalItem.name);
-        //add item to 'leggingSelect select as an option
-        var leggingSelect = document.getElementById("legsSelect");
-        var newOption = document.createElement("option");
-        newOption.text = finalItem.name;
-        leggingSelect.add(newOption);
-    }
-    if (itemType == "Boots") {
-        // inventory.push(finalItem.name);
-        //add item to 'bootSelect select as an option
-        var bootSelect = document.getElementById("bootsSelect");
-        var newOption = document.createElement("option");
-        newOption.text = finalItem.name;
-        bootSelect.add(newOption);
-    }
-
+    isInInventory(finalItem.name, finalItem.type);
 }

@@ -18,6 +18,8 @@ body{
     flex-direction: column;
     width: 20%;
     height: auto;
+    max-height: 85vh;
+    overflow-y: hidden;
     padding: 10px;
     /* margin-top:-40px; */
     margin:20px;
@@ -64,9 +66,13 @@ body{
     /* cursor:pointer; */
 }
 .header{
+    z-index:1;
     margin-top:-26px;
     background:white;
-    width: min-content;
+    position: fixed;
+    width: fit-content;
+    padding-left:2px;
+    padding-right:2px;
 }
 .button:hover{
     background-color:rgb(212, 212, 212);

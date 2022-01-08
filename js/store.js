@@ -85,6 +85,7 @@ function buyPickaxe() {
     }
 }
 function sell(item) {
+    fullInventory = false;
     if (item == 'Wood') {
         for (let i = 0; i < inventory.length; i++) {
             if (inventory[i] == 'Wood') {
