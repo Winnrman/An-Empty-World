@@ -131,22 +131,22 @@ function sell(item) {
     }
     else if (item == 'Ores') {
         //remove all ores in inventory
-		let goldTable = {
-					"Iron": 20,
-					"Copper":25,
-					"Tin":15,
-					"Silver": 50,
-					"Gold": 25,
-					"Emerald": 30,
-					"Ruby": 60,
-					"Diamond": 100
-		};
-		
+        let goldTable = {
+            "Iron": 20,
+            "Copper": 25,
+            "Tin": 15,
+            "Silver": 50,
+            "Gold": 25,
+            "Emerald": 30,
+            "Ruby": 60,
+            "Diamond": 100
+        };
+
         for (let i = 0; i < inventory.length; i++) {
-			if (goldTable[inventory[i]]) {
-				inventory.splice(i, 1);
-				gold += goldTable[inventory[i]];
-			}
+            if (inventory[i] in goldTable) {
+                inventory.splice(i, 1);
+                gold += Object.values(goldTable)[i];
+            }
         }
     }
     else if (item == "Stone") {

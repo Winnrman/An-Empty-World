@@ -1,5 +1,5 @@
-enemy_dictionary = {
-    "goblin": {
+var enemy_dictionary = {
+    "Goblin": {
         name: "Goblin",
         health: 10,
         attack: 2,
@@ -8,7 +8,7 @@ enemy_dictionary = {
         gold: Math.floor(Math.random() * 25) + 1,
         speed: 1,
     },
-    "troll": {
+    "Troll": {
         name: "Troll",
         health: 30,
         attack: 7,
@@ -16,7 +16,7 @@ enemy_dictionary = {
         speed: 0.4,
         defeatExperience: 10,
     },
-    "skeleton": {
+    "Skeleton": {
         name: "Skeleton",
         health: 30,
         attack: 15,
@@ -24,14 +24,14 @@ enemy_dictionary = {
         speed: 1,
         defeatExperience: 10,
     },
-    "knight": {
+    "Knight": {
         name: "Knight",
         health: 150,
         attack: 40,
         defense: 25,
         speed: 2.5,
     },
-    "king": {
+    "King": {
         name: "King",
         health: 300,
         attack: 50,

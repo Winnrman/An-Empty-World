@@ -154,7 +154,7 @@ function goMining() {
                     7: "Diamond",
                     8: "Stone",
                 };
-                let oreRandomizer = Math.floor(Math.random() * 10);
+                let oreRandomizer = Math.floor(Math.random() * 9);
                 console.log(oreRandomizer);
 
                 let xpTable = {
@@ -188,19 +188,18 @@ function goMining() {
 // Use enemy data in enemies.js to fetch! --> enemy_dictionary is not defined ???
 // Bonus points to not do it here, but in each function
 
-var enemyHealth = enemy_dictionary[document.getElementById("opponentSelector").value].health; // <-- this works in browser but not in VSCode
-var enemyAttack = enemy_dictionary[document.getElementById("opponentSelector").value].attack;
-var enemyDefense = enemy_dictionary[document.getElementById("opponentSelector").value].defense;
-var enemySpeed = enemy_dictionary[document.getElementById("opponentSelector").value].speed;
-var enemyName = enemy_dictionary[document.getElementById("opponentSelector").value].name;
-var enemyGold = enemy_dictionary[document.getElementById("opponentSelector").value].gold;
-var enemyExperience = enemy_dictionary[document.getElementById("opponentSelector").value].defeatExperience;
-
 //default player stats
 var defaultPlayerHealth = 100;
 var defaultPlayerAttack = 2;
 var defaultPlayerDefense = 2;
 var defaultPlayerSpeed = 5;
+
+var enemyHealth;
+var enemyAttack;
+var enemyDefense;
+var enemySpeed;
+var enemyExperience
+var enemyGold;
 
 var isAttacking = false;
 var fled = false;
@@ -239,13 +238,20 @@ function checkAttackStatus() {
     }
 }
 
+var refresh;
+
 function doAttack() {
+    var enemyHealth = enemy_dictionary[document.getElementById("opponentSelector").value].health; // <-- this works in browser but not in VSCode
+    var enemyDefense = enemy_dictionary[document.getElementById("opponentSelector").value].defense;
+    var enemyName = enemy_dictionary[document.getElementById("opponentSelector").value].name;
+    var enemyGold = enemy_dictionary[document.getElementById("opponentSelector").value].gold;
+    var enemyExperience = enemy_dictionary[document.getElementById("opponentSelector").value].defeatExperience;
     var newEnemyHealth = enemyHealth;
     // var newEnemyHealth = document.getElementById("healthValue").innerHTML - (playerAttack - enemyDefense);
     // console.log("Enemy health: " + );
     isAttacking = true;
     checkAttackStatus();
-    var refresh = setInterval(function () {
+    refresh = setInterval(function () {
         if (newEnemyHealth > 0 && fled == false) {
             newEnemyHealth = newEnemyHealth - Math.max(0, playerAttack - enemyDefense);
             console.log("new enemy health:" + newEnemyHealth);
@@ -274,10 +280,10 @@ function doAttack() {
             document.getElementById("specialButton").style.visibility = "hidden";
             // break;
         }
-        // else {
-        //     // enemyHealth = newEnemyHealth;
-        //     document.getElementById("healthValue").innerHTML = newEnemyHealth;
-        // }
+        else {
+            enemyHealth = newEnemyHealth;
+            document.getElementById("healthValue").innerHTML = enemyHealth;
+        }
     }, 1000 / playerSpeed);
 
 }
@@ -306,12 +312,14 @@ function doFlee() {
 }
 
 function doEnemyAttack() {
-    var newPlayerHealth = playerHealth - Math.max(0, enemyAttack - playerDefense);
-    document.getElementById("playerHealthValue").innerHTML = Math.max(0, newPlayerHealth) + '/100';
+    var enemyAttack = enemy_dictionary[document.getElementById("opponentSelector").value].attack;
+    // console.log("Enemy is attacking for " + Math.max(0, enemyAttack - playerDefense) + " damage!");
+    newPlayerHealth = playerHealth - Math.max(0, enemyAttack - playerDefense);
+    playerHealth = newPlayerHealth;
+    // console.log("Player now has " + newPlayerHealth + " health.");
+    document.getElementById("playerHealthValue").innerHTML = Math.max(0, newPlayerHealth);
 
     if (newPlayerHealth <= 0) {
-        // alert("You lose!");
-        //player health set to 0
         document.getElementById("messages").innerHTML = "You lose!";
         document.getElementById("fightButton").style.display = "block";
         document.getElementById("opponentSelector").style.display = "block";
@@ -319,11 +327,12 @@ function doEnemyAttack() {
         document.getElementById("fleeButton").style.visibility = "hidden";
         document.getElementById("defendButton").style.visibility = "hidden";
         document.getElementById("specialButton").style.visibility = "hidden";
+        clearInterval(refresh);
     }
-    else {
-        playerHealth = newPlayerHealth;
-        document.getElementById("healthValue").innerHTML = enemyHealth;
-    }
+    // else {
+    //     playerHealth = newPlayerHealth;
+    //     document.getElementById("playerHealthValue").innerHTML = playerHealth;
+    // }
 }
 
 document.getElementById("craftingButton").disabled = "disabled";
