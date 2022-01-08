@@ -37,10 +37,8 @@ function isInInventory(itemName, itemType) {
             addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
             gold += 1000;
             return true;
-        }
-        else {
-            var lootMessage = "You bought a random item and recieved " + finalItem.name + "!";
-            addMessage(lootMessage);
+        } else {
+            addMessage("You bought a random item and recieved " + finalItem.name + "!");
             helmetItems.push(itemName);
             var helmetSelect = document.getElementById("helmetSelect");
             var newOption = document.createElement("option");
@@ -54,10 +52,8 @@ function isInInventory(itemName, itemType) {
             addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
             gold += 1000;
             return true;
-        }
-        else {
-            var lootMessage = "You bought a random item and recieved " + finalItem.name + "!";
-            addMessage(lootMessage);
+        } else {
+            addMessage("You bought a random item and recieved " + finalItem.name + "!";);
             chestItems.push(itemName);
             var chestplateSelect = document.getElementById("chestSelect");
             var newOption = document.createElement("option");
@@ -71,10 +67,8 @@ function isInInventory(itemName, itemType) {
             addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
             gold += 1000;
             // return true;
-        }
-        else {
-            var lootMessage = "You bought a random item and recieved " + finalItem.name + "!";
-            addMessage(lootMessage);
+        } else {
+            addMessage("You bought a random item and recieved " + finalItem.name + "!");
             leggingItems.push(itemName);
             var leggingSelect = document.getElementById("legsSelect");
             var newOption = document.createElement("option");
@@ -88,10 +82,8 @@ function isInInventory(itemName, itemType) {
             addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
             gold += 1000;
             // return true;
-        }
-        else {
-            var lootMessage = "You bought a random item and recieved " + finalItem.name + "!";
-            addMessage(lootMessage);
+        } else {
+            addMessage("You bought a random item and recieved " + finalItem.name + "!");
             bootsItems.push(itemName);
             var bootSelect = document.getElementById("bootsSelect");
             var newOption = document.createElement("option");

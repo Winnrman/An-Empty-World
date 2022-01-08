@@ -10,8 +10,7 @@ function buyAxe() {
         }
     } else {
         //add to messages
-        var notEnoughGoldMessage = "You don't have enough gold to buy an axe!";
-        addMessage(notEnoughGoldMessage);
+        addMessage("You don't have enough gold to buy an axe!");
     }
 }
 
@@ -19,17 +18,14 @@ function buyFishingPole() {
     if (gold >= 50) {
         if (inventory.includes("Fishing Pole")) {
             console.log("You already have a fishing pole!");
-        }
-        else {
+        } else {
             inventory.push("Fishing Pole");
             // alert("You bought a fishing pole!");
             gold -= 50;
         }
-    }
-    else {
+    } else {
         //add to messages
-        var notEnoughGoldMessage = "You don't have enough gold to buy a fishing pole!";
-        addMessage(notEnoughGoldMessage);
+        addMessage("You don't have enough gold to buy a fishing pole!");
     }
 }
 
@@ -37,17 +33,14 @@ function buyHuntingRifle() {
     if (gold >= 300) {
         if (inventory.includes("Hunting Rifle")) {
             console.log("You already have a hunting rifle!");
-        }
-        else {
+        } else {
             inventory.push("Hunting Rifle");
             // alert("You bought a fishing pole!");
             gold -= 300;
         }
-    }
-    else {
+    } else {
         //add to messages
-        var notEnoughGoldMessage = "You don't have enough gold to buy a hunting rifle!";
-        addMessage(notEnoughGoldMessage);
+        addMessage("You don't have enough gold to buy a hunting rifle!");
     }
 }
 
@@ -55,17 +48,14 @@ function buyPickaxe() {
     if (gold >= 1200) {
         if (inventory.includes("Pickaxe")) {
             console.log("You already have a pickaxe!");
-        }
-        else {
+        } else {
             inventory.push("Pickaxe");
             // alert("You bought a fishing pole!");
             gold -= 1200;
         }
-    }
-    else {
+    } else {
         //add to messages
-        var notEnoughGoldMessage = "You don't have enough gold to buy a pickaxe!";
-        addMessage(notEnoughGoldMessage);
+        addMessage("You don't have enough gold to buy a pickaxe!");
     }
 }
 boughtTimes = 0;
@@ -76,10 +66,8 @@ function buySpecialDeal() {
         //add page break after level up message
         isInInventory(finalItem.name, finalItem.type); //this handles adding item and displaying message
         gold -= 1000;
-    }
-    else {
-        var poorMessage = "You do not have enough gold to buy this item!";
-        addMessage(poorMessage);
+    } else {
+        addMessage("You do not have enough gold to buy this item!");
     }
 }
 
@@ -143,39 +131,22 @@ function sell(item) {
     }
     else if (item == 'Ores') {
         //remove all ores in inventory
+		let goldTable = {
+					"Iron": 20,
+					"Copper":25,
+					"Tin":15,
+					"Silver": 50,
+					"Gold": 25,
+					"Emerald": 30,
+					"Ruby": 60,
+					"Diamond": 100
+		};
+		
         for (let i = 0; i < inventory.length; i++) {
-            if (inventory[i] == 'Iron') {
-                inventory.splice(i, 1);
-                gold += 20;
-            }
-            else if (inventory[i] == 'Gold') {
-                inventory.splice(i, 1);
-                gold += 40;
-            }
-            else if (inventory[i] == 'Diamond') {
-                inventory.splice(i, 1);
-                gold += 100;
-            }
-            else if (inventory[i] == "Emerald") {
-                inventory.splice(i, 1);
-                gold += 30;
-            }
-            else if (inventory[i] == "Copper") {
-                inventory.splice(i, 1);
-                gold += 25;
-            }
-            else if (inventory[i] == "Tin") {
-                inventory.splice(i, 1);
-                gold += 15;
-            }
-            else if (inventory[i] == "Silver") {
-                inventory.splice(i, 1);
-                gold += 50;
-            }
-            else if (inventory[i] == "Ruby") {
-                inventory.splice(i, 1);
-                gold += 60;
-            }
+			if (goldTable[inventory[i]]) {
+				inventory.splice(i, 1);
+				gold += goldTable[inventory[i]];
+			}
         }
     }
     else if (item == "Stone") {
