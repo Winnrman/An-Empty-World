@@ -187,7 +187,8 @@ function goMining() {
 }
 // Use enemy data in enemies.js to fetch! --> enemy_dictionary is not defined ???
 // Bonus points to not do it here, but in each function
-var enemyHealth = enemy_dictionary[document.getElementById("enemyHeader").innerHTML].health;
+
+var enemyHealth = enemy_dictionary[document.getElementById("opponentSelector").value].health; // <-- this works in browser but not in VSCode
 var enemyAttack = enemy_dictionary[document.getElementById("opponentSelector").value].attack;
 var enemyDefense = enemy_dictionary[document.getElementById("opponentSelector").value].defense;
 var enemySpeed = enemy_dictionary[document.getElementById("opponentSelector").value].speed;

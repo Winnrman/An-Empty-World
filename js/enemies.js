@@ -1,4 +1,4 @@
-var enemy_dictionary = {
+enemy_dictionary = {
     "goblin": {
         name: "Goblin",
         health: 10,
