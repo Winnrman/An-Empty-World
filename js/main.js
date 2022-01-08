@@ -37,7 +37,7 @@ setInterval(function () {
 
 let clearMessageInterval = setInterval(function () {
     document.getElementById("messages").innerHTML = [];
-}, 8500); //clears messages every 15 seconds
+}, 30000); //clears messages every 15 seconds
 
 setInterval(function () { // checks to see if messages is full.
     if (document.getElementById("messagesContainer").style.height >= '200px') {
@@ -65,6 +65,9 @@ function checkLevelUnlocks() {
     }
     if (level >= 4) {
         document.getElementById("inventoryUpgrade").style.visibility = "visible";
+    }
+    if (level > 7) {
+        document.getElementById("goQuestingButton").style.visibility = "visible";
     }
 }
 if (level > 1) {

@@ -1,6 +1,8 @@
 var maxInventorySize = 24; //can be upgraded to 48, 72 and 96
 var fullInventory = false;
 
+let stamina = 100; //this goes down as you quest
+
 function checkInventorySize() {
     if (inventory.length >= maxInventorySize) {
         fullInventory = true;
@@ -34,11 +36,15 @@ function isInInventory(itemName, itemType) {
     if (itemType == 'Helmet') {
         if (helmetItems.includes(itemName)) {
             console.log(helmetItems);
-            addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
-            gold += 1000;
-            return true;
+            if (isQuesting == true) {
+                addMessage("You already have a " + itemName + ", so you toss them away.");
+            } else {
+                addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
+                gold += 1000;
+                return true;
+            }
         } else {
-            addMessage("You bought a random item and recieved " + finalItem.name + "!");
+            // addMessage("You bought a random item and recieved " + finalItem.name + "!"); //this should be done in the store.js file
             helmetItems.push(itemName);
             var helmetSelect = document.getElementById("helmetSelect");
             var newOption = document.createElement("option");
@@ -49,9 +55,13 @@ function isInInventory(itemName, itemType) {
     }
     else if (itemType == 'Chestplate') {
         if (chestItems.includes(itemName)) {
-            addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
-            gold += 1000;
-            return true;
+            if (isQuesting == true) {
+                addMessage("You already have a " + itemName + ", so you toss them away.");
+            } else {
+                addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
+                gold += 1000;
+                return true;
+            }
         } else {
             addMessage("You bought a random item and recieved " + finalItem.name + "!");
             chestItems.push(itemName);
@@ -64,8 +74,12 @@ function isInInventory(itemName, itemType) {
     }
     else if (itemType == 'Leggings') {
         if (leggingItems.includes(itemName)) {
-            addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
-            gold += 1000;
+            if (isQuesting == true) {
+                addMessage("You already have a " + itemName + ", so you toss them away.");
+            } else {
+                addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
+                gold += 1000;
+            }
             // return true;
         } else {
             addMessage("You bought a random item and recieved " + finalItem.name + "!");
@@ -79,8 +93,12 @@ function isInInventory(itemName, itemType) {
     }
     else if (itemType == 'Boots') {
         if (bootsItems.includes(itemName)) {
-            addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
-            gold += 1000;
+            if (isQuesting == true) {
+                addMessage("You already have a " + itemName + ", so you toss them away.");
+            } else {
+                addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
+                gold += 1000;
+            }
             // return true;
         } else {
             addMessage("You bought a random item and recieved " + finalItem.name + "!");
