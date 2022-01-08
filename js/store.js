@@ -87,13 +87,30 @@ function buyPickaxe() {
 boughtTimes = 0;
 function buyInventoryUpgrade() {
     if (boughtTimes < 3) {
-        if (gold >= 10000 + (10000) * boughtTimes) {
+        var price = 10000 + (10000 * boughtTimes);
+        if (gold >= price) {
             maxInventorySize += 24;
             boughtTimes++;
+            document.getElementById("inventoryUpgrade").innerHTML = "Buy Inventory Upgrade  [" + price + "<br><br>"
+                + "(" + boughtTimes + " / 3)";
             addMessage("Inventory Space increased by 24! [Currently " + maxInventorySize + "]");
         }
     }
+    else {
+        document.getElementById("inventoryUpgrade").innerHTML = "Inventory Upgrade [ Maxed ]";
+    }
 }
+
+setInterval(function () {
+    var price = 10000 + (10000 * boughtTimes);
+    if (boughtTimes < 3) {
+        document.getElementById("inventoryUpgrade").innerHTML = "Buy Inventory Upgrade  [" + price + "]&nbsp;"
+            + "(" + boughtTimes + " / 3)";
+    }
+    else {
+        document.getElementById("inventoryUpgrade").innerHTML = "Inventory Upgrade [ Maxed ]";
+    }
+}, 100);
 
 
 function sell(item) {
