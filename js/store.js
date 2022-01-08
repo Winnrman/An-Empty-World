@@ -143,10 +143,16 @@ function sell(item) {
         };
 
         for (let i = 0; i < inventory.length; i++) {
-            if (inventory[i] in goldTable) {
-                inventory.splice(i, 1);
-                gold += Object.values(goldTable)[i];
+            for (let key in goldTable) {
+                if (inventory[i] == key) {
+                    inventory.splice(i, 1);
+                    gold += goldTable[key];
+                }
             }
+            // if (inventory[i] in goldTable) {
+            //     inventory.splice(i, 1);
+            //     gold += Object.values(goldTable)[i];
+            // }
         }
     }
     else if (item == "Stone") {

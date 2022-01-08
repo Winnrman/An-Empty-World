@@ -141,3 +141,6 @@ a{
     color:white;
     text-decoration: none;
 }
+#armor, #weapons{
+    padding-top:5px;
+}

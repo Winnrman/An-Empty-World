@@ -2,7 +2,7 @@
 let axeHealth = 20;
 let fishingPoleHealth = 10;
 let huntingRifleHealth = 50;
-let pickaxeHealth = 100;
+let pickaxeHealth = 75;
 let playerHealth = 100;
 let playerAttack = 2;
 let playerDefense = 2;
@@ -139,6 +139,7 @@ function goMining() {
             const index = inventory.indexOf('Pickaxe');
             if (index > -1) {
                 inventory.splice(index, 1);
+                pickaxeHealth = 75;
             }
         } else {
             if (fullInventory == false) {
