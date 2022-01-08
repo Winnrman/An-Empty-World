@@ -4,17 +4,17 @@ function randomLootDrop() {
     var chosenRarity;
     var itemType;
 
-    var raity = Math.floor(Math.random() * 16) + 1;
-    if (raity <= 0 && raity >= 5) {
+    var rarity = Math.floor(Math.random() * 16) + 1;
+    if (rarity <= 0 && rarity >= 5) {
         chosenRarity = "common";
     }
-    else if (raity <= 5 && raity >= 10) {
+    else if (rarity <= 5 && rarity >= 10) {
         chosenRarity = "uncommon";
     }
-    else if (raity <= 10 && raity >= 15) {
+    else if (rarity <= 10 && rarity >= 15) {
         chosenRarity = "rare";
     }
-    else if (raity == 16) {
+    else if (rarity == 16) {
         chosenRarity = "legendary";
     }
 

@@ -11,11 +11,7 @@ function buyAxe() {
     } else {
         //add to messages
         var notEnoughGoldMessage = "You don't have enough gold to buy an axe!";
-        //add page break after level up message
-        document.getElementById("messages").innerHTML += "<br>";
-        var message = document.createElement("li");
-        message.appendChild(document.createTextNode(notEnoughGoldMessage));
-        document.getElementById("messages").appendChild(message);
+        addMessage(notEnoughGoldMessage);
     }
 }
 
@@ -33,11 +29,7 @@ function buyFishingPole() {
     else {
         //add to messages
         var notEnoughGoldMessage = "You don't have enough gold to buy a fishing pole!";
-        //add page break after level up message
-        document.getElementById("messages").innerHTML += "<br>";
-        var message = document.createElement("li");
-        message.appendChild(document.createTextNode(notEnoughGoldMessage));
-        document.getElementById("messages").appendChild(message);
+        addMessage(notEnoughGoldMessage);
     }
 }
 
@@ -55,11 +47,7 @@ function buyHuntingRifle() {
     else {
         //add to messages
         var notEnoughGoldMessage = "You don't have enough gold to buy a hunting rifle!";
-        //add page break after level up message
-        document.getElementById("messages").innerHTML += "<br>";
-        var message = document.createElement("li");
-        message.appendChild(document.createTextNode(notEnoughGoldMessage));
-        document.getElementById("messages").appendChild(message);
+        addMessage(notEnoughGoldMessage);
     }
 }
 
@@ -77,11 +65,7 @@ function buyPickaxe() {
     else {
         //add to messages
         var notEnoughGoldMessage = "You don't have enough gold to buy a pickaxe!";
-        //add page break after level up message
-        document.getElementById("messages").innerHTML += "<br>";
-        var message = document.createElement("li");
-        message.appendChild(document.createTextNode(notEnoughGoldMessage));
-        document.getElementById("messages").appendChild(message);
+        addMessage(notEnoughGoldMessage);
     }
 }
 boughtTimes = 0;
