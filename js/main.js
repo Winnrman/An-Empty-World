@@ -23,7 +23,7 @@ setInterval(function () {
     document.getElementById("pickaxeDurability").innerHTML = "Pickaxe: " + pickaxeHealth + "&nbsp;";
     document.getElementById("rifleDurability").innerHTML = "Rifle: " + huntingRifleHealth + "&nbsp;";
     document.getElementById("fishingPoleDurability").innerHTML = "Fishing Pole: " + fishingPoleHealth + "&nbsp;";
-    document.getElementById("inventoryHeader").innerHTML = "Inventory (" + inventory.length + "/24)";
+    document.getElementById("inventoryHeader").innerHTML = "Inventory (" + inventory.length + "/" + maxInventorySize + ")";
     // document.getElementById("pickaxeDurability").innerHTML = pickaxeHealth;
     // localStorage.setItem("inventory", inventory);
     // localStorage.setItem("gold", gold);
@@ -63,6 +63,7 @@ function checkLevelUnlocks() {
         // add 'Go Mining' button to activities
         document.getElementById("goMiningButton").style.visibility = "visible";
         document.getElementById("pickaxe").style.visibility = "visible";
+        document.getElementById("inventoryUpgrade").style.visibility = "visible";
         //sell ores button
         document.getElementById("sellOres").style.visibility = "visible";
         document.getElementById("sellStone").style.visibility = "visible";

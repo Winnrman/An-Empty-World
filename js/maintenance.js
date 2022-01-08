@@ -1,7 +1,8 @@
+var maxInventorySize = 24; //can be upgraded to 48, 72 and 96
 var fullInventory = false;
 
 function checkInventorySize() {
-    if (inventory.length >= 24) {
+    if (inventory.length >= maxInventorySize) {
         fullInventory = true;
     }
 }

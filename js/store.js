@@ -84,6 +84,18 @@ function buyPickaxe() {
         document.getElementById("messages").appendChild(message);
     }
 }
+boughtTimes = 0;
+function buyInventoryUpgrade() {
+    if (boughtTimes < 3) {
+        if (gold >= 10000 + (10000) * boughtTimes) {
+            maxInventorySize += 24;
+            boughtTimes++;
+            addMessage("Inventory Space increased by 24! [Currently " + maxInventorySize + "]");
+        }
+    }
+}
+
+
 function sell(item) {
     fullInventory = false;
     if (item == 'Wood') {
