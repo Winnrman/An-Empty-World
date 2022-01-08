@@ -132,14 +132,14 @@ function sell(item) {
     else if (item == 'Ores') {
         //remove all ores in inventory
         let goldTable = {
-            "Iron": 20,
-            "Copper": 25,
-            "Tin": 15,
-            "Silver": 50,
-            "Gold": 25,
-            "Emerald": 30,
-            "Ruby": 60,
-            "Diamond": 100
+            "Iron": 120,
+            "Copper": 125,
+            "Tin": 115,
+            "Silver": 150,
+            "Gold": 125,
+            "Emerald": 130,
+            "Ruby": 160,
+            "Diamond": 1100
         };
 
         for (let i = 0; i < inventory.length; i++) {

@@ -8,10 +8,6 @@ var fishObtained = 0;
 var woodObtained = 0;
 var stoneObtained = 0;
 var meatObtained = 0;
-let hitLevel2 = false;
-let hitLevel3 = false;
-let hitLevel4 = false;
-let hitLevel5 = false;
 
 setInterval(function () {
     document.getElementById("inventory").innerHTML = inventory;
@@ -41,14 +37,17 @@ setInterval(function () {
 
 let clearMessageInterval = setInterval(function () {
     document.getElementById("messages").innerHTML = [];
-}, 15000); //clears messages every 15 seconds
+}, 8500); //clears messages every 15 seconds
+
+setInterval(function () { // checks to see if messages is full.
+    if (document.getElementById("messagesContainer").style.height >= '200px') {
+        alert("You have too many messages. Please delete some.");
+        document.getElementById("messages").innerHTML = [];
+    }
+}, 1000);
 
 function checkLevelUnlocks() {
     if (level >= 2) {
-        if (hitLevel2 == false) {
-            gold += 200;
-        }
-        hitLevel2 = true;
         //add 'Go Hunting' button to activities
         document.getElementById("goHuntingButton").style.visibility = "visible";
         document.getElementById("huntingRifle").style.visibility = "visible";
@@ -56,30 +55,20 @@ function checkLevelUnlocks() {
         document.getElementById("sellMeat").style.visibility = "visible";
     }
     if (level >= 3) {
-        if (hitLevel3 == false) {
-            gold += 300;
-        }
-        hitLevel3 = true;
         // add 'Go Mining' button to activities
         document.getElementById("goMiningButton").style.visibility = "visible";
         document.getElementById("pickaxe").style.visibility = "visible";
-        document.getElementById("inventoryUpgrade").style.visibility = "visible";
+
         //sell ores button
         document.getElementById("sellOres").style.visibility = "visible";
         document.getElementById("sellStone").style.visibility = "visible";
     }
     if (level >= 4) {
-        if (hitLevel4 == false) {
-            gold += 400;
-        }
-        hitLevel4 = true;
+        document.getElementById("inventoryUpgrade").style.visibility = "visible";
     }
-    if (level >= 5) {
-        if (hitLevel5 == false) {
-            gold += 500;
-        }
-        hitLevel5 = true;
-    }
+}
+if (level > 1) {
+    gold += level * 100;
 }
 
 
@@ -91,10 +80,6 @@ function checkDarkMode() {
         document.getElementById("messages").style.color = "white";
         document.getElementById("inventory").style.color = "white";
         document.getElementById("gold").style.color = "white";
-        // document.getElementById("messages").style.backgroundColor = "black";
-        // document.getElementById("inventory").style.backgroundColor = "black";
-        // document.getElementById("gold").style.backgroundColor = "black";
-        //get all .header elemnts and change their color
         var headers = document.getElementsByClassName("header");
         for (let i = 0; i < headers.length; i++) {
             Array.prototype.forEach.call(headers, function (header) {

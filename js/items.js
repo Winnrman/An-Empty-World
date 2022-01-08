@@ -77,7 +77,7 @@ let obtainableItems = {
             armor: 10,
             type: "Helmet",
             rarity: "legendary",
-        }
+        },
     ],
     "Chestplates": [
         {
@@ -127,7 +127,7 @@ let obtainableItems = {
             armor: 10 + 3,
             type: "Chestplate",
             rarity: "legendary",
-        }
+        },
     ],
     "Leggings": [
         {
@@ -229,4 +229,84 @@ let obtainableItems = {
             rarity: "legendary",
         }
     ]
-} 
+}
+
+craftableItems = {
+    "Armor": [
+        {
+            name: "Wooden Helmet",
+            price: 10,
+            description: "A wooden helmet.",
+            armor: 1,
+            type: "Helmet",
+            rarity: "common",
+            requiredCraftingLevel: 1,
+            requiredCraftingItems: [
+                {
+                    "Wood": 2,
+                    "Iron": 1,
+                }
+            ]
+        },
+        {
+            name: "Dragon Scale Helmet",
+            price: 32000,
+            description: "Made from the scales of the scariest beast, this helmet is said to be the stuff of legends.",
+            armor: 20,
+            type: "Helmet",
+            requiredCraftingLevel: 25,
+            rarity: "legendary",
+            requiredCraftingItems: [
+                {
+                    "Dragon Scale": 3,
+                    "Titanium": 2,
+                }
+            ]
+        },
+        {
+            name: "Dragon Scale Chestplate",
+            price: 32000,
+            description: "Made from the scales of the scariest beast, this chestplate is said to be the stuff of legends.",
+            armor: 20 + 3,
+            type: "Chestplate",
+            requiredCraftingLevel: 25,
+            rarity: "legendary",
+            requiredCraftingItems: [
+                {
+                    "Dragon Scale": 7,
+                    "Titanium": 5,
+                }
+            ]
+        },
+        {
+            name: "Dragon Scale Leggings",
+            price: 32000,
+            description: "Made from the scales of the scariest beast, this leggings are said to be the stuff of legends.",
+            armor: 20 + 2,
+            type: "Leggings",
+            requiredCraftingLevel: 25,
+            rarity: "legendary",
+            requiredCraftingItems: [
+                {
+                    "Dragon Scale": 4,
+                    "Titanium": 3,
+                }
+            ]
+        },
+        {
+            name: "Dragon Scale Boots",
+            price: 32000,
+            description: "Made from the scales of the scariest beast, these boots are said to be the stuff of legends.",
+            armor: 20 + 1,
+            type: "Boots",
+            requiredCraftingLevel: 25,
+            rarity: "legendary",
+            requiredCraftingItems: [
+                {
+                    "Dragon Scale": 2,
+                    "Titanium": 1,
+                }
+            ]
+        }
+    ]
+}

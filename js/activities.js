@@ -22,6 +22,7 @@ setInterval(function () {
         xp = 0;
         document.getElementById("progress").width = 0;
         addMessage("You leveled up! You are now level " + level + "! " + " [ " + level * 100 + " gold awarded ]");
+        gold += level * 100;
     }
 }, 100);
 

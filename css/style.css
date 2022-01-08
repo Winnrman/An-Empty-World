@@ -20,7 +20,9 @@ body{
     height: auto;
     max-height: 85vh;
     overflow-y: hidden;
+    /* hide scrollbar */
     padding: 10px;
+    /* flex-direction : row-reverse; */
     /* margin-top:-40px; */
     margin:20px;
     border:1px solid black;
@@ -143,4 +145,10 @@ a{
 }
 #armor, #weapons{
     padding-top:5px;
+}
+#inventory{
+    width: auto;
+    max-width: 80%;
+    /* margin: auto; */
+    /* padding:10px; */
 }
