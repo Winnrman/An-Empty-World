@@ -1,13 +1,19 @@
 var maxInventorySize = 24; //can be upgraded to 48, 72 and 96
 var fullInventory = false;
 
-let stamina = 100; //this goes down as you quest
+let maxStamina = 25;
+let stamina = 25; //this goes down as you quest, can be upgraded to 50, 75 and 100
+
 
 function checkInventorySize() {
     if (inventory.length >= maxInventorySize) {
         fullInventory = true;
     }
 }
+
+setInterval(function () {
+    document.getElementById("staminaAmount").innerHTML = stamina; //keep updating the stamina bar
+}, 100)
 
 var inventoryChecker = setInterval(function () {
     checkInventorySize();
@@ -112,3 +118,11 @@ function isInInventory(itemName, itemType) {
     }
     // return false;
 }
+
+setInterval(function () {
+    if (stamina < maxStamina) {
+        if (isQuesting == false) {
+            stamina++;
+        }
+    }
+}, 2000);
