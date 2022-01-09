@@ -10,7 +10,7 @@ You wake up in a strange place, surrounded by debris. Unaware of how you got the
     ### New Feature: Questing ###
     - Added questing system, unlocked when the player reaches level 7
     - Added sleep integration, so messages show slower than normal adding tension
-    - Future plans to introduce stamina so quests don't last forever
+    - Implemented stamina system so that quests don't last forever
     
     ### Enemies ###
     - Added a new enemy type, the "Dragon" which can drop scales useful in high-level crafting recipes
