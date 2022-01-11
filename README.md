@@ -6,6 +6,9 @@ You wake up in a strange place, surrounded by debris. Unaware of how you got the
 ## Github Link: ## 
 https://discord.gg/mBZNdYnY
 
+## Project Setup: ##
+run 'npx http-server' or 'python3 -m http-server' in the root directory to run the game on localhost:8000/
+
 ## Goal: Survive ##
 ## Changelog:
  - [X] **January 10, 2022**:
