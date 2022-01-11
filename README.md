@@ -11,6 +11,18 @@ run 'npx http-server' or 'python3 -m http-server' in the root directory to run t
 
 ## Goal: Survive ##
 ## Changelog:
+ - [X] **January 11, 2022**:
+
+   ### Major Changes ###
+    - Redesigned entire game to use modules instead of random global variables everywhere
+    - Players now automatically save their progress in local storage. Your gold is safe!
+
+   ### Combat ###
+   - Player has been nerfed to now require both a weapon and armor to even be able to fight the first enemy.
+
+   ### Inventory ###
+   - When purchasing the 'Bigger Inventory' upgrade, the player's purchase is recorded in local storage, so they can keep their inventory upgrades on reload
+
  - [X] **January 10, 2022**:
    
    ### Major Changes ###
