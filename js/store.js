@@ -81,14 +81,16 @@ export function buySpecialDeal() {
 }
 
 export function buyInventoryUpgrade() {
-    if (boughtTimes < 3) {
+    if (player.boughtInventoryUpgrade < 3) {
         var price = 10000 + (10000 * boughtTimes);
         if (player.gold >= price) {
             player.maxInventorySize += 25;
-            boughtTimes++;
+            // boughtTimes++;
+            player.boughtInventoryUpgrade++;
+            // player.boughtInventoryUpgrade = boughtTimes;
             player.gold -= price;
             document.getElementById("inventoryUpgrade").innerHTML = "Buy Inventory Upgrade  [" + price + "<br><br>"
-                + "(" + boughtTimes + " / 3)";
+                + "(" + player.boughtInventoryUpgrade + " / 3)";
             addMessage("Inventory Space increased by 25! [Currently " + player.maxInventorySize + "]");
         }
         else {
@@ -102,7 +104,9 @@ export function buyInventoryUpgrade() {
 
 setInterval(function () {
     var price = 10000 + (10000 * boughtTimes);
+    boughtTimes = player.boughtInventoryUpgrade;
     if (boughtTimes < 3) {
+        console.log("Times bought: " + boughtTimes + "and " + player.boughtInventoryUpgrade);
         document.getElementById("inventoryUpgrade").innerHTML = "Buy Inventory Upgrade  [" + price + "]&nbsp;"
             + "(" + boughtTimes + " / 3)";
     }

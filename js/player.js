@@ -21,6 +21,7 @@ function resetPlayer(player) {
     player.level = 1;
     player.neededLevelUpXP = 0;
     player.inventory = [];
+    player.boughtInventoryUpgrade = 0;
     player.inventory_dictionary = {
         "Wood": 0,
         "Stone": 0,
@@ -39,9 +40,9 @@ function resetPlayer(player) {
         "Hunting Rifle": 0,
         "Fishing Pole": 0,
     },
-    player.gold = 100;
+        player.gold = 100;
     player.fullInventory = false;
-    player.maxInventorySize = 25; //can be upgraded to 48, 72 and 96
+    player.maxInventorySize = 25; //can be upgraded to 50, 75 or 100
     player.maxStamina = 25;
     player.stamina = 25; //this goes down as you quest, can be upgraded to 50, 75 and 100
 
@@ -50,7 +51,7 @@ function resetPlayer(player) {
     // player.woodObtained = 0;
     // player.stoneObtained = 0;
     // player.meatObtained = 0;
-    
+
     player.axeHealth = 20;
     player.fishingPoleHealth = 10;
     player.huntingRifleHealth = 50;

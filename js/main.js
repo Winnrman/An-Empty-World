@@ -28,6 +28,7 @@ setInterval(function () {
     player.inventory.sort();
     checkLevelUnlocks();
     checkDarkMode();
+
     document.getElementById("axeDurability").innerHTML = "Axe: " + player.axeHealth + "/20";
     document.getElementById("pickaxeDurability").innerHTML = "&nbsp;| Pickaxe: " + player.pickaxeHealth + "/75";
     document.getElementById("rifleDurability").innerHTML = "&nbsp;| Rifle: " + player.huntingRifleHealth + "/50";
