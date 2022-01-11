@@ -5,6 +5,25 @@ You wake up in a strange place, surrounded by debris. Unaware of how you got the
 
 ## Goal: Survive ##
 ## Changelog:
+ - [X] **January 10, 2022**:
+   
+   ### Major Changes ###
+    - Updated inventory system to be based on dictionaries, instead of just one big array
+    - Updated UI for inventory to be more eye-catching and easy to read
+
+   ### Crafting ###
+   - Materials needed for crafting are now shown below the specific item you have selected
+   - If you have enough materials, you can craft the item
+   - If you already have the item in your inventory, you can not craft it
+
+   ### Questing ###
+   - The Amulet of Luck has been added to 'Off-hand' slot and can be optained through random loot drops and random encounters
+   - When held, the Amulet of Luck will cause you to only find rare and legendary items in chests
+
+   ### Bug Fixes ###
+   - Clicking 'sell Ores' button now sells all of your ores, not needing multiple presses
+   - 'Clicking 'Sell Stone' now sells all of your stone, not needing multiple presses
+
  - [X] **January 8, 2022**:
 
     ### New Feature: Questing ###
