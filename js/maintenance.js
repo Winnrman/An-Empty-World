@@ -23,7 +23,7 @@ var inventoryChecker = setInterval(function () {
         addMessage("Your inventory is full. You can't carry any more items.");
         clearInterval(inventoryChecker);
         setTimeout(function () {
-            nextCheck = setInterval(function () {
+            setInterval(function () {
                 checkInventorySize();
                 if (player.fullInventory == false) {
                     clearInterval(inventoryChecker);

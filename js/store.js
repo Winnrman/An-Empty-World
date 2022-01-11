@@ -38,7 +38,7 @@ export function buyFishingPole() {
 
 export function buyHuntingRifle() {
     if (player.gold >= 300) {
-        if (inventory.includes("Hunting Rifle")) {
+        if (player.inventory_dictionary["Hunting Rifle"] > 0) {
             console.log("You already have a hunting rifle!");
         } else {
             // inventory.push("Hunting Rifle");
@@ -54,7 +54,7 @@ export function buyHuntingRifle() {
 
 export function buyPickaxe() {
     if (player.gold >= 1200) {
-        if (inventory.includes("Pickaxe")) {
+        if (player.inventory_dictionary["Pickaxe"] > 0) {
             console.log("You already have a pickaxe!");
         } else {
             // inventory.push("Pickaxe");
@@ -150,10 +150,6 @@ export function sell(item) {
                 player.gold += player.inventory_dictionary[key] * goldTable[key];
                 player.inventory_dictionary[key] = 0;
             }
-            // if (inventory[i] in goldTable) {
-            //     inventory.splice(i, 1);
-            //     gold += Object.values(goldTable)[i];
-            // }
         }
     }
     else if (item == "Stone") {
