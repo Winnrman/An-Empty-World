@@ -34,6 +34,9 @@ function randomLootDrop() {
     else if (typeOfItem == 5) {
         itemType = "Offhand";
     }
+    // else if (typeOfItem == 6) {
+    //     itemType = "Shield"; //improves defense
+    // }
 
     finalItem = obtainableItems[itemType][Math.floor(Math.random() * obtainableItems[itemType].length)];
     // console.log("Enemy dropped: " + finalItem.name);

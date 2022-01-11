@@ -53,14 +53,6 @@ setInterval(function () {
     document.getElementById("inventory").innerHTML = "Axe x" + inventory_dictionary["Axe"] + "&nbsp;|" + "&nbsp;Pickaxe x" + inventory_dictionary["Pickaxe"] + "&nbsp;|" + "&nbsp;Rifle x" + inventory_dictionary["Hunting Rifle"] + "&nbsp;|" + "&nbsp;Fishing Pole x" + inventory_dictionary["Fishing Pole"] + "&nbsp;|" + "&nbsp;Meat x" + inventory_dictionary["Meat"] + "&nbsp;|" + "&nbsp;Wood x" + inventory_dictionary["Wood"] + "&nbsp;|" + "&nbsp;Stone x" + inventory_dictionary["Stone"] + "&nbsp;|" + "&nbsp;Fish x" + inventory_dictionary["Fish"] + "&nbsp;|" + "&nbsp;Iron x" + inventory_dictionary["Iron"] + "&nbsp;|" + "&nbsp;Copper x" + inventory_dictionary["Copper"] + "&nbsp;|" + "&nbsp;Tin x" + inventory_dictionary["Tin"] + "&nbsp;|" + "&nbsp;Silver x" + inventory_dictionary["Silver"] + "&nbsp;|" + "&nbsp;Gold x" + inventory_dictionary["Gold"] + "&nbsp;|" + "&nbsp;Emerald x" + inventory_dictionary["Emerald"] + "&nbsp;|" + "&nbsp;Ruby x" + inventory_dictionary["Ruby"] + "&nbsp;|" + "&nbsp;Diamond x" + inventory_dictionary["Diamond"];
 }, 100)
 
-// function loadSave() {
-//     inventory = localStorage.getItem("inventory");
-//     // inventory = localStorage.getItem("inventory");
-//     gold = localStorage.getItem("gold");
-//     xp = localStorage.getItem("xp");
-//     level = localStorage.getItem("level");
-// }
-
 let clearMessageInterval = setInterval(function () {
     document.getElementById("messages").innerHTML = [];
 }, 8000); //clears messages every 15 seconds
@@ -92,6 +84,12 @@ function checkLevelUnlocks() {
     if (level >= 4) {
         document.getElementById("inventoryUpgrade").style.visibility = "visible";
     }
+    if (level >= 5) {
+        for (i = 0; i < 4; i++) {
+            document.getElementsByClassName("level5Crafting")[i].style.visibility = "visible";
+            document.getElementsByClassName("level5Crafting")[i].style.display = "block";
+        }
+    }
     if (level > 7) {
         document.getElementById("goQuestingButton").style.visibility = "visible";
     }
@@ -109,6 +107,8 @@ function checkDarkMode() {
         document.getElementById("messages").style.color = "white";
         document.getElementById("inventory").style.color = "white";
         document.getElementById("gold").style.color = "white";
+        // document.getElementById("footer").style.color = "white";
+        // document.getElementById("footer").style.backgroundColor = rgb(39, 39, 39);
         var headers = document.getElementsByClassName("header");
         for (let i = 0; i < headers.length; i++) {
             Array.prototype.forEach.call(headers, function (header) {
@@ -147,65 +147,24 @@ function checkDarkMode() {
 }
 
 // TODO: Rework Needed!
-// document.getElementById("helmetSelect").addEventListener("change", function () {
-//     console.log('change event');
-//     //add necessary item armor to total player armor
-//     // let helmet = document.getElementById("helmetSelect").value;
-//     // console.log(helmet);
-//     for (let i = 0; i <= obtainableItems["Helmets"].length; i++) {
-//         // if (obtainableItems["Helmets"][i].name == helmet) {
-//         // playerDefense += obtainableItems["Helmets"][i].armor;
-//         document.getElementById("playerDefenseValue").innerHTML = playerDefense;
-//     }
-// });
+document.getElementById("helmetSelect").addEventListener("change", function () {
+    var helmetName = document.getElementById("helmetSelect").value;
+    for (i = 0; i < obtainableItems.length; i++) {
+        if (obtainableItems["Helmets"][i].name == helmetName) {
+            // when user changes helmet, update player defense by removing old helmet defense and adding new one
+            if (helmetName == "") {
+                playerDefense -= obtainableItems["Helmets"][i].armor;
+            }
+            else {
+                console.log("Helmet: " + obtainableItems["Helmets"][i].name);
+                // playerDefense -= obtainableItems["Helmets"][i].armor;
+                var helmetDefense = obtainableItems["Helmets"][i].armor;
+                playerDefense += helmetDefense;
+                document.getElementById("playerDefenseValue").innerHTML += helmetDefense;
+            }
+        }
+    }
+});
 
-// document.getElementById("chestSelect").addEventListener("change", function () {
-//     console.log('change event');
-//     //add necessary item armor to total player armor
-//     let chestey = document.getElementById("chestSelect").value;
-//     console.log(chestey);
-//     for (let i = 0; i <= obtainableItems["Chestplates"].length; i++) {
-//         if (obtainableItems["Chestplates"][i].name == chestey) {
-//             playerDefense += obtainableItems["Chestplates"][i].armor;
-//             document.getElementById("playerDefenseValue").innerHTML = playerDefense;
-//         }
-//         else {
-//             //nothing
-//         }
-//     }
-// }
-// );
 
-// document.getElementById("legsSelect").addEventListener("change", function () {
-//     console.log('change event');
-//     //add necessary item armor to total player armor
-//     let legs = document.getElementById("legsSelect").value;
-//     console.log(legs);
-//     for (let i = 0; i <= obtainableItems["Leggings"].length; i++) {
-//         if (obtainableItems["Leggings"][i].name == legs) {
-//             playerDefense += obtainableItems["Leggings"][i].armor;
-//             document.getElementById("playerDefenseValue").innerHTML = playerDefense;
-//         }
-//         else {
-//             //nothing
-//         }
-//     }
-// }
-// );
 
-// document.getElementById("bootsSelect").addEventListener("change", function () {
-//     console.log('change event');
-//     //add necessary item armor to total player armor
-//     let bootsey = document.getElementById("bootsSelect").value;
-//     console.log(bootsey);
-//     for (let i = 0; i <= obtainableItems["Boots"].length; i++) {
-//         if (obtainableItems["Boots"][i].name == bootsey) {
-//             playerDefense += obtainableItems["Boots"][i].armor;
-//             document.getElementById("playerDefenseValue").innerHTML = playerDefense;
-//         }
-//         else {
-//             //nothing
-//         }
-//     }
-// }
-// );

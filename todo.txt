@@ -1,0 +1,6 @@
+Items: 
+    - shields
+    - cutlasses
+
+UI:
+    - remove items that you have in your inventory from crafting options

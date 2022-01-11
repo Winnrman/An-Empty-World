@@ -110,8 +110,8 @@ select{
     /* float:right; */
     width: max-content;
     height: auto;
-    background-color: rgb(39, 39, 39);
-    color:white;
+    background-color: white;
+    color:black;
     padding:10px;
     margin-right:30px;
 }
@@ -120,7 +120,7 @@ select{
 }
 footer *:hover{
     cursor: pointer;
-    color: rgb(184, 184, 184);
+    color: rgb(90, 90, 90);
 }
 .disabled:hover{
     cursor: default;
@@ -140,17 +140,11 @@ footer *:hover{
 
 }
 a{
-    color:white;
+    color:rgb(7, 7, 7);
     text-decoration: none;
 }
 #armor, #weapons{
     padding-top:5px;
-}
-#inventory{
-    /* width: auto; */
-    /* max-width: 80%; */
-    /* margin: auto; */
-    /* padding:10px; */
 }
 #messagesHeader{
     position:fixed;

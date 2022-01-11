@@ -199,7 +199,15 @@
                 <option value="">Select an item</option>
                 <option value="Wooden Helmet">Wooden Helmet</option>
                 <option value="Wooden Boots">Wooden Boots</option>
-                <option value="Iron Sword">Iron Sword</option>
+                <!--Iron Items craftable after level 5-->
+                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Sword">Iron Sword
+                </option>
+                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Helmet">Iron
+                    Helmet</option>
+                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Shield">Iron
+                    Shield</option>
+                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Cutlass">Iron
+                    Cutlass</option>
             </select>
             <div id="requiredMaterials">
                 <!--inside here, check inventory for needed materials. If has all, craft button is clickable.-->
@@ -212,8 +220,8 @@
     <footer class="footer">
         <a href="https://github.com/Winnrman/An-Empty-World">github</a>
         <a>save</a>
-        <a>share</a>
-        <a>restart</a>
+        <!-- <a>share</a> -->
+        <a onclick="window.location.reload()">restart</a>
         <!-- <p>&copy; Idle Game</p> -->
 </body>
 <script type="text/javascript" src="js/enemies.js"></script>

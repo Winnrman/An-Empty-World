@@ -22,6 +22,7 @@ setInterval(function () {
 
 var inventoryChecker = setInterval(function () {
     checkInventorySize();
+    // getArmorStats();
     if (fullInventory == true) {
         addMessage("Your inventory is full. You can't carry any more items.");
         clearInterval(inventoryChecker);
@@ -133,6 +134,22 @@ function isInInventory(itemName, itemType) {
             offhandSelect.add(newOption);
         }
     }
+    else if (itemType == "Shield") {
+        if (offhandItems.includes(itemName)) {
+            if (isQuesting == true) {
+                addMessage("You already have a " + itemName + ", so you toss them away.");
+            } else {
+                addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
+                gold += 1000;
+            }
+        } else {
+            offhandItems.push(itemName);
+            var offhandSelect = document.getElementById("offhandSelect");
+            var newOption = document.createElement("option");
+            newOption.text = itemName;
+            offhandSelect.add(newOption);
+        }
+    }
 }
 
 setInterval(function () {
@@ -142,3 +159,67 @@ setInterval(function () {
         }
     }
 }, 2000);
+
+document.getElementById("helmetSelect").addEventListener("change", function () {
+    playerDefense = 0;
+    getArmorStats();
+});
+
+document.getElementById("chestSelect").addEventListener("change", function () {
+    playerDefense = 0;
+    getArmorStats();
+});
+
+document.getElementById("legsSelect").addEventListener("change", function () {
+    playerDefense = 0;
+    getArmorStats();
+});
+
+document.getElementById("bootsSelect").addEventListener("change", function () {
+    playerDefense = 0;
+    getArmorStats();
+});
+
+//get armor stats of all equipped armor, and make that the player's defense
+function getArmorStats() {
+    var helmet = document.getElementById("helmetSelect").value;
+    var chestplate = document.getElementById("chestSelect").value;
+    var leggings = document.getElementById("legsSelect").value;
+    var boots = document.getElementById("bootsSelect").value;
+    // console.log(helmet, chestplate, leggings, boots);
+
+    for (i = 0; i < obtainableItems["Helmets"].length; i++) {
+        if (obtainableItems["Helmets"][i]["name"] == helmet) {
+            // console.log(helmetStats)['defense'];
+            playerDefense += obtainableItems["Helmets"][i]["armor"];
+            helmet += playerDefense;
+        }
+    }
+    for (i = 0; i < obtainableItems["Chestplates"].length; i++) {
+        if (obtainableItems["Chestplates"][i]["name"] == chestplate) {
+            playerDefense += obtainableItems["Chestplates"][i]["armor"];
+            chestplate += playerDefense;
+        }
+    }
+    for (i = 0; i < obtainableItems["Leggings"].length; i++) {
+        if (obtainableItems["Leggings"][i]["name"] == leggings) {
+            playerDefense += obtainableItems["Leggings"][i]["armor"];
+            leggings += playerDefense;
+        }
+    }
+    for (i = 0; i < obtainableItems["Boots"].length; i++) {
+        if (obtainableItems["Boots"][i]["name"] == boots) {
+            playerDefense += obtainableItems["Boots"][i]["armor"];
+            boots += playerDefense;
+        }
+    }
+    document.getElementById("playerDefenseValue").innerHTML = playerDefense;
+}
+
+
+// var canCraftItem = setInterval(function(){
+//     var craftingSelect = document.getElementById("craftingSelect");
+//     for(i = 0; i < craftingSelect.length; i++){
+//         if()
+//     }
+// })
