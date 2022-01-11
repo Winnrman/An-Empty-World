@@ -1,5 +1,6 @@
 import { addMessage } from "./activities.js";
 import player from "./player.js";
+import { isQuesting } from "./questing.js";
 
 function checkInventorySize() {
     //add up all keys in inventory_dict and compare to maxInventorySize
@@ -184,26 +185,26 @@ function getArmorStats() {
     var boots = document.getElementById("bootsSelect").value;
     // console.log(helmet, chestplate, leggings, boots);
 
-    for (i = 0; i < obtainableItems["Helmets"].length; i++) {
+    for (let i = 0; i < obtainableItems["Helmets"].length; i++) {
         if (obtainableItems["Helmets"][i]["name"] == helmet) {
             // console.log(helmetStats)['defense'];
             player.playerDefense += obtainableItems["Helmets"][i]["armor"];
             helmet += player.playerDefense;
         }
     }
-    for (i = 0; i < obtainableItems["Chestplates"].length; i++) {
+    for (let i = 0; i < obtainableItems["Chestplates"].length; i++) {
         if (obtainableItems["Chestplates"][i]["name"] == chestplate) {
             player.playerDefense += obtainableItems["Chestplates"][i]["armor"];
             chestplate += player.playerDefense;
         }
     }
-    for (i = 0; i < obtainableItems["Leggings"].length; i++) {
+    for (let i = 0; i < obtainableItems["Leggings"].length; i++) {
         if (obtainableItems["Leggings"][i]["name"] == leggings) {
             player.playerDefense += obtainableItems["Leggings"][i]["armor"];
             leggings += player.playerDefense;
         }
     }
-    for (i = 0; i < obtainableItems["Boots"].length; i++) {
+    for (let i = 0; i < obtainableItems["Boots"].length; i++) {
         if (obtainableItems["Boots"][i]["name"] == boots) {
             player.playerDefense += obtainableItems["Boots"][i]["armor"];
             boots += player.playerDefense;

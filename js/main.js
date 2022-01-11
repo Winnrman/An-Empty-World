@@ -92,8 +92,8 @@ function checkDarkMode() {
         document.getElementById("messages").style.color = "white";
         document.getElementById("inventory").style.color = "white";
         document.getElementById("gold").style.color = "white";
-        // document.getElementById("footer").style.color = "white";
-        // document.getElementById("footer").style.backgroundColor = rgb(39, 39, 39);
+        // document.getElementById("footerContainer").style.color = "white";
+        document.getElementById("footerContainer").style.backgroundColor = 'transparent';
         var headers = document.getElementsByClassName("header");
         for (let i = 0; i < headers.length; i++) {
             Array.prototype.forEach.call(headers, function (header) {

@@ -89,10 +89,7 @@ body{
 li{
     list-style-type: none;
 }
-.dark{
-    background-color:rgb(39, 39, 39);
-    color:white;
-}
+
 #stats p{
     margin-bottom:10px;
 }
@@ -139,13 +136,20 @@ footer *:hover{
      /* cursor:pointer; */
 
 }
-a{
-    color:rgb(7, 7, 7);
-    text-decoration: none;
-}
 #armor, #weapons{
     padding-top:5px;
 }
 #messagesHeader{
     position:fixed;
+}
+.dark{
+    background-color:rgb(39, 39, 39);
+    color:white;
+}
+.dark a{
+    color:white;
+    text-decoration: none;
+}
+.dark a:hover{
+    color:rgb(161, 161, 161);
 }

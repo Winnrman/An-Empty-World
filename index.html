@@ -64,11 +64,14 @@
         <span style="display: inline-flex">
             <h3 class="subheader" id="buyHeader">Buy</h3>
             <button id="axe" class="store button" onclick="store.buyAxe()">Buy Axe [ 20 ]</button>
-            <button id="fishingPole" class="store button" onclick="store.buyFishingPole()">Buy Fishing Pole [ 50 ]</button>
-            <button style="visibility: hidden;" id="huntingRifle" class="store button" onclick="store.buyHuntingRifle()">Buy
+            <button id="fishingPole" class="store button" onclick="store.buyFishingPole()">Buy Fishing Pole [ 50
+                ]</button>
+            <button style="visibility: hidden;" id="huntingRifle" class="store button"
+                onclick="store.buyHuntingRifle()">Buy
                 Hunting Rifle [ 300
                 ]</button>
-            <button style="visibility: hidden;" id="pickaxe" class="store button" onclick="store.buyPickaxe()">Buy Pickaxe [
+            <button style="visibility: hidden;" id="pickaxe" class="store button" onclick="store.buyPickaxe()">Buy
+                Pickaxe [
                 1200
                 ]</button>
             <button style="visibility: hidden;" id="inventoryUpgrade" class="store button"
@@ -125,10 +128,14 @@
             </select>
             <button id="fightButton" class="button"
                 onclick="activities.doCombat(document.getElementById('opponentSelector').value)">Fight</button>
-            <button style="visibility: hidden;" id="attackButton" class="button" onclick="activities.doAttack()">Attack</button>
-            <button style="visibility: hidden;" id="fleeButton" class="button" onclick="activities.doFlee()">Flee</button>
-            <button style="visibility: hidden;" id="defendButton" class="button" onclick="activities.defend()">Defend</button>
-            <button style="visibility: hidden;" id="specialButton" class="button" onclick="activities.special()">Run</button>
+            <button style="visibility: hidden;" id="attackButton" class="button"
+                onclick="activities.doAttack()">Attack</button>
+            <button style="visibility: hidden;" id="fleeButton" class="button"
+                onclick="activities.doFlee()">Flee</button>
+            <button style="visibility: hidden;" id="defendButton" class="button"
+                onclick="activities.defend()">Defend</button>
+            <button style="visibility: hidden;" id="specialButton" class="button"
+                onclick="activities.special()">Run</button>
         </div>
     </div>
 
@@ -195,7 +202,8 @@
             <h4 style="margin-top: 7px; " id="craftingLevel">Level <span id="craftingLevelValue">1</span></h4>
         </span>
         <span style="display:  inline-flex; ">
-            <h3 id="itemToCraft">Item to Craft: &nbsp;</h3><select onChange="activities.doCrafting1()" id="craftingSelect">
+            <h3 id="itemToCraft">Item to Craft: &nbsp;</h3><select onChange="activities.doCrafting1()"
+                id="craftingSelect">
                 <option value="">Select an item</option>
                 <option value="Wooden Sword">Wooden Sword</option>
                 <option value="Wooden Helmet">Wooden Helmet</option>
@@ -218,7 +226,7 @@
         <p id="neededMaterials">Needed Materials: &nbsp;</p>
     </div>
 
-    <footer class="footer">
+    <footer id="footerContainer" class="footer">
         <a href="https://github.com/Winnrman/An-Empty-World">github</a>
         <a onclick="saveData()">save</a>
         <a>share</a>

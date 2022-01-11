@@ -2,14 +2,16 @@ import { addMessage } from "./activities.js";
 import { enemy_dictionary } from "./enemies.js";
 import { randomLootDrop, finalItem } from "./events.js";
 import { isInInventory } from "./maintenance.js";
-import * as player  from "./player.js";
+import * as player from "./player.js";
 
 function sleep(ms) {
     // addMessage("<sleep>")
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 var readFirstMessage = false;
-var isQuesting = false;
+// var isQuesting = false;
+
+export var isQuesting = false;
 
 export async function doQuest() {
     //check to see if player is wearing armor
@@ -178,4 +180,3 @@ export async function doQuest() {
         addMessage("Your quest ended in failure, you retreat home having lost everything could have.");
     }
 }
-
