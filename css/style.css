@@ -153,3 +153,6 @@ footer *:hover{
 .dark a:hover{
     color:rgb(161, 161, 161);
 }
+.ignoreThis{
+    display:none;
+}
