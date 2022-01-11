@@ -8,7 +8,7 @@ window.store = store;
 window.activities = activities;
 window.questing = questing;
 window.saveData = saveData;
-window.resetData = function() {
+window.resetData = function () {
     resetData();
     window.location.reload();
 };
@@ -37,7 +37,7 @@ setInterval(function () {
     document.getElementById("inventory").innerHTML = "Axe x" + player.inventory_dictionary["Axe"] + "&nbsp;|" + "&nbsp;Pickaxe x" + player.inventory_dictionary["Pickaxe"] + "&nbsp;|" + "&nbsp;Rifle x" + player.inventory_dictionary["Hunting Rifle"] + "&nbsp;|" + "&nbsp;Fishing Pole x" + player.inventory_dictionary["Fishing Pole"] + "&nbsp;|" + "&nbsp;Meat x" + player.inventory_dictionary["Meat"] + "&nbsp;|" + "&nbsp;Wood x" + player.inventory_dictionary["Wood"] + "&nbsp;|" + "&nbsp;Stone x" + player.inventory_dictionary["Stone"] + "&nbsp;|" + "&nbsp;Fish x" + player.inventory_dictionary["Fish"] + "&nbsp;|" + "&nbsp;Iron x" + player.inventory_dictionary["Iron"] + "&nbsp;|" + "&nbsp;Copper x" + player.inventory_dictionary["Copper"] + "&nbsp;|" + "&nbsp;Tin x" + player.inventory_dictionary["Tin"] + "&nbsp;|" + "&nbsp;Silver x" + player.inventory_dictionary["Silver"] + "&nbsp;|" + "&nbsp;Gold x" + player.inventory_dictionary["Gold"] + "&nbsp;|" + "&nbsp;Emerald x" + player.inventory_dictionary["Emerald"] + "&nbsp;|" + "&nbsp;Ruby x" + player.inventory_dictionary["Ruby"] + "&nbsp;|" + "&nbsp;Diamond x" + player.inventory_dictionary["Diamond"];
 }, 100);
 
-setInterval(function() {
+setInterval(function () {
     saveData();
 }, 5000);
 
@@ -73,7 +73,7 @@ function checkLevelUnlocks() {
         document.getElementById("inventoryUpgrade").style.visibility = "visible";
     }
     if (player.level >= 5) {
-        for (i = 0; i < 4; i++) {
+        for (var i = 0; i < 4; i++) {
             document.getElementsByClassName("level5Crafting")[i].style.visibility = "visible";
             document.getElementsByClassName("level5Crafting")[i].style.display = "block";
         }
