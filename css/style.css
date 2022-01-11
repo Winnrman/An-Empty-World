@@ -71,7 +71,7 @@ body{
     z-index:1;
     margin-top:-26px;
     background:white;
-    position: fixed;
+    /* position: fixed; */
     width: fit-content;
     padding-left:2px;
     padding-right:2px;
@@ -147,8 +147,11 @@ a{
     padding-top:5px;
 }
 #inventory{
-    width: auto;
-    max-width: 80%;
+    /* width: auto; */
+    /* max-width: 80%; */
     /* margin: auto; */
     /* padding:10px; */
+}
+#messagesHeader{
+    position:fixed;
 }

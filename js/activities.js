@@ -35,25 +35,16 @@ function addMessage(message_text) {
 }
 
 function tree() {
-    if (inventory.includes("Axe")) {
-        // axeHealth = axe.health;
-        //give player 10 xp for each wood they cut down successfully
-        // 20% chance the axe breaks and you get no wood
-        // if successful, add wood to inventory.
-
+    if (inventory_dictionary["Axe"] == 1) {
         if (axeHealth <= 0) {
             addMessage("Your axe broke!");
+            inventory_dictionary["Axe"] = 0;
             axeHealth = 20;
-            const index = inventory.indexOf('Axe');
-            if (index > -1) {
-                inventory.splice(index, 1);
-            }
         } else {
             if (fullInventory == false) {
-                // alert("You cut down a tree!");
-                inventory.push("Wood");
+                inventory_dictionary["Wood"] += 1;
+                woodAmount++;
                 axeHealth -= 1;
-                // woodObtained++;
                 xp += 10;
             } else {
                 addMessage("Your inventory is full. You can't carry any more items.");
@@ -65,7 +56,7 @@ function tree() {
 }
 
 function goFishing() {
-    if (inventory.includes("Fishing Pole")) {
+    if (inventory_dictionary["Fishing Pole"] == 1) {
         // give player 10 xp for each fish caught successfully
         // 20% chance the fishing pole breaks and you get no fish
         // if successful, add fish to inventory.
@@ -80,7 +71,8 @@ function goFishing() {
         else {
             if (fullInventory == false) {
                 // alert("You caught a fish!");
-                inventory.push("Fish");
+                // inventory.push("Fish");
+                inventory_dictionary["Fish"] += 1;
                 fishingPoleHealth -= 1;
                 xp += 15;
                 fishObtained++;
@@ -92,7 +84,7 @@ function goFishing() {
 }
 
 function goHunting() {
-    if (inventory.includes("Hunting Rifle")) {
+    if (inventory_dictionary["Hunting Rifle"] == 1) {
         // give player 10 xp for each fish caught successfully
         // 20% chance the fishing pole breaks and you get no fish
         // if successful, add fish to inventory.
@@ -108,7 +100,8 @@ function goHunting() {
         else {
             if (fullInventory == false) {
                 // alert("You caught a fish!");
-                inventory.push("Meat");
+                // inventory.push("Meat");
+                inventory_dictionary["Meat"] += 1;
                 huntingRifleHealth -= 1;
                 meatObtained++;
                 xp += 50;
@@ -130,7 +123,7 @@ function goHunting() {
 function goMining() {
     //random chance to get good ores
     // alert("Going into the mines...");
-    if (inventory.includes("Pickaxe")) {
+    if (inventory_dictionary["Pickaxe"] == 1) {
         //give player 10 xp for each ore you mine successfully
         // 20% chance the pickaxe breaks and you get no ore
         // if successful, add ore to inventory.
@@ -172,10 +165,12 @@ function goMining() {
                 };
                 if (xpTable[oreDictionary[oreRandomizer]] > 1) {
                     addMessage("You mined some " + oreDictionary[oreRandomizer] + "!");
-                } else {
-                    stoneObtained++;
+                    if (oreDictionary[oreRandomizer] == "Iron") {
+                        ironAmount++;
+                    }
                 }
-                inventory.push(oreDictionary[oreRandomizer]);
+                // inventory.push(oreDictionary[oreRandomizer]);
+                inventory_dictionary[oreDictionary[oreRandomizer]] += 1;
                 xp += xpTable[oreDictionary[oreRandomizer]];
 
                 pickaxeHealth -= 1;
@@ -337,32 +332,56 @@ function doEnemyAttack() {
     // }
 }
 
-document.getElementById("craftingButton").disabled = "disabled";
-document.getElementById("craftingButton").setAttribute("class", "disabled");
+// document.getElementById("craftingButton").disabled = "disabled";
+// document.getElementById("craftingButton").setAttribute("class", "disabled");
+let woodAmount = 0;
+let ironAmount = 0;
 
-function doCrafting(item) {
 
+function doCrafting1() {
+    var select = document.getElementById("craftingSelect").value;
+    if (select == "Wooden Helmet") {
+        woodNeeded = 2; //TODO: improve system
+        ironNeeded = 1;
+        document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + woodNeeded + " Iron: " + ironNeeded;
+    }
+    else if (select == "Wooden Boots") {
+        woodNeeded = 3;
+        ironNeeded = 2;
+        document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + woodNeeded + " Iron: " + ironNeeded;
+    }
+}
+function doCrafting2() {
+    console.log("crafting");
+    var item = document.getElementById("craftingSelect").value;
+    console.log("Item: " + item);
     switch (item) {
         case "Wooden Helmet":
-            if (wood >= 2 && iron >= 1) {
-                inventory.splice(1, 2, wood);
-                inventory.splice(1, 1, iron);
-
-                document.getElementById("playerDefenseValue").innerHTML = playerDefense;
-                document.getElementById("messages").innerHTML = "You crafted a Wooden Helmet!";
+            // document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + woodAmount + " Iron: " + ironAmount;
+            if ((woodAmount >= 2) && (ironAmount >= 1)) {
+                inventory.splice(1, 2, "Wood");
+                inventory.splice(1, 1, "Iron");
+                addMessage("You crafted a Wooden Helmet!");
+                isInInventory("Wooden Helmet", "Helmet");
+                woodAmount -= 2;
+                ironAmount -= 1;
             }
             else {
-                document.getElementById("messages").innerHTML = "You do not have enough resources to craft this item!";
+                addMessage("You don't have enough materials to craft a Wooden Helmet!");
             }
             break;
-            document.getElementById("crafting").style.display = "block";
-            // document.getElementById("craftingButton").style.display = "none";
-
-            for (var i = 0; i < requiredItems.length; i++) {
-                if (inventory.includes(requiredItems[i])) {
-                    document.getElementById("craftingButton").style.clickable = "true";
-                    //add item in select to correct armor slot
-                }
+        case "Wooden Boots":
+            // document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + woodAmount + " Iron: " + ironAmount;
+            if ((woodAmount >= 3) && (ironAmount >= 2)) {
+                inventory.splice(1, 3, "Wood");
+                inventory.splice(1, 2, "Iron");
+                addMessage("You crafted Wooden Boots!");
+                isInInventory("Wooden Boots", "Boots");
+                woodAmount -= 3;
+                ironAmount -= 2;
+            }
+            else {
+                addMessage("You do not have enough resources to craft Wooden Boots!");
             }
     }
 }

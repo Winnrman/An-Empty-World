@@ -144,20 +144,20 @@ async function doQuest() {
 
 
     function luckyLootDrop() {
-        let loot = randomLootDrop();
-        if (loot.finalItem.rarity == "rare" || loot.finalItem.rarity == "legendary") {
+        // let loot = randomLootDrop();
+        if (finalItem.rarity == "rare" || finalItem.rarity == "legendary") {
             addMessage("You found a " + finalItem.name + "! You feel lucky!");
             isInInventory(finalItem.name, finalItem.type);
             stamina--;
             doQuest();
         }
         else {
+            finalItem = randomLootDrop();
             luckyLootDrop();
         }
     }
 
     function basicLootDrop() {
-        let loot = randomLootDrop();
         if (finalItem.rarity == "common" || finalItem.rarity == "uncommon") {
             addMessage("You found a " + finalItem.name + "!");
             isInInventory(finalItem.name, finalItem.type);
@@ -165,8 +165,8 @@ async function doQuest() {
             doQuest();
         }
         else {
+
             basicLootDrop();
-            console.log("loot drop failed");
         }
     }
 

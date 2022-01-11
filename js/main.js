@@ -4,10 +4,39 @@ let neededLevelUpXP = 0;
 let inventory = [];
 let gold = 100;
 // let messages = [];
-var fishObtained = 0;
-var woodObtained = 0;
-var stoneObtained = 0;
-var meatObtained = 0;
+// var fishObtained = 0;
+// var woodObtained = 0;
+// var stoneObtained = 0;
+// var meatObtained = 0;
+
+let inventory_dictionary = {
+    "Wood": 0,
+    "Stone": 0,
+    "Fish": 0,
+    "Meat": 0,
+    "Iron": 0,
+    "Copper": 0,
+    "Tin": 0,
+    "Silver": 0,
+    "Gold": 0,
+    "Emerald": 0,
+    "Ruby": 0,
+    "Diamond": 0,
+    "Axe": 0,
+    "Pickaxe": 0,
+    "Hunting Rifle": 0,
+    "Fishing Pole": 0,
+};
+
+//calculate inventory space
+function calculateInventorySpace() {
+    let inventorySpace = 0;
+    for (let key in inventory_dictionary) {
+        inventorySpace += inventory_dictionary[key];
+    }
+    return inventorySpace;
+}
+
 
 setInterval(function () {
     document.getElementById("inventory").innerHTML = inventory;
@@ -15,16 +44,13 @@ setInterval(function () {
     inventory.sort();
     checkLevelUnlocks();
     checkDarkMode();
-    document.getElementById("axeDurability").innerHTML = "Axe: " + axeHealth + "&nbsp;";
-    document.getElementById("pickaxeDurability").innerHTML = "Pickaxe: " + pickaxeHealth + "&nbsp;";
-    document.getElementById("rifleDurability").innerHTML = "Rifle: " + huntingRifleHealth + "&nbsp;";
-    document.getElementById("fishingPoleDurability").innerHTML = "Fishing Pole: " + fishingPoleHealth + "&nbsp;";
-    document.getElementById("inventoryHeader").innerHTML = "Inventory (" + inventory.length + "/" + maxInventorySize + ")";
-    // document.getElementById("pickaxeDurability").innerHTML = pickaxeHealth;
-    // localStorage.setItem("inventory", inventory);
-    // localStorage.setItem("gold", gold);
-    // localStorage.setItem("xp", xp);
-    // localStorage.setItem("level", level);
+    document.getElementById("axeDurability").innerHTML = "Axe: " + axeHealth + "/20";
+    document.getElementById("pickaxeDurability").innerHTML = "&nbsp;| Pickaxe: " + pickaxeHealth + "/75";
+    document.getElementById("rifleDurability").innerHTML = "&nbsp;| Rifle: " + huntingRifleHealth + "/50";
+    document.getElementById("fishingPoleDurability").innerHTML = "&nbsp;| Fishing Pole: " + fishingPoleHealth + "/10";
+    document.getElementById("inventoryHeader").innerHTML = "Inventory (" + calculateInventorySpace() + "/" + maxInventorySize + ")";
+
+    document.getElementById("inventory").innerHTML = "Axe x" + inventory_dictionary["Axe"] + "&nbsp;|" + "&nbsp;Pickaxe x" + inventory_dictionary["Pickaxe"] + "&nbsp;|" + "&nbsp;Rifle x" + inventory_dictionary["Hunting Rifle"] + "&nbsp;|" + "&nbsp;Fishing Pole x" + inventory_dictionary["Fishing Pole"] + "&nbsp;|" + "&nbsp;Meat x" + inventory_dictionary["Meat"] + "&nbsp;|" + "&nbsp;Wood x" + inventory_dictionary["Wood"] + "&nbsp;|" + "&nbsp;Stone x" + inventory_dictionary["Stone"] + "&nbsp;|" + "&nbsp;Fish x" + inventory_dictionary["Fish"] + "&nbsp;|" + "&nbsp;Iron x" + inventory_dictionary["Iron"] + "&nbsp;|" + "&nbsp;Copper x" + inventory_dictionary["Copper"] + "&nbsp;|" + "&nbsp;Tin x" + inventory_dictionary["Tin"] + "&nbsp;|" + "&nbsp;Silver x" + inventory_dictionary["Silver"] + "&nbsp;|" + "&nbsp;Gold x" + inventory_dictionary["Gold"] + "&nbsp;|" + "&nbsp;Emerald x" + inventory_dictionary["Emerald"] + "&nbsp;|" + "&nbsp;Ruby x" + inventory_dictionary["Ruby"] + "&nbsp;|" + "&nbsp;Diamond x" + inventory_dictionary["Diamond"];
 }, 100)
 
 // function loadSave() {
@@ -37,7 +63,7 @@ setInterval(function () {
 
 let clearMessageInterval = setInterval(function () {
     document.getElementById("messages").innerHTML = [];
-}, 30000); //clears messages every 15 seconds
+}, 8000); //clears messages every 15 seconds
 
 setInterval(function () { // checks to see if messages is full.
     if (document.getElementById("messagesContainer").style.height >= '200px') {

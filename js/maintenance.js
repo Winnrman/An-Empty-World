@@ -1,4 +1,4 @@
-var maxInventorySize = 24; //can be upgraded to 48, 72 and 96
+var maxInventorySize = 25; //can be upgraded to 48, 72 and 96
 var fullInventory = false;
 
 let maxStamina = 25;
@@ -37,11 +37,11 @@ let helmetItems = [];
 let chestItems = [];
 let leggingItems = [];
 let bootsItems = [];
+let offhandItems = [];
 
 function isInInventory(itemName, itemType) {
     if (itemType == 'Helmet') {
         if (helmetItems.includes(itemName)) {
-            console.log(helmetItems);
             if (isQuesting == true) {
                 addMessage("You already have a " + itemName + ", so you toss them away.");
             } else {
@@ -50,7 +50,6 @@ function isInInventory(itemName, itemType) {
                 return true;
             }
         } else {
-            // addMessage("You bought a random item and recieved " + finalItem.name + "!"); //this should be done in the store.js file
             helmetItems.push(itemName);
             var helmetSelect = document.getElementById("helmetSelect");
             var newOption = document.createElement("option");
@@ -69,7 +68,6 @@ function isInInventory(itemName, itemType) {
                 return true;
             }
         } else {
-            addMessage("You bought a random item and recieved " + finalItem.name + "!");
             chestItems.push(itemName);
             var chestplateSelect = document.getElementById("chestSelect");
             var newOption = document.createElement("option");
@@ -88,7 +86,6 @@ function isInInventory(itemName, itemType) {
             }
             // return true;
         } else {
-            addMessage("You bought a random item and recieved " + finalItem.name + "!");
             leggingItems.push(itemName);
             var leggingSelect = document.getElementById("legsSelect");
             var newOption = document.createElement("option");
@@ -107,7 +104,6 @@ function isInInventory(itemName, itemType) {
             }
             // return true;
         } else {
-            addMessage("You bought a random item and recieved " + finalItem.name + "!");
             bootsItems.push(itemName);
             var bootSelect = document.getElementById("bootsSelect");
             var newOption = document.createElement("option");
@@ -116,7 +112,22 @@ function isInInventory(itemName, itemType) {
             // return false;
         }
     }
-    // return false;
+    else if (itemType == "Offhand") {
+        if (offhandItems.includes(itemName)) {
+            if (isQuesting == true) {
+                addMessage("You already have a " + itemName + ", so you toss them away.");
+            } else {
+                addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
+                gold += 1000;
+            }
+        } else {
+            offhandItems.push(itemName);
+            var offhandSelect = document.getElementById("offhandSelect");
+            var newOption = document.createElement("option");
+            newOption.text = itemName;
+            offhandSelect.add(newOption);
+        }
+    }
 }
 
 setInterval(function () {

@@ -9,7 +9,7 @@
 
 <body>
     <div class="sideContainer" id="messagesContainer">
-        <h2 class="header">Messages</h2>
+        <h2 id="messagesHeader" class="header">Messages</h2>
         <div id="messages"></div>
     </div>
     <div id="progressContainer">
@@ -53,10 +53,10 @@
         <br><br>
         <span style="display: inline-flex;">
             <p id="durabilitySubheader">Item Durability: &nbsp;</p>
-            <li id="axeDurability">Axe: </li>
-            <li id="fishingPoleDurability">Fishing Pole: </li>
-            <li id="rifleDurability">Hunting Rifle: </li>
-            <li id="pickaxeDurability">Pickaxe: </li>
+            <li id="axeDurability">| Axe: </li>
+            <li id="fishingPoleDurability">| Fishing Pole: </li>
+            <li id="rifleDurability">| Hunting Rifle: </li>
+            <li id="pickaxeDurability">| Pickaxe: </li>
         </span>
     </div>
     <div id="storeContainer" class="container">
@@ -195,15 +195,17 @@
             <h4 style="margin-top: 7px; " id="craftingLevel">Level <span id="craftingLevelValue">1</span></h4>
         </span>
         <span style="display:  inline-flex; ">
-            <h3 id="itemToCraft">Item to Craft: &nbsp;</h3><select id="craftingSelect">
+            <h3 id="itemToCraft">Item to Craft: &nbsp;</h3><select onChange="doCrafting1()" id="craftingSelect">
                 <option value="">Select an item</option>
-                <option value="wooden Helmet">Wooden Helmet</option>
+                <option value="Wooden Helmet">Wooden Helmet</option>
+                <option value="Wooden Boots">Wooden Boots</option>
             </select>
             <div id="requiredMaterials">
                 <!--inside here, check inventory for needed materials. If has all, craft button is clickable.-->
             </div>
         </span>
-        <button id="craftingButton" class="button" onclick="doCrafting()">Craft</button>
+        <button id="craftingButton" onclick="doCrafting2()">Craft</button>
+        <p id="neededMaterials">Needed Materials: &nbsp;</p>
     </div>
 
     <footer class="footer">
@@ -214,6 +216,7 @@
         <!-- <p>&copy; Idle Game</p> -->
 </body>
 <script type="text/javascript" src="js/enemies.js"></script>
+<script type="text/javascript" src="js/maintenance.js"></script>
 <script type="text/javascript" src="js/activities.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/store.js"></script>
@@ -221,7 +224,7 @@
 <script type="text/javascript" src="js/items.js"></script>
 <script type="text/javascript" src="js/achievements.js"></script>
 <script type="text/javascript" src="js/questing.js"></script>
-<script type="text/javascript" src="js/maintenance.js"></script>
+
 <!-- <script type="text/javascript">
     window.glob = "inventory";
 </script> -->

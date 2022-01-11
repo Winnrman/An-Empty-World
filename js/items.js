@@ -228,8 +228,18 @@ let obtainableItems = {
             type: "Boots",
             rarity: "legendary",
         }
-    ]
+    ],
+    "Offhand": [
+        {
+            name: "Amulet of Luck",
+            price: 9000,
+            description: "A mysterious amulet which grants the user extreme luck.",
+            type: "Offhand",
+            rarity: "legendary",
+        },
+    ],
 }
+
 
 craftableItems = {
     "Armor": [

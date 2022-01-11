@@ -4,7 +4,8 @@ function buyAxe() {
             console.log("You already have an axe!");
         }
         else {
-            inventory.push("Axe");
+            // inventory.push("Axe");
+            inventory_dictionary["Axe"] = 1;
             // alert("You bought an axe!");
             gold -= 20;
         }
@@ -16,10 +17,11 @@ function buyAxe() {
 
 function buyFishingPole() {
     if (gold >= 50) {
-        if (inventory.includes("Fishing Pole")) {
+        if (inventory_dictionary["Fishing Pole"] > 0) {
             console.log("You already have a fishing pole!");
         } else {
-            inventory.push("Fishing Pole");
+            // inventory.push("Fishing Pole");
+            inventory_dictionary["Fishing Pole"] = 1;
             // alert("You bought a fishing pole!");
             gold -= 50;
         }
@@ -34,7 +36,8 @@ function buyHuntingRifle() {
         if (inventory.includes("Hunting Rifle")) {
             console.log("You already have a hunting rifle!");
         } else {
-            inventory.push("Hunting Rifle");
+            // inventory.push("Hunting Rifle");
+            inventory_dictionary["Hunting Rifle"] = 1;
             // alert("You bought a fishing pole!");
             gold -= 300;
         }
@@ -49,7 +52,8 @@ function buyPickaxe() {
         if (inventory.includes("Pickaxe")) {
             console.log("You already have a pickaxe!");
         } else {
-            inventory.push("Pickaxe");
+            // inventory.push("Pickaxe");
+            inventory_dictionary["Pickaxe"] = 1;
             // alert("You bought a fishing pole!");
             gold -= 1200;
         }
@@ -75,12 +79,12 @@ function buyInventoryUpgrade() {
     if (boughtTimes < 3) {
         var price = 10000 + (10000 * boughtTimes);
         if (gold >= price) {
-            maxInventorySize += 24;
+            maxInventorySize += 25;
             boughtTimes++;
             gold -= price;
             document.getElementById("inventoryUpgrade").innerHTML = "Buy Inventory Upgrade  [" + price + "<br><br>"
                 + "(" + boughtTimes + " / 3)";
-            addMessage("Inventory Space increased by 24! [Currently " + maxInventorySize + "]");
+            addMessage("Inventory Space increased by 25! [Currently " + maxInventorySize + "]");
         }
         else {
             addMessage("You don't have enough gold to buy an inventory upgrade!");
@@ -106,27 +110,21 @@ setInterval(function () {
 function sell(item) {
     fullInventory = false;
     if (item == 'Wood') {
-        for (let i = 0; i < inventory.length; i++) {
-            if (inventory[i] == 'Wood') {
-                inventory.splice(i, 1);
-                gold += 5;
-            }
+        if (inventory_dictionary[item] > 0) {
+            gold += inventory_dictionary[item] * 5;
+            inventory_dictionary[item] = 0;
         }
     }
     else if (item == 'Fish') {
-        for (let i = 0; i < inventory.length; i++) {
-            if (inventory[i] == 'Fish') {
-                inventory.splice(i, 1);
-                gold += 10;
-            }
+        if (inventory_dictionary[item] > 0) {
+            gold += inventory_dictionary[item] * 10;
+            inventory_dictionary[item] = 0;
         }
     }
     else if (item == 'Meat') {
-        for (let i = 0; i < inventory.length; i++) {
-            if (inventory[i] == 'Meat') {
-                inventory.splice(i, 1);
-                gold += 25;
-            }
+        if (inventory_dictionary[item] > 0) {
+            gold += inventory_dictionary[item] * 20;
+            inventory_dictionary[item] = 0;
         }
     }
     else if (item == 'Ores') {

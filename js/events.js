@@ -18,7 +18,7 @@ function randomLootDrop() {
         chosenRarity = "legendary";
     }
 
-    var typeOfItem = Math.floor(Math.random() * 4) + 1;
+    var typeOfItem = Math.floor(Math.random() * 5) + 1;
     if (typeOfItem == 1) {
         itemType = "Helmets";
     }
@@ -30,6 +30,9 @@ function randomLootDrop() {
     }
     else if (typeOfItem == 4) {
         itemType = "Boots";
+    }
+    else if (typeOfItem == 5) {
+        itemType = "Offhand";
     }
 
     finalItem = obtainableItems[itemType][Math.floor(Math.random() * obtainableItems[itemType].length)];
