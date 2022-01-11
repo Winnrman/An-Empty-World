@@ -4,9 +4,9 @@ let fishingPoleHealth = 10;
 let huntingRifleHealth = 50;
 let pickaxeHealth = 75;
 let playerHealth = 100;
-let playerAttack = 2;
-let playerDefense = 2;
-let playerSpeed = 2;
+let playerAttack = 1;
+let playerDefense = 1;
+let playerSpeed = 1;
 let armorBonus = 0;
 
 setInterval(function () {
@@ -152,9 +152,9 @@ function goMining() {
 
 //default player stats
 var defaultPlayerHealth = 100;
-var defaultPlayerAttack = 2;
-var defaultPlayerDefense = 2;
-var defaultPlayerSpeed = 5;
+var defaultPlayerAttack = 1;
+var defaultPlayerDefense = 1;
+var defaultPlayerSpeed = 1;
 
 var enemyHealth;
 var enemyAttack;
