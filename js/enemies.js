@@ -1,4 +1,4 @@
-var enemy_dictionary = {
+export const enemy_dictionary = {
     "Goblin": {
         name: "Goblin",
         health: 10,

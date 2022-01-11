@@ -1,4 +1,4 @@
-let axe = {
+export const axe = {
     name: "Axe",
     price: 20,
     description: "A wooden axe.",
@@ -6,21 +6,21 @@ let axe = {
     // image: "images/axe.png"
 }
 
-let fishingPole = {
+export const fishingPole = {
     name: "Fishing Pole",
     price: 50,
     description: "A wooden fishing pole.",
     health: 10,
     // image: "images/fishingPole.png"
 }
-let huntingRifle = {
+export const huntingRifle = {
     name: "Hunting Rifle",
     price: 300,
     description: "A hunting rifle.",
     health: 10,
     // image: "images/huntingRifle.png"
 }
-let pickaxe = {
+export const pickaxe = {
     name: "Pickaxe",
     price: 1200,
     description: "A pickaxe.",
@@ -28,7 +28,7 @@ let pickaxe = {
     // image: "images/pickaxe.png"
 }
 
-let obtainableItems = {
+export const obtainableItems = {
     "Helmets": [
         {
             name: "Wooden Helmet",
@@ -241,7 +241,7 @@ let obtainableItems = {
 }
 
 
-craftableItems = {
+export const craftableItems = {
     "Armor": [
         {
             name: "Wooden Helmet",

@@ -1,35 +1,31 @@
-var maxInventorySize = 25; //can be upgraded to 48, 72 and 96
-var fullInventory = false;
-
-let maxStamina = 25;
-let stamina = 25; //this goes down as you quest, can be upgraded to 50, 75 and 100
-
+import { addMessage } from "./activities.js";
+import player from "./player.js";
 
 function checkInventorySize() {
     //add up all keys in inventory_dict and compare to maxInventorySize
     var totalInventorySize = 0;
-    for (var key in inventory_dictionary) {
-        totalInventorySize += inventory_dictionary[key];
+    for (var key in player.inventory_dictionary) {
+        totalInventorySize += player.inventory_dictionary[key];
     }
-    if (totalInventorySize >= maxInventorySize) {
-        fullInventory = true;
+    if (totalInventorySize >= player.maxInventorySize) {
+        player.fullInventory = true;
     }
 }
 
 setInterval(function () {
-    document.getElementById("staminaAmount").innerHTML = stamina; //keep updating the stamina bar
+    document.getElementById("staminaAmount").innerHTML = player.stamina; //keep updating the stamina bar
 }, 100)
 
 var inventoryChecker = setInterval(function () {
     checkInventorySize();
     // getArmorStats();
-    if (fullInventory == true) {
+    if (player.fullInventory == true) {
         addMessage("Your inventory is full. You can't carry any more items.");
         clearInterval(inventoryChecker);
         setTimeout(function () {
             nextCheck = setInterval(function () {
                 checkInventorySize();
-                if (fullInventory == false) {
+                if (player.fullInventory == false) {
                     clearInterval(inventoryChecker);
                 }
             }, 100);
@@ -45,14 +41,14 @@ let leggingItems = [];
 let bootsItems = [];
 let offhandItems = [];
 
-function isInInventory(itemName, itemType) {
+export function isInInventory(itemName, itemType) {
     if (itemType == 'Helmet') {
         if (helmetItems.includes(itemName)) {
             if (isQuesting == true) {
                 addMessage("You already have a " + itemName + ", so you toss them away.");
             } else {
                 addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
-                gold += 1000;
+                player.gold += 1000;
                 return true;
             }
         } else {
@@ -70,7 +66,7 @@ function isInInventory(itemName, itemType) {
                 addMessage("You already have a " + itemName + ", so you toss them away.");
             } else {
                 addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
-                gold += 1000;
+                player.gold += 1000;
                 return true;
             }
         } else {
@@ -88,7 +84,7 @@ function isInInventory(itemName, itemType) {
                 addMessage("You already have a " + itemName + ", so you toss them away.");
             } else {
                 addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
-                gold += 1000;
+                player.gold += 1000;
             }
             // return true;
         } else {
@@ -106,7 +102,7 @@ function isInInventory(itemName, itemType) {
                 addMessage("You already have a " + itemName + ", so you toss them away.");
             } else {
                 addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
-                gold += 1000;
+                player.gold += 1000;
             }
             // return true;
         } else {
@@ -124,7 +120,7 @@ function isInInventory(itemName, itemType) {
                 addMessage("You already have a " + itemName + ", so you toss them away.");
             } else {
                 addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
-                gold += 1000;
+                player.gold += 1000;
             }
         } else {
             offhandItems.push(itemName);
@@ -153,30 +149,30 @@ function isInInventory(itemName, itemType) {
 }
 
 setInterval(function () {
-    if (stamina < maxStamina) {
+    if (player.stamina < player.maxStamina) {
         if (isQuesting == false) {
-            stamina++;
+            player.stamina++;
         }
     }
 }, 2000);
 
 document.getElementById("helmetSelect").addEventListener("change", function () {
-    playerDefense = 0;
+    player.playerDefense = 0;
     getArmorStats();
 });
 
 document.getElementById("chestSelect").addEventListener("change", function () {
-    playerDefense = 0;
+    player.playerDefense = 0;
     getArmorStats();
 });
 
 document.getElementById("legsSelect").addEventListener("change", function () {
-    playerDefense = 0;
+    player.playerDefense = 0;
     getArmorStats();
 });
 
 document.getElementById("bootsSelect").addEventListener("change", function () {
-    playerDefense = 0;
+    player.playerDefense = 0;
     getArmorStats();
 });
 
@@ -191,29 +187,29 @@ function getArmorStats() {
     for (i = 0; i < obtainableItems["Helmets"].length; i++) {
         if (obtainableItems["Helmets"][i]["name"] == helmet) {
             // console.log(helmetStats)['defense'];
-            playerDefense += obtainableItems["Helmets"][i]["armor"];
-            helmet += playerDefense;
+            player.playerDefense += obtainableItems["Helmets"][i]["armor"];
+            helmet += player.playerDefense;
         }
     }
     for (i = 0; i < obtainableItems["Chestplates"].length; i++) {
         if (obtainableItems["Chestplates"][i]["name"] == chestplate) {
-            playerDefense += obtainableItems["Chestplates"][i]["armor"];
-            chestplate += playerDefense;
+            player.playerDefense += obtainableItems["Chestplates"][i]["armor"];
+            chestplate += player.playerDefense;
         }
     }
     for (i = 0; i < obtainableItems["Leggings"].length; i++) {
         if (obtainableItems["Leggings"][i]["name"] == leggings) {
-            playerDefense += obtainableItems["Leggings"][i]["armor"];
-            leggings += playerDefense;
+            player.playerDefense += obtainableItems["Leggings"][i]["armor"];
+            leggings += player.playerDefense;
         }
     }
     for (i = 0; i < obtainableItems["Boots"].length; i++) {
         if (obtainableItems["Boots"][i]["name"] == boots) {
-            playerDefense += obtainableItems["Boots"][i]["armor"];
-            boots += playerDefense;
+            player.playerDefense += obtainableItems["Boots"][i]["armor"];
+            boots += player.playerDefense;
         }
     }
-    document.getElementById("playerDefenseValue").innerHTML = playerDefense;
+    document.getElementById("playerDefenseValue").innerHTML = player.playerDefense;
 }
 
 

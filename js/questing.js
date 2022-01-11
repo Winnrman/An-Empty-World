@@ -1,19 +1,23 @@
+import { addMessage } from "./activities.js";
+import { enemy_dictionary } from "./enemies.js";
+import { randomLootDrop, finalItem } from "./events.js";
+import { isInInventory } from "./maintenance.js";
+import * as player  from "./player.js";
+
 function sleep(ms) {
     // addMessage("<sleep>")
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-// let stamina = 100;
-
 var readFirstMessage = false;
 var isQuesting = false;
 
-async function doQuest() {
+export async function doQuest() {
     //check to see if player is wearing armor
     // if ((document.getElementById("helmetSelect").value != "") || (document.getElementById("chestSelect").value != "") || (document.getElementById("legsSelect").value != "") || (document.getElementById("bootsSelect").value != "")) {
     //     addMessage("You must have armor on to go on a quest!");
     //     isQuesting = false;
     // }
-    if (stamina > 0) {
+    if (player.stamina > 0) {
 
         if (readFirstMessage == false) {
             addMessage("You begin off on your quest, walking through this empty and barren world.");
@@ -28,7 +32,7 @@ async function doQuest() {
                 await sleep(2000);
                 addMessage("You walk for a little while...");
                 // await sleep(2000);
-                stamina--;
+                player.stamina--;
                 doQuest();
             }
             else if (randomEvent <= 20 && randomEvent > 10) {
@@ -69,22 +73,22 @@ async function doQuest() {
             else if (randomEvent <= 50 && randomEvent > 40) {
                 addMessage("While you're walking, you get ambushed by a pack of thieves, and you are forced to flee!");
                 goldTolose = Math.floor(Math.random() * 1000) + 200;
-                if (goldTolose < gold) {
-                    gold -= goldTolose;
+                if (goldTolose < player.gold) {
+                    player.gold -= goldTolose;
                     addMessage("You lose " + goldTolose + " gold.");
                 }
                 else {
-                    gold = 0;
+                    player.gold = 0;
                     addMessage("You lose all of your gold!");
                 }
                 await sleep(2000);
                 addMessage("After running for a while, you continue on your way.");
-                stamina -= 3;
+                player.stamina -= 3;
                 doQuest();
             }
         }
     }
-    else if (stamina <= 0) {
+    else if (player.stamina <= 0) {
         addMessage("You are too tired to continue on your quest.");
         isQuesting = false;
     }
@@ -93,7 +97,7 @@ async function doQuest() {
     // }
 
     async function fightMonster() {
-        stamina -= 5;
+        player.stamina -= 5;
         var enemyRand = Math.floor(Math.random() * 2) + 1;
         if (enemyRand == 0) {
             enemy = "Goblin";
@@ -106,16 +110,16 @@ async function doQuest() {
         }
         addMessage("While walking, you encounted a " + enemy + "!");
         await sleep(2000);
-        if (playerDefense > enemy_dictionary[enemy].defense) {
+        if (player.playerDefense > enemy_dictionary[enemy].defense) {
             addMessage("After a brief battle, you manage to defeat the " + enemy + "!");
             await sleep(2000);
             addMessage("You raided the " + enemy + " and found " + enemy_dictionary[enemy].gold + " gold!");
-            gold += enemy_dictionary[enemy].gold;
+            player.gold += enemy_dictionary[enemy].gold;
             await sleep(2000);
             addMessage("You gain " + enemy_dictionary[enemy].defeatExperience + " experience!");
-            xp += enemy_dictionary[enemy].defeatExperience;
+            player.xp += enemy_dictionary[enemy].defeatExperience;
             enemy = "";
-            stamina -= 5;
+            player.stamina -= 5;
             doQuest();
         }
         else {
@@ -130,14 +134,14 @@ async function doQuest() {
 
     async function lootChest() {
         if (document.getElementById("offhandSelect").value == "Amulet of Luck") {
-            gold += Math.floor(Math.random() * 3000) + 12000;
+            player.gold += Math.floor(Math.random() * 3000) + 12000;
             luckyLootDrop();
         }
         else {
             await sleep(2000);
             var quantity = Math.floor(Math.random() * 800);
             addMessage("You find " + quantity + " gold in the old chest!");
-            gold += quantity;
+            player.gold += quantity;
             basicLootDrop();
         }
     }
@@ -148,7 +152,7 @@ async function doQuest() {
         if (finalItem.rarity == "rare" || finalItem.rarity == "legendary") {
             addMessage("You found a " + finalItem.name + "! You feel lucky!");
             isInInventory(finalItem.name, finalItem.type);
-            stamina--;
+            player.stamina--;
             doQuest();
         }
         else {
@@ -161,7 +165,7 @@ async function doQuest() {
         if (finalItem.rarity == "common" || finalItem.rarity == "uncommon") {
             addMessage("You found a " + finalItem.name + "!");
             isInInventory(finalItem.name, finalItem.type);
-            stamina--;
+            player.stamina--;
             doQuest();
         }
         else {
