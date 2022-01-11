@@ -305,6 +305,12 @@ let ironAmount = 0;
 
 function doCrafting1() {
     var select = document.getElementById("craftingSelect").value;
+    if (select == "Wooden Sword") {
+        woodNeeded = 2;
+        setInterval(function () {
+            document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + inventory_dictionary['Wood'] + "/" + woodNeeded;
+        }, 100);
+    }
     if (select == "Wooden Helmet") {
         woodNeeded = 2; //TODO: improve system
         ironNeeded = 1;
@@ -332,6 +338,13 @@ function doCrafting1() {
 function doCrafting2() {
     var item = document.getElementById("craftingSelect").value;
     switch (item) {
+        case "Wooden Sword":
+            if (woodAmount >= 2) {
+                inventory.splice(1, 2, "Wood");
+                addMessage("You crafted a Wooden Sword!");
+                woodAmount -= 2;
+            }
+            break;
         case "Wooden Helmet":
             if ((woodAmount >= 2) && (ironAmount >= 1)) {
                 inventory.splice(1, 2, "Wood");
