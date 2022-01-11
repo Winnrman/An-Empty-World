@@ -30,13 +30,13 @@
     <div class="container">
         <h2 class="header" id="activitiesHeader">Activities</h2>
         <div style="padding-top:5px;" id="activitiesContainer">
-            <button id="treeButton" class="button" onclick="tree()">Cut Down Tree</button>
-            <button id="goFishingButton" class="button" onclick="goFishing()">Go Fishing</button>
-            <button style="visibility: hidden;" id="goHuntingButton" class="button" onclick="goHunting()">Go
+            <button id="treeButton" class="button" onclick="activities.tree()">Cut Down Tree</button>
+            <button id="goFishingButton" class="button" onclick="activities.goFishing()">Go Fishing</button>
+            <button style="visibility: hidden;" id="goHuntingButton" class="button" onclick="activities.goHunting()">Go
                 Hunting</button>
-            <button style="visibility: hidden;" id="goMiningButton" class="button" onclick="goMining()">Go
+            <button style="visibility: hidden;" id="goMiningButton" class="button" onclick="activities.goMining()">Go
                 Mining</button>
-            <button style="visibility: hidden;" id="goQuestingButton" class="button" onclick="doQuest()">Go
+            <button style="visibility: hidden;" id="goQuestingButton" class="button" onclick="questing.doQuest()">Go
                 Questing</button>
         </div>
     </div>
@@ -63,19 +63,19 @@
         <h2 class="header" id="storeHeader">Store</h2>
         <span style="display: inline-flex">
             <h3 class="subheader" id="buyHeader">Buy</h3>
-            <button id="axe" class="store button" onclick="buyAxe()">Buy Axe [ 20 ]</button>
-            <button id="fishingPole" class="store button" onclick="buyFishingPole()">Buy Fishing Pole [ 50 ]</button>
-            <button style="visibility: hidden;" id="huntingRifle" class="store button" onclick="buyHuntingRifle()">Buy
+            <button id="axe" class="store button" onclick="store.buyAxe()">Buy Axe [ 20 ]</button>
+            <button id="fishingPole" class="store button" onclick="store.buyFishingPole()">Buy Fishing Pole [ 50 ]</button>
+            <button style="visibility: hidden;" id="huntingRifle" class="store button" onclick="store.buyHuntingRifle()">Buy
                 Hunting Rifle [ 300
                 ]</button>
-            <button style="visibility: hidden;" id="pickaxe" class="store button" onclick="buyPickaxe()">Buy Pickaxe [
+            <button style="visibility: hidden;" id="pickaxe" class="store button" onclick="store.buyPickaxe()">Buy Pickaxe [
                 1200
                 ]</button>
             <button style="visibility: hidden;" id="inventoryUpgrade" class="store button"
-                onclick="buyInventoryUpgrade()">Buy
+                onclick="store.buyInventoryUpgrade()">Buy
                 Inventory Upgrade [PRICE]</button>
             <h3 class="subheader">Special Deals</h3>
-            <button id="specialDeal" class="store button" onclick="buySpecialDeal()">Buy
+            <button id="specialDeal" class="store button" onclick="store.buySpecialDeal()">Buy
                 Random Armor Piece [
                 1000
                 ]</button>
@@ -83,13 +83,13 @@
         <br><br>
         <span style="display: inline-flex">
             <h3 class="subheader" id="sellHeader">Sell</h3>
-            <button id="sellWood" class="store button" onclick="sell('Wood')">Sell Wood</button>
-            <button id="sellFish" class="store button" onclick="sell('Fish')">Sell Fish</button>
-            <button style="visibility: hidden;" id="sellMeat" class="store button" onclick="sell('Meat')">Sell
+            <button id="sellWood" class="store button" onclick="store.sell('Wood')">Sell Wood</button>
+            <button id="sellFish" class="store button" onclick="store.sell('Fish')">Sell Fish</button>
+            <button style="visibility: hidden;" id="sellMeat" class="store button" onclick="store.sell('Meat')">Sell
                 Meat</button>
-            <button style="visibility: hidden;" id="sellStone" class="store button" onclick="sell('Stone')">Sell
+            <button style="visibility: hidden;" id="sellStone" class="store button" onclick="store.sell('Stone')">Sell
                 Stone</button>
-            <button style="visibility: hidden;" id="sellOres" class="store button" onclick="sell('Ores')">Sell
+            <button style="visibility: hidden;" id="sellOres" class="store button" onclick="store.sell('Ores')">Sell
                 Ores</button>
 
         </span>
@@ -124,11 +124,11 @@
                 <option value="King">King</option>
             </select>
             <button id="fightButton" class="button"
-                onclick="doCombat(document.getElementById('opponentSelector').value)">Fight</button>
-            <button style="visibility: hidden;" id="attackButton" class="button" onclick="doAttack()">Attack</button>
-            <button style="visibility: hidden;" id="fleeButton" class="button" onclick="doFlee()">Flee</button>
-            <button style="visibility: hidden;" id="defendButton" class="button" onclick="defend()">Defend</button>
-            <button style="visibility: hidden;" id="specialButton" class="button" onclick="special()">Run</button>
+                onclick="activities.doCombat(document.getElementById('opponentSelector').value)">Fight</button>
+            <button style="visibility: hidden;" id="attackButton" class="button" onclick="activities.doAttack()">Attack</button>
+            <button style="visibility: hidden;" id="fleeButton" class="button" onclick="activities.doFlee()">Flee</button>
+            <button style="visibility: hidden;" id="defendButton" class="button" onclick="activities.defend()">Defend</button>
+            <button style="visibility: hidden;" id="specialButton" class="button" onclick="activities.special()">Run</button>
         </div>
     </div>
 
@@ -195,7 +195,7 @@
             <h4 style="margin-top: 7px; " id="craftingLevel">Level <span id="craftingLevelValue">1</span></h4>
         </span>
         <span style="display:  inline-flex; ">
-            <h3 id="itemToCraft">Item to Craft: &nbsp;</h3><select onChange="doCrafting1()" id="craftingSelect">
+            <h3 id="itemToCraft">Item to Craft: &nbsp;</h3><select onChange="activities.doCrafting1()" id="craftingSelect">
                 <option value="">Select an item</option>
                 <option value="Wooden Sword">Wooden Sword</option>
                 <option value="Wooden Helmet">Wooden Helmet</option>
@@ -214,26 +214,19 @@
                 <!--inside here, check inventory for needed materials. If has all, craft button is clickable.-->
             </div>
         </span>
-        <button id="craftingButton" onclick="doCrafting2()">Craft</button>
+        <button id="craftingButton" onclick="activities.doCrafting2()">Craft</button>
         <p id="neededMaterials">Needed Materials: &nbsp;</p>
     </div>
 
     <footer class="footer">
         <a href="https://github.com/Winnrman/An-Empty-World">github</a>
-        <a>save</a>
-        <!-- <a>share</a> -->
-        <a onclick="window.location.reload()">restart</a>
+        <a onclick="saveData()">save</a>
+        <a>share</a>
+        <a onclick="resetData()">restart</a>
         <!-- <p>&copy; Idle Game</p> -->
 </body>
-<script type="text/javascript" src="js/enemies.js"></script>
-<script type="text/javascript" src="js/maintenance.js"></script>
-<script type="text/javascript" src="js/activities.js"></script>
-<script type="text/javascript" src="js/main.js"></script>
-<script type="text/javascript" src="js/store.js"></script>
-<script type="text/javascript" src="js/events.js"></script>
-<script type="text/javascript" src="js/items.js"></script>
-<script type="text/javascript" src="js/achievements.js"></script>
-<script type="text/javascript" src="js/questing.js"></script>
+
+<script type="module" src="js/main.js"></script>
 
 <!-- <script type="text/javascript">
     window.glob = "inventory";

@@ -1,32 +1,28 @@
+import { enemy_dictionary } from "./enemies.js";
+import { randomLootDrop, finalItem } from "./events.js";
+import { isInInventory } from "./maintenance.js";
+import player from "./player.js";
+
 //get inventory from main.js file
-let axeHealth = 20;
-let fishingPoleHealth = 10;
-let huntingRifleHealth = 50;
-let pickaxeHealth = 75;
-let playerHealth = 100;
-let playerAttack = 1;
-let playerDefense = 1;
-let playerSpeed = 1;
-let armorBonus = 0;
 
 setInterval(function () {
-    neededLevelUpXP = level * 100 * (level + 1);
+    player.neededLevelUpXP = player.level * 100 * (player.level + 1);
     // document.getElementById("progress").style.width = xp / neededLevelUpXP * 100 + "%";
     // document.getElementById("progress").style.width = xp / neededLevelUpXP * 100 + "%";
     //use transitions to animate the progress bar to the correct width
-    document.getElementById("progress").style.width = xp / neededLevelUpXP * 100 + "%";
+    document.getElementById("progress").style.width = player.xp / player.neededLevelUpXP * 100 + "%";
     document.getElementById("progress").style.transition = "width 0.5s";
-    document.getElementById("lvl").innerHTML = level;
-    if (xp >= neededLevelUpXP) {
-        level++;
-        xp = 0;
+    document.getElementById("lvl").innerHTML = player.level;
+    if (player.xp >= player.neededLevelUpXP) {
+        player.level++;
+        player.xp = 0;
         document.getElementById("progress").width = 0;
-        addMessage("You leveled up! You are now level " + level + "! " + " [ " + level * 100 + " gold awarded ]");
-        gold += level * 100;
+        addMessage("You leveled up! You are now level " + player.level + "! " + " [ " + player.level * 100 + " gold awarded ]");
+        player.gold += player.level * 100;
     }
 }, 100);
 
-function addMessage(message_text) {
+export function addMessage(message_text) {
     //add page break after level up message
     document.getElementById("messages").innerHTML += "<br>";
     var message = document.createElement("li");
@@ -34,18 +30,18 @@ function addMessage(message_text) {
     document.getElementById("messages").appendChild(message);
 }
 
-function tree() {
-    if (inventory_dictionary["Axe"] == 1) {
-        if (axeHealth <= 0) {
+export function tree() {
+    if (player.inventory_dictionary["Axe"] == 1) {
+        if (player.axeHealth <= 0) {
             addMessage("Your axe broke!");
-            inventory_dictionary["Axe"] = 0;
-            axeHealth = 20;
+            player.inventory_dictionary["Axe"] = 0;
+            player.axeHealth = 20;
         } else {
-            if (fullInventory == false) {
-                inventory_dictionary["Wood"] += 1;
+            if (player.fullInventory == false) {
+                player.inventory_dictionary["Wood"] += 1;
                 woodAmount++;
-                axeHealth -= 1;
-                xp += 10;
+                player.axeHealth -= 1;
+                player.xp += 10;
             } else {
                 addMessage("Your inventory is full. You can't carry any more items.");
             }
@@ -55,17 +51,17 @@ function tree() {
     }
 }
 
-function goFishing() {
-    if (inventory_dictionary["Fishing Pole"] == 1) {
-        if (fishingPoleHealth <= 0) {
+export function goFishing() {
+    if (player.inventory_dictionary["Fishing Pole"] == 1) {
+        if (player.fishingPoleHealth <= 0) {
             addMessage("Your fishing pole broke!");
-            inventory_dictionary["Fishing Pole"] = 0;
-            fishingPoleHealth = 10;
+            player.inventory_dictionary["Fishing Pole"] = 0;
+            player.fishingPoleHealth = 10;
         } else {
-            if (fullInventory == false) {
-                inventory_dictionary["Fish"] += 1;
-                fishingPoleHealth -= 1;
-                xp += 15;
+            if (player.fullInventory == false) {
+                player.inventory_dictionary["Fish"] += 1;
+                player.fishingPoleHealth -= 1;
+                player.xp += 15;
             } else {
                 addMessage("Your inventory is full. You can't carry any more items.");
             }
@@ -75,17 +71,17 @@ function goFishing() {
     }
 }
 
-function goHunting() {
-    if (inventory_dictionary["Hunting Rifle"] == 1) {
-        if (huntingRifleHealth <= 0) {
+export function goHunting() {
+    if (player.inventory_dictionary["Hunting Rifle"] == 1) {
+        if (player.huntingRifleHealth <= 0) {
             addMessage("Your hunting rifle broke!");
-            inventory_dictionary["Hunting Rifle"] = 0;
-            huntingRifleHealth = 50;
+            player.inventory_dictionary["Hunting Rifle"] = 0;
+            player.huntingRifleHealth = 50;
         } else {
-            if (fullInventory == false) {
-                inventory_dictionary["Meat"] += 1;
-                huntingRifleHealth -= 1;
-                xp += 50;
+            if (player.fullInventory == false) {
+                player.inventory_dictionary["Meat"] += 1;
+                player.huntingRifleHealth -= 1;
+                player.xp += 50;
             }
             else {
                 addMessage("Your inventory is full. You can't carry any more items.");
@@ -97,14 +93,14 @@ function goHunting() {
     }
 }
 
-function goMining() {
-    if (inventory_dictionary["Pickaxe"] == 1) {
-        if (pickaxeHealth <= 0) {
+export function goMining() {
+    if (player.inventory_dictionary["Pickaxe"] == 1) {
+        if (player.pickaxeHealth <= 0) {
             addMessage("Your pickaxe broke!");
-            inventory_dictionary["Pickaxe"] = 0;
-            pickaxeHealth = 75;
+            player.inventory_dictionary["Pickaxe"] = 0;
+            player.pickaxeHealth = 75;
         } else {
-            if (fullInventory == false) {
+            if (player.fullInventory == false) {
                 let oreDictionary = {
                     0: "Iron",
                     1: "Copper",
@@ -135,10 +131,10 @@ function goMining() {
                     }
                 }
                 // inventory.push(oreDictionary[oreRandomizer]);
-                inventory_dictionary[oreDictionary[oreRandomizer]] += 1;
-                xp += xpTable[oreDictionary[oreRandomizer]];
+                player.inventory_dictionary[oreDictionary[oreRandomizer]] += 1;
+                player.xp += xpTable[oreDictionary[oreRandomizer]];
 
-                pickaxeHealth -= 1;
+                player.pickaxeHealth -= 1;
             } else {
                 addMessage("Your inventory is full. You can't carry any more items.");
             }
@@ -166,7 +162,7 @@ var enemyGold;
 var isAttacking = false;
 var fled = false;
 
-function doCombat(enemy) {
+export function doCombat(enemy) {
     console.log("Enemy: " + enemy);
     console.log("Enemy Health:" + enemyHealth);
     if (!enemy_dictionary[enemy]) { return }
@@ -202,31 +198,31 @@ function checkAttackStatus() {
 
 var refresh;
 
-function doAttack() {
+export function doAttack() {
     var enemyHealth = enemy_dictionary[document.getElementById("opponentSelector").value].health; // <-- this works in browser but not in VSCode
     var enemyDefense = enemy_dictionary[document.getElementById("opponentSelector").value].defense;
     var enemyName = enemy_dictionary[document.getElementById("opponentSelector").value].name;
     var enemyGold = enemy_dictionary[document.getElementById("opponentSelector").value].gold;
     var enemyExperience = enemy_dictionary[document.getElementById("opponentSelector").value].defeatExperience;
     var newEnemyHealth = enemyHealth;
-    // var newEnemyHealth = document.getElementById("healthValue").innerHTML - (playerAttack - enemyDefense);
+    // var newEnemyHealth = document.getElementById("healthValue").innerHTML - (player.playerAttack - enemyDefense);
     // console.log("Enemy health: " + );
     isAttacking = true;
     checkAttackStatus();
     refresh = setInterval(function () {
         if (newEnemyHealth > 0 && fled == false) {
-            newEnemyHealth = newEnemyHealth - Math.max(0, playerAttack - enemyDefense);
+            newEnemyHealth = newEnemyHealth - Math.max(0, player.playerAttack - enemyDefense);
             console.log("new enemy health:" + newEnemyHealth);
             document.getElementById("healthValue").innerHTML = Math.max(0, newEnemyHealth);
-            // console.log("You attacked the enemy for " + Math.max(0,playerAttack - enemyDefense) + " damage!");
+            // console.log("You attacked the enemy for " + Math.max(0, player.playerAttack - enemyDefense) + " damage!");
         }
         if (newEnemyHealth <= 0 && fled == false) {
             clearInterval(refresh);
             // alert("You win!");
             //increment XP by enemyExperience
-            xp += enemyExperience;
-            gold += enemyGold;
-            document.getElementById("gold").innerHTML = gold;
+            player.xp += enemyExperience;
+            player.gold += enemyGold;
+            document.getElementById("gold").innerHTML = player.gold;
             addMessage("You defeated the " + enemyName + " and earned " + enemyGold + " gold" + " and " + enemyExperience + " XP!");
 
             var droppedRandomLoot = Math.floor(Math.random() * 100);
@@ -246,11 +242,11 @@ function doAttack() {
             enemyHealth = newEnemyHealth;
             document.getElementById("healthValue").innerHTML = enemyHealth;
         }
-    }, 1000 / playerSpeed);
+    }, 1000 / player.playerSpeed);
 
 }
 
-function doFlee() {
+export function doFlee() {
     fled = true;
     document.getElementById("messages").innerHTML = "You fled!";
     document.getElementById("fightButton").style.display = "block";
@@ -261,23 +257,23 @@ function doFlee() {
     document.getElementById("specialButton").style.visibility = "hidden";
 
     //reset player stats
-    playerHealth = defaultPlayerHealth;
-    playerAttack = defaultPlayerAttack;
-    playerDefense = defaultPlayerDefense;
-    playerSpeed = defaultPlayerSpeed;
+    player.playerHealth = defaultPlayerHealth;
+    player.playerAttack = defaultPlayerAttack;
+    player.playerDefense = defaultPlayerDefense;
+    player.playerSpeed = defaultPlayerSpeed;
 
-    document.getElementById("playerHealthValue").innerHTML = playerHealth;
-    document.getElementById("playerAttackValue").innerHTML = playerAttack;
-    document.getElementById("playerDefenseValue").innerHTML = playerDefense;
-    document.getElementById("playerSpeedValue").innerHTML = playerSpeed;
+    document.getElementById("playerHealthValue").innerHTML = player.playerHealth;
+    document.getElementById("playerAttackValue").innerHTML = player.playerAttack;
+    document.getElementById("playerDefenseValue").innerHTML = player.playerDefense;
+    document.getElementById("playerSpeedValue").innerHTML = player.playerSpeed;
 
 }
 
 function doEnemyAttack() {
     var enemyAttack = enemy_dictionary[document.getElementById("opponentSelector").value].attack;
     // console.log("Enemy is attacking for " + Math.max(0, enemyAttack - playerDefense) + " damage!");
-    newPlayerHealth = playerHealth - Math.max(0, enemyAttack - playerDefense);
-    playerHealth = newPlayerHealth;
+    const newPlayerHealth = player.playerHealth - Math.max(0, enemyAttack - player.playerDefense);
+    player.playerHealth = newPlayerHealth;
     // console.log("Player now has " + newPlayerHealth + " health.");
     document.getElementById("playerHealthValue").innerHTML = Math.max(0, newPlayerHealth);
 
@@ -292,8 +288,8 @@ function doEnemyAttack() {
         clearInterval(refresh);
     }
     // else {
-    //     playerHealth = newPlayerHealth;
-    //     document.getElementById("playerHealthValue").innerHTML = playerHealth;
+    //     player.playerHealth = newPlayerHealth;
+    //     document.getElementById("playerHealthValue").innerHTML = player.playerHealth;
     // }
 }
 
@@ -303,7 +299,7 @@ let woodAmount = 0;
 let ironAmount = 0;
 
 
-function doCrafting1() {
+export function doCrafting1() {
     var select = document.getElementById("craftingSelect").value;
     if (select == "Wooden Sword") {
         woodNeeded = 2;
@@ -315,14 +311,14 @@ function doCrafting1() {
         woodNeeded = 2; //TODO: improve system
         ironNeeded = 1;
         setInterval(function () {
-            document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + inventory_dictionary['Wood'] + "/" + woodNeeded + " Iron: " + inventory_dictionary['Iron'] + "/" + ironNeeded;
+            document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + player.inventory_dictionary['Wood'] + "/" + woodNeeded + " Iron: " + player.inventory_dictionary['Iron'] + "/" + ironNeeded;
         }, 100);
     }
     else if (select == "Wooden Boots") {
         woodNeeded = 3;
         ironNeeded = 2;
         setInterval(function () {
-            document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + inventory_dictionary['Wood'] + "/" + woodNeeded + " Iron: " + inventory_dictionary['Iron'] + "/" + ironNeeded;
+            document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + player.inventory_dictionary['Wood'] + "/" + woodNeeded + " Iron: " + player.inventory_dictionary['Iron'] + "/" + ironNeeded;
         }
             , 100);
     }
@@ -330,12 +326,13 @@ function doCrafting1() {
         woodNeeded = 3;
         ironNeeded = 6;
         setInterval(function () {
-            document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + inventory_dictionary['Wood'] + "/" + woodNeeded + " Iron: " + inventory_dictionary['Iron'] + "/" + ironNeeded;
+            document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + player.inventory_dictionary['Wood'] + "/" + woodNeeded + " Iron: " + player.inventory_dictionary['Iron'] + "/" + ironNeeded;
         }
             , 100);
     }
 }
-function doCrafting2() {
+
+export function doCrafting2() {
     var item = document.getElementById("craftingSelect").value;
     switch (item) {
         case "Wooden Sword":

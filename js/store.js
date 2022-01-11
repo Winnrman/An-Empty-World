@@ -1,13 +1,18 @@
-function buyAxe() {
-    if (gold >= 20) {
-        if (inventory.includes("Axe")) {
+import { addMessage } from "./activities.js";
+import { randomLootDrop, finalItem } from "./events.js";
+import { isInInventory } from "./maintenance.js";
+import player from "./player.js";
+
+export function buyAxe() {
+    if (player.gold >= 20) {
+        if (player.inventory_dictionary["Axe"] > 0) {
             console.log("You already have an axe!");
         }
         else {
             // inventory.push("Axe");
-            inventory_dictionary["Axe"] = 1;
+            player.inventory_dictionary["Axe"] = 1;
             // alert("You bought an axe!");
-            gold -= 20;
+            player.gold -= 20;
         }
     } else {
         //add to messages
@@ -15,15 +20,15 @@ function buyAxe() {
     }
 }
 
-function buyFishingPole() {
-    if (gold >= 50) {
-        if (inventory_dictionary["Fishing Pole"] > 0) {
+export function buyFishingPole() {
+    if (player.gold >= 50) {
+        if (player.inventory_dictionary["Fishing Pole"] > 0) {
             console.log("You already have a fishing pole!");
         } else {
             // inventory.push("Fishing Pole");
-            inventory_dictionary["Fishing Pole"] = 1;
+            player.inventory_dictionary["Fishing Pole"] = 1;
             // alert("You bought a fishing pole!");
-            gold -= 50;
+            player.gold -= 50;
         }
     } else {
         //add to messages
@@ -31,15 +36,15 @@ function buyFishingPole() {
     }
 }
 
-function buyHuntingRifle() {
-    if (gold >= 300) {
+export function buyHuntingRifle() {
+    if (player.gold >= 300) {
         if (inventory.includes("Hunting Rifle")) {
             console.log("You already have a hunting rifle!");
         } else {
             // inventory.push("Hunting Rifle");
-            inventory_dictionary["Hunting Rifle"] = 1;
+            player.inventory_dictionary["Hunting Rifle"] = 1;
             // alert("You bought a fishing pole!");
-            gold -= 300;
+            player.gold -= 300;
         }
     } else {
         //add to messages
@@ -47,44 +52,44 @@ function buyHuntingRifle() {
     }
 }
 
-function buyPickaxe() {
-    if (gold >= 1200) {
+export function buyPickaxe() {
+    if (player.gold >= 1200) {
         if (inventory.includes("Pickaxe")) {
             console.log("You already have a pickaxe!");
         } else {
             // inventory.push("Pickaxe");
-            inventory_dictionary["Pickaxe"] = 1;
+            player.inventory_dictionary["Pickaxe"] = 1;
             // alert("You bought a fishing pole!");
-            gold -= 1200;
+            player.gold -= 1200;
         }
     } else {
         //add to messages
         addMessage("You don't have enough gold to buy a pickaxe!");
     }
 }
-boughtTimes = 0;
+let boughtTimes = 0;
 
-function buySpecialDeal() {
-    if (gold >= 1000) {
+export function buySpecialDeal() {
+    if (player.gold >= 1000) {
         randomLootDrop();
         //add page break after level up message
         isInInventory(finalItem.name, finalItem.type); //this handles adding item and displaying message
-        gold -= 1000;
+        player.gold -= 1000;
     } else {
         addMessage("You do not have enough gold to buy this item!");
     }
 }
 
-function buyInventoryUpgrade() {
+export function buyInventoryUpgrade() {
     if (boughtTimes < 3) {
         var price = 10000 + (10000 * boughtTimes);
-        if (gold >= price) {
-            maxInventorySize += 25;
+        if (player.gold >= price) {
+            player.maxInventorySize += 25;
             boughtTimes++;
-            gold -= price;
+            player.gold -= price;
             document.getElementById("inventoryUpgrade").innerHTML = "Buy Inventory Upgrade  [" + price + "<br><br>"
                 + "(" + boughtTimes + " / 3)";
-            addMessage("Inventory Space increased by 25! [Currently " + maxInventorySize + "]");
+            addMessage("Inventory Space increased by 25! [Currently " + player.maxInventorySize + "]");
         }
         else {
             addMessage("You don't have enough gold to buy an inventory upgrade!");
@@ -107,24 +112,24 @@ setInterval(function () {
 }, 100);
 
 
-function sell(item) {
-    fullInventory = false;
+export function sell(item) {
+    player.fullInventory = false;
     if (item == 'Wood') {
-        if (inventory_dictionary[item] > 0) {
-            gold += inventory_dictionary[item] * 5;
-            inventory_dictionary[item] = 0;
+        if (player.inventory_dictionary[item] > 0) {
+            player.gold += player.inventory_dictionary[item] * 5;
+            player.inventory_dictionary[item] = 0;
         }
     }
     else if (item == 'Fish') {
-        if (inventory_dictionary[item] > 0) {
-            gold += inventory_dictionary[item] * 10;
-            inventory_dictionary[item] = 0;
+        if (player.inventory_dictionary[item] > 0) {
+            player.gold += player.inventory_dictionary[item] * 10;
+            player.inventory_dictionary[item] = 0;
         }
     }
     else if (item == 'Meat') {
-        if (inventory_dictionary[item] > 0) {
-            gold += inventory_dictionary[item] * 20;
-            inventory_dictionary[item] = 0;
+        if (player.inventory_dictionary[item] > 0) {
+            player.gold += player.inventory_dictionary[item] * 20;
+            player.inventory_dictionary[item] = 0;
         }
     }
     else if (item == 'Ores') {
@@ -141,9 +146,9 @@ function sell(item) {
         };
 
         for (let key in goldTable) {
-            if (inventory_dictionary[key] > 0) {
-                gold += inventory_dictionary[key] * goldTable[key];
-                inventory_dictionary[key] = 0;
+            if (player.inventory_dictionary[key] > 0) {
+                player.gold += player.inventory_dictionary[key] * goldTable[key];
+                player.inventory_dictionary[key] = 0;
             }
             // if (inventory[i] in goldTable) {
             //     inventory.splice(i, 1);
@@ -152,9 +157,9 @@ function sell(item) {
         }
     }
     else if (item == "Stone") {
-        if (inventory_dictionary[item] > 0) {
-            inventory_dictionary[item] = 0;
-            gold += inventory_dictionary[item] * 5;
+        if (player.inventory_dictionary[item] > 0) {
+            player.inventory_dictionary[item] = 0;
+            player.gold += player.inventory_dictionary[item] * 5;
         }
     }
 }

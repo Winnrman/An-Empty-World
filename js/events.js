@@ -1,6 +1,8 @@
-var finalItem;
+import { obtainableItems } from "./items.js";
 
-function randomLootDrop() {
+export let finalItem;
+
+export function randomLootDrop() {
     var chosenRarity;
     var itemType;
 

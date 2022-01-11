@@ -1,10 +1,13 @@
-completedAchievements = [];
+import { addMessage } from "./activities.js";
+import player from "./player.js";
+
+export const completedAchievements = [];
 
 //have player wearing all iron armor
 function achievement_iron_armor() {
     if (document.getElementById("helmetSelect").value == "Iron Helmet" && document.getElementById("chestSelect").value == "Iron Chestplate" && document.getElementById("legsSelect").value == "Iron Leggings" && document.getElementById("bootsSelect").value == "Iron Boots") {
         addMessage("You have completed the Iron Armor achievement!");
-        gold += 250;
+        player.gold += 250;
         document.getElementById("gold").innerHTML = gold;
         // clearInterval(achievementMaster); //doesnt work
         completedAchievements.push("achievement_iron_armor");
