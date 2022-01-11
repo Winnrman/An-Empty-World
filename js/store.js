@@ -140,12 +140,10 @@ function sell(item) {
             "Diamond": 1100
         };
 
-        for (let i = 0; i < inventory.length; i++) {
-            for (let key in goldTable) {
-                if (inventory[i] == key) {
-                    inventory.splice(i, 1);
-                    gold += goldTable[key];
-                }
+        for (let key in goldTable) {
+            if (inventory_dictionary[key] > 0) {
+                gold += inventory_dictionary[key] * goldTable[key];
+                inventory_dictionary[key] = 0;
             }
             // if (inventory[i] in goldTable) {
             //     inventory.splice(i, 1);
@@ -154,11 +152,9 @@ function sell(item) {
         }
     }
     else if (item == "Stone") {
-        for (let i = 0; i < inventory.length; i++) {
-            if (inventory[i] == "Stone") {
-                inventory.splice(i, 1);
-                gold += 5;
-            }
+        if (inventory_dictionary[item] > 0) {
+            inventory_dictionary[item] = 0;
+            gold += inventory_dictionary[item] * 5;
         }
     }
 }

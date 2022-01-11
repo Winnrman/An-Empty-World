@@ -6,7 +6,12 @@ let stamina = 25; //this goes down as you quest, can be upgraded to 50, 75 and 1
 
 
 function checkInventorySize() {
-    if (inventory.length >= maxInventorySize) {
+    //add up all keys in inventory_dict and compare to maxInventorySize
+    var totalInventorySize = 0;
+    for (var key in inventory_dictionary) {
+        totalInventorySize += inventory_dictionary[key];
+    }
+    if (totalInventorySize >= maxInventorySize) {
         fullInventory = true;
     }
 }
