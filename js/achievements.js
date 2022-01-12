@@ -1,30 +1,21 @@
 import { addMessage } from "./activities.js";
 import player from "./player.js";
+import { hasEquiped } from "./maintenance.js";
 
 export const completedAchievements = [];
 
-//have player wearing all iron armor
 function achievement_iron_armor() {
-    if (document.getElementById("helmetSelect").value == "Iron Helmet" && document.getElementById("chestSelect").value == "Iron Chestplate" && document.getElementById("legsSelect").value == "Iron Leggings" && document.getElementById("bootsSelect").value == "Iron Boots") {
-        addMessage("You have completed the Iron Armor achievement!");
-        player.gold += 250;
-        document.getElementById("gold").innerHTML = gold;
-        // clearInterval(achievementMaster); //doesnt work
-        completedAchievements.push("achievement_iron_armor");
-        // timesRun += 1;
-    }
-}
+    if (completedAchievements.includes("achievement_iron_armor"))
+        return;
+    
+    if (!hasEquiped("Iron Helmet") || !hasEquiped("Iron Chestplate") || !hasEquiped("Iron Leggings") || !hasEquiped("Iron Boots"))
+        return;
 
-// function achievement_gold_armor() {
-//     if (document.getElementById("helmetSelect").value == "Gold Helmet" && document.getElementById("chestSelect").value == "Gold Chestplate" && document.getElementById("legsSelect").value == "Gold Leggings" && document.getElementById("bootsSelect").value == "Gold Boots") {
-//         var achievementMessage = "You have completed the Gold Armor achievement!";
-//         addMessage(achievementMessage);
-//         gold += 500;
-//         document.getElementById("goldValue").innerHTML = gold;
-//         completedAchievements.push("achievement_gold_armor");
-//         clearInterval(achievementMaster);
-//     }
-// }
+    addMessage("You have completed the Iron Armor achievement!");
+    player.gold += 250;
+    document.getElementById("gold").innerHTML = gold;
+    completedAchievements.push("achievement_iron_armor");
+}
 
 var interval = setInterval(function () {
     achievement_iron_armor();
