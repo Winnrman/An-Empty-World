@@ -1,6 +1,6 @@
-import { addMessage } from "./activities.js";
 import player from "./player.js";
 import { hasEquiped } from "./maintenance.js";
+import { addMessage } from './messages.js';
 
 export const completedAchievements = [];
 

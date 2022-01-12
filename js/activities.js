@@ -1,6 +1,7 @@
 import { enemy_dictionary } from "./enemies.js";
 import { randomLootDrop, finalItem } from "./events.js";
 import player from "./player.js";
+import { addMessage } from './messages.js';
 
 //get inventory from main.js file
 
@@ -20,14 +21,6 @@ setInterval(function () {
         player.gold += player.level * 100;
     }
 }, 100);
-
-export function addMessage(message_text) {
-    //add page break after level up message
-    document.getElementById("messages").innerHTML += "<br>";
-    var message = document.createElement("li");
-    message.appendChild(document.createTextNode(message_text));
-    document.getElementById("messages").appendChild(message);
-}
 
 export function tree() {
     if (player.inventory_dictionary["Axe"] == 1) {
