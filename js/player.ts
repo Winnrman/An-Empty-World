@@ -1,6 +1,39 @@
-const player = getPlayerData() ?? resetPlayer({});
+const player = getPlayerData() ?? resetPlayer(<Player>{});
 
-export default player;
+type InventoryItem = 
+    "Wood" | "Stone" | "Fish" | "Meat" |
+    "Iron" | "Copper" | "Tin" | "Silver" | "Gold" |
+    "Emerald" | "Ruby" | "Diamond" |
+    "Axe" | "Pickaxe" | "Hunting Rifle" | "Fishing Pole";
+
+type EquipmentType = "Helmet" | "Chestplate" | "Leggings" | "Boots" | "Weapon";
+
+type Player = {
+    xp: number;
+    level: number;
+    neededLevelUpXP: number;
+    boughtInventoryUpgrade: number;
+    inventory_dictionary: Record<InventoryItem, number>;
+    gold: number;
+    fullInventory: boolean;
+    maxInventorySize: number;
+    maxStamina: number;
+    stamina: number;
+    ownedEquipment: string[];
+    equipment: Record<EquipmentType, string>;
+    axeHealth: number;
+    fishingPoleHealth: number;
+    huntingRifleHealth: number;
+    pickaxeHealth: number;
+    playerHealth: number;
+    playerAttack: number;
+    playerDefense: number;
+    playerSpeed: number;
+    armorBonus: number;
+    isQuesting: boolean;
+}
+
+export default <Player>player;
 
 export function saveData() {
     localStorage["player"] = JSON.stringify(player);
@@ -8,7 +41,7 @@ export function saveData() {
 
 function getPlayerData() {
     const playerData = localStorage["player"];
-    return playerData && JSON.parse(playerData);
+    return playerData && <Player>JSON.parse(playerData);
 }
 
 export function resetData() {
@@ -16,11 +49,10 @@ export function resetData() {
     saveData();
 }
 
-function resetPlayer(player) {
+function resetPlayer(player: Player): Player {
     player.xp = 0;
     player.level = 1;
     player.neededLevelUpXP = 0;
-    player.inventory = [];
     player.boughtInventoryUpgrade = 0;
     player.inventory_dictionary = {
         "Wood": 0,
@@ -46,8 +78,14 @@ function resetPlayer(player) {
     player.maxStamina = 25;
     player.stamina = 25; //this goes down as you quest, can be upgraded to 50, 75 and 100
 
-    player.ownedEquipment = {};
-    player.equipment = {};
+    player.ownedEquipment = [];
+    player.equipment = {
+        Helmet: "",
+        Chestplate: "",
+        Leggings: "",
+        Boots: "",
+        Weapon: "",
+    };
 
     player.axeHealth = 20;
     player.fishingPoleHealth = 10;

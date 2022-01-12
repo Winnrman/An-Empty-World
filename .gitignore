@@ -1,3 +1,7 @@
+# Custom
+dist/**/*
+.vs/**/*
+
 # Notes
 *.txt
 .txt

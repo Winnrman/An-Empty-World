@@ -1,0 +1,30 @@
+{
+  "name": "an-empty-world",
+  "version": "1.0.0",
+  "description": "Main Story:\r You wake up in a strange place, surrounded by debris. Unaware of how you got there, it becomes immediately aware that you're not where you should be. Your objective becomes one thing and one thing only; survive. Using your knowledge of tool building, combat, and various other skills, you must find a way to survive and escape this empty world.",
+  "private": true,
+  "scripts": {
+    "start": "webpack serve --open",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Winnrman/An-Empty-World.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Winnrman/An-Empty-World/issues"
+  },
+  "homepage": "https://github.com/Winnrman/An-Empty-World#readme",
+  "devDependencies": {
+    "css-loader": "^6.5.1",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.4",
+    "webpack": "^5.66.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.7.3"
+  }
+}

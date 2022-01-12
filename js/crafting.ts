@@ -1,10 +1,10 @@
-import { addMessage } from "./activities.js";
-import items from "./items.js";
-import { addToOwnedEquipment } from "./maintenance.js";
-import player from "./player.js";
+import { addMessage } from "./activities";
+import items from "./items";
+import { addToOwnedEquipment } from "./maintenance";
+import player from "./player";
 
 function getSelectedCraftable() {
-    var selectedName = document.getElementById("craftingSelect").value;
+    var selectedName = (<HTMLInputElement>document.getElementById("craftingSelect")).value;
     return items.find(x => x.name === selectedName);
 }
 
