@@ -74,11 +74,11 @@ export function loadOptionsFromOwnedEquipment() {
     updateArmour();
 }
 
-export function hasEquipmentInInventory(itemName) {
-    return Object.keys(player.ownedEquipment).some(x => x.includes(itemName));
+export function ownsEquipment(itemName) {
+    return Object.values(player.ownedEquipment).some(x => x.includes(itemName));
 }
 export function hasEquiped(itemName) {
-    return Object.keys(player.equipment).some(x => x.includes(itemName));
+    return Object.values(player.equipment).includes(itemName);
 }
 
 setInterval(function () {
@@ -96,12 +96,14 @@ function updateArmour() {
     player.equipment.Chestplate = document.getElementById("ChestplateSelect").value;
     player.equipment.Leggings = document.getElementById("LeggingsSelect").value;
     player.equipment.Boots = document.getElementById("BootsSelect").value;
+    player.equipment.Shield = document.getElementById("ShieldSelect").value;
     player.equipment.Weapon = document.getElementById("WeaponSelect").value;
 
     player.playerDefense = (items.find(x => x.name === player.equipment.Helmet)?.armor || 0)
                          + (items.find(x => x.name === player.equipment.Chestplate)?.armor || 0)
                          + (items.find(x => x.name === player.equipment.Leggings)?.armor || 0)
-                         + (items.find(x => x.name === player.equipment.Boots)?.armor || 0);
+                         + (items.find(x => x.name === player.equipment.Boots)?.armor || 0)
+                         + (items.find(x => x.name === player.equipment.Shield)?.armor || 0);
 
     player.playerAttack = 1 + (items.find(x => x.name === player.equipment.Weapon)?.attack || 0)
 

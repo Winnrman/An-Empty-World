@@ -117,6 +117,13 @@ export default [
         rarity: "common",
         price: 10,
         armor: 1 + 3,
+        crafting: {
+            requiredLevel: 1,
+            ingredients: {
+                "Wood": 5,
+                "Iron": 1
+            }
+        }
     },
     {
         name: "Iron Chestplate",
@@ -125,6 +132,13 @@ export default [
         rarity: "uncommon",
         price: 20,
         armor: 2 + 3,
+        crafting: {
+            requiredLevel: 5,
+            ingredients: {
+                "Wood": 2,
+                "Iron": 5
+            }
+        }
     },
     {
         name: "Bronze Chestplate",
@@ -182,6 +196,13 @@ export default [
         rarity: "common",
         price: 10,
         armor: 1 + 2,
+        crafting: {
+            requiredLevel: 1,
+            ingredients: {
+                "Wood": 3,
+                "Iron": 1
+            }
+        }
     },
     {
         name: "Iron Leggings",
@@ -190,6 +211,13 @@ export default [
         rarity: "uncommon",
         price: 20,
         armor: 2 + 2,
+        crafting: {
+            requiredLevel: 5,
+            ingredients: {
+                "Wood": 1,
+                "Iron": 3
+            }
+        }
     },
     {
         name: "Bronze Leggings",
@@ -262,6 +290,13 @@ export default [
         rarity: "uncommon",
         price: 20,
         armor: 2 + 1,
+        crafting: {
+            requiredLevel: 5,
+            ingredients: {
+                "Wood": 1,
+                "Iron": 3
+            }
+        },
     },
     {
         name: "Bronze Boots",

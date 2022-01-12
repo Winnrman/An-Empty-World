@@ -27,10 +27,8 @@ function calculateInventorySpace() {
 }
 
 setInterval(function () {
-    document.getElementById("inventory").innerHTML = inventory;
     document.getElementById("gold").innerHTML = player.gold;
     player.inventory.sort();
-    checkLevelUnlocks();
     checkDarkMode();
 
     document.getElementById("axeDurability").innerHTML = "Axe: " + player.axeHealth + "/20";
@@ -39,43 +37,19 @@ setInterval(function () {
     document.getElementById("fishingPoleDurability").innerHTML = "&nbsp;| Fishing Pole: " + player.fishingPoleHealth + "/10";
     document.getElementById("inventoryHeader").innerHTML = "Inventory (" + calculateInventorySpace() + "/" + player.maxInventorySize + ")";
 
-    document.getElementById("inventory").innerHTML = "Axe x" + player.inventory_dictionary["Axe"] + "&nbsp;|" + "&nbsp;Pickaxe x" + player.inventory_dictionary["Pickaxe"] + "&nbsp;|" + "&nbsp;Rifle x" + player.inventory_dictionary["Hunting Rifle"] + "&nbsp;|" + "&nbsp;Fishing Pole x" + player.inventory_dictionary["Fishing Pole"] + "&nbsp;|" + "&nbsp;Meat x" + player.inventory_dictionary["Meat"] + "&nbsp;|" + "&nbsp;Wood x" + player.inventory_dictionary["Wood"] + "&nbsp;|" + "&nbsp;Stone x" + player.inventory_dictionary["Stone"] + "&nbsp;|" + "&nbsp;Fish x" + player.inventory_dictionary["Fish"] + "&nbsp;|" + "&nbsp;Iron x" + player.inventory_dictionary["Iron"] + "&nbsp;|" + "&nbsp;Copper x" + player.inventory_dictionary["Copper"] + "&nbsp;|" + "&nbsp;Tin x" + player.inventory_dictionary["Tin"] + "&nbsp;|" + "&nbsp;Silver x" + player.inventory_dictionary["Silver"] + "&nbsp;|" + "&nbsp;Gold x" + player.inventory_dictionary["Gold"] + "&nbsp;|" + "&nbsp;Emerald x" + player.inventory_dictionary["Emerald"] + "&nbsp;|" + "&nbsp;Ruby x" + player.inventory_dictionary["Ruby"] + "&nbsp;|" + "&nbsp;Diamond x" + player.inventory_dictionary["Diamond"];
+    const getPart = (type) => `${type} x${player.inventory_dictionary[type]}`;
+    const getParts = (types) => types.map(x => getPart(x)).join("&nbsp;|&nbsp;");
+
+    document.getElementById("inventory-tools").innerHTML = getParts(["Axe", "Pickaxe", "Hunting Rifle", "Fishing Pole"]);
+    document.getElementById("inventory-basic").innerHTML = getParts(["Wood", "Fish", "Meat", "Stone"]);
+    document.getElementById("inventory-ores").innerHTML = getParts(["Iron", "Copper", "Tin", "Silver", "Gold"]);
+    document.getElementById("inventory-gems").innerHTML = getParts(["Emerald", "Ruby", "Diamond"]);
 }, 100);
 
 setInterval(function () {
     saveData();
 }, 5000);
 
-function checkLevelUnlocks() {
-    if (player.level >= 2) {
-        //add 'Go Hunting' button to activities
-        document.getElementById("goHuntingButton").style.visibility = "visible";
-        document.getElementById("huntingRifle").style.visibility = "visible";
-        //sell meat button
-        document.getElementById("sellMeat").style.visibility = "visible";
-    }
-    if (player.level >= 3) {
-        // add 'Go Mining' button to activities
-        document.getElementById("goMiningButton").style.visibility = "visible";
-        document.getElementById("pickaxe").style.visibility = "visible";
-
-        //sell ores button
-        document.getElementById("sellOres").style.visibility = "visible";
-        document.getElementById("sellStone").style.visibility = "visible";
-    }
-    if (player.level >= 4) {
-        document.getElementById("inventoryUpgrade").style.visibility = "visible";
-    }
-    if (player.level >= 5) {
-        for (var i = 0; i < 4; i++) {
-            document.getElementsByClassName("level5Crafting")[i].style.visibility = "visible";
-            document.getElementsByClassName("level5Crafting")[i].style.display = "block";
-        }
-    }
-    if (player.level > 7) {
-        document.getElementById("goQuestingButton").style.visibility = "visible";
-    }
-}
 
 function checkDarkMode() {
     var hours = new Date().getHours();
@@ -87,3 +61,5 @@ function checkDarkMode() {
 }
 
 loadOptionsFromOwnedEquipment();
+activities.checkLevelUnlocks();
+crafting.renderCraftables();
