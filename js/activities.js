@@ -127,7 +127,7 @@ export function goMining() {
                     player.inventory_dictionary[oreDictionary[oreRandomizer]]++;
                 }
                 // inventory.push(oreDictionary[oreRandomizer]);
-                player.inventory_dictionary[oreDictionary[oreRandomizer]] += 1;
+                // player.inventory_dictionary[oreDictionary[oreRandomizer]] += 1;
                 player.xp += xpTable[oreDictionary[oreRandomizer]];
 
                 player.pickaxeHealth -= 1;
