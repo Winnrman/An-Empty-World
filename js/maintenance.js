@@ -56,7 +56,7 @@ export function addToOwnedEquipment(itemName, itemType) {
 }
 
 function addEquipmentOption(itemName, itemType, isEquipped) {
-    var selectElement = document.getElementById(`${itemType}Select`);
+    var selectElement = document.getElementById(`${itemType}Select`); //this doesn't work for chestplates or leggings because the id is different
     var newOption = document.createElement("option");
     newOption.text = itemName;
     if (isEquipped)
