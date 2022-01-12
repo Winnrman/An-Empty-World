@@ -88,12 +88,9 @@
             <h3 class="subheader" id="sellHeader">Sell</h3>
             <button id="sellWood" class="store button" onclick="store.sell('Wood')">Sell Wood</button>
             <button id="sellFish" class="store button" onclick="store.sell('Fish')">Sell Fish</button>
-            <button style="visibility: hidden;" id="sellMeat" class="store button" onclick="store.sell('Meat')">Sell
-                Meat</button>
-            <button style="visibility: hidden;" id="sellStone" class="store button" onclick="store.sell('Stone')">Sell
-                Stone</button>
-            <button style="visibility: hidden;" id="sellOres" class="store button" onclick="store.sell('Ores')">Sell
-                Ores</button>
+            <button style="visibility: hidden;" id="sellMeat" class="store button" onclick="store.sell('Meat')">Sell Meat</button>
+            <button style="visibility: hidden;" id="sellStone" class="store button" onclick="store.sell('Stone')">Sell Stone</button>
+            <button style="visibility: hidden;" id="sellOres" class="store button" onclick="store.sell('Ores')">Sell Ores</button>
 
         </span>
     </div>
@@ -144,28 +141,28 @@
         <div id="armor">
             <span style="display: inline-flex">
                 <p>Helmet &nbsp;</p>
-                <select id="helmetSelect">
+                <select id="HelmetSelect" class="EquipmentSelect">
                     <option value="">None</option>
                 </select>
             </span>
             <br>
             <span style="display: inline-flex">
                 <p>Chestplate &nbsp;</p>
-                <select id="chestSelect">
+                <select id="ChestSelect" class="EquipmentSelect">
                     <option value="">None</option>
                 </select>
             </span>
             <br>
             <span style="display: inline-flex">
                 <p>Leggings &nbsp;</p>
-                <select id="legsSelect">
+                <select id="LegsSelect" class="EquipmentSelect">
                     <option value="">None</option>
                 </select>
             </span>
             <br>
             <span style="display: inline-flex">
                 <p>Boots &nbsp;</p>
-                <select id="bootsSelect">
+                <select id="BootsSelect" class="EquipmentSelect">
                     <option value="">None</option>
                 </select>
         </div>
@@ -176,21 +173,21 @@
         <div id="weapons">
             <span style="display: inline-flex">
                 <p>Main &nbsp;</p>
-                <select id="weaponSelect">
+                <select id="WeaponSelect" class="EquipmentSelect">
                     <option value="">None</option>
                 </select>
             </span>
             <br>
             <span style="display: inline-flex">
                 <p>Offhand &nbsp;</p>
-                <select id="offhandSelect">
+                <select id="OffhandSelect" class="EquipmentSelect">
                     <option value="">None</option>
                 </select>
             </span>
             <br>
             <span style="display: inline-flex">
                 <p>Ranged &nbsp;</p>
-                <select id="rangedSelect">
+                <select id="RangedSelect" class="EquipmentSelect">
                     <option value="">None</option>
                 </select>
         </div>
@@ -202,27 +199,21 @@
             <h4 style="margin-top: 7px; " id="craftingLevel">Level <span id="craftingLevelValue">1</span></h4>
         </span>
         <span style="display:  inline-flex; ">
-            <h3 id="itemToCraft">Item to Craft: &nbsp;</h3><select onChange="activities.doCrafting1()"
-                id="craftingSelect">
+            <h3 id="itemToCraft">Item to Craft: &nbsp;</h3><select onChange="crafting.displayCraftingNeededMaterials()" id="craftingSelect">
                 <option value="">Select an item</option>
                 <option value="Wooden Sword">Wooden Sword</option>
                 <option value="Wooden Helmet">Wooden Helmet</option>
                 <option value="Wooden Boots">Wooden Boots</option>
-                <!--Iron Items craftable after level 5-->
-                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Sword">Iron Sword
-                </option>
-                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Helmet">Iron
-                    Helmet</option>
-                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Shield">Iron
-                    Shield</option>
-                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Cutlass">Iron
-                    Cutlass</option>
+                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Sword">Iron Sword</option>
+                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Helmet">Iron Helmet</option>
+                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Shield">Iron Shield</option>
+                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Cutlass">Iron Cutlass</option>
             </select>
             <div id="requiredMaterials">
                 <!--inside here, check inventory for needed materials. If has all, craft button is clickable.-->
             </div>
         </span>
-        <button id="craftingButton" onclick="activities.doCrafting2()">Craft</button>
+        <button id="craftingButton" onclick="crafting.doCrafting()">Craft</button>
         <p id="neededMaterials">Needed Materials: &nbsp;</p>
     </div>
 

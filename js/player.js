@@ -40,17 +40,14 @@ function resetPlayer(player) {
         "Hunting Rifle": 0,
         "Fishing Pole": 0,
     },
-        player.gold = 100;
+    player.gold = 100;
     player.fullInventory = false;
     player.maxInventorySize = 25; //can be upgraded to 50, 75 or 100
     player.maxStamina = 25;
     player.stamina = 25; //this goes down as you quest, can be upgraded to 50, 75 and 100
 
-    // player.messages = [];
-    // player.fishObtained = 0;
-    // player.woodObtained = 0;
-    // player.stoneObtained = 0;
-    // player.meatObtained = 0;
+    player.ownedEquipment = {};
+    player.equipment = {};
 
     player.axeHealth = 20;
     player.fishingPoleHealth = 10;
@@ -61,6 +58,8 @@ function resetPlayer(player) {
     player.playerDefense = 1;
     player.playerSpeed = 1;
     player.armorBonus = 0;
+
+    player.isQuesting = false;
 
     return player;
 }

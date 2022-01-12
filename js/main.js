@@ -1,11 +1,15 @@
 import * as achievements from "./achievements.js"; // this may look unnecessary but it's needed to load the file to start the interval. We might want to make this explicit by calling the start interval in this file
 import * as activities from "./activities.js";
+import * as crafting from "./crafting.js";
 import player, { saveData, resetData } from "./player.js";
 import * as store from "./store.js";
 import * as questing from "./questing.js";
+import { loadOptionsFromOwnedEquipment } from "./maintenance.js";
 
+window.player = player;
 window.store = store;
 window.activities = activities;
+window.crafting = crafting;
 window.questing = questing;
 window.saveData = saveData;
 window.resetData = function () {
@@ -131,25 +135,4 @@ function checkDarkMode() {
     }
 }
 
-// TODO: Rework Needed!
-document.getElementById("helmetSelect").addEventListener("change", function () {
-    var helmetName = document.getElementById("helmetSelect").value;
-    for (i = 0; i < obtainableItems.length; i++) {
-        if (obtainableItems["Helmets"][i].name == helmetName) {
-            // when user changes helmet, update player defense by removing old helmet defense and adding new one
-            if (helmetName == "") {
-                player.playerDefense -= obtainableItems["Helmets"][i].armor;
-            }
-            else {
-                console.log("Helmet: " + obtainableItems["Helmets"][i].name);
-                // playerDefense -= obtainableItems["Helmets"][i].armor;
-                var helmetDefense = obtainableItems["Helmets"][i].armor;
-                player.playerDefense += helmetDefense;
-                document.getElementById("playerDefenseValue").innerHTML += helmetDefense;
-            }
-        }
-    }
-});
-
-
-
+loadOptionsFromOwnedEquipment();

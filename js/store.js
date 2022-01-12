@@ -1,6 +1,6 @@
 import { addMessage } from "./activities.js";
 import { randomLootDrop, finalItem } from "./events.js";
-import { isInInventory } from "./maintenance.js";
+import { addToOwnedEquipment } from "./maintenance.js";
 import player from "./player.js";
 
 export function buyAxe() {
@@ -73,7 +73,7 @@ export function buySpecialDeal() {
     if (player.gold >= 1000) {
         randomLootDrop();
         //add page break after level up message
-        isInInventory(finalItem.name, finalItem.type); //this handles adding item and displaying message
+        addToOwnedEquipment(finalItem.name, finalItem.type); //this handles adding item and displaying message
         player.gold -= 1000;
     } else {
         addMessage("You do not have enough gold to buy this item!");

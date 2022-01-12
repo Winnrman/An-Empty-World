@@ -1,6 +1,5 @@
 import { enemy_dictionary } from "./enemies.js";
 import { randomLootDrop, finalItem } from "./events.js";
-import { isInInventory } from "./maintenance.js";
 import player from "./player.js";
 
 //get inventory from main.js file
@@ -39,7 +38,6 @@ export function tree() {
         } else {
             if (player.fullInventory == false) {
                 player.inventory_dictionary["Wood"] += 1;
-                woodAmount++;
                 player.axeHealth -= 1;
                 player.xp += 10;
             } else {
@@ -126,9 +124,7 @@ export function goMining() {
                 };
                 if (xpTable[oreDictionary[oreRandomizer]] > 1) {
                     addMessage("You mined some " + oreDictionary[oreRandomizer] + "!");
-                    if (oreDictionary[oreRandomizer] == "Iron") {
-                        ironAmount++;
-                    }
+                    player.inventory_dictionary[oreDictionary[oreRandomizer]]++;
                 }
                 // inventory.push(oreDictionary[oreRandomizer]);
                 player.inventory_dictionary[oreDictionary[oreRandomizer]] += 1;
@@ -291,94 +287,4 @@ function doEnemyAttack() {
     //     player.playerHealth = newPlayerHealth;
     //     document.getElementById("playerHealthValue").innerHTML = player.playerHealth;
     // }
-}
-
-// document.getElementById("craftingButton").disabled = "disabled";
-// document.getElementById("craftingButton").setAttribute("class", "disabled");
-let woodAmount = 0;
-let ironAmount = 0;
-
-
-export function doCrafting1() {
-    var select = document.getElementById("craftingSelect").value;
-    if (select == "Wooden Sword") {
-        woodNeeded = 2;
-        setInterval(function () {
-            document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + inventory_dictionary['Wood'] + "/" + woodNeeded;
-        }, 100);
-    }
-    if (select == "Wooden Helmet") {
-        woodNeeded = 2; //TODO: improve system
-        ironNeeded = 1;
-        setInterval(function () {
-            document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + player.inventory_dictionary['Wood'] + "/" + woodNeeded + " Iron: " + player.inventory_dictionary['Iron'] + "/" + ironNeeded;
-        }, 100);
-    }
-    else if (select == "Wooden Boots") {
-        woodNeeded = 3;
-        ironNeeded = 2;
-        setInterval(function () {
-            document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + player.inventory_dictionary['Wood'] + "/" + woodNeeded + " Iron: " + player.inventory_dictionary['Iron'] + "/" + ironNeeded;
-        }
-            , 100);
-    }
-    else if (select == "Iron Sword") {
-        woodNeeded = 3;
-        ironNeeded = 6;
-        setInterval(function () {
-            document.getElementById("neededMaterials").innerHTML = "Needed Materials: Wood: " + player.inventory_dictionary['Wood'] + "/" + woodNeeded + " Iron: " + player.inventory_dictionary['Iron'] + "/" + ironNeeded;
-        }
-            , 100);
-    }
-}
-
-export function doCrafting2() {
-    var item = document.getElementById("craftingSelect").value;
-    switch (item) {
-        case "Wooden Sword":
-            if (woodAmount >= 2) {
-                inventory.splice(1, 2, "Wood");
-                addMessage("You crafted a Wooden Sword!");
-                woodAmount -= 2;
-            }
-            break;
-        case "Wooden Helmet":
-            if ((woodAmount >= 2) && (ironAmount >= 1)) {
-                inventory.splice(1, 2, "Wood");
-                inventory.splice(1, 1, "Iron");
-                addMessage("You crafted a Wooden Helmet!");
-                isInInventory("Wooden Helmet", "Helmet");
-                woodAmount -= 2;
-                ironAmount -= 1;
-            }
-            else {
-                addMessage("You don't have enough materials to craft a Wooden Helmet!");
-            }
-            break;
-        case "Wooden Boots":
-            if ((woodAmount >= 3) && (ironAmount >= 2)) {
-                inventory.splice(1, 3, "Wood");
-                inventory.splice(1, 2, "Iron");
-                addMessage("You crafted Wooden Boots!");
-                isInInventory("Wooden Boots", "Boots");
-                woodAmount -= 3;
-                ironAmount -= 2;
-            }
-            else {
-                addMessage("You do not have enough resources to craft Wooden Boots!");
-            }
-            break;
-        case "Iron Sword":
-            if ((ironAmount >= 6) && (woodAmount >= 3)) {
-                inventory.splice(1, 3, "Wood");
-                inventory.splice(1, 6, "Iron");
-                addMessage("You crafted an Iron Sword!");
-                isInInventory("Iron Sword", "Sword");
-                woodAmount -= 3;
-                ironAmount -= 6;
-            }
-            else {
-                addMessage("You do not have enough resources to craft an Iron Sword!");
-            }
-    }
 }

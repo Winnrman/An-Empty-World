@@ -1,23 +1,20 @@
 import { addMessage } from "./activities.js";
 import { enemy_dictionary } from "./enemies.js";
 import { randomLootDrop, finalItem } from "./events.js";
-import { isInInventory } from "./maintenance.js";
-import * as player from "./player.js";
+import { addToOwnedEquipment } from "./maintenance.js";
+import * as player  from "./player.js";
 
 function sleep(ms) {
     // addMessage("<sleep>")
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 var readFirstMessage = false;
-// var isQuesting = false;
-
-export var isQuesting = false;
 
 export async function doQuest() {
     //check to see if player is wearing armor
     // if ((document.getElementById("helmetSelect").value != "") || (document.getElementById("chestSelect").value != "") || (document.getElementById("legsSelect").value != "") || (document.getElementById("bootsSelect").value != "")) {
     //     addMessage("You must have armor on to go on a quest!");
-    //     isQuesting = false;
+    //     player.isQuesting = false;
     // }
     if (player.stamina > 0) {
 
@@ -25,11 +22,11 @@ export async function doQuest() {
             addMessage("You begin off on your quest, walking through this empty and barren world.");
             readFirstMessage = true;
         }
-        isQuesting = true;
+        player.isQuesting = true;
         await sleep(3000);
         var randomEvent = Math.floor(Math.random() * 50) + 1;
         // console.log("random num between 0-50 is " + randomEvent);
-        if (isQuesting) {
+        if (player.isQuesting) {
             if (randomEvent <= 10) {
                 await sleep(2000);
                 addMessage("You walk for a little while...");
@@ -92,9 +89,9 @@ export async function doQuest() {
     }
     else if (player.stamina <= 0) {
         addMessage("You are too tired to continue on your quest.");
-        isQuesting = false;
+        player.isQuesting = false;
     }
-    // else if (isQuesting == true) {
+    // else if (player.isQuesting == true) {
     //     addMessage("You are already on a quest!");
     // }
 
@@ -129,7 +126,7 @@ export async function doQuest() {
             await sleep(2000);
             addMessage("You were defeated by the " + enemy_dictionary[enemy].name + "!");
             endQuest();
-            isQuesting = false;
+            player.isQuesting = false;
             readFirstMessage = false;
         }
     }
@@ -153,7 +150,7 @@ export async function doQuest() {
         // let loot = randomLootDrop();
         if (finalItem.rarity == "rare" || finalItem.rarity == "legendary") {
             addMessage("You found a " + finalItem.name + "! You feel lucky!");
-            isInInventory(finalItem.name, finalItem.type);
+            addToOwnedEquipment(finalItem.name, finalItem.type);
             player.stamina--;
             doQuest();
         }
@@ -166,7 +163,7 @@ export async function doQuest() {
     function basicLootDrop() {
         if (finalItem.rarity == "common" || finalItem.rarity == "uncommon") {
             addMessage("You found a " + finalItem.name + "!");
-            isInInventory(finalItem.name, finalItem.type);
+            addToOwnedEquipment(finalItem.name, finalItem.type);
             player.stamina--;
             doQuest();
         }
