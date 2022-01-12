@@ -106,7 +106,7 @@ setInterval(function () {
     var price = 10000 + (10000 * boughtTimes);
     boughtTimes = player.boughtInventoryUpgrade;
     if (boughtTimes < 3) {
-        console.log("Times bought: " + boughtTimes + "and " + player.boughtInventoryUpgrade);
+        // console.log("Times bought: " + boughtTimes + "and " + player.boughtInventoryUpgrade);
         document.getElementById("inventoryUpgrade").innerHTML = "Buy Inventory Upgrade  [" + price + "]&nbsp;"
             + "(" + boughtTimes + " / 3)";
     }
