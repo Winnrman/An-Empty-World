@@ -5,7 +5,10 @@ export const enemy_dictionary = {
         attack: 2,
         defeatExperience: 5,
         defense: 1,
-        gold: Math.floor(Math.random() * 25) + 1,
+        gold: {
+			min: 20,
+			max: 25,
+		}
         speed: 1,
     },
     "Troll": {
@@ -13,7 +16,10 @@ export const enemy_dictionary = {
         health: 30,
         attack: 7,
         defense: 20,
-        gold: Math.floor(Math.random() * 100) + 1,
+		gold: {
+			min: 80,
+			max: 100,
+		}
         speed: 0.4,
         defeatExperience: 10,
     },
@@ -23,7 +29,10 @@ export const enemy_dictionary = {
         attack: 15,
         defense: 10,
         speed: 1,
-        gold: Math.floor(Math.random() * 100) + 1,
+		gold: {
+			min: 80,
+			max: 100,
+		}
         defeatExperience: 10,
     },
     "Knight": {
@@ -31,7 +40,10 @@ export const enemy_dictionary = {
         health: 150,
         attack: 40,
         defense: 25,
-        gold: Math.floor(Math.random() * 200) + 1,
+		gold: {
+			min: 175,
+			max: 200,
+		}
         speed: 2.5,
     },
     "King": {
@@ -57,7 +69,10 @@ export const enemy_dictionary = {
         },
         defense: 100,
         speed: 3,
-        gold: Math.floor(Math.random() * 500) + 1,
+		gold: {
+			min: 400,
+			max: 500,
+		}
         defeatExperience: 1200,
     }
 };
