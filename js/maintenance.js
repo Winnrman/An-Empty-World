@@ -1,5 +1,5 @@
-import { addMessage } from "./activities.js";
 import items from "./items.js";
+import { addMessage } from './messages.js';
 import player from "./player.js";
 
 function checkInventorySize() {

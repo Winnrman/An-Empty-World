@@ -46,17 +46,6 @@ setInterval(function () {
     saveData();
 }, 5000);
 
-let clearMessageInterval = setInterval(function () {
-    document.getElementById("messages").innerHTML = [];
-}, 8000); //clears messages every 15 seconds
-
-setInterval(function () { // checks to see if messages is full.
-    if (document.getElementById("messagesContainer").style.height >= '200px') {
-        alert("You have too many messages. Please delete some.");
-        document.getElementById("messages").innerHTML = [];
-    }
-}, 1000);
-
 function checkLevelUnlocks() {
     if (player.level >= 2) {
         //add 'Go Hunting' button to activities

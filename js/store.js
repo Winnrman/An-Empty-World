@@ -1,6 +1,6 @@
-import { addMessage } from "./activities.js";
 import { randomLootDrop, finalItem } from "./events.js";
 import { addToOwnedEquipment } from "./maintenance.js";
+import { addMessage } from './messages.js';
 import player from "./player.js";
 
 export function buyAxe() {
