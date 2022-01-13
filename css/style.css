@@ -25,10 +25,15 @@ body{
     /* flex-direction : row-reverse; */
     /* margin-top:-40px; */
     margin:20px;
-    border:1px solid black;
+    border:1px solid rgb(255, 255, 255);
     /* place column on right of page */
     position: absolute;
     right: 0;
+}
+#messagesContainer li{
+    text-align: left;
+    padding-top:5px;
+    /* padding-bottom:5px; */
 }
 .subheader{
     margin-top:4px;
@@ -180,3 +185,7 @@ footer *:hover{
     opacity: 0;
     transition: visibility 0s 1s, opacity 1s linear;
   }
+#messages li{
+    margin-bottom:10px;
+    margin-top:10px;
+}
