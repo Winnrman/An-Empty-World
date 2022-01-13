@@ -39,18 +39,19 @@ body{
     margin-top:4px;
     padding-left: 10px;
 }
-#progressBar{
+.progressBar{
     width: 95%;
     height: 13px;
-    /* display:block;
-    margin: 0 auto; */
     border:1px solid gray;
 }
-#progress{
+.progressBar div {
     height:100%;
+}
+#progressXp{
     background-color:rgb(196, 196, 196);
-    width:0%;
-    /* transform: translate(0,0) */
+}
+#progressStamina{
+    background-color:rgb(46, 120, 231);
 }
 .container{
     width: 73%;
@@ -188,4 +189,29 @@ footer *:hover{
 #messages li{
     margin-bottom:10px;
     margin-top:10px;
+}
+
+#achievements .progressBar {
+    width: 100px;
+}
+#achievements progress {
+    background-color:black;
+}
+
+#achievements progress::-webkit-progress-bar {
+    background-color: white;
+    border: 1px solid black;
+}
+
+#achievements progress::-moz-progress-bar {
+    background-color: white;
+    border: 1px solid black;
+}
+
+#achievements progress::-webkit-progress-value {
+    background-color:rgb(3, 56, 136);
+}
+
+#achievements progress::-moz-progress-value {
+    background-color:rgb(3, 56, 136);
 }

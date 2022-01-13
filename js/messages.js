@@ -23,16 +23,18 @@ export function addMessage(message_text) {
     document.getElementById("messages").appendChild(message);
 }
 
-setInterval(() => {
-    const minTimeForFadeout = new Date(new Date().getTime() - maxMessageTime);
-    for (let message of messages.filter(x => !x.isFading && x.time < minTimeForFadeout)) {
-        document.getElementById(`message-${message.id}`).classList.add("fadeOut");
-        message.isFading = true;
-    }
-
-    const minTimeForDelete = new Date(new Date().getTime() - maxMessageTime - messageFadeoutTime);
-    for (let message of messages.filter(x => x.time < minTimeForDelete)) {
-        document.getElementById(`message-${message.id}`).remove();
-        messages.splice(messages.indexOf(message), 1);
-    }
-}, 100)
+export function startClearInterval() {
+    setInterval(() => {
+        const minTimeForFadeout = new Date(new Date().getTime() - maxMessageTime);
+        for (let message of messages.filter(x => !x.isFading && x.time < minTimeForFadeout)) {
+            document.getElementById(`message-${message.id}`).classList.add("fadeOut");
+            message.isFading = true;
+        }
+    
+        const minTimeForDelete = new Date(new Date().getTime() - maxMessageTime - messageFadeoutTime);
+        for (let message of messages.filter(x => x.time < minTimeForDelete)) {
+            document.getElementById(`message-${message.id}`).remove();
+            messages.splice(messages.indexOf(message), 1);
+        }
+    }, 100);
+}

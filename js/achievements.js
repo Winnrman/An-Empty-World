@@ -1,51 +1,132 @@
+import * as dom from "./dom.js";
 import player, { addGold } from "./player.js";
-import { hasEquiped } from "./maintenance.js";
+import { hasEquiped } from "./equipment.js";
 import { addMessage } from './messages.js';
 
-export const completedAchievements = [];
+const achievements = [
+    {
+        id: "iron_armor",
+        name: () => "Iron Armor",
+        reward: () => 250,
+        getProgress: () => hasEquiped("Iron Helmet") + hasEquiped("Iron Chestplate")  + hasEquiped("Iron Leggings") + hasEquiped("Iron Boots"),
+        levels: [4]
+    },
+    {
+        id: "cut_down_trees",
+        name: (level, levelValue) => `Cut Down ${levelValue} Trees`,
+        reward: (level, levelValue) => levelValue,
+        getProgress: () => player.obtainedWood,
+        levels: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
+    }
+];
 
-function achievement_iron_armor() {
-    if (completedAchievements.includes("achievement_iron_armor"))
-        return;
-    
-    if (!hasEquiped("Iron Helmet") || !hasEquiped("Iron Chestplate") || !hasEquiped("Iron Leggings") || !hasEquiped("Iron Boots"))
-        return;
+const achievementsToCheck = achievements.map(achievement => ({
+    ...achievement,
+    progress: 0,
+    currentLevel: 0,
+    currentValue: 0
+}));
 
-    addMessage("You have completed the Iron Armor achievement!");
-    addGold(250);
-    document.getElementById("gold").innerHTML = gold;
-    completedAchievements.push("achievement_iron_armor");
+function checkAchievement(achievement) {
+    const levels = achievement.levels || [0];
+    const levelsCompleted = player.completedAchievements[achievement.id] || 0;
+    if (levelsCompleted >= levels.length)
+        return true;
+
+    for (let level = levelsCompleted; level < levels.length; level++) {
+        const levelValue = levels[level];
+        const progress = achievement.getProgress(level, levelValue);
+        if (progress < levelValue) {
+            achievement.progress = progress;
+            achievement.currentLevel = level;
+            return false;
+        }
+        
+        addMessage(`You have completed the ${achievement.name(level, levelValue)} achievement!`);
+        addGold(achievement.reward(level, levelValue));
+        player.completedAchievements[achievement.id] = level + 1;
+    }
+
+    return false;
 }
 
-var interval = setInterval(function () {
-    achievement_iron_armor();
-    if (completedAchievements.includes("achievement_iron_armor")) {
-        clearInterval(interval);
+export function startCheckInterval() {
+    checkAchievements();
+    
+    const interval = setInterval(function () {
+        checkAchievements();
+
+        if (achievementsToCheck.length === 0) {
+            clearInterval(interval);
+        }
+    }, 20000);
+}
+
+export function checkAchievements() {
+    for (let achievement of achievementsToCheck.slice()) {
+        if (checkAchievement(achievement))
+            achievementsToCheck.splice(achievementsToCheck.indexOf(achievement), 1);
     }
-}, 2000);
 
-// var timesRun = 0;
-// var achievementMaster = setInterval(function () { //needs work
-//     achievement_iron_armor();
-//     timesRun++;
-//     if (timesRun > 2) {
-//         clearInterval(achievementMaster);
-//     }
-// }, 1000);
+    renderAchievements();
+}
 
-// function achievement_cut_down_trees(woodObtained) {
+function renderAchievements() {
+    const achievementsInProgress = getAchievementsInProgress();
+    const completedAchievements = getCompletedAchievements();
 
-//     if (woodObtained == 500 || woodObtained == 1000 || woodObtained == 1500 || woodObtained == 2000 || woodObtained == 2500 || woodObtained == 3000 || woodObtained == 3500 || woodObtained == 4000 || woodObtained == 4500 || woodObtained == 5000) {
-//         var achievementMessage = "You have completed the Cut Down " + woodObtained + " Trees achievement!";
-//         //add page break after level up message
-//         document.getElementById("messages").innerHTML += "<br>";
-//         var message = document.createElement("li");
-//         message.appendChild(document.createTextNode(achievementMessage));
-//         document.getElementById("messages").appendChild(message);
-//         gold += woodObtained;
-//         document.getElementById("goldValue").innerHTML = gold;
-//         completedAchievements.push("achievement_cut_down_500_trees");
-//         // clearInterval(achievementMaster);
-//         return true;
-//     }
-// }
+    let html = "";
+
+    html += "<h4>In progress:</h4>";
+    if (achievementsInProgress.length > 0) {
+        html += "<ul>";
+        for (let achievement of achievementsInProgress) {
+            const value = achievement.progress - achievement.previousLevelValue;
+            const max = achievement.levelValue - achievement.previousLevelValue;
+            html += `<li><progress value="${value}" max="${max}"></progress> ${achievement.name}: ${achievement.progress} / ${achievement.levelValue}</li>`;
+        }
+        html += "</ul>";
+    } else {
+        html += "None!";
+    }
+    
+    html += "<br />"
+    
+    html += "<h4>Completed:</h4>";
+    if (completedAchievements.length > 0) {
+        html += "<ul>";
+        for (let achievement of completedAchievements) {
+            html += `<li>${achievement}</li>`;
+        }
+        html += "</ul>";
+    } else {
+        html += "None!";
+    }
+
+    dom.setHtml("achievements", html);
+}
+
+function getAchievementsInProgress() {
+    return achievementsToCheck.map(achievement => {
+        const levelValue = achievement.levels[achievement.currentLevel];
+        return {
+            name: achievement.name(achievement.currentLevel, levelValue),
+            progress: achievement.progress,
+            levelValue: levelValue,
+            previousLevelValue: achievement.levels[achievement.currentLevel - 1] || 0
+        }
+    });
+}
+
+function getCompletedAchievements() {
+    const completedAchievements = [];
+    for (var achievementId in player.completedAchievements) {
+        const amountCompleted = player.completedAchievements[achievementId];
+        const achievement = achievements.find(x => x.id == achievementId);
+        for (let level = 0; level < amountCompleted; level++) {
+            const levelValue = achievement.levels[level];
+            completedAchievements.push(achievement.name(level, levelValue))
+        }
+    }
+    return completedAchievements;
+}

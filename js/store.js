@@ -1,6 +1,7 @@
 import * as dom from './dom.js';
-import { randomLootDrop, finalItem } from "./events.js";
-import { addToOwnedEquipment } from "./maintenance.js";
+import { randomLootDrop } from "./events.js";
+import { renderInventory } from "./inventory.js";
+import { addToOwnedEquipment } from "./equipment.js";
 import { addMessage } from './messages.js';
 import player, { addGold, removeGold } from "./player.js";
 
@@ -17,6 +18,7 @@ function buyTool(type, text, price) {
 
     removeGold(price);
     player.inventory_dictionary[type] = 1;
+    renderInventory();
 }
 
 export function buyAxe() {
@@ -42,8 +44,8 @@ export function buySpecialDeal() {
     }
 
     removeGold(1000);
-    randomLootDrop();
-    addToOwnedEquipment(finalItem.name, finalItem.type);
+    const item = randomLootDrop();
+    addToOwnedEquipment(item);
 }
 
 function getInventoryUpgradeCost() {
@@ -65,6 +67,7 @@ export function buyInventoryUpgrade() {
     player.boughtInventoryUpgrade++;
     addMessage(`Inventory Space increased by 25! [Currently ${player.maxInventorySize}]`);
     renderInventoryUpgrade();
+    renderInventory();
 }
 
 const goldTable = {
@@ -92,15 +95,15 @@ export function sell(item) {
         sellItem("Emerald");
         sellItem("Ruby");
         sellItem("Diamond");
+        renderInventory();
         return;
     }
     
     sellItem(item);
+    renderInventory();
 }
 
 function sellItem(type) {
-    player.fullInventory = false;
-
     addGold(player.inventory_dictionary[type] * goldTable[type]);
     player.inventory_dictionary[type] = 0;
 }

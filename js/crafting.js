@@ -1,7 +1,8 @@
 import items from "./items.js";
 import { addMessage } from './messages.js';
-import { addToOwnedEquipment, ownsEquipment } from "./maintenance.js";
+import { addToOwnedEquipment, ownsEquipment } from "./equipment.js";
 import player from "./player.js";
+import { renderInventory } from "./inventory.js";
 
 let currentCraftable = undefined;
 
@@ -43,8 +44,9 @@ export function doCrafting() {
     }
 
     addMessage(`You crafted a ${craftable.name}!`);
-    addToOwnedEquipment(craftable.name, craftable.type);
+    addToOwnedEquipment(craftable);
     renderCraftables();
+    renderInventory();
 }
 
 export function renderCraftables() {

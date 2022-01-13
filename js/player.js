@@ -2,6 +2,11 @@ import * as dom from './dom.js';
 
 const player = getPlayerData() ?? resetPlayer({});
 
+// temporary fixes so other developers don't need to reset their data
+if (!player.completedAchievements) player.completedAchievements = {};
+if (!player.obtainedWood) player.obtainedWood = 0;
+if (!player.ownedEquipment.length) player.ownedEquipment = [];
+
 export default player;
 
 export function saveData() {
@@ -21,7 +26,6 @@ export function resetData() {
 function resetPlayer(player) {
     player.xp = 0;
     player.level = 1;
-    player.inventory = [];
     player.boughtInventoryUpgrade = 0;
     player.inventory_dictionary = {
         "Wood": 0,
@@ -42,12 +46,11 @@ function resetPlayer(player) {
         "Fishing Pole": 0,
     },
     player.gold = 100;
-    player.fullInventory = false;
-    player.maxInventorySize = 25; //can be upgraded to 50, 75 or 100
+    player.maxInventorySize = 25;
     player.maxStamina = 25;
-    player.stamina = 25; //this goes down as you quest, can be upgraded to 50, 75 and 100
+    player.stamina = 25;
 
-    player.ownedEquipment = {};
+    player.ownedEquipment = [];
     player.equipment = {};
 
     player.axeHealth = 20;
@@ -61,17 +64,29 @@ function resetPlayer(player) {
     player.playerSpeed = 1;
     player.armorBonus = 0;
 
-    player.isQuesting = false;
+    player.obtainedWood = 0;
+
+    player.completedAchievements = {};
 
     return player;
 }
 
 export function addGold(value) {
     player.gold += value;
-    dom.setHtml("gold", player.gold);
+    renderGold();
 }
 
 export function removeGold(value) {
     player.gold = Math.max(0, player.gold - value);
+    renderGold();
+}
+
+export function renderGold() {
     dom.setHtml("gold", player.gold);
+}
+
+export function startSaveInterval() {
+    setInterval(function () {
+        saveData();
+    }, 5000);
 }
