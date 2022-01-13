@@ -1,6 +1,6 @@
 import items from "./items.js";
 import { addMessage } from './messages.js';
-import player from "./player.js";
+import player, { addGold } from "./player.js";
 
 function checkInventorySize() {
     //add up all keys in inventory_dict and compare to maxInventorySize
@@ -8,9 +8,7 @@ function checkInventorySize() {
     for (var key in player.inventory_dictionary) {
         totalInventorySize += player.inventory_dictionary[key];
     }
-    if (totalInventorySize >= player.maxInventorySize) {
-        player.fullInventory = true;
-    }
+    player.fullInventory = totalInventorySize >= player.maxInventorySize;
 }
 
 setInterval(function () {
@@ -44,11 +42,12 @@ export function addToOwnedEquipment(itemName, itemType) {
     if (equipmentOfType.includes(itemName)) {
         if (player.isQuesting == true) {
             addMessage("You already have a " + itemName + ", so you toss them away.");
-        } else {
-            addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
-            player.gold += 1000;
             return;
         }
+        
+        addMessage("You already have a " + itemName + "! [Refunded 1000 Gold]");
+        addGold(1000);
+        return;
     }
 
     equipmentOfType.push(itemName);

@@ -1,4 +1,4 @@
-import player from "./player.js";
+import player, { addGold } from "./player.js";
 import { hasEquiped } from "./maintenance.js";
 import { addMessage } from './messages.js';
 
@@ -12,7 +12,7 @@ function achievement_iron_armor() {
         return;
 
     addMessage("You have completed the Iron Armor achievement!");
-    player.gold += 250;
+    addGold(250);
     document.getElementById("gold").innerHTML = gold;
     completedAchievements.push("achievement_iron_armor");
 }

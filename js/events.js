@@ -9,8 +9,6 @@ export function randomLootDrop() {
     const itemsOfType = items.filter(x => x.type == itemType);
 
     finalItem = itemsOfType[Math.floor(Math.random() * itemsOfType.length)];
-    // console.log("Enemy dropped: " + finalItem.name);
-    // addToOwnedEquipment(finalItem.name, finalItem.type);
 }
 
 function getRandomRarity() {

@@ -1,13 +1,12 @@
 import { enemy_dictionary } from "./enemies.js";
 import { randomLootDrop, finalItem } from "./events.js";
+import { addXp } from "./experience.js";
 import { addToOwnedEquipment } from "./maintenance.js";
 import { addMessage } from './messages.js';
-import * as player  from "./player.js";
+import player, { addGold, removeGold }  from "./player.js";
+import { sleep } from './util.js';
 
-function sleep(ms) {
-    // addMessage("<sleep>")
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+
 var readFirstMessage = false;
 
 export async function doQuest() {
@@ -25,7 +24,6 @@ export async function doQuest() {
         player.isQuesting = true;
         await sleep(3000);
         var randomEvent = Math.floor(Math.random() * 50) + 1;
-        // console.log("random num between 0-50 is " + randomEvent);
         if (player.isQuesting) {
             if (randomEvent <= 10) {
                 await sleep(2000);
@@ -72,14 +70,9 @@ export async function doQuest() {
             else if (randomEvent <= 50 && randomEvent > 40) {
                 addMessage("While you're walking, you get ambushed by a pack of thieves, and you are forced to flee!");
                 goldTolose = Math.floor(Math.random() * 1000) + 200;
-                if (goldTolose < player.gold) {
-                    player.gold -= goldTolose;
-                    addMessage("You lose " + goldTolose + " gold.");
-                }
-                else {
-                    player.gold = 0;
-                    addMessage("You lose all of your gold!");
-                }
+                addMessage(goldTolose < player.gold ? "You lose " + goldTolose + " gold." : "You lose all of your gold!");
+                removeGold(goldTolose);
+
                 await sleep(2000);
                 addMessage("After running for a while, you continue on your way.");
                 player.stamina -= 3;
@@ -113,10 +106,10 @@ export async function doQuest() {
             addMessage("After a brief battle, you manage to defeat the " + enemy + "!");
             await sleep(2000);
             addMessage("You raided the " + enemy + " and found " + enemy_dictionary[enemy].gold + " gold!");
-            player.gold += enemy_dictionary[enemy].gold;
+            addGold(enemy_dictionary[enemy].gold)
             await sleep(2000);
             addMessage("You gain " + enemy_dictionary[enemy].defeatExperience + " experience!");
-            player.xp += enemy_dictionary[enemy].defeatExperience;
+            addXp(enemy_dictionary[enemy].defeatExperience);
             enemy = "";
             player.stamina -= 5;
             doQuest();
@@ -133,14 +126,14 @@ export async function doQuest() {
 
     async function lootChest() {
         if (document.getElementById("offhandSelect").value == "Amulet of Luck") {
-            player.gold += Math.floor(Math.random() * 3000) + 12000;
+            addGold(Math.floor(Math.random() * 3000) + 12000);
             luckyLootDrop();
         }
         else {
             await sleep(2000);
             var quantity = Math.floor(Math.random() * 800);
             addMessage("You find " + quantity + " gold in the old chest!");
-            player.gold += quantity;
+            addGold(quantity);
             basicLootDrop();
         }
     }
