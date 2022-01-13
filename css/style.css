@@ -25,7 +25,7 @@ body{
     /* flex-direction : row-reverse; */
     /* margin-top:-40px; */
     margin:20px;
-    border:1px solid rgb(255, 255, 255);
+    border:1px solid rgb(0, 0, 0);
     /* place column on right of page */
     position: absolute;
     right: 0;
@@ -171,6 +171,11 @@ footer *:hover{
 .dark div {
     border-color: white;
 }
+
+.dark #messagesContainer {
+    border-color: white;
+}
+
 .dark select {
     background-color: black;
     color:white;

@@ -20,7 +20,7 @@ export function addMessage(message_text) {
     var message = document.createElement("li");
     message.appendChild(document.createTextNode(message_text));
     message.setAttribute('id', `message-${messageId}`);
-    document.getElementById("messages").appendChild(message);
+    document.getElementById("messages").prepend(message);
 }
 
 setInterval(() => {
