@@ -191,6 +191,19 @@ function checkAttackStatus() {
     }
 }
 
+/**
+ * Returns a random integer between min (inclusive) and max (inclusive).
+ * The value is no lower than min (or the next integer greater than min
+ * if min isn't an integer) and no greater than max (or the next integer
+ * lower than max if max isn't an integer).
+ * Using Math.round() will give you a non-uniform distribution!
+ */
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 var refresh;
 
 export function doAttack() {
@@ -198,6 +211,7 @@ export function doAttack() {
     var enemyDefense = enemy_dictionary[document.getElementById("opponentSelector").value].defense;
     var enemyName = enemy_dictionary[document.getElementById("opponentSelector").value].name;
     var enemyGold = enemy_dictionary[document.getElementById("opponentSelector").value].gold;
+	enemyGold = getRandomInt(enemyGold.min, enemyGold.max) // Otherwise, values stored are static random numbers
     var enemyExperience = enemy_dictionary[document.getElementById("opponentSelector").value].defeatExperience;
     var newEnemyHealth = enemyHealth;
     // var newEnemyHealth = document.getElementById("healthValue").innerHTML - (player.playerAttack - enemyDefense);
