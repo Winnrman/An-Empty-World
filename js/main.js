@@ -89,49 +89,11 @@ function checkLevelUnlocks() {
 }
 
 function checkDarkMode() {
-    var time = new Date();
-    var hours = time.getHours();
+    var hours = new Date().getHours();
     if (hours >= 15 || hours < 8) {
-        document.body.setAttribute("class", "dark");
-        document.getElementById("messages").style.color = "white";
-        document.getElementById("inventory").style.color = "white";
-        document.getElementById("gold").style.color = "white";
-        // document.getElementById("footerContainer").style.color = "white";
-        document.getElementById("footerContainer").style.backgroundColor = 'transparent';
-        var headers = document.getElementsByClassName("header");
-        for (let i = 0; i < headers.length; i++) {
-            Array.prototype.forEach.call(headers, function (header) {
-                header.style.color = "white";
-                header.style.backgroundColor = "rgb(39, 39, 39)";
-            });
-        }
-
-        var headers2 = document.getElementsByTagName("button");
-        for (let i = 0; i < headers2.length; i++) {
-            Array.prototype.forEach.call(headers2, function (header3) {
-                header3.style.color = "white";
-                header3.style.backgroundColor = "black";
-            });
-        }
-
-
-        var headers3 = document.getElementsByTagName("div");
-        for (let i = 0; i < headers2.length; i++) {
-            Array.prototype.forEach.call(headers3, function (header4) {
-                header4.style.borderColor = "white";
-            })
-        }
-        var headers3 = document.getElementsByTagName("select");
-        for (let i = 0; i < headers2.length; i++) {
-            Array.prototype.forEach.call(headers3, function (header4) {
-                header4.style.backgroundColor = "black";
-                header4.style.color = "white";
-                header4.style.border = "none";
-            })
-        }
-    }
-    else {
-        //nothing
+        document.body.classList.add("dark");
+    } else {
+        document.body.classList.remove("dark");
     }
 }
 

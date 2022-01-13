@@ -8,6 +8,12 @@
 </head>
 
 <body>
+    <script>
+        var hours = new Date().getHours();
+        if (hours >= 15 || hours < 8) {
+            document.body.classList.add("class", "dark");
+        }
+    </script>
     <div class="sideContainer" id="messagesContainer">
         <h2 id="messagesHeader" class="header">Messages</h2>
         <div id="messages"></div>
