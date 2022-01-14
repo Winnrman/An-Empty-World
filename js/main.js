@@ -5,6 +5,7 @@ import player, { saveData, resetData } from "./player.js";
 import * as store from "./store.js";
 import * as questing from "./questing.js";
 import { loadOptionsFromOwnedEquipment } from "./maintenance.js";
+import items from "./items.js";
 
 window.player = player;
 window.store = store;
@@ -32,11 +33,16 @@ setInterval(function () {
     player.inventory.sort();
     checkLevelUnlocks();
     checkDarkMode();
-
-    document.getElementById("axeDurability").innerHTML = "Axe: " + player.axeHealth + "/20";
-    document.getElementById("pickaxeDurability").innerHTML = "&nbsp;| Pickaxe: " + player.pickaxeHealth + "/75";
-    document.getElementById("rifleDurability").innerHTML = "&nbsp;| Rifle: " + player.huntingRifleHealth + "/50";
-    document.getElementById("fishingPoleDurability").innerHTML = "&nbsp;| Fishing Pole: " + player.fishingPoleHealth + "/10";
+	
+	for (var item of items) { 
+		if (item.type == "tool") {
+			if (player.inventory_dictionary[item.name] > 0) {
+				document.getElementById(item.elementID).innerHTML = item.name + ":&nbsp;" + player.toolHealth[item.name] + "/" + item.health + "&nbsp;&nbsp;&nbsp;";
+			} else {
+				document.getElementById(item.elementID).innerHTML = "&nbsp;&nbsp;&nbsp;";
+			}
+		}		
+	}
     document.getElementById("inventoryHeader").innerHTML = "Inventory (" + calculateInventorySpace() + "/" + player.maxInventorySize + ")";
 	
 	var inventory_text = "&nbsp;"
@@ -45,7 +51,7 @@ setInterval(function () {
 		if (player.inventory_dictionary.hasOwnProperty(key)) {           
 			// Check if more than 0 item is present in player inventory
 			if (player.inventory_dictionary[key] > 0) {
-				inventory_text += key + " x" + player.inventory_dictionary[key]
+				inventory_text += "&nbsp;" + key + " x" + player.inventory_dictionary[key]
 				inventory_text += "&nbsp;|"
 			}
 		}
