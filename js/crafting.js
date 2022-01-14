@@ -1,5 +1,5 @@
-import { addMessage } from "./activities.js";
 import items from "./items.js";
+import { addMessage } from './messages.js';
 import { addToOwnedEquipment } from "./maintenance.js";
 import player from "./player.js";
 

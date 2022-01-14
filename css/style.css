@@ -25,10 +25,15 @@ body{
     /* flex-direction : row-reverse; */
     /* margin-top:-40px; */
     margin:20px;
-    border:1px solid black;
+    border:1px solid rgb(0, 0, 0);
     /* place column on right of page */
     position: absolute;
     right: 0;
+}
+#messagesContainer li{
+    text-align: left;
+    padding-top:5px;
+    /* padding-bottom:5px; */
 }
 .subheader{
     margin-top:4px;
@@ -142,17 +147,50 @@ footer *:hover{
 #messagesHeader{
     position:fixed;
 }
-.dark{
+.dark {
     background-color:rgb(39, 39, 39);
     color:white;
 }
-.dark a{
+.dark a {
     color:white;
     text-decoration: none;
 }
-.dark a:hover{
+.dark a:hover {
     color:rgb(161, 161, 161);
 }
+.dark .header {
+    background-color: rgb(39, 39, 39);
+}
+.dark #footerContainer {
+    background-color: transparent;
+}
+.dark button {
+    background-color: black;
+    color:white;
+}
+.dark div {
+    border-color: white;
+}
+
+.dark #messagesContainer {
+    border-color: white;
+}
+
+.dark select {
+    background-color: black;
+    color:white;
+    border: none;
+}
+
 .ignoreThis{
     display:none;
+}
+.fadeOut {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
+  }
+#messages li{
+    margin-bottom:10px;
+    margin-top:10px;
 }

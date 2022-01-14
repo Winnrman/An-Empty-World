@@ -1,7 +1,7 @@
-import { addMessage } from "./activities.js";
 import { enemy_dictionary } from "./enemies.js";
 import { randomLootDrop, finalItem } from "./events.js";
 import { addToOwnedEquipment } from "./maintenance.js";
+import { addMessage } from './messages.js';
 import * as player  from "./player.js";
 
 function sleep(ms) {

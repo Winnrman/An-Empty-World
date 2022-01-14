@@ -1,5 +1,5 @@
-import { addMessage } from "./activities.js";
 import items from "./items.js";
+import { addMessage } from './messages.js';
 import player from "./player.js";
 
 function checkInventorySize() {
@@ -93,8 +93,8 @@ Object.values(document.getElementsByClassName('EquipmentSelect')).forEach(x => x
 
 function updateArmour() {
     player.equipment.Helmet = document.getElementById("HelmetSelect").value;
-    player.equipment.Chestplate = document.getElementById("ChestSelect").value;
-    player.equipment.Leggings = document.getElementById("LegsSelect").value;
+    player.equipment.Chestplate = document.getElementById("ChestplateSelect").value;
+    player.equipment.Leggings = document.getElementById("LeggingsSelect").value;
     player.equipment.Boots = document.getElementById("BootsSelect").value;
     player.equipment.Weapon = document.getElementById("WeaponSelect").value;
 
