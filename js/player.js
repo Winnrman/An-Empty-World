@@ -53,10 +53,13 @@ function resetPlayer(player) {
     player.ownedEquipment = [];
     player.equipment = {};
 
-    player.axeHealth = 20;
-    player.fishingPoleHealth = 10;
-    player.huntingRifleHealth = 50;
-    player.pickaxeHealth = 75;
+   	player.toolHealth = {
+		"Axe": 20,
+		"Fishing Pole": 10,
+		"Hunting Rifle": 50,
+		"Pickaxe": 75,
+	}
+	
     player.playerHealth = 100;
     player.maxHealth = 100;
     player.playerAttack = 1;
