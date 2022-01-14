@@ -1,3 +1,5 @@
+import * as dom from './dom.js';
+
 const player = getPlayerData() ?? resetPlayer({});
 
 export default player;
@@ -19,7 +21,6 @@ export function resetData() {
 function resetPlayer(player) {
     player.xp = 0;
     player.level = 1;
-    player.neededLevelUpXP = 0;
     player.inventory = [];
     player.boughtInventoryUpgrade = 0;
     player.inventory_dictionary = {
@@ -54,6 +55,7 @@ function resetPlayer(player) {
     player.huntingRifleHealth = 50;
     player.pickaxeHealth = 75;
     player.playerHealth = 100;
+    player.maxHealth = 100;
     player.playerAttack = 1;
     player.playerDefense = 1;
     player.playerSpeed = 1;
@@ -62,4 +64,14 @@ function resetPlayer(player) {
     player.isQuesting = false;
 
     return player;
+}
+
+export function addGold(value) {
+    player.gold += value;
+    dom.setHtml("gold", player.gold);
+}
+
+export function removeGold(value) {
+    player.gold = Math.max(0, player.gold - value);
+    dom.setHtml("gold", player.gold);
 }

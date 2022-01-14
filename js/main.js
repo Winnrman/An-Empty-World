@@ -1,14 +1,17 @@
 import * as achievements from "./achievements.js"; // this may look unnecessary but it's needed to load the file to start the interval. We might want to make this explicit by calling the start interval in this file
 import * as activities from "./activities.js";
+import * as combat from "./combat.js";
 import * as crafting from "./crafting.js";
+import * as experience from "./experience.js";
 import player, { saveData, resetData } from "./player.js";
 import * as store from "./store.js";
 import * as questing from "./questing.js";
-import { loadOptionsFromOwnedEquipment } from "./maintenance.js";
+import * as maintenance from "./maintenance.js";
 
 window.player = player;
 window.store = store;
 window.activities = activities;
+window.combat = combat;
 window.crafting = crafting;
 window.questing = questing;
 window.saveData = saveData;
@@ -60,6 +63,8 @@ function checkDarkMode() {
     }
 }
 
-loadOptionsFromOwnedEquipment();
-activities.checkLevelUnlocks();
+experience.checkLevelUnlocks();
+experience.renderLevel();
+store.renderInventoryUpgrade();
+maintenance.loadOptionsFromOwnedEquipment();
 crafting.renderCraftables();
