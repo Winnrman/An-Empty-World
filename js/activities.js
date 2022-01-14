@@ -19,8 +19,35 @@ setInterval(function () {
         document.getElementById("progress").width = 0;
         addMessage("You leveled up! You are now level " + player.level + "! " + " [ " + player.level * 100 + " gold awarded ]");
         player.gold += player.level * 100;
+        checkLevelUnlocks();
     }
 }, 100);
+
+export function checkLevelUnlocks() {
+    if (player.level >= 2) {
+        //add 'Go Hunting' button to activities
+        document.getElementById("goHuntingButton").style.visibility = "visible";
+        document.getElementById("huntingRifle").style.visibility = "visible";
+        //sell meat button
+        document.getElementById("sellMeat").style.visibility = "visible";
+    }
+    if (player.level >= 3) {
+        // add 'Go Mining' button to activities
+        document.getElementById("goMiningButton").style.visibility = "visible";
+        document.getElementById("pickaxe").style.visibility = "visible";
+
+        //sell ores button
+        document.getElementById("sellOres").style.visibility = "visible";
+        document.getElementById("sellStone").style.visibility = "visible";
+    }
+    if (player.level >= 4) {
+        document.getElementById("inventoryUpgrade").style.visibility = "visible";
+    }
+    if (player.level > 7) {
+        document.getElementById("goQuestingButton").style.visibility = "visible";
+    }
+    crafting.renderCraftables();
+}
 
 export function tree() {
     if (player.inventory_dictionary["Axe"] == 1) {
