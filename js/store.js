@@ -1,9 +1,10 @@
 import * as dom from './dom.js';
 import { randomLootDrop } from "./events.js";
-import { renderInventory } from "./inventory.js";
+import { isInventoryFull, renderInventory } from "./inventory.js";
 import { addToOwnedEquipment } from "./equipment.js";
 import { addMessage } from './messages.js';
 import player, { addGold, removeGold } from "./player.js";
+import { displayCraftingNeededMaterials } from './crafting.js';
 
 function buyTool(type, text, price) {
     if (player.gold < price) {
@@ -13,6 +14,11 @@ function buyTool(type, text, price) {
 
     if (player.inventory_dictionary[type] > 0) {
         addMessage(`You already have ${text}!`);
+        return;
+    }
+
+    if (isInventoryFull()) {
+        addMessage(`Your inventory is full!`);
         return;
     }
 
@@ -100,6 +106,7 @@ export function sell(item) {
     }
     
     sellItem(item);
+    displayCraftingNeededMaterials();
     renderInventory();
 }
 
