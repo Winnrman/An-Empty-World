@@ -29,8 +29,16 @@
             <h4 style="padding-top:3px;">Stamina:</h4>
             <h5 style="padding-top:5px;" id="staminaAmount">0</h5>
         </span>
-        <div id="progressBar">
-            <div style="width: 0px;" id="progress"></div>
+        <br />
+
+        XP: 
+        <div class="progressBar">
+            <div style="width: 0px;" id="progressXp"></div>
+        </div>
+
+        Stamina:
+        <div class="progressBar">
+            <div style="width: 0px;" id="progressStamina"></div>
         </div>
     </div>
     <div class="container">
@@ -232,12 +240,18 @@
         <p id="neededMaterials">Needed Materials: &nbsp;</p>
     </div>
 
+    <div id="achievementsContainer" class="container">
+        <h2 class="header">Achievements</h2>
+        <div id="achievements"></div>
+    </div>
+
     <footer id="footerContainer" class="footer">
         <a href="https://github.com/Winnrman/An-Empty-World">github</a>
         <a onclick="saveData()">save</a>
         <a>share</a>
         <a onclick="resetData()">restart</a>
         <!-- <p>&copy; Idle Game</p> -->
+    </footer>
 </body>
 
 <script type="module" src="js/main.js"></script>

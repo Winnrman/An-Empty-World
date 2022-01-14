@@ -1,7 +1,8 @@
 import * as dom from './dom.js';
 import { enemy_dictionary } from "./enemies.js";
 import { addXp } from "./experience.js";
-import { randomLootDrop, finalItem } from "./events.js";
+import { randomLootDrop } from "./events.js";
+import { addToOwnedEquipment } from "./equipment.js";
 import player, { addGold } from "./player.js";
 import { addMessage } from './messages.js';
 import { getRandomInt } from './util.js';
@@ -49,8 +50,9 @@ function enemyDied() {
 
     var droppedRandomLoot = Math.floor(Math.random() * 100);
     if (droppedRandomLoot < 25) {
-        randomLootDrop();
-        addMessage(`The ${enemy.name} dropped ${finalItem.name}!`);
+        const item = randomLootDrop();
+        addMessage(`The ${enemy.name} dropped ${item.name}!`);
+        addToOwnedEquipment(item);
     }
 
     clearFight();
