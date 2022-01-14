@@ -20,11 +20,11 @@ export function tree() {
     player.obtainedWood += 1;
     addXp(10);
         
-    player.axeHealth -= 1;
-    if (player.axeHealth <= 0) {
+    player.toolHealth["Axe"] -= 1;
+    if (player.toolHealth["Axe"] <= 0) {
         addMessage("Your axe broke!");
         player.inventory_dictionary["Axe"] -= 1;
-        player.axeHealth = 20;
+        player.toolHealth["Axe"] = 20;
     }
 
     renderInventory();
@@ -45,11 +45,11 @@ export function goFishing() {
     player.inventory_dictionary["Fish"] += 1;
     addXp(15);
         
-    player.fishingPoleHealth -= 1;
-    if (player.fishingPoleHealth <= 0) {
+    player.toolHealth["Fishing Pole"] -= 1;
+    if (player.toolHealth["Fishing Pole"] <= 0) {
         addMessage("Your fishing pole broke!");
         player.inventory_dictionary["Fishing Pole"] -= 1;
-        player.fishingPoleHealth = 10;
+        player.toolHealth["Fishing Pole"] = 10;
     }
     
     renderInventory();
@@ -70,11 +70,11 @@ export function goHunting() {
     player.inventory_dictionary["Meat"] += 1;
     addXp(50);
         
-    player.huntingRifleHealth -= 1;
-    if (player.huntingRifleHealth <= 0) {
+    player.toolHealth["Hunting Rifle"] -= 1;
+    if (player.toolHealth["Hunting Rifle"] <= 0) {
         addMessage("Your hunting rifle broke!");
         player.inventory_dictionary["Hunting Rifle"] -= 1;
-        player.huntingRifleHealth = 50;
+        player.toolHealth["Hunting Rifle"] = 50;
     }
     
     renderInventory();
@@ -112,11 +112,11 @@ export function goMining() {
     addXp(ore.xp);
     renderInventory();
         
-    player.pickaxeHealth -= 1;
-    if (player.pickaxeHealth <= 0) {
+    player.toolHealth["Pickaxe"] -= 1;
+    if (player.toolHealth["Pickaxe"] <= 0) {
         addMessage("Your pickaxe broke!");
         player.inventory_dictionary["Pickaxe"] -= 1;
-        player.pickaxeHealth = 75;
+        player.toolHealth["Pickaxe"] = 75;
     }
     
     renderInventory();
