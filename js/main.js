@@ -38,8 +38,24 @@ setInterval(function () {
     document.getElementById("rifleDurability").innerHTML = "&nbsp;| Rifle: " + player.huntingRifleHealth + "/50";
     document.getElementById("fishingPoleDurability").innerHTML = "&nbsp;| Fishing Pole: " + player.fishingPoleHealth + "/10";
     document.getElementById("inventoryHeader").innerHTML = "Inventory (" + calculateInventorySpace() + "/" + player.maxInventorySize + ")";
-
-    document.getElementById("inventory").innerHTML = "Axe x" + player.inventory_dictionary["Axe"] + "&nbsp;|" + "&nbsp;Pickaxe x" + player.inventory_dictionary["Pickaxe"] + "&nbsp;|" + "&nbsp;Rifle x" + player.inventory_dictionary["Hunting Rifle"] + "&nbsp;|" + "&nbsp;Fishing Pole x" + player.inventory_dictionary["Fishing Pole"] + "&nbsp;|" + "&nbsp;Meat x" + player.inventory_dictionary["Meat"] + "&nbsp;|" + "&nbsp;Wood x" + player.inventory_dictionary["Wood"] + "&nbsp;|" + "&nbsp;Stone x" + player.inventory_dictionary["Stone"] + "&nbsp;|" + "&nbsp;Fish x" + player.inventory_dictionary["Fish"] + "&nbsp;|" + "&nbsp;Iron x" + player.inventory_dictionary["Iron"] + "&nbsp;|" + "&nbsp;Copper x" + player.inventory_dictionary["Copper"] + "&nbsp;|" + "&nbsp;Tin x" + player.inventory_dictionary["Tin"] + "&nbsp;|" + "&nbsp;Silver x" + player.inventory_dictionary["Silver"] + "&nbsp;|" + "&nbsp;Gold x" + player.inventory_dictionary["Gold"] + "&nbsp;|" + "&nbsp;Emerald x" + player.inventory_dictionary["Emerald"] + "&nbsp;|" + "&nbsp;Ruby x" + player.inventory_dictionary["Ruby"] + "&nbsp;|" + "&nbsp;Diamond x" + player.inventory_dictionary["Diamond"];
+	
+	var inventory_text = "&nbsp;"
+	for (var key in player.inventory_dictionary) {
+		// check if the property/key is defined in the object itself, not in parent
+		if (player.inventory_dictionary.hasOwnProperty(key)) {           
+			// Check if more than 0 item is present in player inventory
+			if (player.inventory_dictionary[key] > 0) {
+				inventory_text += key + " x" + player.inventory_dictionary[key]
+				inventory_text += "&nbsp;|"
+			}
+		}
+	}
+	inventory_text = inventory_text.substring(0,inventory_text.length - 1); // remove last | at the end
+	if (inventory_text.length < 6) {inventory_text = "&nbsp;None"}
+	
+	document.getElementById("inventory").innerHTML = inventory_text
+	
+    //document.getElementById("inventory").innerHTML = "Axe x" + player.inventory_dictionary["Axe"] + "&nbsp;|" + "&nbsp;Pickaxe x" + player.inventory_dictionary["Pickaxe"] + "&nbsp;|" + "&nbsp;Rifle x" + player.inventory_dictionary["Hunting Rifle"] + "&nbsp;|" + "&nbsp;Fishing Pole x" + player.inventory_dictionary["Fishing Pole"] + "&nbsp;|" + "&nbsp;Meat x" + player.inventory_dictionary["Meat"] + "&nbsp;|" + "&nbsp;Wood x" + player.inventory_dictionary["Wood"] + "&nbsp;|" + "&nbsp;Stone x" + player.inventory_dictionary["Stone"] + "&nbsp;|" + "&nbsp;Fish x" + player.inventory_dictionary["Fish"] + "&nbsp;|" + "&nbsp;Iron x" + player.inventory_dictionary["Iron"] + "&nbsp;|" + "&nbsp;Copper x" + player.inventory_dictionary["Copper"] + "&nbsp;|" + "&nbsp;Tin x" + player.inventory_dictionary["Tin"] + "&nbsp;|" + "&nbsp;Silver x" + player.inventory_dictionary["Silver"] + "&nbsp;|" + "&nbsp;Gold x" + player.inventory_dictionary["Gold"] + "&nbsp;|" + "&nbsp;Emerald x" + player.inventory_dictionary["Emerald"] + "&nbsp;|" + "&nbsp;Ruby x" + player.inventory_dictionary["Ruby"] + "&nbsp;|" + "&nbsp;Diamond x" + player.inventory_dictionary["Diamond"];
 }, 100);
 
 setInterval(function () {
