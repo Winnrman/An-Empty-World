@@ -4,6 +4,7 @@ import { addXp } from "./experience.js";
 import { getRandomItem } from "./util.js";
 import { isInventoryFull, renderInventory } from "./inventory.js";
 import { checkAchievements } from "./achievements.js";
+import { displayCraftingNeededMaterials } from "./crafting.js";
 
 export function tree() {
     if (!player.inventory_dictionary["Axe"]) {
@@ -28,6 +29,7 @@ export function tree() {
     }
 
     renderInventory();
+    displayCraftingNeededMaterials();
     checkAchievements();
 }
 
@@ -53,6 +55,7 @@ export function goFishing() {
     }
     
     renderInventory();
+    displayCraftingNeededMaterials();
     checkAchievements();
 }
 
@@ -78,6 +81,7 @@ export function goHunting() {
     }
     
     renderInventory();
+    displayCraftingNeededMaterials();
     checkAchievements();
 }
 
@@ -110,7 +114,6 @@ export function goMining() {
         player.inventory_dictionary[ore.name]++;
     }
     addXp(ore.xp);
-    renderInventory();
         
     player.pickaxeHealth -= 1;
     if (player.pickaxeHealth <= 0) {
@@ -120,5 +123,6 @@ export function goMining() {
     }
     
     renderInventory();
+    displayCraftingNeededMaterials();
     checkAchievements();
 }
