@@ -1,16 +1,12 @@
 import items from "./items.js";
 
-export let finalItem;
-
 export function randomLootDrop() {
     var chosenRarity = getRandomRarity();
 
     const itemType = getRandomItemType();
     const itemsOfType = items.filter(x => x.type == itemType);
 
-    finalItem = itemsOfType[Math.floor(Math.random() * itemsOfType.length)];
-    // console.log("Enemy dropped: " + finalItem.name);
-    // addToOwnedEquipment(finalItem.name, finalItem.type);
+    return itemsOfType[Math.floor(Math.random() * itemsOfType.length)];
 }
 
 function getRandomRarity() {

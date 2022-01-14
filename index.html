@@ -29,8 +29,16 @@
             <h4 style="padding-top:3px;">Stamina:</h4>
             <h5 style="padding-top:5px;" id="staminaAmount">0</h5>
         </span>
-        <div id="progressBar">
-            <div style="width: 0px;" id="progress"></div>
+        <br />
+
+        XP: 
+        <div class="progressBar">
+            <div style="width: 0px;" id="progressXp"></div>
+        </div>
+
+        Stamina:
+        <div class="progressBar">
+            <div style="width: 0px;" id="progressStamina"></div>
         </div>
     </div>
     <div class="container">
@@ -54,7 +62,12 @@
         <br>
         <span style="display: inline-flex;">
             <p id="itemsSubheader">Items:</p>
-            <div id="inventory"></div>
+            <div id="inventory">
+                <div id="inventory-tools"></div>
+                <div id="inventory-basic"></div>
+                <div id="inventory-ores"></div>
+                <div id="inventory-gems"></div>
+            </div>
         </span>
         <br><br>
         <span style="display: inline-flex;">
@@ -133,15 +146,15 @@
                 <option value="King">King</option>
             </select>
             <button id="fightButton" class="button"
-                onclick="activities.doCombat(document.getElementById('opponentSelector').value)">Fight</button>
-            <button style="visibility: hidden;" id="attackButton" class="button"
-                onclick="activities.doAttack()">Attack</button>
-            <button style="visibility: hidden;" id="fleeButton" class="button"
-                onclick="activities.doFlee()">Flee</button>
-            <button style="visibility: hidden;" id="defendButton" class="button"
-                onclick="activities.defend()">Defend</button>
-            <button style="visibility: hidden;" id="specialButton" class="button"
-                onclick="activities.special()">Run</button>
+                onclick="combat.selectEnemy(document.getElementById('opponentSelector').value)">Fight</button>
+            <button style="display: none;" id="attackButton" class="button"
+                onclick="combat.startCombat()">Attack</button>
+            <button style="display: none;" id="fleeButton" class="button"
+                onclick="combat.doFlee()">Flee</button>
+            <button style="display: none;" id="defendButton" class="button"
+                onclick="combat.defend()">Defend</button>
+            <button style="display: none;" id="specialButton" class="button"
+                onclick="combat.special()">Special</button>
         </div>
     </div>
 
@@ -174,6 +187,7 @@
                 <select id="BootsSelect" class="EquipmentSelect">
                     <option value="">None</option>
                 </select>
+            </span>
         </div>
     </div>
 
@@ -195,10 +209,18 @@
             </span>
             <br>
             <span style="display: inline-flex">
+                <p>Shield &nbsp;</p>
+                <select id="ShieldSelect" class="EquipmentSelect">
+                    <option value="">None</option>
+                </select>
+            </span>
+            <br>
+            <span style="display: inline-flex">
                 <p>Ranged &nbsp;</p>
                 <select id="RangedSelect" class="EquipmentSelect">
                     <option value="">None</option>
                 </select>
+            </span>
         </div>
     </div>
 
@@ -210,25 +232,17 @@
         <span style="display:  inline-flex; ">
             <h3 id="itemToCraft">Item to Craft: &nbsp;</h3><select onChange="crafting.displayCraftingNeededMaterials()"
                 id="craftingSelect">
-                <option value="">Select an item</option>
-                <option value="Wooden Sword">Wooden Sword</option>
-                <option value="Wooden Helmet">Wooden Helmet</option>
-                <option value="Wooden Boots">Wooden Boots</option>
-                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Sword">Iron Sword
-                </option>
-                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Helmet">Iron
-                    Helmet</option>
-                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Shield">Iron
-                    Shield</option>
-                <option style="visibility: hidden; display: none;" class="level5Crafting" value="Iron Cutlass">Iron
-                    Cutlass</option>
             </select>
             <div id="requiredMaterials">
-                <!--inside here, check inventory for needed materials. If has all, craft button is clickable.-->
             </div>
         </span>
         <button id="craftingButton" onclick="crafting.doCrafting()">Craft</button>
         <p id="neededMaterials">Needed Materials: &nbsp;</p>
+    </div>
+
+    <div id="achievementsContainer" class="container">
+        <h2 class="header">Achievements</h2>
+        <div id="achievements"></div>
     </div>
 
     <footer id="footerContainer" class="footer">
@@ -237,6 +251,7 @@
         <a>share</a>
         <a onclick="resetData()">restart</a>
         <!-- <p>&copy; Idle Game</p> -->
+    </footer>
 </body>
 
 <script type="module" src="js/main.js"></script>
