@@ -39,7 +39,7 @@ setInterval(function () {
 			if (player.inventory_dictionary[item.name] > 0) {
 				document.getElementById(item.elementID).innerHTML = item.name + ":&nbsp;" + player.toolHealth[item.name] + "/" + item.health + "&nbsp;&nbsp;&nbsp;";
 			} else {
-				document.getElementById(item.elementID).innerHTML = "&nbsp;&nbsp;&nbsp;";
+				document.getElementById(item.elementID).innerHTML = "";
 			}
 		}		
 	}
