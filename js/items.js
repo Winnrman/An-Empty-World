@@ -1,4 +1,4 @@
-export default [
+const items = [
     // tools
     {
         name: "Axe",
@@ -8,7 +8,8 @@ export default [
         rarity: "common",
         price: 20,
         health: 20,
-    },{
+    },
+    {
         name: "Fishing Pole",
         description: "A wooden fishing pole.",
         type: "tool",
@@ -16,7 +17,8 @@ export default [
         rarity: "common",
         price: 50,
         health: 10,
-    },{
+    },
+    {
         name: "Hunting Rifle",
         description: "A hunting rifle.",
         type: "tool",
@@ -24,7 +26,8 @@ export default [
         rarity: "common",
         price: 300,
         health: 50,
-    },{
+    },
+    {
         name: "Pickaxe",
         description: "A pickaxe.",
         type: "tool",
@@ -32,6 +35,92 @@ export default [
         rarity: "common",
         price: 1200,
         health: 75,
+    },
+
+    // resources
+    {
+        name: "Wood",
+        price: 5,
+        treeCutting: {
+            xp: 10,
+        },
+    },
+    {
+        name: "Fish",
+        price: 10,
+        fishing: {
+            xp: 15,
+        },
+    },
+    {
+        name: "Meat",
+        price: 20,
+        hunting: {
+            xp: 50,
+        },
+    },
+    {
+        name: "Iron",
+        price: 120,
+        mining: {
+            xp: 110,
+        },
+    },
+    {
+        name: "Copper",
+        price: 125,
+        mining: {
+            xp: 112,
+        },
+    },
+    {
+        name: "Tin",
+        price: 115,
+        mining: {
+            xp: 113,
+        },
+    },
+    {
+        name: "Silver",
+        price: 150,
+        mining: {
+            xp: 119,
+        },
+    },
+    {
+        name: "Gold",
+        price: 125,
+        mining: {
+            xp: 125,
+        },
+    },
+    {
+        name: "Emerald",
+        price: 130,
+        mining: {
+            xp: 130,
+        },
+    },
+    {
+        name: "Ruby",
+        price: 160,
+        mining: {
+            xp: 150,
+        },
+    },
+    {
+        name: "Diamond",
+        price: 1100,
+        mining: {
+            xp: 200,
+        },
+    },
+    {
+        name: "Stone",
+        price: 5,
+        mining: {
+            xp: 1,
+        },
     },
 
     // helmets
@@ -418,3 +507,6 @@ export default [
         }
     },
 ];
+
+export default items;
+export const itemsByName = Object.assign({}, ...items.map(x => ({[x.name]: x})));

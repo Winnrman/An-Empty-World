@@ -10,6 +10,7 @@ import * as messages from "./messages.js";
 import player, { saveData, resetData, renderGold, startSaveInterval } from "./player.js";
 import * as store from "./store.js";
 import * as questing from "./questing.js";
+import runTests from "./tests.js";
 
 window.player = player;
 window.store = store;
@@ -18,9 +19,11 @@ window.combat = combat;
 window.crafting = crafting;
 window.questing = questing;
 window.saveData = saveData;
+window.runTests = runTests;
 
 window.resetData = function () {
-    resetData();
+    resetData()
+    saveData();
     window.location.reload();
 };
 
