@@ -2,21 +2,75 @@ import * as dom from "./dom.js";
 import player, { addGold } from "./player.js";
 import { hasEquiped } from "./equipment.js";
 import { addMessage } from './messages.js';
+import { levelUnlocks } from "./experience.js";
 
 const achievements = [
     {
+        id: "cut_down_trees",
+        name: (progress) => `Cut Down ${progress} Trees`,
+        reward: (level, levelValue) => levelValue * 5,
+        getProgress: () => player.statistics.cutWood,
+        levels: [25, 50, 100, 250, 500, 1000, 2500, 5000],
+    },
+    {
+        id: "earned_gold",
+        name: (progress) => `Earned ${progress} Gold`,
+        reward: (level, levelValue) => levelValue / 5,
+        getProgress: () => player.statistics.earnedGold,
+        levels: [500, 1000, 2500, 5000, 10000, 25000, 50000],
+    },
+    {
+        id: "wooden_armor",
+        name: () => "Wooden Armor",
+        reward: () => 50,
+        getProgress: () => hasEquiped("Wooden Helmet") + hasEquiped("Wooden Chestplate")  + hasEquiped("Wooden Leggings") + hasEquiped("Wooden Boots"),
+        levels: [4]
+    },
+    {
+        id: "catch_fish",
+        name: (progress) => `Caught ${progress} Fish`,
+        reward: (level, levelValue) => levelValue * 5,
+        getProgress: () => player.statistics.caughtFish,
+        levels: [25, 50, 100, 250, 500, 1000, 2500, 5000],
+    },
+    {
+        id: "hunted_meat",
+        requirements: { level: levelUnlocks.hunting },
+        name: (progress) => `Hunted ${progress} Meat`,
+        reward: (level, levelValue) => levelValue * 5,
+        getProgress: () => player.statistics.huntedMeat,
+        levels: [25, 50, 100, 250, 500, 1000, 2500, 5000],
+    },
+    {
+        id: "killed_enemies",
+        name: (progress) => `Killed ${progress} Enemies`,
+        reward: (level, levelValue) => levelValue * 50,
+        getProgress: () => player.statistics.killedEnemies,
+        levels: [1, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
+    },
+    {
+        id: "mined_rock",
+        requirements: { level: levelUnlocks.mining },
+        name: (progress) => `Mined ${progress} Rocks`,
+        reward: (level, levelValue) => levelValue * 5,
+        getProgress: () => player.statistics.minedRocks,
+        levels: [25, 50, 100, 250, 500, 1000, 2500, 5000],
+    },
+    {
         id: "iron_armor",
+        requirements: { achievements: {  "wood_armor": 1 }, level: 5 },
         name: () => "Iron Armor",
         reward: () => 250,
         getProgress: () => hasEquiped("Iron Helmet") + hasEquiped("Iron Chestplate")  + hasEquiped("Iron Leggings") + hasEquiped("Iron Boots"),
         levels: [4]
     },
     {
-        id: "cut_down_trees",
-        name: (level, levelValue) => `Cut Down ${levelValue} Trees`,
-        reward: (level, levelValue) => levelValue,
-        getProgress: () => player.obtainedWood,
-        levels: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
+        id: "completed_quests",
+        requirements: { level: levelUnlocks.questing },
+        name: (progress) => `Completed ${progress} Quests`,
+        reward: (level, levelValue) => levelValue * 50,
+        getProgress: () => player.statistics.completedQuests,
+        levels: [1, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
     }
 ];
 
@@ -27,11 +81,32 @@ const achievementsToCheck = achievements.map(achievement => ({
     currentValue: 0
 }));
 
+function checkRequirements(achievement) {
+    const requirements = achievement.requirements;
+    if (!requirements)
+        return true;
+    
+    if (player.level < requirements.level)
+        return false;
+    
+    if (requirements.achievements) {
+        for (let requiredAchievement in requirements.achievements) {
+            if (player.completedAchievements[requiredAchievement] < requirements.achievements[requiredAchievement])
+                return false;
+        }
+    }
+
+    return true;
+}
+
 function checkAchievement(achievement) {
     const levels = achievement.levels || [0];
     const levelsCompleted = player.completedAchievements[achievement.id] || 0;
     if (levelsCompleted >= levels.length)
         return true;
+        
+    if (!checkRequirements(achievement))
+    return false;
 
     for (let level = levelsCompleted; level < levels.length; level++) {
         const levelValue = levels[level];
@@ -42,12 +117,12 @@ function checkAchievement(achievement) {
             return false;
         }
         
-        addMessage(`You have completed the ${achievement.name(level, levelValue)} achievement!`);
+        addMessage(`You have completed the ${achievement.name(levelValue)} achievement!`);
         addGold(achievement.reward(level, levelValue));
         player.completedAchievements[achievement.id] = level + 1;
     }
 
-    return false;
+    return (player.completedAchievements[achievement.id] || 0) >= levels.length;
 }
 
 export function startCheckInterval() {
@@ -77,13 +152,13 @@ function renderAchievements() {
 
     let html = "";
 
-    html += "<h4>In progress:</h4>";
+    html += "<h3>In progress:</h3>";
     if (achievementsInProgress.length > 0) {
         html += "<ul>";
         for (let achievement of achievementsInProgress) {
             const value = achievement.progress - achievement.previousLevelValue;
             const max = achievement.levelValue - achievement.previousLevelValue;
-            html += `<li><progress value="${value}" max="${max}"></progress> ${achievement.name}: ${achievement.progress} / ${achievement.levelValue}</li>`;
+            html += `<li><progress value="${value}" max="${max}"></progress> ${achievement.name}</li>`;
         }
         html += "</ul>";
     } else {
@@ -92,7 +167,7 @@ function renderAchievements() {
     
     html += "<br />"
     
-    html += "<h4>Completed:</h4>";
+    html += "<h3>Completed:</h3>";
     if (completedAchievements.length > 0) {
         html += "<ul>";
         for (let achievement of completedAchievements) {
@@ -107,10 +182,10 @@ function renderAchievements() {
 }
 
 function getAchievementsInProgress() {
-    return achievementsToCheck.map(achievement => {
+    return achievementsToCheck.filter(x => checkRequirements(x)).map(achievement => {
         const levelValue = achievement.levels[achievement.currentLevel];
         return {
-            name: achievement.name(achievement.currentLevel, levelValue),
+            name: achievement.name(`${achievement.progress}/${levelValue}`),
             progress: achievement.progress,
             levelValue: levelValue,
             previousLevelValue: achievement.levels[achievement.currentLevel - 1] || 0
@@ -123,10 +198,9 @@ function getCompletedAchievements() {
     for (var achievementId in player.completedAchievements) {
         const amountCompleted = player.completedAchievements[achievementId];
         const achievement = achievements.find(x => x.id == achievementId);
-        for (let level = 0; level < amountCompleted; level++) {
-            const levelValue = achievement.levels[level];
-            completedAchievements.push(achievement.name(level, levelValue))
-        }
+        const levelValue = achievement.levels[amountCompleted - 1];
+        const hasLevels = achievement.levels?.length > 1;
+        completedAchievements.push(`${achievement.name(levelValue)}${hasLevels ? ` <i>(${amountCompleted} / ${achievement.levels.length})</i>` : ''}`);
     }
     return completedAchievements;
 }

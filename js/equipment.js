@@ -61,7 +61,7 @@ function updateArmour() {
                          + (items.find(x => x.name === player.equipment.Boots)?.armor || 0)
                          + (items.find(x => x.name === player.equipment.Shield)?.armor || 0);
 
-    player.playerAttack = 1 + (items.find(x => x.name === player.equipment.Weapon)?.attack || 0)
+    player.playerAttack = 1 + (items.find(x => x.name === player.equipment.Weapon)?.attack || 0);
 
     document.getElementById("playerDefenseValue").innerHTML = player.playerDefense;
     document.getElementById("playerAttackValue").innerHTML = player.playerAttack;

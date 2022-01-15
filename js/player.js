@@ -1,3 +1,4 @@
+import { checkAchievements } from './achievements.js';
 import * as dom from './dom.js';
 
 const player = getPlayerData() ?? resetPlayer({});
@@ -6,6 +7,15 @@ const player = getPlayerData() ?? resetPlayer({});
 if (!player.completedAchievements) player.completedAchievements = {};
 if (!player.obtainedWood) player.obtainedWood = 0;
 if (!player.ownedEquipment.length) player.ownedEquipment = [];
+if (!player.statistics) player.statistics = {
+    cutWood: 0,
+    caughtFish: 0,
+    huntedMeat: 0,
+    minedRocks: 0,
+    killedEnemies: 0,
+    completedQuests: 0,
+    earnedGold: 0
+};
 
 export default player;
 
@@ -67,7 +77,15 @@ function resetPlayer(player) {
     player.playerSpeed = 1;
     player.armorBonus = 0;
 
-    player.obtainedWood = 0;
+    player.statistics = {
+        cutWood: 0,
+        caughtFish: 0,
+        huntedMeat: 0,
+        minedRocks: 0,
+        killedEnemies: 0,
+        completedQuests: 0,
+        earnedGold: 0
+    }
 
     player.completedAchievements = {};
 
@@ -76,6 +94,8 @@ function resetPlayer(player) {
 
 export function addGold(value) {
     player.gold += value;
+    addStatistic("earnedGold", value);
+
     renderGold();
 }
 
@@ -86,6 +106,11 @@ export function removeGold(value) {
 
 export function renderGold() {
     dom.setHtml("gold", player.gold);
+}
+
+export function addStatistic(type, amount) {
+    player.statistics[type] += amount;
+    setTimeout(checkAchievements);
 }
 
 export function startSaveInterval() {
