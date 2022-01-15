@@ -4,7 +4,7 @@ import { hasEquiped } from "./equipment.js";
 import { addMessage } from './messages.js';
 import { levelUnlocks } from "./experience.js";
 
-const achievements = [
+export const achievements = [
     {
         id: "cut_down_trees",
         name: (progress) => `Cut Down ${progress} Trees`,
@@ -74,12 +74,19 @@ const achievements = [
     }
 ];
 
-const achievementsToCheck = achievements.map(achievement => ({
-    ...achievement,
-    progress: 0,
-    currentLevel: 0,
-    currentValue: 0
-}));
+let achievementsToCheck = getAchievementsToCheck();
+function getAchievementsToCheck() {
+    return achievements.map(achievement => ({
+        ...achievement,
+        progress: 0,
+        currentLevel: 0,
+        currentValue: 0
+    }));
+}
+
+export function resetAchievementsToCheck() {
+    achievementsToCheck = getAchievementsToCheck()
+}
 
 function checkRequirements(achievement) {
     const requirements = achievement.requirements;

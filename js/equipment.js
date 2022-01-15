@@ -1,5 +1,6 @@
+import * as dom from "./dom.js";
 import { checkAchievements } from "./achievements.js";
-import items from "./items.js";
+import items, { itemsByName } from "./items.js";
 import { addMessage } from './messages.js';
 import player, { addGold } from "./player.js";
 import transient from "./transient.js";
@@ -32,7 +33,7 @@ function addEquipmentOption(item, isEquipped) {
 export function loadOptionsFromOwnedEquipment() {
     for (let equipmentName of player.ownedEquipment) {
         const isEquipped = hasEquiped(equipmentName);
-        const equipment = items.find(x => x.name === equipmentName);
+        const equipment = itemsByName[equipmentName];
         addEquipmentOption(equipment, isEquipped);
     }
     updateArmour();
@@ -48,23 +49,25 @@ export function hasEquiped(itemName) {
 Object.values(document.getElementsByClassName('EquipmentSelect')).forEach(x => x.addEventListener("change", updateArmour));
 
 function updateArmour() {
-    player.equipment.Helmet = document.getElementById("HelmetSelect").value;
-    player.equipment.Chestplate = document.getElementById("ChestplateSelect").value;
-    player.equipment.Leggings = document.getElementById("LeggingsSelect").value;
-    player.equipment.Boots = document.getElementById("BootsSelect").value;
-    player.equipment.Shield = document.getElementById("ShieldSelect").value;
-    player.equipment.Weapon = document.getElementById("WeaponSelect").value;
+    const updateEquipment = (type) => {
+        const item = dom.getValue(`${type}Select`);
+        player.equipment[type] = item ? item : undefined;
+    }
 
-    player.playerDefense = (items.find(x => x.name === player.equipment.Helmet)?.armor || 0)
-                         + (items.find(x => x.name === player.equipment.Chestplate)?.armor || 0)
-                         + (items.find(x => x.name === player.equipment.Leggings)?.armor || 0)
-                         + (items.find(x => x.name === player.equipment.Boots)?.armor || 0)
-                         + (items.find(x => x.name === player.equipment.Shield)?.armor || 0);
+    updateEquipment("Helmet");
+    updateEquipment("Chestplate");
+    updateEquipment("Leggings");
+    updateEquipment("Boots");
+    updateEquipment("Shield");
+    updateEquipment("Weapon");
 
-    player.playerAttack = 1 + (items.find(x => x.name === player.equipment.Weapon)?.attack || 0);
+    const getArmorValue = (type) => itemsByName[player.equipment[type]]?.armor || 0;
+    const getAttackValue = (type) => itemsByName[player.equipment[type]]?.attack || 0;
+    player.playerDefense = getArmorValue("Helmet") + getArmorValue("Chestplate") + getArmorValue("Leggings") + getArmorValue("Boots") + getArmorValue("Shield");
+    player.playerAttack = 1 + getAttackValue("Weapon");
 
-    document.getElementById("playerDefenseValue").innerHTML = player.playerDefense;
-    document.getElementById("playerAttackValue").innerHTML = player.playerAttack;
+    dom.setHtml("playerDefenseValue", player.playerDefense);
+    dom.setHtml("playerAttackValue", player.playerAttack);
 
     checkAchievements();
 }

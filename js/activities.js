@@ -1,6 +1,7 @@
 import player, { addStatistic } from "./player.js";
 import { addMessage } from "./messages.js";
 import { addXp } from "./experience.js";
+import items, { itemsByName } from "./items.js";
 import { getRandomItem } from "./util.js";
 import { isInventoryFull, renderInventory } from "./inventory.js";
 import { displayCraftingNeededMaterials } from "./crafting.js";
@@ -18,13 +19,13 @@ export function tree() {
 
     player.inventory_dictionary["Wood"] += 1;
     addStatistic("cutWood", 1);
-    addXp(10);
-
+    addXp(itemsByName["Wood"].treeCutting.xp);
+        
     player.toolHealth["Axe"] -= 1;
     if (player.toolHealth["Axe"] <= 0) {
         addMessage("Your axe broke!");
         player.inventory_dictionary["Axe"] -= 1;
-        player.toolHealth["Axe"] = 20;
+        player.toolHealth["Axe"] = itemsByName["Axe"].health;
     }
 
     renderInventory();
@@ -44,13 +45,13 @@ export function goFishing() {
 
     player.inventory_dictionary["Fish"] += 1;
     addStatistic("caughtFish", 1);
-    addXp(15);
-
+    addXp(itemsByName["Fish"].fishing.xp);
+        
     player.toolHealth["Fishing Pole"] -= 1;
     if (player.toolHealth["Fishing Pole"] <= 0) {
         addMessage("Your fishing pole broke!");
         player.inventory_dictionary["Fishing Pole"] -= 1;
-        player.toolHealth["Fishing Pole"] = 10;
+        player.toolHealth["Fishing Pole"] = itemsByName["Fishing Pole"].health;
     }
 
     renderInventory();
@@ -70,30 +71,20 @@ export function goHunting() {
 
     player.inventory_dictionary["Meat"] += 1;
     addStatistic("huntedMeat", 1);
-    addXp(50);
-
+    addXp(itemsByName["Meat"].hunting.xp);
+        
     player.toolHealth["Hunting Rifle"] -= 1;
     if (player.toolHealth["Hunting Rifle"] <= 0) {
         addMessage("Your hunting rifle broke!");
         player.inventory_dictionary["Hunting Rifle"] -= 1;
-        player.toolHealth["Hunting Rifle"] = 50;
+        player.toolHealth["Hunting Rifle"] = itemsByName["Hunting Rifle"].health;
     }
 
     renderInventory();
     displayCraftingNeededMaterials();
 }
 
-const ores = [
-    { name: "Iron", xp: 110 },
-    { name: "Copper", xp: 112 },
-    { name: "Tin", xp: 113 },
-    { name: "Silver", xp: 119 },
-    { name: "Gold", xp: 125 },
-    { name: "Emerald", xp: 130 },
-    { name: "Ruby", xp: 150 },
-    { name: "Diamond", xp: 200 },
-    { name: "Stone", xp: 1 },
-];
+const ores = items.filter(x => x.mining);
 
 export function goMining() {
     if (!player.inventory_dictionary["Pickaxe"]) {
@@ -108,17 +99,17 @@ export function goMining() {
 
     const ore = getRandomItem(ores);
     addMessage(`You mined some ${ore.name}!`);
-    if (ore.xp > 1) {
+    if (ore.mining.xp > 1) {
         player.inventory_dictionary[ore.name]++;
     }
     addStatistic("minedRocks", 1);
-    addXp(ore.xp);
-
+    addXp(ore.mining.xp);
+        
     player.toolHealth["Pickaxe"] -= 1;
     if (player.toolHealth["Pickaxe"] <= 0) {
         addMessage("Your pickaxe broke!");
         player.inventory_dictionary["Pickaxe"] -= 1;
-        player.toolHealth["Pickaxe"] = 75;
+        player.toolHealth["Pickaxe"] = itemsByName["Pickaxe"].health;
     }
 
     renderInventory();
@@ -140,7 +131,7 @@ export function goIronMining() {
     addMessage(`You mined some Iron!`);
     player.inventory_dictionary['Iron']++;
     addStatistic("minedRocks", 1);
-    addXp(ores[0].xp);
+    addXp(ores.find(x => x.name === "Iron").mining.xp);
 
     player.toolHealth["Pickaxe"] -= 1;
     if (player.toolHealth["Pickaxe"] <= 0) {

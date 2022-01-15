@@ -1,4 +1,5 @@
-import items from "./items.js";
+import * as dom from "./dom.js";
+import items, { itemsByName } from "./items.js";
 import { addMessage } from './messages.js';
 import { addToOwnedEquipment, ownsEquipment } from "./equipment.js";
 import player from "./player.js";
@@ -7,8 +8,7 @@ import { renderInventory } from "./inventory.js";
 let currentCraftable = undefined;
 
 function getSelectedCraftable() {
-    var selectedName = document.getElementById("craftingSelect").value;
-    return items.find(x => x.name === selectedName);
+    return itemsByName[dom.getValue("craftingSelect")];
 }
 
 export function displayCraftingNeededMaterials() {

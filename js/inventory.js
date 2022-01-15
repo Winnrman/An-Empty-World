@@ -37,8 +37,7 @@ export function renderInventory() {
 	};
 
 	for (var category in categories) {
-		var valid_resources = []
-		// console.log(category)
+		var valid_resources = [];
 		for (var key in player.inventory_dictionary) {
 			if (categories[category].indexOf(key) >= 0) {
 				// check if the property/key is defined in the object itself, not in parent

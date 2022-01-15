@@ -1,12 +1,14 @@
 import * as dom from './dom.js';
 import { randomLootDrop } from "./events.js";
 import { isInventoryFull, renderInventory } from "./inventory.js";
+import { itemsByName } from "./items.js";
 import { addToOwnedEquipment } from "./equipment.js";
 import { addMessage } from './messages.js';
 import player, { addGold, removeGold } from "./player.js";
 import { displayCraftingNeededMaterials } from './crafting.js';
 
-function buyTool(type, text, price) {
+function buyTool(type, text) {
+    const price = itemsByName[type].price;
     if (player.gold < price) {
         addMessage(`You don't have enough gold to buy ${text}!`);
         return;
@@ -28,19 +30,19 @@ function buyTool(type, text, price) {
 }
 
 export function buyAxe() {
-    buyTool("Axe", "an axe", 20);
+    buyTool("Axe", "an axe");
 }
 
 export function buyFishingPole() {
-    buyTool("Fishing Pole", "a fishing pole", 50);
+    buyTool("Fishing Pole", "a fishing pole");
 }
 
 export function buyHuntingRifle() {
-    buyTool("Hunting Rifle", "a hunting rifle", 300);
+    buyTool("Hunting Rifle", "a hunting rifle");
 }
 
 export function buyPickaxe() {
-    buyTool("Pickaxe", "a pickaxe", 1200);
+    buyTool("Pickaxe", "a pickaxe");
 }
 
 export function buySpecialDeal() {
@@ -76,21 +78,6 @@ export function buyInventoryUpgrade() {
     renderInventory();
 }
 
-const goldTable = {
-    "Wood": 5,
-    "Fish": 10,
-    "Meat": 20,
-    "Stone": 5,
-    "Iron": 120,
-    "Copper": 125,
-    "Tin": 115,
-    "Silver": 150,
-    "Gold": 125,
-    "Emerald": 130,
-    "Ruby": 160,
-    "Diamond": 1100
-};
-
 export function sell(item) {
     if (item === "Ores") {
         sellItem("Iron");
@@ -111,7 +98,7 @@ export function sell(item) {
 }
 
 function sellItem(type) {
-    addGold(player.inventory_dictionary[type] * goldTable[type]);
+    addGold(player.inventory_dictionary[type] * itemsByName[type].price);
     player.inventory_dictionary[type] = 0;
 }
 
