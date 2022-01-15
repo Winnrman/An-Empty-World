@@ -2,7 +2,10 @@ import * as dom from "./dom.js";
 import { achievements, checkAchievements, resetAchievementsToCheck } from "./achievements.js";
 import * as activities from "./activities.js";
 import * as crafting from "./crafting.js";
+import * as experience from "./experience.js";
+import * as equipment from "./equipment.js";
 import { itemsByName } from "./items.js";
+import * as main from "./main.js";
 import player, { stopSaveInterval, saveData, resetData, getDefaultData, restoreData, startSaveInterval } from "./player.js";
 import * as store from "./store.js";
 
@@ -13,6 +16,7 @@ export default function runTests(keepTestDataAfterwards) {
     saveData();
     resetData();
     resetAchievementsToCheck();
+    equipment.loadOptionsFromOwnedEquipment();
     
     try {
         runScenario();
@@ -21,6 +25,7 @@ export default function runTests(keepTestDataAfterwards) {
         if (!keepTestDataAfterwards) {
             restoreData();
             startSaveInterval();
+            main.checkAndRenderEverything();
         }
     }
 }
@@ -300,6 +305,7 @@ function nothingHappened(reason) {
 
 function verify() {
     checkAchievements();
+    experience.checkLevelUnlocks();
 
     verifyProperty("gold");
     verifyProperty("level");
