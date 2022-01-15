@@ -4,6 +4,14 @@
 <head>
     <title>An Empty World</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/achievements.css">
+    <link rel="stylesheet" type="text/css" href="css/combat.css">
+    <link rel="stylesheet" type="text/css" href="css/dark.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <link rel="stylesheet" type="text/css" href="css/messages.css">
+    <link rel="stylesheet" type="text/css" href="css/progress.css">
+    <link rel="stylesheet" type="text/css" href="css/progress-bar.css">
+    <link rel="stylesheet" type="text/css" href="css/store.css">
 
 </head>
 
@@ -14,10 +22,12 @@
             document.body.classList.add("class", "dark");
         }
     </script>
+
     <div class="sideContainer" id="messagesContainer">
         <h2 id="messagesHeader" class="header">Messages</h2>
         <div id="messages"></div>
     </div>
+
     <div id="progressContainer">
         <span style="display: inline-flex">
             <h3 id="name">K0ng</h3>
@@ -32,15 +42,16 @@
         <br />
 
         XP: 
-        <div class="progressBar">
-            <div style="width: 0px;" id="progressXp"></div>
+        <div class="progress-bar">
+            <span style="width: 0px;" id="progressXp"></span>
         </div>
 
         Stamina:
-        <div class="progressBar">
-            <div style="width: 0px;" id="progressStamina"></div>
+        <div class="progress-bar">
+            <span style="width: 0px;" id="progressStamina"></span>
         </div>
     </div>
+
     <div class="container">
         <h2 class="header" id="activitiesHeader">Activities</h2>
         <div style="padding-top:5px;" id="activitiesContainer">
@@ -54,6 +65,7 @@
                 Questing</button>
         </div>
     </div>
+
     <div id="inventoryContainer" class="container">
         <h2 class="header" id="inventoryHeader">Inventory</h2>
         <!-- <[inventory]> -->
@@ -78,6 +90,7 @@
             <li id="pickaxeDurability"></li>
         </span>
     </div>
+
     <div id="storeContainer" class="container">
         <h2 class="header" id="storeHeader">Store</h2>
         <span style="display: inline-flex">
@@ -116,12 +129,14 @@
 
         </span>
     </div>
+
     <div id="combatContainer" class="container">
         <h2 class="header" id="combatHeader">Combat</h2>
         <div style="display: flex; justify-content: space-evenly;" id=" statsContainer">
-
             <div id="enemyStats">
                 <h4 style="text-decoration: underline; " id="enemyHeader">Enemy</h4>
+                <div class="progress-bar"><span id="enemyHealthProgress" style="width: 0%;"></span></div>
+                <div class="progress-bar"><span id="enemyAttackProgress" style="width: 0%;"></span></div>
                 <p id="health">Health: <span id="healthValue">0</span></p>
                 <p id="attack">Attack: <span id="attackValue">0</span></p>
                 <p id="defense">Defense: <span id="defenseValue">0</span></p>
@@ -129,6 +144,8 @@
             </div>
             <div style="float:right; " id="playerStats">
                 <h4 style="text-decoration: underline; " id="playerHeader">Player</h4>
+                <div class="progress-bar"><span id="playerHealthProgress" style="width: 100%;"></span></div>
+                <div class="progress-bar"><span id="playerAttackProgress" style="width: 0%;"></span></div>
                 <p id="playerHealth">Health: <span id="playerHealthValue">100/100</span></p>
                 <p id="playerAttack">Attack: <span id="playerAttackValue">1</span></p>
                 <p id="playerDefense">Defense: <span id="playerDefenseValue">1</span></p>
@@ -255,10 +272,5 @@
 </body>
 
 <script type="module" src="js/main.js"></script>
-
-<!-- <script type="text/javascript">
-    window.glob = "inventory";
-</script> -->
-
 
 </html>

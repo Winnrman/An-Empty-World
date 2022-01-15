@@ -1,0 +1,19 @@
+#armor, #weapons{
+    padding-top:5px;
+}
+
+#playerHealthProgress {
+    background-color: rgb(1, 158, 53);
+}
+
+#playerAttackProgress {
+    background-color: rgb(3, 166, 231);
+}
+
+#enemyHealthProgress {
+    background-color: rgb(144, 1, 1);
+}
+
+#enemyAttackProgress {
+    background-color: rgb(3, 166, 231);
+}
