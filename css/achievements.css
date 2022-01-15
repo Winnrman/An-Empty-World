@@ -1,0 +1,11 @@
+#achievements progress {
+    background-color:black;
+}
+
+#achievements .progress-bar {
+    display: inline-block;
+}
+
+#achievements .progress-bar span {
+    background-color:rgb(3, 56, 136);
+}

@@ -1,0 +1,19 @@
+.progress-bar {
+    border: 1px solid gray;
+    width: 150px;
+    height: 13px;
+}
+    
+.progress-bar > span {
+    background-color: blue;
+    display: block;
+    height: 100%;
+}
+
+.notransition {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    -ms-transition: none !important;
+    transition: none !important;
+  }

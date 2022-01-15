@@ -158,7 +158,8 @@ function renderAchievements() {
         for (let achievement of achievementsInProgress) {
             const value = achievement.progress - achievement.previousLevelValue;
             const max = achievement.levelValue - achievement.previousLevelValue;
-            html += `<li><progress value="${value}" max="${max}"></progress> ${achievement.name}</li>`;
+            const width = value / max * 100;
+            html += `<li><div class="progress-bar"><span style="width: ${width}%;"></span></div> ${achievement.name}</li>`;
         }
         html += "</ul>";
     } else {

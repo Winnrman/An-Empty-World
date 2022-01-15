@@ -1,0 +1,19 @@
+#progressContainer{
+    width:250px;
+    height:auto;
+    margin: 20px;
+    padding:10px;
+    border:1px solid black;
+}
+
+#progressContainer .progress-bar {
+    width: 95%;
+}
+
+#progressXp {
+    background-color:rgb(196, 196, 196);
+}
+
+#progressStamina {
+    background-color:rgb(46, 120, 231);
+}
