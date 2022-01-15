@@ -2,15 +2,15 @@ import player from "./player.js";
 import items from "./items.js";
 
 function calculateInventorySpace() {
-    let inventorySpace = 0;
-    for (let key in player.inventory_dictionary) {
-        inventorySpace += player.inventory_dictionary[key];
-    }
-    return inventorySpace;
+	let inventorySpace = 0;
+	for (let key in player.inventory_dictionary) {
+		inventorySpace += player.inventory_dictionary[key];
+	}
+	return inventorySpace;
 }
 
 export function isInventoryFull() {
-    return calculateInventorySpace() >= player.maxInventorySize;
+	return calculateInventorySpace() >= player.maxInventorySize;
 }
 
 export function renderInventory() {
@@ -24,25 +24,25 @@ export function renderInventory() {
 			}
 		}
 	}
-    document.getElementById("inventoryHeader").innerHTML = `Inventory (${calculateInventorySpace()}/${player.maxInventorySize})`;
-	
-    const getPart = (type) => `${type} x${player.inventory_dictionary[type]}`;
-    const getParts = (types) => types.map(x => getPart(x)).join("&nbsp;|&nbsp;");
-	
+	document.getElementById("inventoryHeader").innerHTML = `Inventory (${calculateInventorySpace()}/${player.maxInventorySize})`;
+
+	const getPart = (type) => `${type} x${player.inventory_dictionary[type]}`;
+	const getParts = (types) => types.map(x => getPart(x)).join("&nbsp;|&nbsp;");
+
 	const categories = {
 		"inventory-tools": ["Axe", "Pickaxe", "Hunting Rifle", "Fishing Pole"],
 		"inventory-basic": ["Wood", "Fish", "Meat", "Stone"],
 		"inventory-ores": ["Iron", "Copper", "Tin", "Silver", "Gold"],
 		"inventory-gems": ["Emerald", "Ruby", "Diamond"],
 	};
-	
+
 	for (var category in categories) {
 		var valid_resources = []
-		console.log(category)
+		// console.log(category)
 		for (var key in player.inventory_dictionary) {
 			if (categories[category].indexOf(key) >= 0) {
 				// check if the property/key is defined in the object itself, not in parent
-				if (player.inventory_dictionary.hasOwnProperty(key)) {           
+				if (player.inventory_dictionary.hasOwnProperty(key)) {
 					// Check if more than 0 item is present in player inventory
 					if (player.inventory_dictionary[key] > 0) {
 						valid_resources.push(key)

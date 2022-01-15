@@ -19,7 +19,7 @@ export function tree() {
     player.inventory_dictionary["Wood"] += 1;
     addStatistic("cutWood", 1);
     addXp(10);
-        
+
     player.toolHealth["Axe"] -= 1;
     if (player.toolHealth["Axe"] <= 0) {
         addMessage("Your axe broke!");
@@ -45,14 +45,14 @@ export function goFishing() {
     player.inventory_dictionary["Fish"] += 1;
     addStatistic("caughtFish", 1);
     addXp(15);
-        
+
     player.toolHealth["Fishing Pole"] -= 1;
     if (player.toolHealth["Fishing Pole"] <= 0) {
         addMessage("Your fishing pole broke!");
         player.inventory_dictionary["Fishing Pole"] -= 1;
         player.toolHealth["Fishing Pole"] = 10;
     }
-    
+
     renderInventory();
     displayCraftingNeededMaterials();
 }
@@ -71,14 +71,14 @@ export function goHunting() {
     player.inventory_dictionary["Meat"] += 1;
     addStatistic("huntedMeat", 1);
     addXp(50);
-        
+
     player.toolHealth["Hunting Rifle"] -= 1;
     if (player.toolHealth["Hunting Rifle"] <= 0) {
         addMessage("Your hunting rifle broke!");
         player.inventory_dictionary["Hunting Rifle"] -= 1;
         player.toolHealth["Hunting Rifle"] = 50;
     }
-    
+
     renderInventory();
     displayCraftingNeededMaterials();
 }
@@ -113,14 +113,42 @@ export function goMining() {
     }
     addStatistic("minedRocks", 1);
     addXp(ore.xp);
-        
+
     player.toolHealth["Pickaxe"] -= 1;
     if (player.toolHealth["Pickaxe"] <= 0) {
         addMessage("Your pickaxe broke!");
         player.inventory_dictionary["Pickaxe"] -= 1;
         player.toolHealth["Pickaxe"] = 75;
     }
-    
+
+    renderInventory();
+    displayCraftingNeededMaterials();
+}
+
+export function goIronMining() {
+    if (!player.inventory_dictionary["Pickaxe"]) {
+        addMessage("You need a pickaxe to mine!");
+        return;
+    }
+
+    if (isInventoryFull()) {
+        addMessage("Your inventory is full. You can't carry any more items.");
+        return;
+    }
+
+    // const ore = getRandomItem(ores);
+    addMessage(`You mined some Iron!`);
+    player.inventory_dictionary['Iron']++;
+    addStatistic("minedRocks", 1);
+    addXp(ores[0].xp);
+
+    player.toolHealth["Pickaxe"] -= 1;
+    if (player.toolHealth["Pickaxe"] <= 0) {
+        addMessage("Your pickaxe broke!");
+        player.inventory_dictionary["Pickaxe"] -= 1;
+        player.toolHealth["Pickaxe"] = 75;
+    }
+
     renderInventory();
     displayCraftingNeededMaterials();
 }

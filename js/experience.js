@@ -8,7 +8,7 @@ function getNeededLevelUpXp() {
 
 export function addXp(value) {
     player.xp += value;
-    
+
     if (player.xp >= getNeededLevelUpXp()) {
         player.level++;
         player.xp = 0;
@@ -24,6 +24,7 @@ export function addXp(value) {
 export const levelUnlocks = {
     hunting: 2,
     mining: 3,
+    ironMining: 3,
     inventoryUpgrade: 4,
     questing: 8
 }
@@ -42,6 +43,12 @@ export function checkLevelUnlocks() {
 
         dom.setIsVisible("sellOres", true);
         dom.setIsVisible("sellStone", true);
+    }
+
+    if (player.level >= levelUnlocks.ironMining) {
+        dom.setIsVisible("goIronMiningButton", true);
+        dom.setIsVisible("sellIron", true);
+
     }
 
     if (player.level >= levelUnlocks.inventoryUpgrade) {
