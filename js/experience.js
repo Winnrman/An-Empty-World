@@ -21,15 +21,22 @@ export function addXp(value) {
     renderLevel();
 }
 
+export const levelUnlocks = {
+    hunting: 2,
+    mining: 3,
+    inventoryUpgrade: 4,
+    questing: 8
+}
+
 export function checkLevelUnlocks() {
-    if (player.level >= 2) {
+    if (player.level >= levelUnlocks.hunting) {
         dom.setIsVisible("goHuntingButton", true);
         dom.setIsVisible("huntingRifle", true);
 
         dom.setIsVisible("sellMeat", true);
     }
 
-    if (player.level >= 3) {
+    if (player.level >= levelUnlocks.mining) {
         dom.setIsVisible("goMiningButton", true);
         dom.setIsVisible("pickaxe", true);
 
@@ -37,11 +44,11 @@ export function checkLevelUnlocks() {
         dom.setIsVisible("sellStone", true);
     }
 
-    if (player.level >= 4) {
+    if (player.level >= levelUnlocks.inventoryUpgrade) {
         dom.setIsVisible("inventoryUpgrade", true);
     }
 
-    if (player.level > 7) {
+    if (player.level >= levelUnlocks.questing) {
         dom.setIsVisible("goQuestingButton", true);
     }
 

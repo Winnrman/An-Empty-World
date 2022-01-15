@@ -4,7 +4,7 @@ import { randomLootDrop } from "./events.js";
 import { addXp } from "./experience.js";
 import { addToOwnedEquipment, hasEquiped } from "./equipment.js";
 import { addMessage } from './messages.js';
-import player, { addGold, removeGold }  from "./player.js";
+import player, { addGold, addStatistic, removeGold }  from "./player.js";
 import transient from './transient.js';
 import { getRandomInt, getRandomItem, sleep } from './util.js';
 
@@ -106,6 +106,7 @@ async function fightMonster() {
         
         addXp(enemy.defeatExperience);
         await waitForPart(2000, `You gain ${enemy.defeatExperience} experience!`);
+        questWasSuccessful();
     } else {
         await waitForPart(2000, `You lost. You weren't strong enough to defeat the ${enemy.name}.`);
 
@@ -122,6 +123,7 @@ async function lootChest() {
     const item = getLootDrop(hasAmuletOfLuck() ? ["rare", "legendary"] : ["common", "uncommon"]);
     addMessage(`You found a ${item.name}!${(hasAmuletOfLuck() ? " You feel lucky!" : "")}`);
     addToOwnedEquipment(item);
+    questWasSuccessful();
 }
 
 function getLootDrop(rarities) {
@@ -136,6 +138,10 @@ function hasAmuletOfLuck() {
     return hasEquiped("Amulet of Luck");
 }
 
+function questWasSuccessful() {
+    addStatistic("completedQuests", 1);
+}
+
 async function doRandomAction(actions) {
     var randomAction = getRandomItem(actions);
     await randomAction();
@@ -145,6 +151,7 @@ async function waitForPart(time, message) {
     await sleep(time);
     addMessage(message);
 }
+
 function removeStamina(amount) {
     player.stamina = Math.max(0, player.stamina - amount);
     renderStamina();
@@ -166,6 +173,6 @@ export function startStaminaInterval() {
 
 export function renderStamina() {
     document.getElementById("progressStamina").style.width = `${player.stamina / player.maxStamina * 100}%`;
-    document.getElementById("progressStamina").style.transition = "width 0.5s";
+    document.getElementById("progressStamina").style.transition = "width 1.5s";
     dom.setHtml("staminaAmount", player.stamina);
 }

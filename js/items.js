@@ -45,8 +45,7 @@ export default [
         crafting: {
             requiredLevel: 1,
             ingredients: {
-                "Wood": 2,
-                "Iron": 1
+                "Wood": 4,
             }
         }
     },
@@ -124,8 +123,7 @@ export default [
         crafting: {
             requiredLevel: 1,
             ingredients: {
-                "Wood": 5,
-                "Iron": 1
+                "Wood": 8
             }
         }
     },
@@ -203,8 +201,7 @@ export default [
         crafting: {
             requiredLevel: 1,
             ingredients: {
-                "Wood": 3,
-                "Iron": 1
+                "Wood": 5,
             }
         }
     },
@@ -283,7 +280,6 @@ export default [
             requiredLevel: 1,
             ingredients: {
                 "Wood": 3,
-                "Iron": 2
             }
         }
     },
@@ -370,8 +366,7 @@ export default [
         crafting: {
             requiredLevel: 1,
             ingredients: {
-                "Wood": 2,
-                "Iron": 2
+                "Wood": 5,
             }
         },
     },

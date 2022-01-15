@@ -1,9 +1,8 @@
-import player from "./player.js";
+import player, { addStatistic } from "./player.js";
 import { addMessage } from "./messages.js";
 import { addXp } from "./experience.js";
 import { getRandomItem } from "./util.js";
 import { isInventoryFull, renderInventory } from "./inventory.js";
-import { checkAchievements } from "./achievements.js";
 import { displayCraftingNeededMaterials } from "./crafting.js";
 
 export function tree() {
@@ -18,7 +17,7 @@ export function tree() {
     }
 
     player.inventory_dictionary["Wood"] += 1;
-    player.obtainedWood += 1;
+    addStatistic("cutWood", 1);
     addXp(10);
         
     player.toolHealth["Axe"] -= 1;
@@ -30,7 +29,6 @@ export function tree() {
 
     renderInventory();
     displayCraftingNeededMaterials();
-    checkAchievements();
 }
 
 export function goFishing() {
@@ -45,6 +43,7 @@ export function goFishing() {
     }
 
     player.inventory_dictionary["Fish"] += 1;
+    addStatistic("caughtFish", 1);
     addXp(15);
         
     player.toolHealth["Fishing Pole"] -= 1;
@@ -56,7 +55,6 @@ export function goFishing() {
     
     renderInventory();
     displayCraftingNeededMaterials();
-    checkAchievements();
 }
 
 export function goHunting() {
@@ -71,6 +69,7 @@ export function goHunting() {
     }
 
     player.inventory_dictionary["Meat"] += 1;
+    addStatistic("huntedMeat", 1);
     addXp(50);
         
     player.toolHealth["Hunting Rifle"] -= 1;
@@ -82,7 +81,6 @@ export function goHunting() {
     
     renderInventory();
     displayCraftingNeededMaterials();
-    checkAchievements();
 }
 
 const ores = [
@@ -113,6 +111,7 @@ export function goMining() {
     if (ore.xp > 1) {
         player.inventory_dictionary[ore.name]++;
     }
+    addStatistic("minedRocks", 1);
     addXp(ore.xp);
         
     player.toolHealth["Pickaxe"] -= 1;
@@ -124,5 +123,4 @@ export function goMining() {
     
     renderInventory();
     displayCraftingNeededMaterials();
-    checkAchievements();
 }

@@ -3,7 +3,7 @@ import { enemy_dictionary } from "./enemies.js";
 import { addXp } from "./experience.js";
 import { randomLootDrop } from "./events.js";
 import { addToOwnedEquipment } from "./equipment.js";
-import player, { addGold } from "./player.js";
+import player, { addGold, addStatistic } from "./player.js";
 import { addMessage } from './messages.js';
 import { getRandomInt } from './util.js';
 
@@ -47,6 +47,7 @@ function enemyDied() {
     const gold = getRandomInt(enemy.gold.min, enemy.gold.max);
     addGold(gold);
     addMessage(`You defeated the ${enemy.name} and earned ${gold} gold and ${enemy.defeatExperience} XP!`);
+    addStatistic("killedEnemies", 1);
 
     var droppedRandomLoot = Math.floor(Math.random() * 100);
     if (droppedRandomLoot < 25) {
