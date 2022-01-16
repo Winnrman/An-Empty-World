@@ -1,17 +1,40 @@
-import * as achievements from "./achievements.js";
-import * as settings from "./settings.js";
-import * as activities from "./activities.js";
-import * as combat from "./combat.js";
-import * as crafting from "./crafting.js";
-import * as experience from "./experience.js";
-import * as inventory from "./inventory.js";
-import * as equipment from "./equipment.js";
-import * as messages from "./messages.js";
-import player, { saveData, resetData, renderGold, startSaveInterval } from "./player.js";
-import * as store from "./store.js";
-import * as questing from "./questing.js";
-import runTests from "./tests.js";
+import * as achievements from "./achievements";
+import * as settings from "./settings";
+import * as activities from "./activities";
+import * as combat from "./combat";
+import * as crafting from "./crafting";
+import * as experience from "./experience";
+import * as inventory from "./inventory";
+import * as equipment from "./equipment";
+import * as messages from "./messages";
+import player, { saveData, resetData, renderGold, startSaveInterval } from "./player";
+import * as store from "./store";
+import * as questing from "./questing";
+import runTests from "./tests";
 
+import "../css/style.css";
+import "../css/achievements.css";
+import "../css/combat.css";
+import "../css/dark.css";
+import "../css/footer.css";
+import "../css/messages.css";
+import "../css/progress.css";
+import "../css/progress-bar.css";
+import "../css/store.css";
+
+declare global {
+    interface Window {
+        player: any;
+        store: any;
+        activities: any;
+        combat: any;
+        crafting: any;
+        questing: any;
+        saveData: () => void;
+        resetData: () => void;
+        runTests: (x: boolean) => void;
+    }
+}
 window.player = player;
 window.store = store;
 window.activities = activities;

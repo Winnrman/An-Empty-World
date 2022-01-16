@@ -1,9 +1,9 @@
-import * as dom from "./dom.js";
-import items, { itemsByName } from "./items.js";
-import { addMessage } from './messages.js';
-import { addToOwnedEquipment, ownsEquipment } from "./equipment.js";
-import player from "./player.js";
-import { renderInventory } from "./inventory.js";
+import * as dom from "./dom";
+import items, { itemsByName } from "./items";
+import { addMessage } from './messages';
+import { addToOwnedEquipment, ownsEquipment } from "./equipment";
+import player from "./player";
+import { renderInventory } from "./inventory";
 
 let currentCraftable = undefined;
 
@@ -51,7 +51,7 @@ export function doCrafting() {
 
 export function renderCraftables() {
     const craftables = items.filter(x => x.crafting && x.crafting.requiredLevel <= player.level && !ownsEquipment(x.name));
-    const container = document.getElementById('craftingSelect');
+    const container = <HTMLSelectElement>document.getElementById('craftingSelect');
 
     container.innerHTML = '';
     const option = document.createElement("option");

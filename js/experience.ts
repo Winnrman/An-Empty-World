@@ -1,6 +1,7 @@
-import * as dom from './dom.js';
-import player, { addGold } from "./player.js";
-import { addMessage } from './messages.js';
+import * as dom from './dom';
+import player, { addGold } from "./player";
+import { addMessage } from './messages';
+import * as crafting from './crafting';
 
 function getNeededLevelUpXp() {
     return player.level * 100 * (player.level + 1);
@@ -12,7 +13,7 @@ export function addXp(value) {
     if (player.xp >= getNeededLevelUpXp()) {
         player.level++;
         player.xp = 0;
-        document.getElementById("progressXp").width = 0;
+        document.getElementById("progressXp").style.width = "0px";
         addMessage(`You leveled up! You are now level ${player.level}! [ ${player.level * 100} gold awarded ]`);
         addGold(player.level * 100);
         checkLevelUnlocks();

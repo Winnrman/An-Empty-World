@@ -1,8 +1,10 @@
-import * as dom from "./dom.js";
-import player, { addGold } from "./player.js";
-import { hasEquiped } from "./equipment.js";
-import { addMessage } from './messages.js';
-import { levelUnlocks } from "./experience.js";
+import * as dom from "./dom";
+import player, { addGold } from "./player";
+import { hasEquiped } from "./equipment";
+import { addMessage } from './messages';
+import { levelUnlocks } from "./experience";
+
+const getEquipCount = (type: string) => hasEquiped(type) ? 1 : 0;
 
 export const achievements = [
     {
@@ -23,7 +25,7 @@ export const achievements = [
         id: "wooden_armor",
         name: () => "Wooden Armor",
         reward: () => 50,
-        getProgress: () => hasEquiped("Wooden Helmet") + hasEquiped("Wooden Chestplate")  + hasEquiped("Wooden Leggings") + hasEquiped("Wooden Boots"),
+        getProgress: () => getEquipCount("Wooden Helmet") + getEquipCount("Wooden Chestplate") + getEquipCount("Wooden Leggings") + getEquipCount("Wooden Boots"),
         levels: [4]
     },
     {
@@ -61,7 +63,7 @@ export const achievements = [
         requirements: { achievements: {  "wood_armor": 1 }, level: 5 },
         name: () => "Iron Armor",
         reward: () => 250,
-        getProgress: () => hasEquiped("Iron Helmet") + hasEquiped("Iron Chestplate")  + hasEquiped("Iron Leggings") + hasEquiped("Iron Boots"),
+        getProgress: () => getEquipCount("Iron Helmet") + getEquipCount("Iron Chestplate")  + getEquipCount("Iron Leggings") + getEquipCount("Iron Boots"),
         levels: [4]
     },
     {

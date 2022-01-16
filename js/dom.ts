@@ -3,7 +3,7 @@ export function setHtml(elementId, html) {
 }
 
 export function setValue(elementId, value) {
-    document.getElementById(elementId).value = value;
+    (<HTMLInputElement>document.getElementById(elementId)).value = value;
 }
 
 export function setIsDisplayed(elementId, isVisible) {
@@ -15,5 +15,5 @@ export function setIsVisible(elementId, isVisible) {
 }
 
 export function getValue(elementId) {
-    return document.getElementById(elementId).value;
+    return (<HTMLInputElement>document.getElementById(elementId)).value;
 }

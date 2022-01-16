@@ -1,11 +1,11 @@
-import * as dom from './dom.js';
-import { enemy_dictionary } from "./enemies.js";
-import { addXp } from "./experience.js";
-import { randomLootDrop } from "./events.js";
-import { addToOwnedEquipment } from "./equipment.js";
-import player, { addGold, addStatistic } from "./player.js";
-import { addMessage } from './messages.js';
-import { getRandomInt } from './util.js';
+import * as dom from './dom';
+import { enemy_dictionary } from "./enemies";
+import { addXp } from "./experience";
+import { randomLootDrop } from "./events";
+import { addToOwnedEquipment } from "./equipment";
+import player, { addGold, addStatistic } from "./player";
+import { addMessage } from './messages';
+import { getRandomInt } from './util';
 
 let enemy;
 let enemyHealth;
@@ -103,7 +103,6 @@ function setPlayerHealth(value) {
 function setEnemyHealth(value) {
     enemyHealth = Math.max(0, value);
     document.getElementById("healthValue").innerHTML = enemyHealth;
-    document.getElementById("enemyHealthProgress").value = enemyHealth;
     document.getElementById("enemyHealthProgress").style.width = `${enemyHealth/ enemy.health * 100}%`;
 }
 

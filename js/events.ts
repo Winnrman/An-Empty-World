@@ -1,4 +1,4 @@
-import items from "./items.js";
+import items from "./items";
 
 export function randomLootDrop() {
     var chosenRarity = getRandomRarity();

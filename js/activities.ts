@@ -1,10 +1,10 @@
-import player, { addStatistic } from "./player.js";
-import { addMessage } from "./messages.js";
-import { addXp } from "./experience.js";
-import items, { itemsByName } from "./items.js";
-import { getRandomItem } from "./util.js";
-import { isInventoryFull, renderInventory } from "./inventory.js";
-import { displayCraftingNeededMaterials } from "./crafting.js";
+import player, { addStatistic } from "./player";
+import { addMessage } from "./messages";
+import { addXp } from "./experience";
+import items, { itemsByName } from "./items";
+import { getRandomItem } from "./util";
+import { isInventoryFull, renderInventory } from "./inventory";
+import { displayCraftingNeededMaterials } from "./crafting";
 
 export function tree() {
     if (!player.inventory_dictionary["Axe"]) {

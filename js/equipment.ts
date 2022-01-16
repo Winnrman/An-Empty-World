@@ -1,9 +1,9 @@
-import * as dom from "./dom.js";
-import { checkAchievements } from "./achievements.js";
-import items, { itemsByName } from "./items.js";
-import { addMessage } from './messages.js';
-import player, { addGold } from "./player.js";
-import transient from "./transient.js";
+import * as dom from "./dom";
+import { checkAchievements } from "./achievements";
+import items, { itemsByName } from "./items";
+import { addMessage } from './messages';
+import player, { addGold } from "./player";
+import transient from "./transient";
 
 export function addToOwnedEquipment(item) {
     if (player.ownedEquipment.includes(item.name)) {
@@ -18,11 +18,11 @@ export function addToOwnedEquipment(item) {
     }
 
     player.ownedEquipment.push(item.name);
-    addEquipmentOption(item)
+    addEquipmentOption(item, false);
 }
 
 function addEquipmentOption(item, isEquipped) {
-    var selectElement = document.getElementById(`${item.type}Select`);
+    var selectElement = <HTMLSelectElement>document.getElementById(`${item.type}Select`);
     var newOption = document.createElement("option");
     newOption.text = item.name;
     if (isEquipped)

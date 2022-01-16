@@ -1,11 +1,11 @@
-import * as dom from './dom.js';
-import { randomLootDrop } from "./events.js";
-import { isInventoryFull, renderInventory } from "./inventory.js";
-import { itemsByName } from "./items.js";
-import { addToOwnedEquipment } from "./equipment.js";
-import { addMessage } from './messages.js';
-import player, { addGold, removeGold } from "./player.js";
-import { displayCraftingNeededMaterials } from './crafting.js';
+import * as dom from './dom';
+import { randomLootDrop } from "./events";
+import { isInventoryFull, renderInventory } from "./inventory";
+import { itemsByName } from "./items";
+import { addToOwnedEquipment } from "./equipment";
+import { addMessage } from './messages';
+import player, { addGold, removeGold } from "./player";
+import { displayCraftingNeededMaterials } from './crafting';
 
 function buyTool(type, text) {
     const price = itemsByName[type].price;
