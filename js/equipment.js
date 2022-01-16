@@ -30,7 +30,21 @@ function addEquipmentOption(item, isEquipped) {
     selectElement.add(newOption);
 }
 
+function getEquipmentFields(types) {
+    return types.map(type => 
+    `<span style="display: inline-flex">
+        <p>${type} &nbsp;</p>
+        <select id="${type}Select" class="EquipmentSelect">
+            <option value="">None</option>
+        </select>
+    </span>`).join("\r\n<br>\r\n");
+}
+
 export function loadOptionsFromOwnedEquipment() {
+    dom.setHtml("armor", getEquipmentFields(["Helmet", "Chestplate", "Leggings", "Boots"]));
+    dom.setHtml("weapons", getEquipmentFields(["Weapon", "Offhand", "Shield", "Ranged"]));
+    Object.values(document.getElementsByClassName('EquipmentSelect')).forEach(x => x.addEventListener("change", updateArmour));
+
     for (let equipmentName of player.ownedEquipment) {
         const isEquipped = hasEquiped(equipmentName);
         const equipment = itemsByName[equipmentName];
@@ -45,8 +59,6 @@ export function ownsEquipment(itemName) {
 export function hasEquiped(itemName) {
     return Object.values(player.equipment).includes(itemName);
 }
-
-Object.values(document.getElementsByClassName('EquipmentSelect')).forEach(x => x.addEventListener("change", updateArmour));
 
 function updateArmour() {
     const updateEquipment = (type) => {

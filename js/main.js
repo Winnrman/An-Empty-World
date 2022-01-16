@@ -27,18 +27,26 @@ window.resetData = function () {
     window.location.reload();
 };
 
-achievements.startCheckInterval();
-settings.startDarkmodeInterval();
-messages.startClearInterval();
-questing.startStaminaInterval();
-startSaveInterval();
+function startIntervals() {
+    achievements.startCheckInterval();
+    settings.startDarkmodeInterval();
+    messages.startClearInterval();
+    questing.startStaminaInterval();
+    startSaveInterval();
+}
 
-experience.checkLevelUnlocks();
-equipment.loadOptionsFromOwnedEquipment();
+export function checkAndRenderEverything() {
+    
+    experience.checkLevelUnlocks();
+    equipment.loadOptionsFromOwnedEquipment();
 
-experience.renderLevel();
-store.renderInventoryUpgrade();
-crafting.renderCraftables();
-questing.renderStamina();
-inventory.renderInventory();
-renderGold();
+    experience.renderLevel();
+    store.renderInventoryUpgrade();
+    crafting.renderCraftables();
+    questing.renderStamina();
+    inventory.renderInventory();
+    renderGold();
+}
+
+startIntervals();
+checkAndRenderEverything();
