@@ -1,5 +1,5 @@
-import player from "./player.js";
-import items from "./items.js";
+import player from "./player";
+import items from "./items";
 
 function calculateInventorySpace() {
 	let inventorySpace = 0;

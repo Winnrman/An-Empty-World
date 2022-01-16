@@ -1,11 +1,10 @@
-import { checkAchievements } from './achievements.js';
-import * as dom from './dom.js';
+import { checkAchievements } from './achievements';
+import * as dom from './dom';
 
 const player = getPlayerData();
 
 // temporary fixes so other developers don't need to reset their data
 if (!player.completedAchievements) player.completedAchievements = {};
-if (!player.obtainedWood) player.obtainedWood = 0;
 if (!player.ownedEquipment.length) player.ownedEquipment = [];
 if (!player.statistics) player.statistics = {
     cutWood: 0,
@@ -24,10 +23,10 @@ export function saveData() {
 }
 
 function getPlayerData() {
-    return (localStorage["player"] && JSON.parse(localStorage["player"])) ?? getDefaultData();
+    return (localStorage["player"] && <ReturnType<typeof getDefaultData>>JSON.parse(localStorage["player"])) ?? getDefaultData();
 }
 
-export function resetData(data) {
+export function resetData(data?) {
     data ??= getDefaultData();
     for (let key in data)
         player[key] = data[key];

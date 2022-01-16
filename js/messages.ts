@@ -12,12 +12,12 @@ export function addMessage(message_text) {
     });
 
     while (messages.length > maxMessages) {
-        var message = messages[0];
-        document.getElementById(`message-${message.id}`).remove();
+        const oldMessage = messages[0];
+        document.getElementById(`message-${oldMessage.id}`).remove();
         messages.shift();
     }
 
-    var message = document.createElement("li");
+    const message = document.createElement("li");
     message.appendChild(document.createTextNode(message_text));
     message.setAttribute('id', `message-${messageId}`);
     document.getElementById("messages").prepend(message);
