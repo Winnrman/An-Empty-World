@@ -1,13 +1,13 @@
-import * as dom from "./dom";
-import { achievements, checkAchievements, resetAchievementsToCheck } from "./achievements";
-import * as activities from "./activities";
-import * as crafting from "./crafting";
-import * as experience from "./experience";
-import * as equipment from "./equipment";
-import { itemsByName } from "./items";
-import * as main from "./main";
-import player, { stopSaveInterval, saveData, resetData, getDefaultData, restoreData, startSaveInterval } from "./player";
-import * as store from "./store";
+import * as dom from "../util/dom";
+import { achievements, checkAchievements, resetAchievementsToCheck } from "../control/achievements";
+import * as activities from "../activities/activities";
+import * as crafting from "../activities/crafting";
+import * as experience from "../control/experience";
+import * as equipment from "../control/equipment";
+import { itemsByName } from "../data/items/items";
+import * as main from "../main";
+import player, { stopSaveInterval, saveData, resetData, getDefaultData, restoreData, startSaveInterval } from "../control/player";
+import * as store from "../activities/store";
 
 let data = getDefaultData();
 

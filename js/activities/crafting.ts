@@ -1,9 +1,9 @@
-import * as dom from "./dom";
-import items, { itemsByName } from "./items";
-import { addMessage } from './messages';
-import { addToOwnedEquipment, ownsEquipment } from "./equipment";
-import player from "./player";
-import { renderInventory } from "./inventory";
+import * as dom from "../util/dom";
+import items, { itemsByName } from "../data/items/items";
+import { addMessage } from '../control/messages';
+import { addToOwnedEquipment, ownsEquipment } from "../control/equipment";
+import player from "../control/player";
+import { renderInventory } from "../control/inventory";
 
 let currentCraftable = undefined;
 

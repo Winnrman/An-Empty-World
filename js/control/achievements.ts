@@ -1,4 +1,4 @@
-import * as dom from "./dom";
+import * as dom from "../util/dom";
 import player, { addGold } from "./player";
 import { hasEquiped } from "./equipment";
 import { addMessage } from './messages';

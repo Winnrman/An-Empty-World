@@ -1,15 +1,15 @@
-import * as achievements from "./achievements";
-import * as settings from "./settings";
-import * as activities from "./activities";
-import * as combat from "./combat";
-import * as crafting from "./crafting";
-import * as experience from "./experience";
-import * as inventory from "./inventory";
-import * as equipment from "./equipment";
-import * as messages from "./messages";
-import player, { saveData, resetData, renderGold, startSaveInterval } from "./player";
-import * as store from "./store";
-import * as questing from "./questing";
+import * as achievements from "./control/achievements";
+import * as settings from "./control/settings";
+import * as activities from "./activities/activities";
+import * as combat from "./activities/combat";
+import * as crafting from "./activities/crafting";
+import * as experience from "./control/experience";
+import * as inventory from "./control/inventory";
+import * as equipment from "./control/equipment";
+import * as messages from "./control/messages";
+import player, { saveData, resetData, renderGold, startSaveInterval } from "./control/player";
+import * as store from "./activities/store";
+import * as questing from "./activities/questing";
 import runTests from "./tests";
 
 import "../css/style.css";

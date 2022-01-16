@@ -1,9 +1,9 @@
-import player, { addStatistic } from "./player";
-import { addMessage } from "./messages";
-import { addXp } from "./experience";
-import items, { itemsByName } from "./items";
-import { getRandomItem } from "./util";
-import { isInventoryFull, renderInventory } from "./inventory";
+import player, { addStatistic } from "../control/player";
+import { addMessage } from "../control/messages";
+import { addXp } from "../control/experience";
+import items, { itemsByName } from "../data/items/items";
+import { getRandomItem } from "../util";
+import { isInventoryFull, renderInventory } from "../control/inventory";
 import { displayCraftingNeededMaterials } from "./crafting";
 
 export function tree() {
