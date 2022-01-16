@@ -1,11 +1,11 @@
-import * as dom from './dom';
-import { enemy_dictionary } from "./enemies";
-import { addXp } from "./experience";
+import * as dom from '../util/dom';
+import { enemy_dictionary } from "../data/enemies";
+import { addXp } from "../control/experience";
 import { randomLootDrop } from "./events";
-import { addToOwnedEquipment } from "./equipment";
-import player, { addGold, addStatistic } from "./player";
-import { addMessage } from './messages';
-import { getRandomInt } from './util';
+import { addToOwnedEquipment } from "../control/equipment";
+import player, { addGold, addStatistic } from "../control/player";
+import { addMessage } from '../control/messages';
+import { getRandomInt } from '../util';
 
 let enemy;
 let enemyHealth;

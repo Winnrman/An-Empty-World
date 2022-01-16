@@ -1,12 +1,12 @@
-import * as dom from "./dom";
-import { enemy_dictionary } from "./enemies";
+import * as dom from "../util/dom";
+import { enemy_dictionary } from "../data/enemies";
 import { randomLootDrop } from "./events";
-import { addXp } from "./experience";
-import { addToOwnedEquipment, hasEquiped } from "./equipment";
-import { addMessage } from './messages';
-import player, { addGold, addStatistic, removeGold }  from "./player";
-import transient from './transient';
-import { getRandomInt, getRandomItem, sleep } from './util';
+import { addXp } from "../control/experience";
+import { addToOwnedEquipment, hasEquiped } from "../control/equipment";
+import { addMessage } from '../control/messages';
+import player, { addGold, addStatistic, removeGold }  from "../control/player";
+import transient from '../control/transient';
+import { getRandomInt, getRandomItem, sleep } from '../util';
 
 export async function doQuest() {
     if (transient.isQuesting == true) {

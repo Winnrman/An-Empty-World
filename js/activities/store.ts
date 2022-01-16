@@ -1,10 +1,10 @@
-import * as dom from './dom';
+import * as dom from '../util/dom';
 import { randomLootDrop } from "./events";
-import { isInventoryFull, renderInventory } from "./inventory";
-import { itemsByName } from "./items";
-import { addToOwnedEquipment } from "./equipment";
-import { addMessage } from './messages';
-import player, { addGold, removeGold } from "./player";
+import { isInventoryFull, renderInventory } from "../control/inventory";
+import { itemsByName } from "../data/items/items";
+import { addToOwnedEquipment } from "../control/equipment";
+import { addMessage } from '../control/messages';
+import player, { addGold, removeGold } from "../control/player";
 import { displayCraftingNeededMaterials } from './crafting';
 
 function buyTool(type, text) {

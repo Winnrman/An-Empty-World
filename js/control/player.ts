@@ -1,5 +1,5 @@
 import { checkAchievements } from './achievements';
-import * as dom from './dom';
+import * as dom from '../util/dom';
 
 const player = getPlayerData();
 

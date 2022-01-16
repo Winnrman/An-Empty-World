@@ -1,6 +1,6 @@
-import * as dom from "./dom";
+import * as dom from "../util/dom";
 import { checkAchievements } from "./achievements";
-import items, { itemsByName } from "./items";
+import items, { itemsByName } from "../data/items/items";
 import { addMessage } from './messages';
 import player, { addGold } from "./player";
 import transient from "./transient";

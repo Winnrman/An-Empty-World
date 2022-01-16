@@ -1,5 +1,5 @@
-import items from "./items";
-import potions from "./potions";
+import items from "../data/items/items";
+import potions from "../data/items/potions";
 
 export function randomLootDrop() {
     var chosenRarity = getRandomRarity();

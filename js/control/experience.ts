@@ -1,7 +1,7 @@
-import * as dom from './dom';
+import * as dom from '../util/dom';
 import player, { addGold } from "./player";
 import { addMessage } from './messages';
-import * as crafting from './crafting';
+import * as crafting from '../activities/crafting';
 
 function getNeededLevelUpXp() {
     return player.level * 100 * (player.level + 1);

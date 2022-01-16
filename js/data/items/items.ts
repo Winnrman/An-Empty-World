@@ -509,4 +509,4 @@ const items = [
 ];
 
 export default items;
-export const itemsByName = Object.assign({}, ...items.map(x => ({[x.name]: x})));
+export const itemsByName = Object.assign({}, ...items.map(x => ({ [x.name]: x })));
