@@ -7,10 +7,35 @@ You wake up in a strange place, surrounded by debris. Unaware of how you got the
 https://discord.gg/mBZNdYnY
 
 ## Project Setup: ##
-run 'npx http-server' or 'python3 -m http-server' in the root directory to run the game on localhost:8000/
+Webpack support -> Run 'npm install' and then 'npm run start' to load files and launch on localhost:8000
 
 ## Goal: Survive ##
 ## Changelog:
+---
+ - [X] **January 16, 2022**:
+   
+   ### Major Changes ###
+    - Reconfigured every script file to be TypeScript instead of JavaScript for better compilation error detection, as well as faster code changes reflected in the browser
+    - Added webpack functionality to enable instant changes
+    - 
+
+    ### New Feature (in-progress): Potions ###
+    - Allow player to gain temporary effects which boost stamina, strength, speed etc..
+    - Can be found while questing but also ingredients can be found in the new activity: Harvesting!
+
+    ### New Activity (in-development): Harvesting ### 
+    - Players can go into the forest to search for berries and useful crafting materials
+    - Unique loot table
+    - Chance to encounter monsters / animals
+
+    ### Bug Fixes ###
+    - Crafting now takes into account what items already are ownnd and will no longer allow you to craft them
+    - Crafting materials tweaked
+    - Iron mining option added for faster tool / weapon / armor creation
+    - Messages UI has been updated with fade out and better placement
+    - Dark mode fixes
+    ---
+
  - [X] **January 11, 2022**:
 
    ### Major Changes ###
@@ -22,7 +47,7 @@ run 'npx http-server' or 'python3 -m http-server' in the root directory to run t
 
    ### Inventory ###
    - When purchasing the 'Bigger Inventory' upgrade, the player's purchase is recorded in local storage, so they can keep their inventory upgrades on reload
-
+---
  - [X] **January 10, 2022**:
    
    ### Major Changes ###
@@ -41,7 +66,7 @@ run 'npx http-server' or 'python3 -m http-server' in the root directory to run t
    ### Bug Fixes ###
    - Clicking 'sell Ores' button now sells all of your ores, not needing multiple presses
    - 'Clicking 'Sell Stone' now sells all of your stone, not needing multiple presses
-
+---
  - [X] **January 8, 2022**:
 
     ### New Feature: Questing ###
@@ -60,8 +85,7 @@ run 'npx http-server' or 'python3 -m http-server' in the root directory to run t
     ### Combat ###
     - Fixed a bug where the player could not attack enemies
     - Fixed a bug where the enimies would attack, but not damage the player
-
-
+---
  - [X] **January 7, 2022**: 
 
     ### Item Shop ###
@@ -81,7 +105,7 @@ run 'npx http-server' or 'python3 -m http-server' in the root directory to run t
     - Fixed overlay issue on headers of all containers
     - Added max height of messages div to be 85% height of screen
     - Added durability box to inventory container
-
+---
 - [X] **January 6, 2022**
 
     ### Back-End ###
