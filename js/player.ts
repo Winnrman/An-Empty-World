@@ -81,6 +81,9 @@ export function getDefaultData() {
         playerSpeed: 1,
         armorBonus: 0,
 
+        // player special effects
+        playerInvisible: false,
+
         statistics: {
             cutWood: 0,
             caughtFish: 0,

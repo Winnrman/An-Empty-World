@@ -1,11 +1,17 @@
 import items from "./items";
+import potions from "./potions";
 
 export function randomLootDrop() {
     var chosenRarity = getRandomRarity();
+    let itemsOfType = null;
 
     const itemType = getRandomItemType();
-    const itemsOfType = items.filter(x => x.type == itemType);
-
+    if (itemType == "Potion") {
+        itemsOfType = potions.filter(x => x.type == itemType);
+    }
+    else {
+        itemsOfType = items.filter(x => x.type == itemType);
+    }
     return itemsOfType[Math.floor(Math.random() * itemsOfType.length)];
 }
 
@@ -18,12 +24,13 @@ function getRandomRarity() {
 }
 
 function getRandomItemType() {
-    switch (Math.floor(Math.random() * 5) + 1) {
+    switch (Math.floor(Math.random() * 6) + 1) {
         case 1: return "Helmet";
         case 2: return "Chestplate";
         case 3: return "Leggings";
         case 4: return "Boots";
         case 5: return "Offhand";
+        case 6: return "Potion";
         //case 6: return "Shield";
     }
 }

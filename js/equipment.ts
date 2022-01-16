@@ -11,13 +11,12 @@ export function addToOwnedEquipment(item) {
             addMessage(`You already have a ${item.name}, so you toss them away.`);
             return;
         }
-        
+
         addMessage(`You already have a ${item.name}! [Refunded 1000 Gold]`);
         addGold(1000);
         return;
     }
-
-    player.ownedEquipment.push(item.name);
+    player.ownedEquipment.push(item.name); //pushes potions to ownedEquipment (shouldn't be here)
     addEquipmentOption(item, false);
 }
 
@@ -31,8 +30,8 @@ function addEquipmentOption(item, isEquipped) {
 }
 
 function getEquipmentFields(types) {
-    return types.map(type => 
-    `<span style="display: inline-flex">
+    return types.map(type =>
+        `<span style="display: inline-flex">
         <p>${type} &nbsp;</p>
         <select id="${type}Select" class="EquipmentSelect">
             <option value="">None</option>
