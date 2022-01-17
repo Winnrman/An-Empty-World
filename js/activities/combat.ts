@@ -2,10 +2,10 @@ import * as dom from '../util/dom';
 import { enemy_dictionary } from "../data/enemies";
 import { addXp } from "../control/experience";
 import { randomLootDrop } from "./events";
-import { addToOwnedEquipment } from "../control/equipment";
 import player, { addGold, addStatistic } from "../control/player";
 import { addMessage } from '../control/messages';
 import { getRandomInt } from '../util';
+import { addLoot } from './looting';
 
 let enemy;
 let enemyHealth;
@@ -24,17 +24,17 @@ export function startCombat () {
     enemyHealth = enemy.health;
     const playerTimeBetweenAttacks = 1000 / player.playerSpeed;
     playerAttackTimer = setInterval(doPlayerAttack, playerTimeBetweenAttacks);
-    document.getElementById("playerAttackProgress").style.transition = `width ${playerTimeBetweenAttacks}ms`;
-    document.getElementById("playerAttackProgress").style.width = "100%";
+    dom.getElement("playerAttackProgress").style.transition = `width ${playerTimeBetweenAttacks}ms`;
+    dom.getElement("playerAttackProgress").style.width = "100%";
 
     const enemyTimeBetweenAttacks = 1000 / enemy.speed;
     enemyAttackTimer = setInterval(doEnemyAttack, enemyTimeBetweenAttacks);
-    document.getElementById("enemyAttackProgress").style.transition = `width ${enemyTimeBetweenAttacks}ms`;
-    document.getElementById("enemyAttackProgress").style.width = "100%";
+    dom.getElement("enemyAttackProgress").style.transition = `width ${enemyTimeBetweenAttacks}ms`;
+    dom.getElement("enemyAttackProgress").style.width = "100%";
 }
 
 function resetProgressbar(id) {
-    const element = document.getElementById(id);
+    const element = dom.getElement(id);
     element.style.width = "0%";
     element.classList.add('notransition');
     setTimeout(() => {
@@ -70,7 +70,7 @@ function enemyDied() {
     if (droppedRandomLoot < 25) {
         const item = randomLootDrop();
         addMessage(`The ${enemy.name} dropped ${item.name}!`);
-        addToOwnedEquipment(item);
+        addLoot(item);
     }
 
     clearFight();
@@ -96,14 +96,14 @@ function clearFight() {
 
 function setPlayerHealth(value) {
     player.playerHealth = Math.max(0, value);
-    dom.setHtml("playerHealthValue", player.playerHealth);
-    document.getElementById("playerHealthProgress").style.width = `${player.playerHealth / player.maxHealth * 100}%`;
+    dom.setHtml("playerHealthValue", player.playerHealth.toString());
+    dom.getElement("playerHealthProgress").style.width = `${player.playerHealth / player.maxHealth * 100}%`;
 }
 
 function setEnemyHealth(value) {
     enemyHealth = Math.max(0, value);
-    document.getElementById("healthValue").innerHTML = enemyHealth;
-    document.getElementById("enemyHealthProgress").style.width = `${enemyHealth/ enemy.health * 100}%`;
+    dom.getElement("healthValue").innerHTML = enemyHealth;
+    dom.getElement("enemyHealthProgress").style.width = `${enemyHealth/ enemy.health * 100}%`;
 }
 
 function renderPreCombatInfo(){
@@ -112,7 +112,7 @@ function renderPreCombatInfo(){
     dom.setHtml("attackValue", enemy?.attack || 0);
     dom.setHtml("defenseValue", enemy?.defense || 0);
     dom.setHtml("speedValue", enemy?.speed || 0);
-    document.getElementById("enemyHealthProgress").style.width = `100%`;
+    dom.getElement("enemyHealthProgress").style.width = `100%`;
 
     const isInCombat = !!enemy;
     dom.setIsDisplayed("fightButton", !isInCombat);

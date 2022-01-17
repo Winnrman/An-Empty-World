@@ -1,5 +1,14 @@
 import player from "./player";
-import items from "../data/items/items";
+import { Item, itemsByName } from "../data/items";
+import { Resource, ResourceName, resourcesByName } from "../data/items/resources";
+import { Potion, PotionName, potionsByName } from "../data/items/potions";
+import { Tool, ToolName, toolsByName } from "../data/items/tools";
+import * as dom from "../util/dom";
+import { getEntries, getKeys, PartialRecord } from "../util";
+
+export type InventoryItemName = ToolName | ResourceName | PotionName;
+export type InventoryItem = Tool | Resource | Potion;
+export const inventoryItemsByName: Record<InventoryItemName, InventoryItem> = { ...toolsByName, ...resourcesByName, ...potionsByName };
 
 function calculateInventorySpace() {
 	let inventorySpace = 0;
@@ -13,42 +22,84 @@ export function isInventoryFull() {
 	return calculateInventorySpace() >= player.maxInventorySize;
 }
 
+export function getInventoryCount(itemName: InventoryItemName) {
+    return player.inventory_dictionary[itemName];
+}
+
+export function hasInInventory(itemName: InventoryItemName) {
+    return getInventoryCount(itemName) > 0;
+}
+
+export function addToInventory(itemName: InventoryItemName, amount: number) {
+    if (!player.inventory_dictionary[itemName])
+        player.inventory_dictionary[itemName] = 0;
+    
+    player.inventory_dictionary[itemName] += amount;
+}
+
+export function removeFromInventory(itemName: InventoryItemName, amount: number) {
+    if (!player.inventory_dictionary[itemName])
+        player.inventory_dictionary[itemName] = 0;
+    
+    player.inventory_dictionary[itemName] -= amount;
+}
+
+export function removeAllFromInventory(itemName: InventoryItemName) {
+    player.inventory_dictionary[itemName] = 0;
+}
+
 export function renderInventory() {
-	// Module for displaying the tool durabilities
-	for (var item of items) {
-		if (item.type == "tool") {
-			if (player.inventory_dictionary[item.name] > 0) {
-				document.getElementById(item.elementID).innerHTML = `${item.name}:&nbsp;${player.toolHealth[item.name]}/${item.health}&nbsp;&nbsp;&nbsp;`;
-			} else {
-				document.getElementById(item.elementID).innerHTML = "";
-			}
-		}
-	}
-	document.getElementById("inventoryHeader").innerHTML = `Inventory (${calculateInventorySpace()}/${player.maxInventorySize})`;
+    dom.setHtml("inventoryHeader", `Inventory (${calculateInventorySpace()}/${player.maxInventorySize})`);
+    renderItems();
+    renderDurability();
+}
 
-	const getPart = (type) => `${type} x${player.inventory_dictionary[type]}`;
-	const getParts = (types) => types.map(x => getPart(x)).join("&nbsp;|&nbsp;");
+type Category = "Tool" | "Basic" | "Ore" | "Gem" | "Potion" | "Other";
+const categoriesAsItemType = ["Tool", "Potion"];
+const categoriesAsItemNames: PartialRecord<Category, InventoryItemName[]> = {
+    "Basic": ["Wood", "Fish", "Meat", "Stone"],
+    "Ore": ["Iron", "Copper", "Tin", "Silver", "Gold"],
+    "Gem": ["Emerald", "Ruby", "Diamond"],
+};
 
-	const categories = {
-		"inventory-tools": ["Axe", "Pickaxe", "Hunting Rifle", "Fishing Pole"],
-		"inventory-basic": ["Wood", "Fish", "Meat", "Stone"],
-		"inventory-ores": ["Iron", "Copper", "Tin", "Silver", "Gold"],
-		"inventory-gems": ["Emerald", "Ruby", "Diamond"],
-	};
+function renderItems() {
+	const categories: PartialRecord<Category, InventoryItemName[]> = {};
 
-	for (var category in categories) {
-		var valid_resources = [];
-		for (var key in player.inventory_dictionary) {
-			if (categories[category].indexOf(key) >= 0) {
-				// check if the property/key is defined in the object itself, not in parent
-				if (player.inventory_dictionary.hasOwnProperty(key)) {
-					// Check if more than 0 item is present in player inventory
-					if (player.inventory_dictionary[key] > 0) {
-						valid_resources.push(key)
-					}
-				}
-			}
-		}
-		document.getElementById(category).innerHTML = getParts(valid_resources)
-	}
+    const getCategory = (item: InventoryItem): Category => {
+        if (categoriesAsItemType.includes(item.type))
+            return item.type as Category;
+        
+        for (const [category, itemNames] of getEntries(categoriesAsItemNames)) {
+            if (itemNames.includes(item.name))
+                return category;
+        }
+        
+        return "Other";
+    }
+
+	for (const itemName of getKeys(player.inventory_dictionary)) {
+        const item = inventoryItemsByName[itemName];
+        const category = getCategory(item);
+        if (!categories[category])
+            categories[category] = [];
+        categories[category].push(itemName);
+    }
+
+	const getPart = (type: InventoryItemName) => `${type} x${getInventoryCount(type)}`;
+	const getParts = (types: InventoryItemName[]) => types.map(x => getPart(x)).join("&nbsp;|&nbsp;");
+    let html = Object.values(categories).filter(x => x.length > 0).map(x => getParts(x)).join("<br />");
+
+    dom.setHtml("inventory", html);
+}
+
+function renderDurability() {
+    let html = "";
+    for (var itemName of getKeys(player.inventory_dictionary)) {
+        const item = itemsByName[itemName];
+        if (item.type === "Tool") {
+            html += `<li>${item.name}: ${player.toolHealth[item.name]}/${item.health}</li>`;
+        }
+    }
+
+    dom.setHtml("durability", html);
 }

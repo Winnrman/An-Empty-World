@@ -3,8 +3,9 @@ import player, { addGold } from "./player";
 import { hasEquiped } from "./equipment";
 import { addMessage } from './messages';
 import { levelUnlocks } from "./experience";
+import { EquipmentName } from "../data/items/equipment";
 
-const getEquipCount = (type: string) => hasEquiped(type) ? 1 : 0;
+const getEquipCount = (type: EquipmentName) => hasEquiped(type) ? 1 : 0;
 
 export const achievements = [
     {

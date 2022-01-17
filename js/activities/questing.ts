@@ -2,11 +2,13 @@ import * as dom from "../util/dom";
 import { enemy_dictionary } from "../data/enemies";
 import { randomLootDrop } from "./events";
 import { addXp } from "../control/experience";
-import { addToOwnedEquipment, hasEquiped } from "../control/equipment";
+import { hasEquiped } from "../control/equipment";
 import { addMessage } from '../control/messages';
 import player, { addGold, addStatistic, removeGold }  from "../control/player";
 import transient from '../control/transient';
 import { getRandomInt, getRandomItem, sleep } from '../util';
+import { Rarity } from "../data/items";
+import { addLoot } from "./looting";
 
 export async function doQuest() {
     if (transient.isQuesting == true) {
@@ -61,7 +63,7 @@ async function startExitCaveEvent() {
     await waitForPart(2000, "You find nothing and leave the cave.");
 }
 
-async function doEvent(staminaCost, eventAction) {
+async function doEvent(staminaCost: number, eventAction: () => void) {
     const hasInsufficientStamina = player.stamina < staminaCost;
     removeStamina(staminaCost);
     if (hasInsufficientStamina) {
@@ -122,11 +124,11 @@ async function lootChest() {
 
     const item = getLootDrop(hasAmuletOfLuck() ? ["rare", "legendary"] : ["common", "uncommon"]);
     addMessage(`You found a ${item.name}!${(hasAmuletOfLuck() ? " You feel lucky!" : "")}`);
-    addToOwnedEquipment(item);
+    addLoot(item);
     questWasSuccessful();
 }
 
-function getLootDrop(rarities) {
+function getLootDrop(rarities: Rarity[]) {
     while(true) {
         const item = randomLootDrop();
         if (rarities.includes(item.rarity)) 
@@ -142,22 +144,22 @@ function questWasSuccessful() {
     addStatistic("completedQuests", 1);
 }
 
-async function doRandomAction(actions) {
+async function doRandomAction(actions: (() => void)[]) {
     var randomAction = getRandomItem(actions);
     await randomAction();
 }
 
-async function waitForPart(time, message) {
+async function waitForPart(time: number, message: string) {
     await sleep(time);
     addMessage(message);
 }
 
-function removeStamina(amount) {
+function removeStamina(amount: number) {
     player.stamina = Math.max(0, player.stamina - amount);
     renderStamina();
 }
 
-function addStamina(amount) {
+function addStamina(amount: number) {
     player.stamina += amount;
     renderStamina();
 }
@@ -172,7 +174,7 @@ export function startStaminaInterval() {
 
 
 export function renderStamina() {
-    document.getElementById("progressStamina").style.width = `${player.stamina / player.maxStamina * 100}%`;
-    document.getElementById("progressStamina").style.transition = "width 1.5s";
-    dom.setHtml("staminaAmount", player.stamina);
+    dom.getElement("progressStamina").style.width = `${player.stamina / player.maxStamina * 100}%`;
+    dom.getElement("progressStamina").style.transition = "width 1.5s";
+    dom.setHtml("staminaAmount", player.stamina.toString());
 }
