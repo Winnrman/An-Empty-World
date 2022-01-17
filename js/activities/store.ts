@@ -1,20 +1,21 @@
 import * as dom from '../util/dom';
 import { randomLootDrop } from "./events";
-import { isInventoryFull, renderInventory } from "../control/inventory";
-import { itemsByName } from "../data/items/items";
-import { addToOwnedEquipment } from "../control/equipment";
+import { addToInventory, getInventoryCount, hasInInventory, InventoryItemName, isInventoryFull, removeAllFromInventory, renderInventory } from "../control/inventory";
+import { itemsByName } from "../data/items";
 import { addMessage } from '../control/messages';
 import player, { addGold, removeGold } from "../control/player";
 import { displayCraftingNeededMaterials } from './crafting';
+import { ToolName } from '../data/items/tools';
+import { addLoot } from './looting';
 
-function buyTool(type, text) {
+function buyTool(type: ToolName, text: string) {
     const price = itemsByName[type].price;
     if (player.gold < price) {
         addMessage(`You don't have enough gold to buy ${text}!`);
         return;
     }
 
-    if (player.inventory_dictionary[type] > 0) {
+    if (hasInInventory(type)) {
         addMessage(`You already have ${text}!`);
         return;
     }
@@ -25,7 +26,7 @@ function buyTool(type, text) {
     }
 
     removeGold(price);
-    player.inventory_dictionary[type] = 1;
+    addToInventory(type, 1);
     renderInventory();
 }
 
@@ -53,7 +54,7 @@ export function buySpecialDeal() {
 
     removeGold(1000);
     const item = randomLootDrop();
-    addToOwnedEquipment(item);
+    addLoot(item);
 }
 
 function getInventoryUpgradeCost() {
@@ -78,7 +79,9 @@ export function buyInventoryUpgrade() {
     renderInventory();
 }
 
-export function sell(item) {
+export type SellType = "Ores" | InventoryItemName;
+
+export function sell(item: SellType) {
     if (item === "Ores") {
         sellItem("Iron");
         sellItem("Copper");
@@ -97,9 +100,9 @@ export function sell(item) {
     renderInventory();
 }
 
-function sellItem(type) {
-    addGold(player.inventory_dictionary[type] * itemsByName[type].price);
-    player.inventory_dictionary[type] = 0;
+function sellItem(itemName: InventoryItemName) {
+    addGold(getInventoryCount(itemName) * itemsByName[itemName].price);
+    removeAllFromInventory(itemName);
 }
 
 export function renderInventoryUpgrade () {

@@ -13,7 +13,7 @@ export function addXp(value) {
     if (player.xp >= getNeededLevelUpXp()) {
         player.level++;
         player.xp = 0;
-        document.getElementById("progressXp").style.width = "0px";
+        dom.getElement("progressXp").style.width = "0px";
         addMessage(`You leveled up! You are now level ${player.level}! [ ${player.level * 100} gold awarded ]`);
         addGold(player.level * 100);
         checkLevelUnlocks();
@@ -64,7 +64,7 @@ export function checkLevelUnlocks() {
 }
 
 export function renderLevel() {
-    document.getElementById("progressXp").style.width = `${player.xp / getNeededLevelUpXp() * 100}%`;
-    document.getElementById("progressXp").style.transition = "width 0.5s";
-    dom.setHtml("lvl", player.level);
+    dom.getElement("progressXp").style.width = `${player.xp / getNeededLevelUpXp() * 100}%`;
+    dom.getElement("progressXp").style.transition = "width 0.5s";
+    dom.setHtml("lvl", player.level.toString());
 }

@@ -3,6 +3,7 @@ import * as settings from "./control/settings";
 import * as activities from "./activities/activities";
 import * as combat from "./activities/combat";
 import * as crafting from "./activities/crafting";
+import * as effects from "./control/effects";
 import * as experience from "./control/experience";
 import * as inventory from "./control/inventory";
 import * as equipment from "./control/equipment";
@@ -62,6 +63,7 @@ export function checkAndRenderEverything() {
     
     experience.checkLevelUnlocks();
     equipment.loadOptionsFromOwnedEquipment();
+    effects.registerEffectExpiries();
 
     experience.renderLevel();
     store.renderInventoryUpgrade();

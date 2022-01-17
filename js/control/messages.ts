@@ -1,3 +1,5 @@
+import * as dom from "../util/dom";
+
 let nextMessageId = 0;
 const maxMessages = 20;
 const maxMessageTime = 10000;
@@ -10,30 +12,33 @@ export function addMessage(message_text) {
         id: messageId,
         time: new Date()
     });
-
     while (messages.length > maxMessages) {
         const oldMessage = messages[0];
-        document.getElementById(`message-${oldMessage.id}`).remove();
+        dom.removeElement(`message-${oldMessage.id}`);
         messages.shift();
     }
 
-    const message = document.createElement("li");
-    message.appendChild(document.createTextNode(message_text));
+    const message = dom.createElement("li");
+    message.appendChild(dom.createText(message_text));
     message.setAttribute('id', `message-${messageId}`);
-    document.getElementById("messages").prepend(message);
+    dom.getElement("messages").prepend(message);
+}
+
+window.onerror = function(msg, url, lineNo, columnNo, error) {
+    addMessage(`Error: ${msg} ${error}`)
 }
 
 export function startClearInterval() {
     setInterval(() => {
         const minTimeForFadeout = new Date(new Date().getTime() - maxMessageTime);
         for (let message of messages.filter(x => !x.isFading && x.time < minTimeForFadeout)) {
-            document.getElementById(`message-${message.id}`).classList.add("fadeOut");
+            dom.addClass(`message-${message.id}`, "fadeOut");
             message.isFading = true;
         }
     
         const minTimeForDelete = new Date(new Date().getTime() - maxMessageTime - messageFadeoutTime);
         for (let message of messages.filter(x => x.time < minTimeForDelete)) {
-            document.getElementById(`message-${message.id}`).remove();
+            dom.removeElement(`message-${message.id}`);
             messages.splice(messages.indexOf(message), 1);
         }
     }, 100);
