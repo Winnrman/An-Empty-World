@@ -21,7 +21,7 @@ export function tree() {
     addToInventory("Wood", 1);
     addStatistic("cutWood", 1);
     addXp(itemsByName["Wood"].treeCutting.xp);
-        
+
     player.toolHealth["Axe"] -= 1;
     if (player.toolHealth["Axe"] <= 0) {
         addMessage("Your axe broke!");
@@ -47,7 +47,7 @@ export function goFishing() {
     addToInventory("Fish", 1);
     addStatistic("caughtFish", 1);
     addXp(itemsByName["Fish"].fishing.xp);
-        
+
     player.toolHealth["Fishing Pole"] -= 1;
     if (player.toolHealth["Fishing Pole"] <= 0) {
         addMessage("Your fishing pole broke!");
@@ -73,7 +73,7 @@ export function goHunting() {
     addToInventory("Meat", 1);
     addStatistic("huntedMeat", 1);
     addXp(itemsByName["Meat"].hunting.xp);
-        
+
     player.toolHealth["Hunting Rifle"] -= 1;
     if (player.toolHealth["Hunting Rifle"] <= 0) {
         addMessage("Your hunting rifle broke!");
@@ -99,12 +99,10 @@ function mineOre(ore: InventoryItem) {
     }
 
     addMessage(`You mined some ${ore.name}!`);
-    if (ore.mining.xp > 1) {
-        addToInventory(ore.name, 1);
-    }
+    addToInventory(ore.name, 1);
     addStatistic("minedRocks", 1);
     addXp(ore.mining.xp);
-        
+
     player.toolHealth["Pickaxe"] -= 1;
     if (player.toolHealth["Pickaxe"] <= 0) {
         addMessage("Your pickaxe broke!");

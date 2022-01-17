@@ -37,6 +37,10 @@ export default function runTests(keepTestDataAfterwards?: boolean) {
 
 function runScenario() {
     data = getDefaultData();
+    data.inventory_dictionary["Axe"] = 0;
+    data.inventory_dictionary["Wood"] = 0;
+    data.inventory_dictionary["Fish"] = 0;
+    data.inventory_dictionary["Fishing Pole"] = 0;
     runWoodcuttingScenario()
     runFishingScenario();
     runCraftingScenario();
@@ -44,6 +48,10 @@ function runScenario() {
 }
 
 function runWoodcuttingScenario() {
+    sell("Wood");
+    nothingHappened("To make sure we don't run into problems when we sell something we don't have");
+    verify();
+
     buyAxe();
     boughtItem("Axe");
     verify();

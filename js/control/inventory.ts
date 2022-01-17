@@ -23,7 +23,7 @@ export function isInventoryFull() {
 }
 
 export function getInventoryCount(itemName: InventoryItemName) {
-    return player.inventory_dictionary[itemName];
+    return player.inventory_dictionary[itemName] ?? 0;
 }
 
 export function hasInInventory(itemName: InventoryItemName) {
@@ -78,6 +78,9 @@ function renderItems() {
     }
 
 	for (const itemName of getKeys(player.inventory_dictionary)) {
+        if (!hasInInventory(itemName))
+            continue;
+        
         const item = inventoryItemsByName[itemName];
         const category = getCategory(item);
         if (!categories[category])
@@ -85,9 +88,14 @@ function renderItems() {
         categories[category].push(itemName);
     }
 
-	const getPart = (type: InventoryItemName) => `${type} x${getInventoryCount(type)}`;
-	const getParts = (types: InventoryItemName[]) => types.map(x => getPart(x)).join("&nbsp;|&nbsp;");
-    let html = Object.values(categories).filter(x => x.length > 0).map(x => getParts(x)).join("<br />");
+    let html = "";
+    for (const itemsOfCategory of Object.values(categories)) {
+        for (const item of itemsOfCategory) {
+            html += `${item} x${getInventoryCount(item)}&nbsp;|&nbsp;`;
+        }
+        html = html.substring(0, html.length - 13); // to remove the last separator
+        html += "<br />";
+    }
 
     dom.setHtml("inventory", html);
 }
