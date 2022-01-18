@@ -1,3 +1,6 @@
+#effectsContainer {
+    width: 400px;
+}
 #effects .progress-bar span {
     background-color:rgb(3, 56, 136);
 }
