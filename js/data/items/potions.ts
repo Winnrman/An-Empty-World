@@ -1,73 +1,85 @@
-//different types of potions
-import player from "../../control/player";
+import { Item } from ".";
 
-const potions = [
+export type PotionName = 
+        "Potion of Healing" | "Potion of Strength" | "Potion of Harming" 
+      | "Potion of Stamina" | "Potion of Speed" | "Potion of Invisibility";
+
+export type Potion = Omit<Item, 'name'> & { name: PotionName };
+
+const potions: Potion[] = [
     {
         name: "Potion of Healing",
         type: "Potion",
         description: "Heals you for a small amount of health.",
-        rarity: "Common",
-        value: 10,
-        effect: function () {
-            player.playerHealth = Math.min(player.maxHealth, player.playerHealth + 10);
-        }
+        rarity: "common",
+        price: 10,
+        effects: [ { name: "addHealth", value: 10, } ],
+        crafting: {
+            requiredLevel: 1,
+            ingredients: {}
+        },
     },
     {
         name: "Potion of Strength",
         type: "Potion",
         description: "Increases your attack by 1.",
         rarity: "common",
-        value: 10,
-        effect: function () {
-            player.playerAttack += 1;
-        }
+        price: 10,
+        effects: [{ name: "addAttack", value: 1, duration: 60000 }],
+        crafting: {
+            requiredLevel: 1,
+            ingredients: {}
+        },
     },
     {
         name: "Potion of Harming",
         type: "Potion",
         description: "Decreases your attack by 2.",
         rarity: "uncommon",
-        value: 20,
-        effect: function () {
-            setTimeout(function () {
-                player.playerAttack -= 2;
-            }
-                , 15000);
-        }
+        price: 20,
+        effects: [{ name: "addAttack", value: -2, delay: 15000, }],
+        crafting: {
+            requiredLevel: 1,
+            ingredients: {}
+        },
     },
     {
         name: "Potion of Stamina",
         type: "Potion",
         description: "Increases your stamina by 10.",
         rarity: "common",
-        value: 10,
-        effect: function () {
-            player.stamina += 10;
-        }
+        price: 10,
+        effects: [{ name: "addStamina", value: 10, }],
+        crafting: {
+            requiredLevel: 1,
+            ingredients: {}
+        },
     },
     {
         name: "Potion of Speed",
         type: "Potion",
         description: "Increases your speed by 1, allowing you to escape from bandits and bad situations with ease.",
         rarity: "rare",
-        value: 10,
-        effect: function () {
-            player.playerSpeed += 1;
-        }
+        price: 10,
+        effects: [{ name: "addSpeed", value: 1, }],
+        crafting: {
+            requiredLevel: 1,
+            ingredients: {}
+        },
     },
     {
         name: "Potion of Invisibility",
         type: "Potion",
         description: "Makes you invisible, allowing you to sneak past enemies and avoid being seen.",
         rarity: "legendary",
-        value: 10,
-        effect: function () {
-            setTimeout(function () {
-                player.playerInvisible = false;
-            }, 25000); //25 seconds
-            player.playerInvisible = true;
-        }
+        price: 10,
+        effects: [{ name: "makeInvisible", duration: 25000, }],
+        crafting: {
+            requiredLevel: 1,
+            ingredients: {}
+        },
     },
 ];
 
 export default potions;
+export const potionsByName: { [key in PotionName]: Potion } = Object.assign({}, ...potions.map(x => ({ [x.name]: x })));

@@ -1,7 +1,14 @@
 import { checkAchievements } from './achievements';
 import * as dom from '../util/dom';
+import { EquipmentSlot } from '../data/items';
+import { PlayerEffect } from './effects';
+import { EquipmentName } from '../data/items/equipment';
+import { ToolName } from '../data/items/tools';
+import { InventoryItemName } from './inventory';
+import { PartialRecord } from '../util';
 
 const player = getPlayerData();
+export type Player = typeof player;
 
 // temporary fixes so other developers don't need to reset their data
 if (!player.completedAchievements) player.completedAchievements = {};
@@ -15,6 +22,7 @@ if (!player.statistics) player.statistics = {
     completedQuests: 0,
     earnedGold: 0
 };
+if (!player.effects) player.effects = [];
 
 export default player;
 
@@ -41,38 +49,21 @@ export function getDefaultData() {
         xp: 0,
         level: 1,
         boughtInventoryUpgrade: 0,
-        inventory_dictionary: {
-            "Wood": 0,
-            "Stone": 0,
-            "Fish": 0,
-            "Meat": 0,
-            "Iron": 0,
-            "Copper": 0,
-            "Tin": 0,
-            "Silver": 0,
-            "Gold": 0,
-            "Emerald": 0,
-            "Ruby": 0,
-            "Diamond": 0,
-            "Axe": 0,
-            "Pickaxe": 0,
-            "Hunting Rifle": 0,
-            "Fishing Pole": 0,
-        },
+        inventory_dictionary: {} as PartialRecord<InventoryItemName, number | undefined>,
         gold: 100,
         maxInventorySize: 25,
         maxStamina: 25,
         stamina: 25,
 
-        ownedEquipment: [],
-        equipment: {},
+        ownedEquipment: [] as EquipmentName[],
+        equipment: {} as PartialRecord<EquipmentSlot, EquipmentName | undefined>,
 
         toolHealth: {
             "Axe": 20,
             "Fishing Pole": 10,
             "Hunting Rifle": 50,
             "Pickaxe": 75,
-        },
+        } as PartialRecord<ToolName, number>,
 
         playerHealth: 100,
         maxHealth: 100,
@@ -81,8 +72,7 @@ export function getDefaultData() {
         playerSpeed: 1,
         armorBonus: 0,
 
-        // player special effects
-        playerInvisible: false,
+        effects: [] as PlayerEffect[],
 
         statistics: {
             cutWood: 0,
@@ -111,7 +101,7 @@ export function removeGold(value) {
 }
 
 export function renderGold() {
-    dom.setHtml("gold", player.gold);
+    dom.setHtml("gold", player.gold.toString());
 }
 
 export function addStatistic(type, amount) {

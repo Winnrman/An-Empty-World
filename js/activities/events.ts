@@ -1,19 +1,19 @@
-import items from "../data/items/items";
-import potions from "../data/items/potions";
+import items, { EquipmentSlot } from "../data/items";
+import { Equipment } from "../data/items/equipment";
+import { Potion } from "../data/items/potions";
+import { getRandomItem } from "../util";
+import { Loot } from "./looting";
 
-export function randomLootDrop() {
-    var chosenRarity = getRandomRarity();
-    let itemsOfType = null;
-
+export function randomLootDrop(): Loot {
     const itemType = getRandomItemType();
-    if (itemType == "Potion") {
-        itemsOfType = potions.filter(x => x.type == itemType);
-    }
-    else {
-        itemsOfType = items.filter(x => x.type == itemType);
-    }
+    let itemsOfType = (itemType == "Potion") 
+        ? items.filter(x => x.type === "Potion").map(x => x as Potion) 
+        : items.filter(x => x.equipment?.slot === itemType).map(x => x as Equipment);
+    
     return itemsOfType[Math.floor(Math.random() * itemsOfType.length)];
 }
+
+(window as any).randomLootDrop = randomLootDrop;
 
 function getRandomRarity() {
     var rarity = Math.floor(Math.random() * 16) + 1;
@@ -23,14 +23,8 @@ function getRandomRarity() {
     if (rarity == 16) return "legendary";
 }
 
+const itemTypes: (EquipmentSlot | "Potion")[] = ["Helmet", "Chestplate", "Leggings", "Boots", "Offhand", "Potion", "Shield"];
+
 function getRandomItemType() {
-    switch (Math.floor(Math.random() * 6) + 1) {
-        case 1: return "Helmet";
-        case 2: return "Chestplate";
-        case 3: return "Leggings";
-        case 4: return "Boots";
-        case 5: return "Offhand";
-        case 6: return "Potion";
-        //case 6: return "Shield";
-    }
+    return getRandomItem(itemTypes);
 }
