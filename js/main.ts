@@ -71,6 +71,7 @@ export function checkAndRenderEverything() {
     experience.checkLevelUnlocks();
     equipment.loadOptionsFromOwnedEquipment();
     effects.registerEffectExpiries();
+    activities.showCurrentActivity();
 
     experience.renderLevel();
     store.renderInventoryUpgrade();

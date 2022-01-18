@@ -5,7 +5,7 @@ import { itemsByName } from "../data/items";
 import { getRandomItem } from "../util";
 import { addToInventory, decreaseToolHealth, hasInInventory, InventoryItem, isInventoryFull, removeFromInventory } from "../control/inventory";
 import resources from "../data/items/resources";
-import { setHtml } from "../util/dom";
+import * as dom from "../util/dom";
 
 export function tree() {
     if (!hasInInventory("Axe")) {
@@ -88,4 +88,29 @@ export function goMining() {
 
 export function goIronMining() {
     mineOre(ores.find(x => x.name === "Iron"));
+}
+
+export type Activity = "Crafting" | "Fighting" | "Store";
+
+export function goCrafting() {
+    showActivity("Crafting");
+}
+
+export function goFighting() {
+    showActivity("Fighting");
+}
+
+export function goToStore() {
+    showActivity("Store");
+}
+
+function showActivity(activity: Activity) {
+    player.currentActivity = activity;
+    showCurrentActivity();
+}
+
+export function showCurrentActivity() {
+    dom.setIsDisplayed("craftingContainer", player.currentActivity === "Crafting");
+    dom.setIsDisplayed("combatContainer", player.currentActivity === "Fighting");
+    dom.setIsDisplayed("storeContainer", player.currentActivity === "Store");
 }

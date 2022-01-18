@@ -57,28 +57,6 @@
             <div id="achievements"></div>
         </fieldset>
     </div>
-    
-    <fieldset id="activitiesContainer" class="container">
-        <legend>
-            <h2>Activities</h2>
-        </legend>
-        <div style="padding-top:5px;" id="activitiesContainer">
-            <button id="treeButton" class="button" onclick="activities.tree()">
-                <img src='img/assets/tools/stone_axe.png'>Cut Down Tree</button>
-            <button id="goFishingButton" class="button" onclick="activities.goFishing()">
-                <img src='img/assets/materials/fish.png'>
-                Go Fishing</button>
-            <button style="visibility: hidden;" id="goHuntingButton" class="button" onclick="activities.goHunting()">
-                <img src='img/assets/materials/meat.png'>
-                Go Hunting</button>
-            <button style="visibility: hidden;" id="goMiningButton" class="button" onclick="activities.goMining()">Go
-                Mining</button>
-            <button style="visibility: hidden;" id="goIronMiningButton" class="button"
-                onclick="activities.goIronMining()">Go Iron Mining</button>
-            <button style="visibility: hidden;" id="goQuestingButton" class="button" onclick="questing.doQuest()">Go
-                Questing</button>
-        </div>
-    </fieldset>
 
     <fieldset id="inventoryContainer" class="container">
         <legend>
@@ -102,6 +80,31 @@
             <div class="column">
                 <div id="itemDetails"></div>
             </div>
+        </div>
+    </fieldset>
+    
+    <fieldset id="activitiesContainer" class="container">
+        <legend>
+            <h2>Activities</h2>
+        </legend>
+        <div style="padding-top:5px;" id="activitiesContainer">
+            <button id="treeButton" class="button" onclick="activities.tree()">
+                <img src='img/assets/tools/stone_axe.png'>Cut Down Tree</button>
+            <button id="goFishingButton" class="button" onclick="activities.goFishing()">
+                <img src='img/assets/materials/fish.png'>
+                Go Fishing</button>
+            <button style="visibility: hidden;" id="goHuntingButton" class="button" onclick="activities.goHunting()">
+                <img src='img/assets/materials/meat.png'>
+                Go Hunting</button>
+            <button style="visibility: hidden;" id="goMiningButton" class="button" onclick="activities.goMining()">Go
+                Mining</button>
+            <button style="visibility: hidden;" id="goIronMiningButton" class="button"
+                onclick="activities.goIronMining()">Go Iron Mining</button>
+            <button style="visibility: hidden;" id="goQuestingButton" class="button" onclick="questing.doQuest()">Go
+                Questing</button>
+            <button class="button" onclick="activities.goCrafting()">Go Crafting</button>
+            <button class="button" onclick="activities.goFighting()">Go Fighting</button>
+            <button class="button" onclick="activities.goToStore()">Go to store</button>
         </div>
     </fieldset>
 
