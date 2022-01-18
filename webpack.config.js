@@ -20,12 +20,15 @@ module.exports = {
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
-                type: 'asset/resource',
+                loader: 'file-loader',
+                options: {
+                    name: '[path][name].[ext]'
+                }
             },
         ],
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.tsx', '.ts', '.js', '.png'],
     },
     output: {
         filename: 'bundle.js',

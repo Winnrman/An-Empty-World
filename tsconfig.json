@@ -9,6 +9,6 @@
       "moduleResolution": "node",
       "sourceMap": true
     },
-    "include": ["js/**/*"],
+    "include": ["js/**/*", "js/typings.d.ts"],
     "exclude": ["node_modules"]
 }
