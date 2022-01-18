@@ -6,6 +6,7 @@ import { EquipmentName } from '../data/items/equipment';
 import { ToolName } from '../data/items/tools';
 import { InventoryItemName } from './inventory';
 import { PartialRecord } from '../util';
+import { Activity } from '../activities/activities';
 
 const player = getPlayerData();
 export type Player = typeof player;
@@ -113,6 +114,8 @@ export function getDefaultData() {
         },
 
         completedAchievements: {},
+
+        currentActivity: undefined as Activity | undefined
     }
 }
 
