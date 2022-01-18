@@ -1,3 +1,12 @@
+#achievementsContainer {
+    width: 600px;
+}
+
+#achievementsContainer .auto-column {
+    padding-right: 30px;
+}
+
+
 #achievements .progress-bar span {
     background-color:rgb(3, 56, 136);
 }

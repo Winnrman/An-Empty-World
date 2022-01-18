@@ -19,6 +19,9 @@
 .dark div {
     border-color: white;
 }
+.dark fieldset {
+    border-color: white;
+}
 .dark select {
     background-color: black;
     color:white;

@@ -162,6 +162,9 @@ function renderAchievements() {
 
     let html = "";
 
+    html += `<div class="row">`
+    
+    html += `<div class="auto-column">`
     html += "<h3>In progress:</h3>";
     if (achievementsInProgress.length > 0) {
         html += "<ul>";
@@ -175,8 +178,9 @@ function renderAchievements() {
     } else {
         html += "None!";
     }
+    html += "</div>"
 
-    html += "<br />"
+    html += `<div class="auto-column">`
 
     html += "<h3>Completed:</h3>";
     if (completedAchievements.length > 0) {
@@ -188,7 +192,9 @@ function renderAchievements() {
     } else {
         html += "None!";
     }
+    html += "</div>"
 
+    html += "</div>"
     dom.setHtml("achievements", html);
 }
 

@@ -18,30 +18,46 @@
         <div id="messages"></div>
     </div>
 
-    <div id="progressContainer">
-        <span style="display: inline-flex">
-            <h3 id="name">K0ng</h3>
+    <div class="row" container>
+        <div class="auto-column" id="progressContainer">
             <span style="display: inline-flex">
-                <h4 style="padding-bottom:7px; margin-right: 2px;" class="subheader" id="levelSubheadr">Level:</h4>
-                <h5 style="padding-top:6px;padding-right:4px;" id="lvl">0</h5>
+                <h3 id="name">K0ng</h3>
+                <span style="display: inline-flex">
+                    <h4 style="padding-bottom:7px; margin-right: 2px;" class="subheader" id="levelSubheadr">Level:</h4>
+                    <h5 style="padding-top:6px;padding-right:4px;" id="lvl">0</h5>
+                </span>
+                &nbsp;| &nbsp;
+                <h4 style="padding-top:3px;">Stamina:</h4>
+                <h5 style="padding-top:5px;" id="staminaAmount">0</h5>
             </span>
-            &nbsp;| &nbsp;
-            <h4 style="padding-top:3px;">Stamina:</h4>
-            <h5 style="padding-top:5px;" id="staminaAmount">0</h5>
-        </span>
-        <br />
-
-        XP:
-        <div class="progress-bar">
-            <span style="width: 0px;" id="progressXp"></span>
+            <br />
+    
+            XP:
+            <div class="progress-bar">
+                <span style="width: 0px;" id="progressXp"></span>
+            </div>
+    
+            Stamina:
+            <div class="progress-bar">
+                <span style="width: 0px;" id="progressStamina"></span>
+            </div>
         </div>
-
-        Stamina:
-        <div class="progress-bar">
-            <span style="width: 0px;" id="progressStamina"></span>
-        </div>
+        
+        <fieldset class="auto-column container" id="effectsContainer">
+            <legend>
+                <h2>Effects</h2>
+            </legend>
+            <div id="effects"></div>
+        </fieldset>
+        
+        <fieldset class="auto-column container" id="achievementsContainer">
+            <legend>
+                <h2>Achievements</h2>
+            </legend>
+            <div id="achievements"></div>
+        </fieldset>
     </div>
-
+    
     <fieldset id="activitiesContainer" class="container">
         <legend>
             <h2>Activities</h2>
@@ -202,20 +218,6 @@
         </span>
         <button id="craftingButton" onclick="crafting.doCrafting()">Craft</button>
         <p id="neededMaterials">Needed Materials: &nbsp;</p>
-    </fieldset>
-
-    <fieldset id="achievementsContainer" class="container">
-        <legend>
-            <h2>Achievements</h2>
-        </legend>
-        <div id="achievements"></div>
-    </fieldset>
-
-    <fieldset id="effectsContainer" class="container">
-        <legend>
-            <h2>Effects</h2>
-        </legend>
-        <div id="effects"></div>
     </fieldset>
 
     <footer id="footerContainer" class="footer">
