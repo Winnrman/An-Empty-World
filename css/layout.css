@@ -11,3 +11,9 @@
     flex-basis: 100%;
     flex: 1;
   }
+  
+  .auto-column {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 auto;
+  }

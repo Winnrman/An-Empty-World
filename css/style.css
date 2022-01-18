@@ -20,7 +20,7 @@ select{
 }
 .container{
     width: 73%;
-    margin:20px;
+    margin: 5px 20px;
     height: auto;
     padding:10px;
     border:1px solid black;
