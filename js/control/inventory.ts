@@ -7,6 +7,7 @@ import * as dom from "../util/dom";
 import { getEntries, getKeys, PartialRecord } from "../util";
 import { applyEffects } from "./effects";
 import { displayCraftingNeededMaterials } from "../activities/crafting";
+import { addMessage } from "./messages";
 
 export type InventoryItemName = ToolName | ResourceName | PotionName;
 export type InventoryItem = Tool | Resource | Potion;
@@ -52,6 +53,18 @@ export function removeFromInventory(itemName: InventoryItemName, amount: number)
 
 export function removeAllFromInventory(itemName: InventoryItemName) {
     player.inventory_dictionary[itemName] = 0;
+    renderInventory();
+}
+
+export function decreaseToolHealth(toolName: ToolName) {
+    player.toolHealth[toolName] -= 1;
+    
+    if (player.toolHealth[toolName] <= 0) {
+        addMessage(`Your ${toolName} broke!`);
+        removeFromInventory(toolName, 1);
+        player.toolHealth[toolName] = itemsByName[toolName].health;
+    }
+
     renderInventory();
 }
 
