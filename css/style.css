@@ -43,6 +43,12 @@ select{
     color:black;
     cursor: pointer;
 }
+
+.button img{
+    width:20px;
+    height:20px;
+    /* margin-right:5px; */
+}
 .header{
     z-index:1;
     margin-top:-26px;

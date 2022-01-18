@@ -41,9 +41,11 @@
             <span style="width: 0px;" id="progressStamina"></span>
         </div>
     </div>
-    
+
     <fieldset id="activitiesContainer" class="container">
-        <legend><h2>Activities</h2></legend>
+        <legend>
+            <h2>Activities</h2>
+        </legend>
         <div style="padding-top:5px;" id="activitiesContainer">
             <button id="treeButton" class="button" onclick="activities.tree()">
                 <img src='img/assets/tools/stone_axe.png'>Cut Down Tree</button>
@@ -51,7 +53,7 @@
                 <img src='img/assets/materials/fish.png'>
                 Go Fishing</button>
             <button style="visibility: hidden;" id="goHuntingButton" class="button" onclick="activities.goHunting()">
-                <img src='img\assets\materials\meat.png'>
+                <img src='img/assets/materials/meat.png'>
                 Go Hunting</button>
             <button style="visibility: hidden;" id="goMiningButton" class="button" onclick="activities.goMining()">Go
                 Mining</button>
@@ -63,7 +65,9 @@
     </fieldset>
 
     <fieldset id="inventoryContainer" class="container">
-        <legend><h2 id="inventoryHeader">Inventory</h2></legend>
+        <legend>
+            <h2 id="inventoryHeader">Inventory</h2>
+        </legend>
         <div class="row">
             <div class="column">
                 <p id="goldHeader">Gold: <span id="gold">0</span></p>
@@ -86,7 +90,9 @@
     </fieldset>
 
     <fieldset id="storeContainer" class="container">
-        <legend><h2>Store</h2></legend>
+        <legend>
+            <h2>Store</h2>
+        </legend>
         <span style="display: inline-flex">
             <h3 class="subheader" id="buyHeader">Buy</h3>
             <button id="axe" class="store button" onclick="store.buyAxe()">Buy Axe [ 20 ]</button>
@@ -127,7 +133,9 @@
     </fieldset>
 
     <fieldset id="combatContainer" class="container">
-        <legend><h2>Combat</h2></legend>
+        <legend>
+            <h2>Combat</h2>
+        </legend>
         <div class="row">
             <div class="auto-column equipment" id="armor"></div>
             <div class="auto-column equipment" id="weapons"></div>
@@ -144,10 +152,14 @@
             </div>
             <div class="auto-column combat-actions" style="width: 100px">
                 <div>
-                    <button style="display: none;" id="attackButton" class="button" onclick="combat.startCombat()">Attack</button><br />
-                    <button style="display: none;" id="fleeButton" class="button" onclick="combat.doFlee()">Flee</button><br />
-                    <button style="display: none;" id="defendButton" class="button" onclick="combat.defend()">Defend</button><br />
-                    <button style="display: none;" id="specialButton" class="button" onclick="combat.special()">Special</button>
+                    <button style="display: none;" id="attackButton" class="button"
+                        onclick="combat.startCombat()">Attack</button><br />
+                    <button style="display: none;" id="fleeButton" class="button"
+                        onclick="combat.doFlee()">Flee</button><br />
+                    <button style="display: none;" id="defendButton" class="button"
+                        onclick="combat.defend()">Defend</button><br />
+                    <button style="display: none;" id="specialButton" class="button"
+                        onclick="combat.special()">Special</button>
                 </div>
             </div>
             <div class="auto-column">
@@ -159,7 +171,8 @@
                     <option value="Knight">Knight</option>
                     <option value="King">King</option>
                 </select>
-                <button id="fightButton" class="button" onclick="combat.selectEnemy(document.getElementById('opponentSelector').value)">Fight</button>
+                <button id="fightButton" class="button"
+                    onclick="combat.selectEnemy(document.getElementById('opponentSelector').value)">Fight</button>
                 <div id="enemyStats">
                     <h4 style="text-decoration: underline;" id="enemyHeader">Enemy</h4>
                     <div class="progress-bar"><span id="enemyHealthProgress" style="width: 0%;"></span></div><br />
@@ -192,12 +205,16 @@
     </fieldset>
 
     <fieldset id="achievementsContainer" class="container">
-        <legend><h2>Achievements</h2></legend>
+        <legend>
+            <h2>Achievements</h2>
+        </legend>
         <div id="achievements"></div>
     </fieldset>
 
     <fieldset id="effectsContainer" class="container">
-        <legend><h2>Effects</h2></legend>
+        <legend>
+            <h2>Effects</h2>
+        </legend>
         <div id="effects"></div>
     </fieldset>
 
