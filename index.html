@@ -60,19 +60,25 @@
 
     <div id="inventoryContainer" class="container">
         <h2 class="header" id="inventoryHeader">Inventory</h2>
-        <!-- <[inventory]> -->
-        <p id="goldHeader">Gold: <span id="gold">0</span></p>
-        <!-- <p id="gold"></p> -->
-        <br>
-        <span style="display: inline-flex;">
-            <p id="itemsSubheader">Items:</p>
-            <div id="inventory"></div>
-        </span>
-        <br><br>
-        <span style="display: inline-flex;">
-            <p id="durabilitySubheader">Item Durability: &nbsp;</p>
-            <ul id="durability"></ul>
-        </span>
+        <div class="row">
+            <div class="column">
+                <p id="goldHeader">Gold: <span id="gold">0</span></p>
+                <br>
+                <span style="display: inline-flex;">
+                    <p id="itemsSubheader">Items:</p>
+                    <div id="inventory"></div>
+                </span>
+                <br>
+                <br>
+                <span style="display: inline-flex;">
+                    <p id="durabilitySubheader">Item Durability: &nbsp;</p>
+                    <ul id="durability"></ul>
+                </span>
+            </div>
+            <div class="column">
+                <div id="itemDetails"></div>
+            </div>
+        </div>
     </div>
 
     <div id="storeContainer" class="container">
@@ -121,7 +127,7 @@
         <div style="display: flex; justify-content: space-evenly;" id=" statsContainer">
             <div id="enemyStats">
                 <h4 style="text-decoration: underline; " id="enemyHeader">Enemy</h4>
-                <div class="progress-bar"><span id="enemyHealthProgress" style="width: 0%;"></span></div>
+                <div class="progress-bar"><span id="enemyHealthProgress" style="width: 0%;"></span></div><br />
                 <div class="progress-bar"><span id="enemyAttackProgress" style="width: 0%;"></span></div>
                 <p id="health">Health: <span id="healthValue">0</span></p>
                 <p id="attack">Attack: <span id="attackValue">0</span></p>
@@ -130,7 +136,7 @@
             </div>
             <div style="float:right; " id="playerStats">
                 <h4 style="text-decoration: underline; " id="playerHeader">Player</h4>
-                <div class="progress-bar"><span id="playerHealthProgress" style="width: 100%;"></span></div>
+                <div class="progress-bar"><span id="playerHealthProgress" style="width: 100%;"></span></div><br />
                 <div class="progress-bar"><span id="playerAttackProgress" style="width: 0%;"></span></div>
                 <p id="playerHealth">Health: <span id="playerHealthValue">100/100</span></p>
                 <p id="playerAttack">Attack: <span id="playerAttackValue">1</span></p>
@@ -189,6 +195,11 @@
     <div id="achievementsContainer" class="container">
         <h2 class="header">Achievements</h2>
         <div id="achievements"></div>
+    </div>
+
+    <div id="effectsContainer" class="container">
+        <h2 class="header">Effects</h2>
+        <div id="effects"></div>
     </div>
 
     <footer id="footerContainer" class="footer">

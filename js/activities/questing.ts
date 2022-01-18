@@ -159,7 +159,7 @@ function removeStamina(amount: number) {
     renderStamina();
 }
 
-function addStamina(amount: number) {
+export function addStamina(amount: number) {
     player.stamina += amount;
     renderStamina();
 }

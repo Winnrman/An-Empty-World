@@ -31,7 +31,35 @@ export function saveData() {
 }
 
 function getPlayerData() {
-    return (localStorage["player"] && <ReturnType<typeof getDefaultData>>JSON.parse(localStorage["player"])) ?? getDefaultData();
+    return (localStorage["player"] && parsePlayer(localStorage["player"])) ?? getDefaultData();
+}
+
+function parsePlayer(data: string): ReturnType<typeof getDefaultData> {
+
+    const parseJsonValue = function (key, value) {
+        // by default, Date gets converted to a string but not back again
+        // so if a string looks like a Date, turn it into a Date again
+        // found on https://stackoverflow.com/a/23691273
+        
+        if (typeof value !== 'string')
+            return value;
+
+        const ISODateRegex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
+        if (ISODateRegex.exec(value)) {
+            return new Date(value);
+        }
+
+        const MicrosoftDateRegex = /^\/Date\((d|-|.*)\)[\/|\\]$/;
+        const regexResult = MicrosoftDateRegex.exec(value);
+        if (regexResult) {
+            var b = regexResult[1].split(/[-+,.]/);
+            return new Date(b[0] ? +b[0] : 0 - +b[1]);
+        }
+        
+        return value;
+    };
+
+    return JSON.parse(localStorage["player"], parseJsonValue);
 }
 
 export function resetData(data?) {

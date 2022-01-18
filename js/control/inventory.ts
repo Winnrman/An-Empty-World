@@ -1,14 +1,18 @@
 import player from "./player";
-import { Item, itemsByName } from "../data/items";
+import { itemsByName } from "../data/items";
 import { Resource, ResourceName, resourcesByName } from "../data/items/resources";
 import { Potion, PotionName, potionsByName } from "../data/items/potions";
 import { Tool, ToolName, toolsByName } from "../data/items/tools";
 import * as dom from "../util/dom";
 import { getEntries, getKeys, PartialRecord } from "../util";
+import { applyEffects } from "./effects";
+import { displayCraftingNeededMaterials } from "../activities/crafting";
 
 export type InventoryItemName = ToolName | ResourceName | PotionName;
 export type InventoryItem = Tool | Resource | Potion;
 export const inventoryItemsByName: Record<InventoryItemName, InventoryItem> = { ...toolsByName, ...resourcesByName, ...potionsByName };
+
+let selectedItemName: InventoryItemName;
 
 function calculateInventorySpace() {
 	let inventorySpace = 0;
@@ -35,6 +39,7 @@ export function addToInventory(itemName: InventoryItemName, amount: number) {
         player.inventory_dictionary[itemName] = 0;
     
     player.inventory_dictionary[itemName] += amount;
+    renderInventory();    
 }
 
 export function removeFromInventory(itemName: InventoryItemName, amount: number) {
@@ -42,16 +47,34 @@ export function removeFromInventory(itemName: InventoryItemName, amount: number)
         player.inventory_dictionary[itemName] = 0;
     
     player.inventory_dictionary[itemName] -= amount;
+    renderInventory();
 }
 
 export function removeAllFromInventory(itemName: InventoryItemName) {
     player.inventory_dictionary[itemName] = 0;
+    renderInventory();
+}
+
+export function showItemDetails(itemName: InventoryItemName) {
+    selectedItemName = itemName;
+    renderInventory();
+}
+
+export function drinkPotion(itemName: PotionName) {
+    if (!hasInInventory(itemName))
+        return;
+    
+    const potion = potionsByName[itemName];
+    applyEffects(potion.effects);
+    removeFromInventory(itemName, 1);
 }
 
 export function renderInventory() {
     dom.setHtml("inventoryHeader", `Inventory (${calculateInventorySpace()}/${player.maxInventorySize})`);
     renderItems();
     renderDurability();
+    renderSelectedItemDetails();
+    displayCraftingNeededMaterials();
 }
 
 type Category = "Tool" | "Basic" | "Ore" | "Gem" | "Potion" | "Other";
@@ -91,7 +114,7 @@ function renderItems() {
     let html = "";
     for (const itemsOfCategory of Object.values(categories)) {
         for (const item of itemsOfCategory) {
-            html += `${item} x${getInventoryCount(item)}&nbsp;|&nbsp;`;
+            html += `<span onClick="inventory.showItemDetails('${item}')">${item} x${getInventoryCount(item)}</span>&nbsp;|&nbsp;`;
         }
         html = html.substring(0, html.length - 13); // to remove the last separator
         html += "<br />";
@@ -110,4 +133,33 @@ function renderDurability() {
     }
 
     dom.setHtml("durability", html);
+}
+
+function renderSelectedItemDetails() {
+    if (!selectedItemName || !hasInInventory(selectedItemName)) {
+        dom.setHtml("itemDetails", "");
+        selectedItemName = undefined;
+        return;
+    }
+    
+    const item = inventoryItemsByName[selectedItemName];
+    const hasDurability = item.type === "Tool";
+    const canDrink = item.type === "Potion";
+    const canSell = item.type !== "Tool";
+    const hasActions = canDrink || canSell;
+
+    let html = `
+        <h3>Item details</h3>
+        Item: ${item.name}<br />
+        Description: ${item.description}<br />
+        ${hasDurability ? `Durability: ${player.toolHealth[item.name]}/${item.health}<br />` : ""}
+        Amount owned: ${getInventoryCount(item.name)}<br />
+        <br />
+        ${hasActions ? "<h3>Actions<h3>" : ""}
+        ${canSell ? `<button class="button" onclick="store.sell('${item.name}', 1)">Sell one</button>&nbsp;` : ""}
+        ${canSell ? `<button class="button" onclick="store.sell('${item.name}')">Sell all</button>&nbsp;` : ""}
+        ${canDrink ? `<button class="button" onclick="inventory.drinkPotion('${item.name}')">Drink</button>&nbsp;` : ""}
+    `;
+
+    dom.setHtml("itemDetails", html);
 }
