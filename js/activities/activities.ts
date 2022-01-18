@@ -3,7 +3,7 @@ import { addMessage } from "../control/messages";
 import { addXp } from "../control/experience";
 import { itemsByName } from "../data/items";
 import { getRandomItem } from "../util";
-import { addToInventory, hasInInventory, InventoryItem, isInventoryFull, removeFromInventory } from "../control/inventory";
+import { addToInventory, decreaseToolHealth, hasInInventory, InventoryItem, isInventoryFull, removeFromInventory } from "../control/inventory";
 import resources from "../data/items/resources";
 import { setHtml } from "../util/dom";
 
@@ -21,13 +21,8 @@ export function tree() {
     addToInventory("Wood", 1);
     addStatistic("cutWood", 1);
     addXp(itemsByName["Wood"].treeCutting.xp);
-    player.toolHealth["Axe"] -= 1;
-    
-    if (player.toolHealth["Axe"] <= 0) {
-        addMessage("Your axe broke!");
-        removeFromInventory("Axe", 1);
-        player.toolHealth["Axe"] = itemsByName["Axe"].health;
-    }
+
+    decreaseToolHealth("Axe");
 }
 
 export function goFishing() {
@@ -44,13 +39,8 @@ export function goFishing() {
     addToInventory("Fish", 1);
     addStatistic("caughtFish", 1);
     addXp(itemsByName["Fish"].fishing.xp);
-
-    player.toolHealth["Fishing Pole"] -= 1;
-    if (player.toolHealth["Fishing Pole"] <= 0) {
-        addMessage("Your fishing pole broke!");
-        removeFromInventory("Fishing Pole", 1);
-        player.toolHealth["Fishing Pole"] = itemsByName["Fishing Pole"].health;
-    }
+    
+    decreaseToolHealth("Fishing Pole");
 }
 
 export function goHunting() {
@@ -67,13 +57,8 @@ export function goHunting() {
     addToInventory("Meat", 1);
     addStatistic("huntedMeat", 1);
     addXp(itemsByName["Meat"].hunting.xp);
-
-    player.toolHealth["Hunting Rifle"] -= 1;
-    if (player.toolHealth["Hunting Rifle"] <= 0) {
-        addMessage("Your hunting rifle broke!");
-        removeFromInventory("Hunting Rifle", 1);
-        player.toolHealth["Hunting Rifle"] = itemsByName["Hunting Rifle"].health;
-    }
+    
+    decreaseToolHealth("Hunting Rifle");
 }
 
 const ores = resources.filter(x => x.mining);
@@ -93,13 +78,8 @@ function mineOre(ore: InventoryItem) {
     addToInventory(ore.name, 1);
     addStatistic("minedRocks", 1);
     addXp(ore.mining.xp);
-
-    player.toolHealth["Pickaxe"] -= 1;
-    if (player.toolHealth["Pickaxe"] <= 0) {
-        addMessage("Your pickaxe broke!");
-        removeFromInventory("Pickaxe", 1);
-        player.toolHealth["Pickaxe"] = itemsByName["Pickaxe"].health;
-    }
+    
+    decreaseToolHealth("Pickaxe");
 }
 
 export function goMining() {
