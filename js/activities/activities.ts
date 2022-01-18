@@ -5,6 +5,7 @@ import { itemsByName } from "../data/items";
 import { getRandomItem } from "../util";
 import { addToInventory, hasInInventory, InventoryItem, isInventoryFull, removeFromInventory } from "../control/inventory";
 import resources from "../data/items/resources";
+import { setHtml } from "../util/dom";
 
 export function tree() {
     if (!hasInInventory("Axe")) {
@@ -20,8 +21,8 @@ export function tree() {
     addToInventory("Wood", 1);
     addStatistic("cutWood", 1);
     addXp(itemsByName["Wood"].treeCutting.xp);
-
     player.toolHealth["Axe"] -= 1;
+    
     if (player.toolHealth["Axe"] <= 0) {
         addMessage("Your axe broke!");
         removeFromInventory("Axe", 1);

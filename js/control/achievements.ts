@@ -61,10 +61,10 @@ export const achievements = [
     },
     {
         id: "iron_armor",
-        requirements: { achievements: {  "wood_armor": 1 }, level: 5 },
+        requirements: { achievements: { "wood_armor": 1 }, level: 5 },
         name: () => "Iron Armor",
         reward: () => 250,
-        getProgress: () => getEquipCount("Iron Helmet") + getEquipCount("Iron Chestplate")  + getEquipCount("Iron Leggings") + getEquipCount("Iron Boots"),
+        getProgress: () => getEquipCount("Iron Helmet") + getEquipCount("Iron Chestplate") + getEquipCount("Iron Leggings") + getEquipCount("Iron Boots"),
         levels: [4]
     },
     {
@@ -95,10 +95,10 @@ function checkRequirements(achievement) {
     const requirements = achievement.requirements;
     if (!requirements)
         return true;
-    
+
     if (player.level < requirements.level)
         return false;
-    
+
     if (requirements.achievements) {
         for (let requiredAchievement in requirements.achievements) {
             if (player.completedAchievements[requiredAchievement] < requirements.achievements[requiredAchievement])
@@ -114,9 +114,9 @@ function checkAchievement(achievement) {
     const levelsCompleted = player.completedAchievements[achievement.id] || 0;
     if (levelsCompleted >= levels.length)
         return true;
-        
+
     if (!checkRequirements(achievement))
-    return false;
+        return false;
 
     for (let level = levelsCompleted; level < levels.length; level++) {
         const levelValue = levels[level];
@@ -126,8 +126,8 @@ function checkAchievement(achievement) {
             achievement.currentLevel = level;
             return false;
         }
-        
-        addMessage(`You have completed the ${achievement.name(levelValue)} achievement!`);
+
+        addMessage(`You have completed the ${achievement.name(levelValue)} achievement! [${achievement.reward(level, levelValue)} gold awarded]`);
         addGold(achievement.reward(level, levelValue));
         player.completedAchievements[achievement.id] = level + 1;
     }
@@ -137,7 +137,7 @@ function checkAchievement(achievement) {
 
 export function startCheckInterval() {
     checkAchievements();
-    
+
     const interval = setInterval(function () {
         checkAchievements();
 
@@ -175,9 +175,9 @@ function renderAchievements() {
     } else {
         html += "None!";
     }
-    
+
     html += "<br />"
-    
+
     html += "<h3>Completed:</h3>";
     if (completedAchievements.length > 0) {
         html += "<ul>";
