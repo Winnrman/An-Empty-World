@@ -5,9 +5,6 @@
 *.txt
 .txt
 
-# PNG Files
-*.PNG
-
 # Logs
 logs
 *.log
