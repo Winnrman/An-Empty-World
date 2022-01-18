@@ -8,7 +8,7 @@ import * as experience from "./control/experience";
 import * as inventory from "./control/inventory";
 import * as equipment from "./control/equipment";
 import * as messages from "./control/messages";
-import player, { saveData, resetData, renderGold, startSaveInterval } from "./control/player";
+import player, { saveData, resetData, renderGold, startSaveInterval, Player } from "./control/player";
 import * as store from "./activities/store";
 import * as questing from "./activities/questing";
 import runTests from "./tests";
@@ -18,6 +18,7 @@ import "../css/achievements.css";
 import "../css/combat.css";
 import "../css/dark.css";
 import "../css/footer.css";
+import "../css/layout.css";
 import "../css/messages.css";
 import "../css/progress.css";
 import "../css/progress-bar.css";
@@ -25,12 +26,13 @@ import "../css/store.css";
 
 declare global {
     interface Window {
-        player: any;
-        store: any;
-        activities: any;
-        combat: any;
-        crafting: any;
-        questing: any;
+        player: Player;
+        store: typeof store;
+        activities: typeof activities;
+        combat: typeof combat;
+        crafting: typeof crafting;
+        inventory: typeof inventory;
+        questing: typeof questing;
         saveData: () => void;
         resetData: () => void;
         runTests: (x: boolean) => void;
@@ -41,6 +43,7 @@ window.store = store;
 window.activities = activities;
 window.combat = combat;
 window.crafting = crafting;
+window.inventory = inventory;
 window.questing = questing;
 window.saveData = saveData;
 window.runTests = runTests;
@@ -60,7 +63,6 @@ function startIntervals() {
 }
 
 export function checkAndRenderEverything() {
-    
     experience.checkLevelUnlocks();
     equipment.loadOptionsFromOwnedEquipment();
     effects.registerEffectExpiries();
@@ -70,6 +72,7 @@ export function checkAndRenderEverything() {
     crafting.renderCraftables();
     questing.renderStamina();
     inventory.renderInventory();
+    combat.renderPreCombatInfo();
     renderGold();
 }
 

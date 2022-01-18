@@ -55,6 +55,7 @@ export function doCrafting() {
     addLoot(craftable);
     renderCraftables();
     renderInventory();
+    displayCraftingNeededMaterials();
 }
 
 export function renderCraftables() {

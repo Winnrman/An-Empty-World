@@ -2,6 +2,7 @@
     border: 1px solid gray;
     width: 150px;
     height: 13px;
+    display: inline-block;
 }
     
 .progress-bar > span {

@@ -240,7 +240,6 @@ function sell(itemName: store.SellType) {
 
 function craft(itemName: EquipmentName | PotionName) {
     dom.setValue("craftingSelect", itemName);
-    crafting.displayCraftingNeededMaterials();
     crafting.doCrafting();
 }
 

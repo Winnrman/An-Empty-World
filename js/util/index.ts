@@ -30,3 +30,7 @@ export function getEntries<T extends string | number | symbol, V>(record: Record
 export type PartialRecord<K extends keyof any, T> = {
     [P in K]?: T;
   };
+
+export function minMax(min: number, value: number, max: number) {
+    return Math.min(Math.max(min, value), max)
+}

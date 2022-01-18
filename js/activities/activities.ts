@@ -3,8 +3,7 @@ import { addMessage } from "../control/messages";
 import { addXp } from "../control/experience";
 import { itemsByName } from "../data/items";
 import { getRandomItem } from "../util";
-import { addToInventory, hasInInventory, InventoryItem, isInventoryFull, removeFromInventory, renderInventory } from "../control/inventory";
-import { displayCraftingNeededMaterials } from "./crafting";
+import { addToInventory, hasInInventory, InventoryItem, isInventoryFull, removeFromInventory } from "../control/inventory";
 import resources from "../data/items/resources";
 
 export function tree() {
@@ -28,9 +27,6 @@ export function tree() {
         removeFromInventory("Axe", 1);
         player.toolHealth["Axe"] = itemsByName["Axe"].health;
     }
-
-    renderInventory();
-    displayCraftingNeededMaterials();
 }
 
 export function goFishing() {
@@ -54,9 +50,6 @@ export function goFishing() {
         removeFromInventory("Fishing Pole", 1);
         player.toolHealth["Fishing Pole"] = itemsByName["Fishing Pole"].health;
     }
-
-    renderInventory();
-    displayCraftingNeededMaterials();
 }
 
 export function goHunting() {
@@ -80,9 +73,6 @@ export function goHunting() {
         removeFromInventory("Hunting Rifle", 1);
         player.toolHealth["Hunting Rifle"] = itemsByName["Hunting Rifle"].health;
     }
-
-    renderInventory();
-    displayCraftingNeededMaterials();
 }
 
 const ores = resources.filter(x => x.mining);
@@ -109,9 +99,6 @@ function mineOre(ore: InventoryItem) {
         removeFromInventory("Pickaxe", 1);
         player.toolHealth["Pickaxe"] = itemsByName["Pickaxe"].health;
     }
-
-    renderInventory();
-    displayCraftingNeededMaterials();
 }
 
 export function goMining() {

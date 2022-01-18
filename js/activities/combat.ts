@@ -4,7 +4,7 @@ import { addXp } from "../control/experience";
 import { randomLootDrop } from "./events";
 import player, { addGold, addStatistic } from "../control/player";
 import { addMessage } from '../control/messages';
-import { getRandomInt } from '../util';
+import { getRandomInt, minMax } from '../util';
 import { addLoot } from './looting';
 
 let enemy;
@@ -22,14 +22,10 @@ export function startCombat () {
         return;
     
     enemyHealth = enemy.health;
-    const playerTimeBetweenAttacks = 1000 / player.playerSpeed;
-    playerAttackTimer = setInterval(doPlayerAttack, playerTimeBetweenAttacks);
-    dom.getElement("playerAttackProgress").style.transition = `width ${playerTimeBetweenAttacks}ms`;
-    dom.getElement("playerAttackProgress").style.width = "100%";
 
-    const enemyTimeBetweenAttacks = 1000 / enemy.speed;
-    enemyAttackTimer = setInterval(doEnemyAttack, enemyTimeBetweenAttacks);
-    dom.getElement("enemyAttackProgress").style.transition = `width ${enemyTimeBetweenAttacks}ms`;
+    queuePlayerAttack();
+    queueEnemyAttack();
+    dom.getElement("playerAttackProgress").style.width = "100%";
     dom.getElement("enemyAttackProgress").style.width = "100%";
 }
 
@@ -43,20 +39,40 @@ function resetProgressbar(id) {
     }, 10);
 }
 
+function queuePlayerAttack() {
+    const playerTimeBetweenAttacks = 1000 / player.playerSpeed;
+    dom.getElement("playerAttackProgress").style.transition = `width ${playerTimeBetweenAttacks}ms`;
+    playerAttackTimer = setTimeout(doPlayerAttack, playerTimeBetweenAttacks);
+}
+
 function doPlayerAttack() {
+    playerAttackTimer = undefined;
+    
     resetProgressbar("playerAttackProgress");
     const damage = Math.max(0, player.playerAttack - enemy.defense);
     setEnemyHealth(enemyHealth - damage);
     if (enemyHealth <= 0)
         enemyDied();
+    else
+        queuePlayerAttack();
+}
+
+function queueEnemyAttack() {
+    const enemyTimeBetweenAttacks = 1000 / enemy.speed;
+    dom.getElement("enemyAttackProgress").style.transition = `width ${enemyTimeBetweenAttacks}ms`;
+    enemyAttackTimer = setTimeout(doEnemyAttack, enemyTimeBetweenAttacks);
 }
 
 function doEnemyAttack() {
+    enemyAttackTimer = undefined;
+    
     resetProgressbar("enemyAttackProgress");
     const damage = Math.max(0, enemy.attack - player.playerDefense);
     setPlayerHealth(player.playerHealth - damage);
     if (player.playerHealth <= 0)
         playerDied();
+    else
+        queueEnemyAttack();
 }
 
 function enemyDied() {
@@ -88,14 +104,27 @@ export function doFlee() {
 }
 
 function clearFight() {
-    clearInterval(playerAttackTimer);
-    clearInterval(enemyAttackTimer);
     enemy = undefined;
+
+    clearTimeout(playerAttackTimer);
+    playerAttackTimer = undefined;
+
+    clearTimeout(enemyAttackTimer);
+    enemyAttackTimer = undefined;
+
     renderPreCombatInfo();
 }
 
+export function addPlayerHealth(value) {
+    setPlayerHealth(player.playerHealth + value);
+}
+
 function setPlayerHealth(value) {
-    player.playerHealth = Math.max(0, value);
+    player.playerHealth = minMax(0, value, player.maxHealth);
+    renderPlayerHealth();
+}
+
+function renderPlayerHealth() {
     dom.setHtml("playerHealthValue", player.playerHealth.toString());
     dom.getElement("playerHealthProgress").style.width = `${player.playerHealth / player.maxHealth * 100}%`;
 }
@@ -106,7 +135,7 @@ function setEnemyHealth(value) {
     dom.getElement("enemyHealthProgress").style.width = `${enemyHealth/ enemy.health * 100}%`;
 }
 
-function renderPreCombatInfo(){
+export function renderPreCombatInfo(){
     dom.setHtml("enemyHeader", enemy?.name || "Enemy");
     dom.setHtml("healthValue", enemy?.health || 0);
     dom.setHtml("attackValue", enemy?.attack || 0);
@@ -121,4 +150,6 @@ function renderPreCombatInfo(){
     dom.setIsDisplayed("fleeButton", isInCombat);
     dom.setIsDisplayed("defendButton", isInCombat);
     dom.setIsDisplayed("specialButton", isInCombat);
+
+    renderPlayerHealth();
 }

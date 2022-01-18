@@ -5,6 +5,7 @@ import { addMessage } from './messages';
 import player, { addGold } from "./player";
 import transient from "./transient";
 import { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
+import { getEffectValue } from "./effects";
 
 export function addToOwnedEquipment(item: Equipment) {
     if (player.ownedEquipment.includes(item.name as EquipmentName)) {
@@ -59,7 +60,7 @@ export function hasEquiped(itemName: EquipmentName) {
     return Object.values(player.equipment).includes(itemName);
 }
 
-function updateArmour() {
+export function updateArmour() {
     const updateEquipment = (slot: EquipmentSlot) => {
         const item = dom.getValue(`${slot}Select`) as EquipmentName;
         player.equipment[slot] = item ? item : undefined;
@@ -73,12 +74,28 @@ function updateArmour() {
     updateEquipment("Weapon");
 
     const getArmorValue = (slot: EquipmentSlot) => equipmentByName[player.equipment[slot]]?.armor || 0;
+    player.playerDefense =
+          getArmorValue("Helmet")
+        + getArmorValue("Chestplate")
+        + getArmorValue("Leggings")
+        + getArmorValue("Boots")
+        + getArmorValue("Shield")
+        + getEffectValue("addDefense");
+
     const getAttackValue = (slot: EquipmentSlot) => equipmentByName[player.equipment[slot]]?.attack || 0;
-    player.playerDefense = getArmorValue("Helmet") + getArmorValue("Chestplate") + getArmorValue("Leggings") + getArmorValue("Boots") + getArmorValue("Shield");
-    player.playerAttack = 1 + getAttackValue("Weapon");
+    player.playerAttack =
+          1
+        + getAttackValue("Weapon")
+        + getEffectValue("addAttack")
+        - getEffectValue("decreaseAttack");
+
+    player.playerSpeed =
+           1
+        + getEffectValue("addSpeed");
 
     dom.setHtml("playerDefenseValue", player.playerDefense.toString());
     dom.setHtml("playerAttackValue", player.playerAttack.toString());
+    dom.setHtml("playerSpeedValue", player.playerSpeed.toString());
 
     checkAchievements();
 }

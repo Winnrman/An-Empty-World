@@ -1,3 +1,4 @@
+import { EffectName } from "../../control/effects";
 import { PartialRecord } from "../../util";
 import equipment, { EquipmentName } from "./equipment";
 import potions, { PotionName } from "./potions";
@@ -5,8 +6,8 @@ import resources, { ResourceName } from "./resources";
 import tools, { ToolName } from "./tools";
 
 export type ItemEffect = {
-    name: string;
-    value?: any;
+    name: EffectName;
+    value?: number;
     delay?: number;
     duration?: number;
 }
@@ -18,7 +19,7 @@ export type EquipmentSlot = "Helmet" | "Chestplate" | "Leggings" | "Boots" | "We
 
 export type Item = {
     name: ItemName;
-    description?: string;
+    description: string;
     type: ItemType;
     rarity?: Rarity;
     price: number;

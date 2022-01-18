@@ -1,10 +1,9 @@
 import * as dom from '../util/dom';
 import { randomLootDrop } from "./events";
-import { addToInventory, getInventoryCount, hasInInventory, InventoryItemName, isInventoryFull, removeAllFromInventory, renderInventory } from "../control/inventory";
+import { addToInventory, getInventoryCount, hasInInventory, InventoryItemName, isInventoryFull, removeAllFromInventory, removeFromInventory, renderInventory } from "../control/inventory";
 import { itemsByName } from "../data/items";
 import { addMessage } from '../control/messages';
 import player, { addGold, removeGold } from "../control/player";
-import { displayCraftingNeededMaterials } from './crafting';
 import { ToolName } from '../data/items/tools';
 import { addLoot } from './looting';
 
@@ -81,28 +80,28 @@ export function buyInventoryUpgrade() {
 
 export type SellType = "Ores" | InventoryItemName;
 
-export function sell(item: SellType) {
+export function sell(item: SellType, amount?: number) {
     if (item === "Ores") {
-        sellItem("Iron");
-        sellItem("Copper");
-        sellItem("Tin");
-        sellItem("Silver");
-        sellItem("Gold");
-        sellItem("Emerald");
-        sellItem("Ruby");
-        sellItem("Diamond");
-        renderInventory();
+        sellItems(["Iron", "Copper", "Tin", "Silver", "Gold", "Emerald", "Ruby", "Diamond"]);
         return;
     }
     
-    sellItem(item);
-    displayCraftingNeededMaterials();
+    sellItem(item, amount);
+}
+
+function sellItems(itemNames: InventoryItemName[]) {
+    for (const itemName of itemNames) {
+        addGold(getInventoryCount(itemName) * itemsByName[itemName].price);
+        removeAllFromInventory(itemName);
+    }
     renderInventory();
 }
 
-function sellItem(itemName: InventoryItemName) {
-    addGold(getInventoryCount(itemName) * itemsByName[itemName].price);
-    removeAllFromInventory(itemName);
+function sellItem(itemName: InventoryItemName, amount?: number) {
+    amount ||= getInventoryCount(itemName);
+    addGold(amount * itemsByName[itemName].price);
+    removeFromInventory(itemName, amount);
+    renderInventory();
 }
 
 export function renderInventoryUpgrade () {
