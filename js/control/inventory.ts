@@ -126,6 +126,9 @@ function renderItems() {
 function renderDurability() {
     let html = "";
     for (var itemName of getKeys(player.inventory_dictionary)) {
+        if (!hasInInventory(itemName))
+            continue;
+        
         const item = itemsByName[itemName];
         if (item.type === "Tool") {
             html += `<li>${item.name}: ${player.toolHealth[item.name]}/${item.health}</li>`;
