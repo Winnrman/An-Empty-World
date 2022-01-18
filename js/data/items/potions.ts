@@ -37,7 +37,7 @@ const potions: Potion[] = [
         description: "Decreases your attack by 2.",
         rarity: "uncommon",
         price: 20,
-        effects: [{ name: "decreaseAttack", value: -2, duration: 15000, }],
+        effects: [{ name: "decreaseAttack", value: 2, duration: 15000, }],
         crafting: {
             requiredLevel: 1,
             ingredients: {}

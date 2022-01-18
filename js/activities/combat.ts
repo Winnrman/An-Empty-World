@@ -150,6 +150,7 @@ export function renderPreCombatInfo(){
     dom.setIsDisplayed("fleeButton", isInCombat);
     dom.setIsDisplayed("defendButton", isInCombat);
     dom.setIsDisplayed("specialButton", isInCombat);
+    dom.setIsDisplayed("enemyStats", isInCombat);
 
     renderPlayerHealth();
 }

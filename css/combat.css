@@ -1,5 +1,24 @@
-#armor, #weapons{
-    padding-top:5px;
+#combatContainer .auto-column {
+    padding-right: 50px;
+}
+
+.equipment .label {
+    width:80px;
+    display:inline-block;
+}
+
+.equipment select {
+    min-width:150px;
+    margin-bottom: 5px;
+}
+
+#opponentSelector {
+    margin-bottom: 5px;
+}
+
+.combat-actions button {
+    width: 100px;
+    margin-bottom: 5px;
 }
 
 #playerHealthProgress {

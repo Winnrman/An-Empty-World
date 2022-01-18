@@ -31,13 +31,15 @@ function addEquipmentOption(item: Equipment, isEquipped: boolean) {
 }
 
 function getEquipmentFields(slots: EquipmentSlot[]) {
-    return slots.map(slot =>
-        `<span style="display: inline-flex">
-        <p>${slot} &nbsp;</p>
-        <select id="${slot}Select" class="EquipmentSelect">
-            <option value="">None</option>
-        </select>
-    </span>`).join("\r\n<br>\r\n");
+    return slots
+        .map(slot =>
+            `<span>
+                <span class="label">${slot}</span>&nbsp;
+                <select id="${slot}Select" class="EquipmentSelect">
+                    <option value="">None</option>
+                </select>
+            </span>`)
+        .join("\r\n");
 }
 
 export function loadOptionsFromOwnedEquipment() {
