@@ -166,7 +166,8 @@ function renderSelectedItemDetails() {
 
     let html = `
         <h3>Item details</h3>
-        Item: ${item.name}<br />
+        Item: ${item.name}
+        <img src="${item.iconUrl}" /><br />
         Description: ${item.description}<br />
         ${hasDurability ? `Durability: ${player.toolHealth[item.name]}/${item.health}<br />` : ""}
         Amount owned: ${getInventoryCount(item.name)}<br />

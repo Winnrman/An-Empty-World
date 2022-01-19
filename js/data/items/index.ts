@@ -19,6 +19,7 @@ export type EquipmentSlot = "Helmet" | "Chestplate" | "Leggings" | "Boots" | "We
 
 export type Item = {
     name: ItemName;
+    iconUrl: string;
     description: string;
     type: ItemType;
     rarity?: Rarity;
