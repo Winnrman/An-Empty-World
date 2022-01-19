@@ -12,10 +12,6 @@
     cursor: pointer;
 }
 
-.item-icon.inventory {
-    background-color: transparent;
-}
-
 .item-icon img {
     padding: 2px;
     display: block;
