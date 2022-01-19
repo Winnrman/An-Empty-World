@@ -32,6 +32,7 @@ declare global {
         combat: typeof combat;
         crafting: typeof crafting;
         inventory: typeof inventory;
+        settings: typeof settings;
         questing: typeof questing;
         saveData: () => void;
         resetData: () => void;
@@ -44,6 +45,7 @@ window.activities = activities;
 window.combat = combat;
 window.crafting = crafting;
 window.inventory = inventory;
+window.settings = settings;
 window.questing = questing;
 window.saveData = saveData;
 window.runTests = runTests;
@@ -67,6 +69,7 @@ export function checkAndRenderEverything() {
     equipment.loadOptionsFromOwnedEquipment();
     effects.registerEffectExpiries();
     activities.showCurrentActivity();
+    settings.loadTheme();
 
     experience.renderLevel();
     store.renderInventoryUpgrade();

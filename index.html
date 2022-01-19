@@ -7,10 +7,16 @@
 
 <body>
     <script>
-        var hours = new Date().getHours();
-        if (hours >= 15 || hours < 8) {
-            document.body.classList.add("class", "dark");
+        function checkDarkMode() { // this code is here so it loads as fast as possible, to reduce page flickering on refresh
+            const theme = localStorage["theme"];
+            var hours = new Date().getHours();
+            if (theme === "dark" || theme != "light" && hours >= 15 || hours < 8) {
+                document.body.classList.add("dark");
+            } else {
+                document.body.classList.remove("dark");
+            }
         }
+        checkDarkMode();
     </script>
 
     <div class="sideContainer" id="messagesContainer">
@@ -228,6 +234,7 @@
         <a onclick="saveData()">save</a>
         <a>share</a>
         <a onclick="resetData()">restart</a>
+        <a id="switchTheme" onClick="settings.switchTheme()"></a>
         <!-- <p>&copy; Idle Game</p> -->
     </footer>
 </body>
