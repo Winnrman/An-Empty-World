@@ -1,37 +1,28 @@
 import * as dom from "../util/dom";
-import { ItemName, itemsByName } from "../data/items";
 import { addMessage } from '../control/messages';
 import { ownsEquipment } from "../control/equipment";
 import player from "../control/player";
 import { getInventoryCount, removeFromInventory, renderInventory } from "../control/inventory";
-import equipment, { Equipment, EquipmentName } from "../data/items/equipment";
-import potions, { Potion, PotionName } from "../data/items/potions";
-import { ResourceName } from "../data/items/resources";
+import equipment, { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
+import potions, { Potion, PotionName, potionsByName } from "../data/items/potions";
+import { ResourceName, resourcesByName } from "../data/items/resources";
 import { getKeys } from "../util";
 import { addLoot } from "./looting";
+import { Item } from "../data/items";
 
-let currentCraftable: CraftableName = undefined;
+import "../../css/crafting.css";
 
-type CraftableName = EquipmentName | PotionName;
-type Craftable = Equipment | Potion;
+export type CraftableName = EquipmentName | PotionName;
+export type Craftable = Equipment | Potion;
+export const craftablesByName: Record<CraftableName, Craftable> = { ...equipmentByName, ...potionsByName };
 
-function getSelectedCraftable() {
-    return itemsByName[dom.getValue("craftingSelect") as ItemName] as Craftable;
-}
-
-export function displayCraftingNeededMaterials() {
-    const craftable = getSelectedCraftable();
-    if (!craftable || !craftable.crafting)
-        return;
-
-    currentCraftable = craftable.name;
-
-    const parts = Object.keys(craftable.crafting.ingredients).map((key: ResourceName) => `${key}: ${getInventoryCount(key)}/${craftable.crafting.ingredients[key]}`).join(' ');
-    dom.setHtml("neededMaterials", `Needed Materials: ${parts}`)
+export function selectItemToCraft(craftableName: CraftableName) {
+    player.selectedCraftable = craftablesByName[craftableName];
+    renderCraftableDetails();
 }
 
 export function doCrafting() {
-    const craftable = getSelectedCraftable();
+    const craftable = player.selectedCraftable;
     if (!craftable || !craftable.crafting)
         return;
 
@@ -55,24 +46,73 @@ export function doCrafting() {
     addLoot(craftable);
     renderCraftables();
     renderInventory();
-    displayCraftingNeededMaterials();
+    renderCraftableDetails();
+}
+
+const canCraft = (item: Item) => item.crafting && item.crafting.requiredLevel <= player.level;
+
+function renderCraftable(craftable: Craftable) {
+    return `<div onclick="crafting.selectItemToCraft('${craftable.name}')" class="item-icon" title="${craftable.name}"><img src="${craftable.iconUrl}" /></div>`;
 }
 
 export function renderCraftables() {
-    const craftableEquipment = equipment.filter(x => x.crafting && x.crafting.requiredLevel <= player.level && !ownsEquipment(x.name));
-    const craftablePotions = potions.filter(x => x.crafting && x.crafting.requiredLevel <= player.level);
-    addCraftablesToContainer('craftingSelect', [...craftableEquipment, ...craftablePotions]);
+    const craftableEquipment = equipment.filter(x => canCraft(x) && !ownsEquipment(x.name));
+    const craftablePotions = potions.filter(x => canCraft(x));
+    
+    let html = "<div>";
+
+    if (craftableEquipment.length) {
+        for (const craftable of craftableEquipment) {
+            html += renderCraftable(craftable);
+        }
+        html += "<br />";
+    }
+
+    if (craftablePotions.length) {
+        for (const craftable of craftablePotions) {
+            html += renderCraftable(craftable);
+        }
+    }
+    
+    html += "</div>";
+
+    dom.setHtml('craftables', html);
 }
 
-function addCraftablesToContainer(elementId: string, craftables: Craftable[]) {
-    dom.setHtml(elementId, "");
-    const container = dom.getElement<HTMLSelectElement>(elementId);
-    container.add(dom.createElement<HTMLOptionElement>("option", { text: "Select an item" }));
-    
-    for (const craftable of craftables) {
-        const option = dom.createElement<HTMLOptionElement>("option", { value: craftable.name, text: craftable.name });
-        if (currentCraftable === craftable.name)
-            option.setAttribute("selected", "selected");
-        container.add(option);
+export function renderCraftableDetails() {
+    if (!player.selectedCraftable || !player.selectedCraftable.crafting) {
+        dom.setHtml("craftable-details", "");
+        return;
     }
+
+    const craftable = player.selectedCraftable;
+    const ingredients = craftable.crafting.ingredients;
+
+    let html = "<div>";
+    html += `<h3>Item to craft</h3>`;
+    html += `<div class="item-icon" title="${craftable.name}"><img src="${craftable.iconUrl}" /></div>${craftable.name}<br />`;
+    html += "<br />"
+
+    html += `<h3>Ingredients</h3>`
+    html += `<div class="crafting-ingredients">`
+    for (const ingredientName of getKeys(ingredients)) {
+        html += `<span class="crafting-ingredient">`;
+
+        const ingredient = resourcesByName[ingredientName];
+        html += `<div class="item-icon" title="${ingredient.name}"><img src="${ingredient.iconUrl}" /></div>`;
+        
+        const ownedAmount = getInventoryCount(ingredientName);
+        const requiredAmount = ingredients[ingredientName];
+        const classForAmount = ownedAmount < requiredAmount ? "red" : ""
+        html += `<span class="${classForAmount}">${ownedAmount}/${requiredAmount}</span>`;
+
+        html += "</span>";
+    }
+    html += "</div>";
+
+    html += "<br />";
+    html += `<button class="button" onclick="crafting.doCrafting()">Craft</button>`;
+    html += "</div>";
+    
+    dom.setHtml("craftable-details", html);
 }

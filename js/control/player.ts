@@ -7,6 +7,7 @@ import { ToolName } from '../data/items/tools';
 import { InventoryItemName } from './inventory';
 import { PartialRecord } from '../util';
 import { Activity } from '../activities/activities';
+import { Craftable } from '../activities/crafting';
 
 const player = getPlayerData();
 export type Player = typeof player;
@@ -117,6 +118,7 @@ export function getDefaultData() {
 
         currentActivity: undefined as Activity | undefined,
         selectedItemName: undefined as InventoryItemName | undefined,
+        selectedCraftable: undefined as Craftable | undefined,
     }
 }
 
