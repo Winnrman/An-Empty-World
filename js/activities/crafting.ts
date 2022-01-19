@@ -1,7 +1,7 @@
 import * as dom from "../util/dom";
 import { addMessage } from '../control/messages';
 import { ownsEquipment } from "../control/equipment";
-import player from "../control/player";
+import player, { saveData } from "../control/player";
 import { getInventoryCount, removeFromInventory, renderInventory } from "../control/inventory";
 import equipment, { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
 import potions, { Potion, PotionName, potionsByName } from "../data/items/potions";
@@ -54,6 +54,7 @@ export function doCrafting() {
     
     renderCraftables();
     renderInventory();
+    saveData();
 }
 
 const canCraft = (item: Item) => item.crafting && item.crafting.requiredLevel <= player.level;

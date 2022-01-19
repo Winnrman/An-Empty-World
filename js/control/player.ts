@@ -28,8 +28,12 @@ if (!player.effects) player.effects = [];
 
 export default player;
 
+let isAllowedToSave = true;
+
 export function saveData() {
-    localStorage["player"] = JSON.stringify(player);
+    if (isAllowedToSave) {
+        localStorage["player"] = JSON.stringify(player);
+    }
 }
 
 function getPlayerData() {
@@ -144,11 +148,13 @@ export function addStatistic(type, amount) {
 }
 
 export let saveInterval;
-export function startSaveInterval() {
+export function resumeSaving() {
+    isAllowedToSave = true;
     if (!saveInterval)
         saveInterval = setInterval(saveData, 5000);
 }
-export function stopSaveInterval() {
+export function pauseSaving() {
+    isAllowedToSave = false;
     clearInterval(saveInterval);
     saveInterval = undefined;
 }

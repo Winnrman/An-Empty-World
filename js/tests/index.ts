@@ -6,18 +6,17 @@ import * as experience from "../control/experience";
 import * as equipment from "../control/equipment";
 import { itemsByName } from "../data/items";
 import * as main from "../main";
-import player, { stopSaveInterval, saveData, resetData, getDefaultData, restoreData, startSaveInterval, Player } from "../control/player";
+import player, { pauseSaving, saveData, resetData, getDefaultData, restoreData, resumeSaving, Player } from "../control/player";
 import * as store from "../activities/store";
 import { EquipmentName } from "../data/items/equipment";
 import { ToolName } from "../data/items/tools";
-import { PotionName } from "../data/items/potions";
 import { ResourceName } from "../data/items/resources";
 import { getInventoryCount, InventoryItemName } from "../control/inventory";
 
 let data = getDefaultData();
 
 export default function runTests(keepTestDataAfterwards?: boolean) {
-    stopSaveInterval();
+    pauseSaving();
     saveData();
     resetData();
     resetAchievementsToCheck();
@@ -29,7 +28,7 @@ export default function runTests(keepTestDataAfterwards?: boolean) {
     } finally {
         if (!keepTestDataAfterwards) {
             restoreData();
-            startSaveInterval();
+            resumeSaving();
             main.checkAndRenderEverything();
         }
     }
@@ -238,8 +237,8 @@ function sell(itemName: store.SellType) {
     store.sell(itemName);
 }
 
-function craft(itemName: EquipmentName | PotionName) {
-    dom.setValue("craftingSelect", itemName);
+function craft(itemName: crafting.CraftableName) {
+    crafting.selectItemToCraft(itemName)
     crafting.doCrafting();
 }
 

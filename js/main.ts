@@ -8,7 +8,7 @@ import * as experience from "./control/experience";
 import * as inventory from "./control/inventory";
 import * as equipment from "./control/equipment";
 import * as messages from "./control/messages";
-import player, { saveData, resetData, renderGold, startSaveInterval, Player } from "./control/player";
+import player, { saveData, resetData, renderGold, resumeSaving, Player } from "./control/player";
 import * as store from "./activities/store";
 import * as questing from "./activities/questing";
 import runTests from "./tests";
@@ -61,7 +61,7 @@ function startIntervals() {
     settings.startDarkmodeInterval();
     messages.startClearInterval();
     questing.startStaminaInterval();
-    startSaveInterval();
+    resumeSaving();
 }
 
 export function checkAndRenderEverything() {

@@ -3,7 +3,7 @@ import { randomLootDrop } from "./events";
 import { addToInventory, getInventoryCount, hasInInventory, InventoryItemName, isInventoryFull, removeAllFromInventory, removeFromInventory, renderInventory } from "../control/inventory";
 import { itemsByName } from "../data/items";
 import { addMessage } from '../control/messages';
-import player, { addGold, removeGold } from "../control/player";
+import player, { addGold, removeGold, saveData } from "../control/player";
 import { ToolName } from '../data/items/tools';
 import { addLoot } from './looting';
 
@@ -27,6 +27,7 @@ function buyTool(type: ToolName, text: string) {
     removeGold(price);
     addToInventory(type, 1);
     renderInventory();
+    saveData();
 }
 
 export function buyAxe() {
@@ -76,6 +77,7 @@ export function buyInventoryUpgrade() {
     addMessage(`Inventory Space increased by 25! [Currently ${player.maxInventorySize}]`);
     renderInventoryUpgrade();
     renderInventory();
+    saveData();
 }
 
 export type SellType = "Ores" | InventoryItemName;
@@ -95,6 +97,7 @@ function sellItems(itemNames: InventoryItemName[]) {
         removeAllFromInventory(itemName);
     }
     renderInventory();
+    saveData();
 }
 
 function sellItem(itemName: InventoryItemName, amount?: number) {
@@ -102,6 +105,7 @@ function sellItem(itemName: InventoryItemName, amount?: number) {
     addGold(amount * itemsByName[itemName].price);
     removeFromInventory(itemName, amount);
     renderInventory();
+    saveData();
 }
 
 export function renderInventoryUpgrade () {

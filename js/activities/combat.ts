@@ -2,7 +2,7 @@ import * as dom from '../util/dom';
 import { enemy_dictionary } from "../data/enemies";
 import { addXp } from "../control/experience";
 import { randomLootDrop } from "./events";
-import player, { addGold, addStatistic } from "../control/player";
+import player, { addGold, addStatistic, saveData } from "../control/player";
 import { addMessage } from '../control/messages';
 import { getRandomInt, minMax } from '../util';
 import { addLoot } from './looting';
@@ -113,6 +113,7 @@ function clearFight() {
     enemyAttackTimer = undefined;
 
     renderPreCombatInfo();
+    saveData();
 }
 
 export function addPlayerHealth(value) {
