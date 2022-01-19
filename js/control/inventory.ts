@@ -4,21 +4,21 @@ import { Resource, ResourceName, resourcesByName } from "../data/items/resources
 import { Potion, PotionName, potionsByName } from "../data/items/potions";
 import { Tool, ToolName, toolsByName } from "../data/items/tools";
 import * as dom from "../util/dom";
-import { getEntries, getKeys, PartialRecord } from "../util";
+import { getEntries, getKeys, PartialRecord, tween, tweenArrays } from "../util";
 import { applyEffects } from "./effects";
-import { displayCraftingNeededMaterials } from "../activities/crafting";
+import { renderCraftableDetails } from "../activities/crafting";
 import { addMessage } from "./messages";
+
+import "../../css/inventory.css";
 
 export type InventoryItemName = ToolName | ResourceName | PotionName;
 export type InventoryItem = Tool | Resource | Potion;
 export const inventoryItemsByName: Record<InventoryItemName, InventoryItem> = { ...toolsByName, ...resourcesByName, ...potionsByName };
 
-let selectedItemName: InventoryItemName;
-
 function calculateInventorySpace() {
 	let inventorySpace = 0;
-	for (let key in player.inventory_dictionary) {
-		inventorySpace += player.inventory_dictionary[key];
+	for (let amount of Object.values(player.inventory_dictionary)) {
+		inventorySpace += amount;
 	}
 	return inventorySpace;
 }
@@ -69,7 +69,7 @@ export function decreaseToolHealth(toolName: ToolName) {
 }
 
 export function showItemDetails(itemName: InventoryItemName) {
-    selectedItemName = itemName;
+    player.selectedItemName = itemName;
     renderInventory();
 }
 
@@ -82,83 +82,68 @@ export function drinkPotion(itemName: PotionName) {
     removeFromInventory(itemName, 1);
 }
 
+function getAllItemsInInventory () {
+    return getKeys(player.inventory_dictionary).filter(x => hasInInventory(x)).map(x => inventoryItemsByName[x]);
+};
+
 export function renderInventory() {
     dom.setHtml("inventoryHeader", `Inventory (${calculateInventorySpace()}/${player.maxInventorySize})`);
     renderItems();
-    renderDurability();
     renderSelectedItemDetails();
-    displayCraftingNeededMaterials();
+    renderCraftableDetails();
 }
 
-type Category = "Tool" | "Basic" | "Ore" | "Gem" | "Potion" | "Other";
-const categoriesAsItemType = ["Tool", "Potion"];
-const categoriesAsItemNames: PartialRecord<Category, InventoryItemName[]> = {
-    "Basic": ["Wood", "Fish", "Meat", "Stone"],
-    "Ore": ["Iron", "Copper", "Tin", "Silver", "Gold"],
-    "Gem": ["Emerald", "Ruby", "Diamond"],
-};
+function renderToolList(items: InventoryItem[]) {
+    let html = "";
+    for (const item of items) {
+        const durability = player.toolHealth[item.name] / item.health;
+        const height = 100 - durability * 100;
+        const color = tweenArrays(durability, [255, 0, 0], [39, 39, 39]); // this will get a color that's red for 0% durability and our grey for 100% durability
+        const rgb = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+        html += `<span class="item" onClick="inventory.showItemDetails('${item.name}')">`
+        html += `<div class="item-icon inventory" title="${item.name} - ${player.toolHealth[item.name]}/${item.health}">`
+        html += `<img style="background: repeating-linear-gradient(transparent, transparent, ${height}%, ${rgb}, ${height}%, ${rgb} 100%);" src="${item.iconUrl}" />`;
+        html += "</div>";
+        html += `<span class="inventory-count">${getInventoryCount(item.name)}</span>`;
+        html += "</span>";
+    }
+    html += items.length ? "<br />" : "";
+
+    return html;
+}
+
+function renderItemList(items: InventoryItem[]) {
+    let html = "";
+    for (const item of items) {
+        html += `<span class="item" onClick="inventory.showItemDetails('${item.name}')">${renderItemIcon(item)} <span class="inventory-count">${getInventoryCount(item.name)}</span></span>`;
+    }
+    html += items.length ? "<br />" : "";
+
+    return html;
+}
 
 function renderItems() {
-	const categories: PartialRecord<Category, InventoryItemName[]> = {};
-
-    const getCategory = (item: InventoryItem): Category => {
-        if (categoriesAsItemType.includes(item.type))
-            return item.type as Category;
-        
-        for (const [category, itemNames] of getEntries(categoriesAsItemNames)) {
-            if (itemNames.includes(item.name))
-                return category;
-        }
-        
-        return "Other";
-    }
-
-	for (const itemName of getKeys(player.inventory_dictionary)) {
-        if (!hasInInventory(itemName))
-            continue;
-        
-        const item = inventoryItemsByName[itemName];
-        const category = getCategory(item);
-        if (!categories[category])
-            categories[category] = [];
-        categories[category].push(itemName);
-    }
-
     let html = "";
-    for (const itemsOfCategory of Object.values(categories)) {
-        for (const item of itemsOfCategory) {
-            html += `<span onClick="inventory.showItemDetails('${item}')">${item} x${getInventoryCount(item)}</span>&nbsp;|&nbsp;`;
-        }
-        html = html.substring(0, html.length - 13); // to remove the last separator
-        html += "<br />";
-    }
+    const allItems = getAllItemsInInventory();
+    html += renderToolList(allItems.filter(x => x.type === "Tool"));
+    html += renderItemList(allItems.filter(x => x.type === "Potion"));
+    html += renderItemList(allItems.filter(x => x.type === "Resource"));
 
     dom.setHtml("inventory", html);
 }
 
-function renderDurability() {
-    let html = "";
-    for (var itemName of getKeys(player.inventory_dictionary)) {
-        if (!hasInInventory(itemName))
-            continue;
-        
-        const item = itemsByName[itemName];
-        if (item.type === "Tool") {
-            html += `<li>${item.name}: ${player.toolHealth[item.name]}/${item.health}</li>`;
-        }
-    }
-
-    dom.setHtml("durability", html);
+function renderItemIcon(item: InventoryItem) {
+    return `<div class="item-icon" title="${item.name}"><img src="${item.iconUrl}" /></div>`;
 }
 
 function renderSelectedItemDetails() {
-    if (!selectedItemName || !hasInInventory(selectedItemName)) {
+    if (!player.selectedItemName || !hasInInventory(player.selectedItemName)) {
         dom.setHtml("itemDetails", "");
-        selectedItemName = undefined;
+        player.selectedItemName = undefined;
         return;
     }
     
-    const item = inventoryItemsByName[selectedItemName];
+    const item = inventoryItemsByName[player.selectedItemName];
     const hasDurability = item.type === "Tool";
     const canDrink = item.type === "Potion";
     const canSell = item.type !== "Tool";
@@ -166,8 +151,7 @@ function renderSelectedItemDetails() {
 
     let html = `
         <h3>Item details</h3>
-        Item: ${item.name}
-        <img src="${item.iconUrl}" /><br />
+        ${renderItemIcon(item)} ${item.name}<br />
         Description: ${item.description}<br />
         ${hasDurability ? `Durability: ${player.toolHealth[item.name]}/${item.health}<br />` : ""}
         Amount owned: ${getInventoryCount(item.name)}<br />

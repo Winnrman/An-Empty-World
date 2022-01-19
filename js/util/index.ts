@@ -34,3 +34,11 @@ export type PartialRecord<K extends keyof any, T> = {
 export function minMax(min: number, value: number, max: number) {
     return Math.min(Math.max(min, value), max)
 }
+
+export function tween(value: number, a: number, b: number) {
+    return a + value * (b - a);
+}
+
+export function tweenArrays(value: number, a: number[], b: number[]) {
+    return a.map((_, i) => tween(value, a[i], b[i]));
+}

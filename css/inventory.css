@@ -1,0 +1,29 @@
+.item {
+    white-space: nowrap;
+}
+
+.item-icon {
+    margin: 2px;
+    border: 1px solid black;
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: rgb(39, 39, 39);
+    cursor: pointer;
+}
+
+.item-icon.inventory {
+    background-color: transparent;
+}
+
+.item-icon img {
+    padding: 2px;
+    display: block;
+}
+
+.inventory-count {
+    display: inline-block;
+    width: 10px;
+    text-align: right;
+    padding-right: 15px;
+}
