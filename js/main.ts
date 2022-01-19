@@ -24,11 +24,6 @@ import "../css/progress.css";
 import "../css/progress-bar.css";
 import "../css/store.css";
 
- import StoneAxeIcon from "../img/assets/tools/stone_axe.png";
- import FishIcon from "../img/assets/materials/fish.png";
- import MeatIcon from "../img/assets/materials/meat.png";
- const images = [StoneAxeIcon, FishIcon, MeatIcon];
-
 declare global {
     interface Window {
         player: Player;

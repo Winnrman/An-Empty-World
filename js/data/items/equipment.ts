@@ -1,4 +1,42 @@
 import { Item } from ".";
+import iconWoodenHelmet from "../../../img/assets/equipment/Wooden/Wooden Helmet.png";
+import iconWoodenChestplate from "../../../img/assets/equipment/Wooden/Wooden Chestplate.png";
+import iconWoodenLeggings from "../../../img/assets/equipment/Wooden/Wooden Leggings.png";
+import iconWoodenBoots from "../../../img/assets/equipment/Wooden/Wooden Boots.png";
+import iconWoodenSword from "../../../img/assets/equipment/Wooden/Wooden Sword.png";
+import iconIronHelmet from "../../../img/assets/equipment/Iron/Iron Helmet.png";  
+import iconIronChestplate from "../../../img/assets/equipment/Iron/Iron Chestplate.png";  
+import iconIronLeggings from "../../../img/assets/equipment/Iron/Iron Leggings.png";  
+import iconIronBoots from "../../../img/assets/equipment/Iron/Iron Boots.png";  
+import iconIronSword from "../../../img/assets/equipment/Iron/Iron Sword.png";
+import iconIronCutlass from "../../../img/assets/equipment/Iron/Iron Cutlass.png";
+import iconIronShield from "../../../img/assets/equipment/Iron/Iron Shield.png";
+import iconBronzeHelmet from "../../../img/assets/equipment/Bronze/Bronze Helmet.png";
+import iconBronzeChestplate from "../../../img/assets/equipment/Bronze/Bronze Chestplate.png";
+import iconBronzeLeggings from "../../../img/assets/equipment/Bronze/Bronze Leggings.png";
+import iconBronzeBoots from "../../../img/assets/equipment/Bronze/Bronze Boots.png";
+import iconBronzeSword from "../../../img/assets/equipment/Bronze/Bronze Sword.png";
+import iconCopperHelmet from "../../../img/assets/equipment/Copper/Copper Helmet.png";
+import iconCopperChestplate from "../../../img/assets/equipment/Copper/Copper Chestplate.png";
+import iconCopperLeggings from "../../../img/assets/equipment/Copper/Copper Leggings.png";
+import iconCopperBoots from "../../../img/assets/equipment/Copper/Copper Boots.png";
+import iconCopperSword from "../../../img/assets/equipment/Copper/Copper Sword.png";
+import iconGoldHelmet from "../../../img/assets/equipment/Gold/Gold Helmet.png";  
+import iconGoldChestplate from "../../../img/assets/equipment/Gold/Gold Chestplate.png";  
+import iconGoldLeggings from "../../../img/assets/equipment/Gold/Gold Leggings.png";  
+import iconGoldBoots from "../../../img/assets/equipment/Gold/Gold Boots.png";  
+import iconGoldSword from "../../../img/assets/equipment/Gold/Gold Sword.png";
+import iconCrystalHelmet from "../../../img/assets/equipment/Crystal/Crystal Helmet.png";
+import iconCrystalChestplate from "../../../img/assets/equipment/Crystal/Crystal Chestplate.png";
+import iconCrystalLeggings from "../../../img/assets/equipment/Crystal/Crystal Leggings.png";
+import iconCrystalBoots from "../../../img/assets/equipment/Crystal/Crystal Boots.png";
+import iconCrystalSword from "../../../img/assets/equipment/Crystal/Crystal Sword.png";
+import iconDragonScaleHelmet from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Helmet.png";
+import iconDragonScaleChestplate from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Chestplate.png";
+import iconDragonScaleLeggings from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Leggings.png";
+import iconDragonScaleBoots from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Boots.png";
+import iconDragonScaleSword from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Sword.png";
+import iconAmuletofLuck from "../../../img/assets/equipment//Amulet of Luck.png";
 
 export type EquipmentName = 
         "Wooden Helmet"       | "Wooden Chestplate"       | "Wooden Leggings"       | "Wooden Boots"       | "Wooden Sword"
@@ -16,6 +54,7 @@ const equipment: Equipment[] = [
     // Wooden
     {
         name: "Wooden Helmet",
+        iconUrl: iconWoodenHelmet,
         description: "A wooden helmet.",
         type: "Equipment",
         equipment: {
@@ -33,6 +72,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Wooden Chestplate",
+        iconUrl: iconWoodenChestplate,
         description: "A wooden chestplate.",
         type: "Equipment",
         equipment: {
@@ -50,6 +90,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Wooden Leggings",
+        iconUrl: iconWoodenLeggings,
         description: "A wooden leggings.",
         type: "Equipment",
         equipment: {
@@ -67,6 +108,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Wooden Boots",
+        iconUrl: iconWoodenBoots,
         description: "A wooden boots.",
         type: "Equipment",
         equipment: {
@@ -84,6 +126,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Wooden Sword",
+        iconUrl: iconWoodenSword,
         description: "A wooden sword",
         type: "Equipment",
         equipment: {
@@ -103,6 +146,7 @@ const equipment: Equipment[] = [
     // Iron
     {
         name: "Iron Helmet",
+        iconUrl: iconIronHelmet,
         description: "An iron helmet.",
         type: "Equipment",
         equipment: {
@@ -121,6 +165,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Iron Chestplate",
+        iconUrl: iconIronChestplate,
         description: "An iron chestplate.",
         type: "Equipment",
         equipment: {
@@ -139,6 +184,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Iron Leggings",
+        iconUrl: iconIronLeggings,
         description: "An iron leggings.",
         type: "Equipment",
         equipment: {
@@ -157,6 +203,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Iron Boots",
+        iconUrl: iconIronBoots,
         description: "An iron boots.",
         type: "Equipment",
         equipment: {
@@ -175,6 +222,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Iron Sword",
+        iconUrl: iconIronSword,
         description: "An iron sword",
         type: "Equipment",
         equipment: {
@@ -193,6 +241,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Iron Cutlass",
+        iconUrl: iconIronCutlass,
         description: "An iron cutlass",
         type: "Equipment",
         equipment: {
@@ -211,6 +260,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Iron Shield",
+        iconUrl: iconIronShield,
         description: "An iron shield",
         type: "Equipment",
         equipment: {
@@ -231,6 +281,7 @@ const equipment: Equipment[] = [
     // Bronze
     {
         name: "Bronze Helmet",
+        iconUrl: iconBronzeHelmet,
         description: "A bronze helmet.",
         type: "Equipment",
         equipment: {
@@ -242,6 +293,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Bronze Chestplate",
+        iconUrl: iconBronzeChestplate,
         description: "A bronze chestplate.",
         type: "Equipment",
         equipment: {
@@ -253,6 +305,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Bronze Leggings",
+        iconUrl: iconBronzeLeggings,
         description: "A bronze leggings.",
         type: "Equipment",
         equipment: {
@@ -264,6 +317,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Bronze Boots",
+        iconUrl: iconBronzeBoots,
         description: "A bronze boots.",
         type: "Equipment",
         equipment: {
@@ -277,6 +331,7 @@ const equipment: Equipment[] = [
     // Copper
     {
         name: "Copper Helmet",
+        iconUrl: iconCopperHelmet,
         description: "A copper helmet.",
         type: "Equipment",
         equipment: {
@@ -288,6 +343,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Copper Chestplate",
+        iconUrl: iconCopperChestplate,
         description: "A copper chestplate.",
         type: "Equipment",
         equipment: {
@@ -299,6 +355,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Copper Leggings",
+        iconUrl: iconCopperLeggings,
         description: "A copper leggings.",
         type: "Equipment",
         equipment: {
@@ -310,6 +367,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Copper Boots",
+        iconUrl: iconCopperBoots,
         description: "A copper boots.",
         type: "Equipment",
         equipment: {
@@ -323,6 +381,7 @@ const equipment: Equipment[] = [
     // Gold
     {
         name: "Gold Helmet",
+        iconUrl: iconGoldHelmet,
         description: "A gold helmet.",
         type: "Equipment",
         equipment: {
@@ -334,6 +393,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Gold Chestplate",
+        iconUrl: iconGoldChestplate,
         description: "A gold chestplate.",
         type: "Equipment",
         equipment: {
@@ -345,6 +405,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Gold Leggings",
+        iconUrl: iconGoldLeggings,
         description: "A gold leggings.",
         type: "Equipment",
         equipment: {
@@ -356,6 +417,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Gold Boots",
+        iconUrl: iconGoldBoots,
         description: "A gold boots.",
         type: "Equipment",
         equipment: {
@@ -369,6 +431,7 @@ const equipment: Equipment[] = [
     // Crystal
     {
         name: "Crystal Helmet",
+        iconUrl: iconCrystalHelmet,
         description: "Ultra rare crystal helmet.",
         type: "Equipment",
         equipment: {
@@ -380,6 +443,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Crystal Chestplate",
+        iconUrl: iconCrystalChestplate,
         description: "Ultra rare crystal chestplate.",
         type: "Equipment",
         equipment: {
@@ -391,6 +455,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Crystal Leggings",
+        iconUrl: iconCrystalLeggings,
         description: "Ultra rare crystal leggings.",
         type: "Equipment",
         equipment: {
@@ -402,6 +467,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Crystal Boots",
+        iconUrl: iconCrystalBoots,
         description: "Ultra rare boots.",
         type: "Equipment",
         equipment: {
@@ -415,6 +481,7 @@ const equipment: Equipment[] = [
     // Dragon Scale
     {
         name: "Dragon Scale Helmet",
+        iconUrl: iconDragonScaleHelmet,
         description: "Made from the scales of the scariest beast, this helmet is said to be the stuff of legends.",
         type: "Equipment",
         equipment: {
@@ -433,6 +500,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Dragon Scale Chestplate",
+        iconUrl: iconDragonScaleChestplate,
         description: "Made from the scales of the scariest beast, this chestplate is said to be the stuff of legends.",
         type: "Equipment",
         equipment: {
@@ -451,6 +519,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Dragon Scale Leggings",
+        iconUrl: iconDragonScaleLeggings,
         description: "Made from the scales of the scariest beast, this leggings are said to be the stuff of legends.",
         type: "Equipment",
         equipment: {
@@ -469,6 +538,7 @@ const equipment: Equipment[] = [
     },
     {
         name: "Dragon Scale Boots",
+        iconUrl: iconDragonScaleBoots,
         description: "Made from the scales of the scariest beast, these boots are said to be the stuff of legends.",
         type: "Equipment",
         equipment: {
@@ -489,6 +559,7 @@ const equipment: Equipment[] = [
     // Offhand
     {
         name: "Amulet of Luck",
+        iconUrl: iconAmuletofLuck,
         description: "A mysterious amulet which grants the user extreme luck.",
         type: "Equipment",
         equipment: {
