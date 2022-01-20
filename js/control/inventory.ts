@@ -8,6 +8,7 @@ import { getEntries, getKeys, PartialRecord, tween, tweenArrays } from "../util"
 import { applyEffects } from "./effects";
 import { renderCraftableDetails } from "../activities/crafting";
 import { addMessage } from "./messages";
+import iconCoins from "../../img/assets/materials/coins.png";
 
 import "../../css/inventory.css";
 
@@ -95,19 +96,21 @@ export function renderInventory() {
 
 function renderToolList(items: InventoryItem[]) {
     let html = "";
+
+    html += `<div class="item"><div class="item-icon inventory" title="gold"><img src="${iconCoins}" /></div><br /><div class="inventory-count">${player.gold}</div></div>`;
     for (const item of items) {
         const durability = player.toolHealth[item.name] / item.health;
         const height = 100 - durability * 100;
         const color = tweenArrays(durability, [255, 0, 0], [39, 39, 39]); // this will get a color that's red for 0% durability and our grey for 100% durability
         const rgb = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
-        html += `<span class="item" onClick="inventory.showItemDetails('${item.name}')">`
+        html += `<div class="item" onClick="inventory.showItemDetails('${item.name}')">`
         html += `<div class="item-icon inventory" title="${item.name} - ${player.toolHealth[item.name]}/${item.health}">`
         html += `<img style="background: repeating-linear-gradient(transparent, transparent, ${height}%, ${rgb}, ${height}%, ${rgb} 100%);" src="${item.iconUrl}" />`;
         html += "</div>";
-        html += `<span class="inventory-count">${getInventoryCount(item.name)}</span>`;
-        html += "</span>";
+        html += "<br />";
+        html += `<div class="inventory-count">${getInventoryCount(item.name)}</div>`;
+        html += "</div>";
     }
-    html += items.length ? "<br />" : "";
 
     return html;
 }
@@ -115,7 +118,7 @@ function renderToolList(items: InventoryItem[]) {
 function renderItemList(items: InventoryItem[]) {
     let html = "";
     for (const item of items) {
-        html += `<span class="item" onClick="inventory.showItemDetails('${item.name}')">${renderItemIcon(item)} <span class="inventory-count">${getInventoryCount(item.name)}</span></span>`;
+        html += `<div class="item" onClick="inventory.showItemDetails('${item.name}')">${renderItemIcon(item)}<br /><div class="inventory-count">${getInventoryCount(item.name)}</div></div>`;
     }
     html += items.length ? "<br />" : "";
 
@@ -125,9 +128,9 @@ function renderItemList(items: InventoryItem[]) {
 function renderItems() {
     let html = "";
     const allItems = getAllItemsInInventory();
+
     html += renderToolList(allItems.filter(x => x.type === "Tool"));
-    html += renderItemList(allItems.filter(x => x.type === "Potion"));
-    html += renderItemList(allItems.filter(x => x.type === "Resource"));
+    html += renderItemList(allItems.filter(x => x.type !== "Tool"));
 
     dom.setHtml("inventory", html);
 }
