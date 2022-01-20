@@ -115,7 +115,8 @@ export function getDefaultData() {
 
         completedAchievements: {},
 
-        currentActivity: undefined as Activity | undefined
+        currentActivity: undefined as Activity | undefined,
+        selectedItemName: undefined as InventoryItemName | undefined,
     }
 }
 
