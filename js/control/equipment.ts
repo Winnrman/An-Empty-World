@@ -7,6 +7,26 @@ import transient from "./transient";
 import { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
 import { getEffectValue } from "./effects";
 
+import iconSlotHelmet from "../../img/assets/equipment/Slot/Slot Helmet.png";
+import iconSlotChest from "../../img/assets/equipment/Slot/Slot Chest.png";
+import iconSlotLeggings from "../../img/assets/equipment/Slot/Slot Leggings.png";
+import iconSlotBoots from "../../img/assets/equipment/Slot/Slot Boots.png";
+import iconSlotWeapon from "../../img/assets/equipment/Slot/Slot Weapon.png";
+import iconSlotOffhand from "../../img/assets/equipment/Slot/Slot Offhand.png";
+import iconSlotRanged from "../../img/assets/equipment/Slot/Slot Ranged.png";
+import iconSlotShield from "../../img/assets/equipment/Slot/Slot Shield.png";
+
+const emptyEquipmentIcons: Record<EquipmentSlot, string> = {
+    "Helmet": iconSlotHelmet,
+    "Chestplate": iconSlotChest,
+    "Leggings": iconSlotLeggings,
+    "Boots": iconSlotBoots,
+    "Weapon": iconSlotWeapon,
+    "Offhand": iconSlotOffhand,
+    "Ranged": iconSlotRanged,
+    "Shield": iconSlotShield,
+}
+
 export function addToOwnedEquipment(item: Equipment) {
     if (player.ownedEquipment.includes(item.name as EquipmentName)) {
         if (transient.isQuesting == true) {
@@ -53,6 +73,52 @@ export function loadOptionsFromOwnedEquipment() {
         addEquipmentOption(equipment, isEquipped);
     }
     updateArmour();
+    showEquipment();
+}
+
+const renderEquipmentIcon = (slot: EquipmentSlot) => {
+    const item = equipmentByName[player.equipment[slot]];
+    let html = "";
+    html += `<span class="equipment-slot" title="${slot}: ${item?.name || 'None!'}">`
+    html += `<img src="${item?.iconUrl || emptyEquipmentIcons[slot]}" />`;
+    html += "</span>"
+    return html;
+}
+
+function showEquipment() {
+
+    let html = "";
+    html += `<div class="row">`
+    html += `<div class="column"></div>`
+    html += `<div class="column">${renderEquipmentIcon("Helmet")}</div>`
+    html += `<div class="column"></div>`
+    html += `</div>`
+    
+    html += `<div class="row">`
+    html += `<div class="column"></div>`
+    html += `<div class="column"></div>`
+    html += `<div class="column"></div>`
+    html += `</div>`
+    
+    html += `<div class="row">`
+    html += `<div class="column">${renderEquipmentIcon("Weapon")}</div>`
+    html += `<div class="column">${renderEquipmentIcon("Chestplate")}</div>`
+    html += `<div class="column">${renderEquipmentIcon("Shield")}</div>`
+    html += `</div>`
+    
+    html += `<div class="row">`
+    html += `<div class="column"></div>`
+    html += `<div class="column">${renderEquipmentIcon("Leggings")}</div>`
+    html += `<div class="column"></div>`
+    html += `</div>`
+    
+    html += `<div class="row">`
+    html += `<div class="column"></div>`
+    html += `<div class="column">${renderEquipmentIcon("Boots")}</div>`
+    html += `<div class="column"></div>`
+    html += `</div>`
+
+    dom.setHtml("equipment", html);
 }
 
 export function ownsEquipment(itemName: EquipmentName) {
@@ -99,6 +165,7 @@ export function updateArmour() {
     dom.setHtml("playerAttackValue", player.playerAttack.toString());
     dom.setHtml("playerSpeedValue", player.playerSpeed.toString());
 
+    showEquipment();
     checkAchievements();
     saveData();
 }
