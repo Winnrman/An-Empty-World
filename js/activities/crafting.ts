@@ -42,11 +42,18 @@ export function doCrafting() {
         removeFromInventory(key, craftable.crafting.ingredients[key])
     }
 
+    let craftableIndex = craftable.type === "Equipment" ? getCraftableEquipment().indexOf(craftable as Equipment) : 0;
     addMessage(`You crafted a ${craftable.name}!`);
     addLoot(craftable);
+
+    if (craftable.type === "Equipment") {
+        const craftableEquipment = getCraftableEquipment();
+        const nextCraftableIndex = craftableEquipment.length ? craftableIndex++ % craftableEquipment.length : -1;
+        player.selectedCraftable = craftableEquipment[nextCraftableIndex];
+    }
+    
     renderCraftables();
     renderInventory();
-    renderCraftableDetails();
 }
 
 const canCraft = (item: Item) => item.crafting && item.crafting.requiredLevel <= player.level;
@@ -55,8 +62,12 @@ function renderCraftable(craftable: Craftable) {
     return `<div onclick="crafting.selectItemToCraft('${craftable.name}')" class="item-icon" title="${craftable.name}"><img src="${craftable.iconUrl}" /></div>`;
 }
 
+function getCraftableEquipment() {
+    return equipment.filter(x => canCraft(x) && !ownsEquipment(x.name));
+}
+
 export function renderCraftables() {
-    const craftableEquipment = equipment.filter(x => canCraft(x) && !ownsEquipment(x.name));
+    const craftableEquipment = getCraftableEquipment();
     const craftablePotions = potions.filter(x => canCraft(x));
     
     let html = "<div>";
