@@ -1,12 +1,26 @@
-function checkDarkMode() {
-    var hours = new Date().getHours();
-    if (hours >= 15 || hours < 8) {
-        document.body.classList.add("dark");
-    } else {
-        document.body.classList.remove("dark");
+import * as dom from "../util/dom";
+
+const themes = ["auto", "dark", "light"];
+
+declare global {
+    interface Window {
+        checkDarkMode: () => void; // this is defined in index.html
     }
 }
 
+export function switchTheme() {
+    const currentTheme = localStorage["theme"];
+    const nextTheme = themes[(themes.indexOf(currentTheme) + 1) % themes.length];
+    localStorage["theme"] = nextTheme;
+    loadTheme();
+}
+
+export function loadTheme() {
+    const theme = localStorage["theme"];
+    dom.setHtml("switchTheme", `theme: ${theme}`);
+    window.checkDarkMode();
+}
+
 export function startDarkmodeInterval() {
-    setInterval(checkDarkMode, 60000);
+    setInterval(window.checkDarkMode, 60000);
 }

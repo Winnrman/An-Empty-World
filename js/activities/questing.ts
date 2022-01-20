@@ -160,7 +160,7 @@ function removeStamina(amount: number) {
 }
 
 export function addStamina(amount: number) {
-    player.stamina += amount;
+    player.stamina = Math.min(player.maxStamina, player.stamina + amount);
     renderStamina();
 }
 
