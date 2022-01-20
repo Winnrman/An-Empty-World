@@ -120,7 +120,7 @@ export function getDefaultData() {
 
         completedAchievements: {},
 
-        currentActivity: undefined as Activity | undefined,
+        currentActivity: "Store" as Activity | undefined,
         selectedItemName: undefined as InventoryItemName | undefined,
         selectedCraftable: undefined as Craftable | undefined,
     }
