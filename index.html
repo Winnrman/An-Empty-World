@@ -209,17 +209,11 @@
             <h2 style="display: inline">Crafting</h2>
             <h4 style="display: inline;"> (Level <span id="craftingLevelValue">1)</span></h4>
         </legend>
-        <span class="header" style="display: inline-flex">
-        </span>
-        <span style="display:  inline-flex;">
-            <h3 id="itemToCraft">Item to Craft: &nbsp;</h3><select onChange="crafting.displayCraftingNeededMaterials()"
-                id="craftingSelect">
-            </select>
-            <div id="requiredMaterials">
-            </div>
-        </span>
-        <button id="craftingButton" onclick="crafting.doCrafting()">Craft</button>
-        <p id="neededMaterials">Needed Materials: &nbsp;</p>
+
+        <div class="row">
+            <div class="column" id="craftables"></div>
+            <div class="column" id="craftable-details"></div>
+        </div>
     </fieldset>
 
     <footer id="footerContainer" class="footer">
