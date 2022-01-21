@@ -2,28 +2,6 @@
     padding-right: 50px;
 }
 
-.equipment .label {
-    width:80px;
-    display:inline-block;
-}
-
-.equipment select {
-    min-width:150px;
-    margin-bottom: 5px;
-}
-
-#equipment {
-    display: flex
-}
-
-.equipment-slot {
-    margin: 2px;
-    border: 1px solid black;
-    border-radius: 5px;
-    background-color: rgb(39, 39, 39);
-    cursor: pointer;
-}
-
 #opponentSelector {
     margin-bottom: 5px;
 }

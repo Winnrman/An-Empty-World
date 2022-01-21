@@ -1,0 +1,25 @@
+#equipment {
+    display: flex;
+}
+
+#equipment-chooser {
+    width: 200px;
+}
+
+#equipment-chooser-items {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#equipment-chooser-item {
+    display: flex;
+}
+
+.equipment-slot {
+    display: flex;
+    margin: 2px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(39, 39, 39);
+    cursor: pointer;
+}

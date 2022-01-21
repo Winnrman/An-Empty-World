@@ -123,6 +123,8 @@ export function getDefaultData() {
         currentActivity: "Store" as Activity | undefined,
         selectedItemName: undefined as InventoryItemName | undefined,
         selectedCraftable: undefined as Craftable | undefined,
+        selectedEquipmentSlot: undefined as EquipmentSlot | undefined,
+        selectedEquipment: undefined as EquipmentName | undefined,
     }
 }
 

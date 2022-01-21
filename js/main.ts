@@ -31,6 +31,7 @@ declare global {
         activities: typeof activities;
         combat: typeof combat;
         crafting: typeof crafting;
+        equipment: typeof equipment;
         inventory: typeof inventory;
         settings: typeof settings;
         questing: typeof questing;
@@ -44,6 +45,7 @@ window.store = store;
 window.activities = activities;
 window.combat = combat;
 window.crafting = crafting;
+window.equipment = equipment;
 window.inventory = inventory;
 window.settings = settings;
 window.questing = questing;
@@ -66,12 +68,15 @@ function startIntervals() {
 
 export function checkAndRenderEverything() {
     experience.checkLevelUnlocks();
-    equipment.loadOptionsFromOwnedEquipment();
+    equipment.updateArmour();
     effects.registerEffectExpiries();
     activities.showCurrentActivity();
     settings.loadTheme();
 
     experience.renderLevel();
+    equipment.renderEquipment();
+    equipment.renderEquipmentChooser();
+    equipment.renderSelectedEquipment();
     store.renderInventoryUpgrade();
     crafting.renderCraftables();
     questing.renderStamina();
