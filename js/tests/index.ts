@@ -218,7 +218,7 @@ function runEquipmentScenario() {
 }
 
 function buyAxe() {
-    store.buyAxe();
+    store.buyTool("Axe", "an axe");
 }
 
 function cutLogs(amount: number) {
@@ -226,7 +226,7 @@ function cutLogs(amount: number) {
 }
 
 function buyFishingPole() {
-    store.buyFishingPole();
+    store.buyTool("Fishing Pole", "a fishing pole");
 }
 
 function catchFish(amount: number) {
