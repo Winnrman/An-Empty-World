@@ -11,6 +11,7 @@ import { addMessage } from "./messages";
 import iconCoins from "../../img/assets/materials/coins.png";
 
 import "../../css/inventory.css";
+import { renderStore } from "../activities/store";
 
 export type InventoryItemName = ToolName | ResourceName | PotionName;
 export type InventoryItem = Tool | Resource | Potion;
@@ -41,7 +42,7 @@ export function addToInventory(itemName: InventoryItemName, amount: number) {
         player.inventory_dictionary[itemName] = 0;
     
     player.inventory_dictionary[itemName] += amount;
-    renderInventory();    
+    renderInventory();
 }
 
 export function removeFromInventory(itemName: InventoryItemName, amount: number) {
@@ -91,7 +92,8 @@ export function renderInventory() {
     dom.setHtml("inventoryHeader", `Inventory (${calculateInventorySpace()}/${player.maxInventorySize})`);
     renderItems();
     renderSelectedItemDetails();
-    renderCraftableDetails();
+    renderCraftableDetails();  
+    renderStore();
 }
 
 function renderToolList(items: InventoryItem[]) {

@@ -1,7 +1,10 @@
 import * as dom from '../util/dom';
 import player, { addGold } from "./player";
 import { addMessage } from './messages';
-import * as crafting from '../activities/crafting';
+import { renderCraftables } from '../activities/crafting';
+
+import { renderActivities } from '../activities/activities';
+import { renderStore } from '../activities/store';
 
 function getNeededLevelUpXp() {
     return player.level * 100 * (player.level + 1);
@@ -23,6 +26,11 @@ export function addXp(value) {
 }
 
 export const levelUnlocks = {
+    treeCutting: 1,
+    fishing: 1,
+    crafting: 1,
+    fighting: 1,
+    store: 1,
     hunting: 2,
     mining: 3,
     ironMining: 3,
@@ -31,36 +39,9 @@ export const levelUnlocks = {
 }
 
 export function checkLevelUnlocks() {
-    if (player.level >= levelUnlocks.hunting) {
-        dom.setIsVisible("goHuntingButton", true);
-        dom.setIsVisible("huntingRifle", true);
-
-        dom.setIsVisible("sellMeat", true);
-    }
-
-    if (player.level >= levelUnlocks.mining) {
-        dom.setIsVisible("goMiningButton", true);
-        dom.setIsVisible("pickaxe", true);
-
-        dom.setIsVisible("sellOres", true);
-        dom.setIsVisible("sellStone", true);
-    }
-
-    if (player.level >= levelUnlocks.ironMining) {
-        dom.setIsVisible("goIronMiningButton", true);
-        dom.setIsVisible("sellIron", true);
-
-    }
-
-    if (player.level >= levelUnlocks.inventoryUpgrade) {
-        dom.setIsVisible("inventoryUpgrade", true);
-    }
-
-    if (player.level >= levelUnlocks.questing) {
-        dom.setIsVisible("goQuestingButton", true);
-    }
-
-    crafting.renderCraftables();
+    renderActivities();
+    renderStore();
+    renderCraftables();
 }
 
 export function renderLevel() {
