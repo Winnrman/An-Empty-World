@@ -2,7 +2,7 @@ import * as dom from "../util/dom";
 import { checkAchievements } from "./achievements";
 import { EquipmentSlot } from "../data/items";
 import { addMessage } from './messages';
-import player, { addGold } from "./player";
+import player, { addGold, saveData } from "./player";
 import transient from "./transient";
 import { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
 import { getEffectValue } from "./effects";
@@ -100,4 +100,5 @@ export function updateArmour() {
     dom.setHtml("playerSpeedValue", player.playerSpeed.toString());
 
     checkAchievements();
+    saveData();
 }

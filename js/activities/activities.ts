@@ -1,4 +1,4 @@
-import player, { addStatistic } from "../control/player";
+import player, { addStatistic, saveData } from "../control/player";
 import { addMessage } from "../control/messages";
 import { addXp } from "../control/experience";
 import { itemsByName } from "../data/items";
@@ -23,6 +23,7 @@ export function tree() {
     addXp(itemsByName["Wood"].treeCutting.xp);
 
     decreaseToolHealth("Axe");
+    saveData();
 }
 
 export function goFishing() {
@@ -41,6 +42,7 @@ export function goFishing() {
     addXp(itemsByName["Fish"].fishing.xp);
     
     decreaseToolHealth("Fishing Pole");
+    saveData();
 }
 
 export function goHunting() {
@@ -59,6 +61,7 @@ export function goHunting() {
     addXp(itemsByName["Meat"].hunting.xp);
     
     decreaseToolHealth("Hunting Rifle");
+    saveData();
 }
 
 const ores = resources.filter(x => x.mining);
@@ -80,6 +83,7 @@ function mineOre(ore: InventoryItem) {
     addXp(ore.mining.xp);
     
     decreaseToolHealth("Pickaxe");
+    saveData();
 }
 
 export function goMining() {

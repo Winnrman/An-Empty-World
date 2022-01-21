@@ -4,7 +4,7 @@ import { randomLootDrop } from "./events";
 import { addXp } from "../control/experience";
 import { hasEquiped } from "../control/equipment";
 import { addMessage } from '../control/messages';
-import player, { addGold, addStatistic, removeGold }  from "../control/player";
+import player, { addGold, addStatistic, removeGold, saveData }  from "../control/player";
 import transient from '../control/transient';
 import { getRandomInt, getRandomItem, sleep } from '../util';
 import { Rarity } from "../data/items";
@@ -31,6 +31,7 @@ async function startQuest() {
         const eventActions = [startWalkEvent, startLootChestEvent, startFightMonsterEvent, startFindCaveEvent, startGetAmbushedEvent];
         var randomEventAction = getRandomItem(eventActions);
         await randomEventAction();
+        saveData();
     }
 }
 
