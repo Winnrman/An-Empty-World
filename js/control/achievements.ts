@@ -1,14 +1,34 @@
 import * as dom from "../util/dom";
-import player, { addGold } from "./player";
+import player from "./player";
 import { hasEquiped } from "./equipment";
 import { addMessage } from './messages';
 import { levelUnlocks } from "./experience";
 import { EquipmentName } from "../data/items/equipment";
-import { displayNumber } from "../util";
+import { displayNumber, getEntries, PartialRecord } from "../util";
 
 const getEquipCount = (type: EquipmentName) => hasEquiped(type) ? 1 : 0;
 
-export const achievements = [
+export type AchievementName = "cut_down_trees" | "earned_gold" | "wooden_armor" | "catch_fish" | "hunted_meat" | "killed_enemies" | "mined_rock" | "iron_armor" | "completed_quests";
+
+export type AchievementData = {
+    id: AchievementName;
+    requirements?: {
+        level: number;
+        achievements?: PartialRecord<AchievementName, number>;
+    };
+    name: (progress: number | string) => string;
+    reward: (level: number, levelValue: number) => number;
+    getProgress: (level: number, levelValue: number) => number | undefined;
+    levels: number[];
+}
+
+type AchievementToCheckData = AchievementData & {
+    progress: number,
+    currentLevel: number,
+    currentValue: number
+}
+
+export const achievements: AchievementData[] = [
     {
         id: "cut_down_trees",
         name: (progress) => `Cut Down ${progress} Trees`,
@@ -62,7 +82,7 @@ export const achievements = [
     },
     {
         id: "iron_armor",
-        requirements: { achievements: { "wood_armor": 1 }, level: 5 },
+        requirements: { achievements: { "wooden_armor": 1 }, level: 5 },
         name: () => "Wear full Iron Armor",
         reward: () => 250,
         getProgress: () => getEquipCount("Iron Helmet") + getEquipCount("Iron Chestplate") + getEquipCount("Iron Leggings") + getEquipCount("Iron Boots"),
@@ -79,7 +99,7 @@ export const achievements = [
 ];
 
 let achievementsToCheck = getAchievementsToCheck();
-function getAchievementsToCheck() {
+function getAchievementsToCheck(): AchievementToCheckData[] {
     return achievements.map(achievement => ({
         ...achievement,
         progress: 0,
@@ -92,7 +112,7 @@ export function resetAchievementsToCheck() {
     achievementsToCheck = getAchievementsToCheck()
 }
 
-function checkRequirements(achievement) {
+function checkRequirements(achievement: AchievementToCheckData) {
     const requirements = achievement.requirements;
     if (!requirements)
         return true;
@@ -101,8 +121,8 @@ function checkRequirements(achievement) {
         return false;
 
     if (requirements.achievements) {
-        for (let requiredAchievement in requirements.achievements) {
-            if (player.completedAchievements[requiredAchievement] < requirements.achievements[requiredAchievement])
+        for (const [achievementName, requiredAmount] of getEntries(requirements.achievements)) {
+            if ((player.completedAchievements[achievementName] ?? 0) < requiredAmount)
                 return false;
         }
     }
@@ -110,9 +130,9 @@ function checkRequirements(achievement) {
     return true;
 }
 
-function checkAchievement(achievement) {
+function checkAchievement(achievement: AchievementToCheckData) {
     const levels = achievement.levels || [0];
-    const levelsCompleted = player.completedAchievements[achievement.id] || 0;
+    const levelsCompleted = player.completedAchievements[achievement.id] ?? 0;
     if (levelsCompleted >= levels.length)
         return true;
 
@@ -121,7 +141,7 @@ function checkAchievement(achievement) {
 
     for (let level = levelsCompleted; level < levels.length; level++) {
         const levelValue = levels[level];
-        const progress = achievement.getProgress(level, levelValue);
+        const progress = achievement.getProgress(level, levelValue) ?? 0;
         if (progress < levelValue) {
             achievement.progress = progress;
             achievement.currentLevel = level;
@@ -132,7 +152,7 @@ function checkAchievement(achievement) {
         player.completedAchievements[achievement.id] = level + 1;
     }
 
-    return (player.completedAchievements[achievement.id] || 0) >= levels.length;
+    return (player.completedAchievements[achievement.id] ?? 0) >= levels.length;
 }
 
 export function startCheckInterval() {
@@ -148,7 +168,7 @@ export function startCheckInterval() {
 }
 
 export function checkAchievements() {
-    for (let achievement of achievementsToCheck.slice()) {
+    for (const achievement of achievementsToCheck.slice()) {
         if (checkAchievement(achievement))
             achievementsToCheck.splice(achievementsToCheck.indexOf(achievement), 1);
     }
@@ -168,7 +188,7 @@ function renderAchievements() {
     html += "<h3>In progress:</h3>";
     if (achievementsInProgress.length > 0) {
         html += "<ul>";
-        for (let achievement of achievementsInProgress) {
+        for (const achievement of achievementsInProgress) {
             const value = achievement.progress - achievement.previousLevelValue;
             const max = achievement.levelValue - achievement.previousLevelValue;
             const width = value / max * 100;
@@ -185,7 +205,7 @@ function renderAchievements() {
     html += "<h3>Completed:</h3>";
     if (completedAchievements.length > 0) {
         html += "<ul>";
-        for (let achievement of completedAchievements) {
+        for (const achievement of completedAchievements) {
             html += `<li>${achievement}</li>`;
         }
         html += "</ul>";
@@ -205,16 +225,15 @@ function getAchievementsInProgress() {
             name: achievement.name(`${displayNumber(achievement.progress)}/${levelValue}`),
             progress: achievement.progress,
             levelValue: levelValue,
-            previousLevelValue: achievement.levels[achievement.currentLevel - 1] || 0
+            previousLevelValue: achievement.levels[achievement.currentLevel - 1] ?? 0
         }
     });
 }
 
 function getCompletedAchievements() {
     const completedAchievements = [];
-    for (var achievementId in player.completedAchievements) {
-        const amountCompleted = player.completedAchievements[achievementId];
-        const achievement = achievements.find(x => x.id == achievementId);
+    for (const [achievementId, amountCompleted] of getEntries(player.completedAchievements)) {
+        const achievement = achievements.filter(x => x.id == achievementId)[0];
         const levelValue = achievement.levels[amountCompleted - 1];
         const hasLevels = achievement.levels?.length > 1;
         completedAchievements.push(`${achievement.name(levelValue)}${hasLevels ? ` <i>(${amountCompleted} / ${achievement.levels.length})</i>` : ''}`);

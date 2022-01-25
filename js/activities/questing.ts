@@ -1,5 +1,5 @@
 import * as dom from "../util/dom";
-import { enemy_dictionary } from "../data/enemies";
+import { EnemyName, enemiesByName } from "../data/enemies";
 import { randomLootDrop } from "./events";
 import { addXp } from "../control/experience";
 import { hasEquiped } from "../control/equipment";
@@ -29,7 +29,7 @@ async function startQuest() {
     transient.isQuesting = true;
     while(transient.isQuesting) {    
         const eventActions = [startWalkEvent, startLootChestEvent, startFightMonsterEvent, startFindCaveEvent, startGetAmbushedEvent];
-        var randomEventAction = getRandomItem(eventActions);
+        const randomEventAction = getRandomItem(eventActions);
         await randomEventAction();
         saveData();
     }
@@ -64,7 +64,7 @@ async function startExitCaveEvent() {
     await waitForPart(2000, "You find nothing and leave the cave.");
 }
 
-async function doEvent(staminaCost: number, eventAction: () => void) {
+async function doEvent(staminaCost: number, eventAction?: () => void) {
     const hasInsufficientStamina = player.stamina < staminaCost;
     removeStamina(staminaCost);
     if (hasInsufficientStamina) {
@@ -97,7 +97,7 @@ async function findCave() {
 }
 
 async function fightMonster() {
-    const enemy = enemy_dictionary[getRandomItem(["Goblin", "Troll", "Skeleton"])];
+    const enemy = enemiesByName[getRandomItem<EnemyName>(["Goblin", "Troll", "Skeleton"])];
     await waitForPart(2000, `Upon closer inspection, the monster appears to be ${getWithIndefiniteArticle(enemy.name)}!`)
 
     if (player.playerDefense > enemy.defense) {
@@ -132,7 +132,7 @@ async function lootChest() {
 function getLootDrop(rarities: Rarity[]) {
     while(true) {
         const item = randomLootDrop();
-        if (rarities.includes(item.rarity)) 
+        if (rarities.includes(item.rarity!)) 
             return item;
     }
 }
@@ -146,7 +146,7 @@ function questWasSuccessful() {
 }
 
 async function doRandomAction(actions: (() => void)[]) {
-    var randomAction = getRandomItem(actions);
+    const randomAction = getRandomItem(actions);
     await randomAction();
 }
 

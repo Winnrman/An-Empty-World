@@ -1,5 +1,27 @@
-export const enemy_dictionary = {
-    "Goblin": {
+import { PartialRecord } from "../util";
+import { ResourceName } from "./items/resources";
+
+export type EnemyName = "Goblin" | "Troll" | "Skeleton" | "Knight" | "King" | "Dragon";
+
+export type Enemy = {
+    name: EnemyName,
+    health: number;
+    attack: number;
+    defeatExperience: number;
+    defense: number;
+    gold: {
+        min: number;
+        max: number;
+    },
+    speed: number;
+    drops?: PartialRecord<ResourceName, {
+        min: number;
+        max: number;
+    }>
+}
+
+export const enemies: Enemy[] = [
+    {
         name: "Goblin",
         health: 10,
         attack: 2,
@@ -11,7 +33,7 @@ export const enemy_dictionary = {
         },
         speed: 1,
     },
-    "Troll": {
+    {
         name: "Troll",
         health: 30,
         attack: 7,
@@ -23,7 +45,7 @@ export const enemy_dictionary = {
         speed: 0.4,
         defeatExperience: 10,
     },
-    "Skeleton": {
+    {
         name: "Skeleton",
         health: 30,
         attack: 15,
@@ -35,41 +57,40 @@ export const enemy_dictionary = {
         },
         defeatExperience: 10,
     },
-    "Knight": {
+    {
         name: "Knight",
         health: 150,
         attack: 40,
         defense: 25,
+        speed: 2.5,
         gold: {
             min: 175,
             max: 200,
         },
-        speed: 2.5,
+        defeatExperience: 20,
     },
-    "King": {
+    {
         name: "King",
         health: 300,
         attack: 50,
         defense: 50,
+        speed: 1.5,
         gold: {
             min: 250,
             max: 350,
         },
-        speed: 1.5,
+        defeatExperience: 40,
     },
-    "Dragon": {
+    {
         name: "Dragon",
         health: 700,
         attack: 100,
         drops:
         {
-            "Dragon Scales": {
-                name: "Dragon Scales",
-                type: "Material",
-                price: 100,
-                description: "A dragon scale.",
-                rarity: "legendary",
-            },
+            "Dragon Scale": {
+                min: 400,
+                max: 500,
+            }
         },
         defense: 100,
         speed: 3,
@@ -79,4 +100,6 @@ export const enemy_dictionary = {
         },
         defeatExperience: 1200,
     }
-};
+];
+
+export const enemiesByName: { [key in EnemyName]: Enemy } = Object.assign({}, ...enemies.map(x => ({ [x.name]: x })));

@@ -3,7 +3,15 @@ import { Item } from ".";
 export type MiningResourceName = "Iron" | "Copper" | "Tin" | "Silver" | "Gold" | "Emerald" | "Ruby" | "Diamond" | "Stone" | "Titanium";
 export type ResourceName = "Wood" | "Fish" | "Meat" | MiningResourceName | "Dragon Scale";
 
-export type Resource = Omit<Item, 'name'> & { name: ResourceName };
+export type Resource = Item & { 
+    name: ResourceName;
+    gathering: {
+        treeCuttingXp?: number;
+        fishingXp?: number;
+        huntingXp?: number;
+        miningXp?: number;
+    }
+};
 
 import iconIron from "../../../img/assets/materials/Iron.png";
 import iconCopper from "../../../img/assets/materials/Copper.png";
@@ -27,8 +35,8 @@ const resources: Resource[] = [
         type: "Resource",
         description: "Wood you got by hurting a tree. Hurting it more will probably give you more wood.",
         price: 5,
-        treeCutting: {
-            xp: 10,
+        gathering: {
+            treeCuttingXp: 10
         },
     },
     {
@@ -37,8 +45,8 @@ const resources: Resource[] = [
         type: "Resource",
         description: "A fish. You're not sure whether it's dead or alive.",
         price: 10,
-        fishing: {
-            xp: 15,
+        gathering: {
+            fishingXp: 15
         },
     },
     {
@@ -47,8 +55,8 @@ const resources: Resource[] = [
         type: "Resource",
         description: "You managed to find a weak animal and decided it had lived long enough. This is what remains.",
         price: 20,
-        hunting: {
-            xp: 50,
+        gathering: {
+            huntingXp: 50
         },
     },
     {
@@ -57,8 +65,8 @@ const resources: Resource[] = [
         type: "Resource",
         description: "You cannot figure out how this material is supposed to protect you, but add wood to it and somehow it does!",
         price: 120,
-        mining: {
-            xp: 110,
+        gathering: {
+            miningXp: 110
         },
     },
     {
@@ -67,8 +75,8 @@ const resources: Resource[] = [
         type: "Resource",
         description: "This looks like it might make some better armour than Iron",
         price: 125,
-        mining: {
-            xp: 112,
+        gathering: {
+            miningXp: 112
         },
     },
     {
@@ -77,8 +85,8 @@ const resources: Resource[] = [
         type: "Resource",
         description: "According to other games you can combine this with Copper to get Bronze. Let's find out if they are right?",
         price: 115,
-        mining: {
-            xp: 113,
+        gathering: {
+            miningXp: 113,
         },
     },
     {
@@ -87,8 +95,8 @@ const resources: Resource[] = [
         type: "Resource",
         description: "This doesn't seem very useful, unless you were being hunted by a werewolf. Which you are not, we promise! Or not?",
         price: 150,
-        mining: {
-            xp: 119,
+        gathering: {
+            miningXp: 119,
         },
     },
     {
@@ -97,8 +105,8 @@ const resources: Resource[] = [
         type: "Resource",
         description: "You'd think this can't make good armour, but you'd be wrong",
         price: 125,
-        mining: {
-            xp: 125,
+        gathering: {
+            miningXp: 125,
         },
     },
     {
@@ -107,8 +115,8 @@ const resources: Resource[] = [
         type: "Resource",
         description: "A nice gem shining with a nice green colour. If only you could see things in this game!",
         price: 130,
-        mining: {
-            xp: 130,
+        gathering: {
+            miningXp: 130,
         },
     },
     {
@@ -117,8 +125,8 @@ const resources: Resource[] = [
         type: "Resource",
         description: "The Kaiser Chiefs seem to really like these. Maybe they'll give you a good price for it!",
         price: 160,
-        mining: {
-            xp: 150,
+        gathering: {
+            miningXp: 150,
         },
     },
     {
@@ -127,8 +135,8 @@ const resources: Resource[] = [
         type: "Resource",
         description: "This would be great to put on a ring and give to your significant other. If only it wasn't virtual.",
         price: 1100,
-        mining: {
-            xp: 200,
+        gathering: {
+            miningXp: 200,
         },
     },
     {
@@ -137,9 +145,17 @@ const resources: Resource[] = [
         type: "Resource",
         description: "A popular method of execution, according to the bible.",
         price: 5,
-        mining: {
-            xp: 5,
+        gathering: {
+            miningXp: 5,
         },
+    },
+    {
+        name: "Dragon Scale",
+        iconUrl: iconDragonScale,
+        type: "Resource",
+        description: "Scales you found on a dragon.",
+        price: 500,
+        gathering: { },
     },
 ];
 

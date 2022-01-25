@@ -1,4 +1,7 @@
-import { Item } from ".";
+import { EquipmentSlot, Item, Rarity } from ".";
+import { ResourceName } from "./resources";
+import { PartialRecord } from "../../util";
+
 import iconWoodenHelmet from "../../../img/assets/equipment/Wooden/Wooden Helmet.png";
 import iconWoodenChestplate from "../../../img/assets/equipment/Wooden/Wooden Chestplate.png";
 import iconWoodenLeggings from "../../../img/assets/equipment/Wooden/Wooden Leggings.png";
@@ -48,7 +51,37 @@ export type EquipmentName =
       | "Dragon Scale Helmet" | "Dragon Scale Chestplate" | "Dragon Scale Leggings" | "Dragon Scale Boots" | "Dragon Scale Sword"
       | "Amulet of Luck";
 
-export type Equipment = Omit<Item, 'name'> & { name: EquipmentName };
+export type Equipment = Item & { 
+    name: EquipmentName;
+    rarity: Rarity;
+    equipment: {
+        slot: EquipmentSlot;
+        armor?: number;
+        attack?: number;
+    };
+    crafting?: {
+        requiredLevel: number;
+        ingredients: PartialRecord<ResourceName, number>,
+    };
+};
+
+const ResourceArmour = {
+    "Wooden": 1,
+    "Copper": 1.5,
+    "Iron": 2,
+    "Bronze": 2.25,
+    "Gold": 4,
+    "Crystal": 10,
+    "Dragon Scale": 20,
+};
+
+const EquipmentArmour = {
+    "Helmet": 0,
+    "Chestplate": 3,
+    "Leggings": 2,
+    "Boots": 1,
+    "Shield": 1
+}
 
 const equipment: Equipment[] = [
     // Wooden
@@ -58,11 +91,11 @@ const equipment: Equipment[] = [
         description: "A wooden helmet.",
         type: "Equipment",
         equipment: {
-            slot: "Helmet"
+            slot: "Helmet",
+            armor: ResourceArmour.Wooden + EquipmentArmour.Helmet,
         },
         rarity: "common",
         price: 10,
-        armor: 1,
         crafting: {
             requiredLevel: 3,
             ingredients: {
@@ -76,11 +109,11 @@ const equipment: Equipment[] = [
         description: "A wooden chestplate.",
         type: "Equipment",
         equipment: {
-            slot: "Chestplate"
+            slot: "Chestplate",
+            armor: ResourceArmour.Wooden + EquipmentArmour.Chestplate,
         },
         rarity: "common",
         price: 10,
-        armor: 1 + 3,
         crafting: {
             requiredLevel: 3,
             ingredients: {
@@ -94,11 +127,11 @@ const equipment: Equipment[] = [
         description: "A wooden leggings.",
         type: "Equipment",
         equipment: {
-            slot: "Leggings"
+            slot: "Leggings",
+            armor: ResourceArmour.Wooden + EquipmentArmour.Leggings,
         },
         rarity: "common",
         price: 10,
-        armor: 1 + 2,
         crafting: {
             requiredLevel: 3,
             ingredients: {
@@ -112,11 +145,11 @@ const equipment: Equipment[] = [
         description: "A wooden boots.",
         type: "Equipment",
         equipment: {
-            slot: "Boots"
+            slot: "Boots",
+            armor: ResourceArmour.Wooden + EquipmentArmour.Boots,
         },
         rarity: "common",
         price: 10,
-        armor: 1 + 1,
         crafting: {
             requiredLevel: 3,
             ingredients: {
@@ -130,11 +163,11 @@ const equipment: Equipment[] = [
         description: "A wooden sword",
         type: "Equipment",
         equipment: {
-            slot: "Weapon"
+            slot: "Weapon",
+            attack: ResourceArmour.Wooden,
         },
         rarity: "common",
         price: 5,
-        attack: 1,
         crafting: {
             requiredLevel: 3,
             ingredients: {
@@ -150,11 +183,11 @@ const equipment: Equipment[] = [
         description: "An iron helmet.",
         type: "Equipment",
         equipment: {
-            slot: "Helmet"
+            slot: "Helmet",
+            armor: ResourceArmour.Iron + EquipmentArmour.Helmet,
         },
         rarity: "uncommon",
         price: 20,
-        armor: 2,
         crafting: {
             requiredLevel: 5,
             ingredients: {
@@ -169,11 +202,11 @@ const equipment: Equipment[] = [
         description: "An iron chestplate.",
         type: "Equipment",
         equipment: {
-            slot: "Chestplate"
+            slot: "Chestplate",
+            armor: ResourceArmour.Iron + EquipmentArmour.Chestplate,
         },
         rarity: "uncommon",
         price: 20,
-        armor: 2 + 3,
         crafting: {
             requiredLevel: 5,
             ingredients: {
@@ -188,11 +221,11 @@ const equipment: Equipment[] = [
         description: "An iron leggings.",
         type: "Equipment",
         equipment: {
-            slot: "Leggings"
+            slot: "Leggings",
+            armor: ResourceArmour.Iron + EquipmentArmour.Leggings,
         },
         rarity: "uncommon",
         price: 20,
-        armor: 2 + 2,
         crafting: {
             requiredLevel: 5,
             ingredients: {
@@ -207,11 +240,11 @@ const equipment: Equipment[] = [
         description: "An iron boots.",
         type: "Equipment",
         equipment: {
-            slot: "Boots"
+            slot: "Boots",
+            armor: ResourceArmour.Iron + EquipmentArmour.Boots,
         },
         rarity: "uncommon",
         price: 20,
-        armor: 2 + 1,
         crafting: {
             requiredLevel: 5,
             ingredients: {
@@ -226,11 +259,11 @@ const equipment: Equipment[] = [
         description: "An iron sword",
         type: "Equipment",
         equipment: {
-            slot: "Weapon"
+            slot: "Weapon",
+            armor: ResourceArmour.Iron,
         },
         rarity: "common",
         price: 20,
-        attack: 3,
         crafting: {
             requiredLevel: 5,
             ingredients: {
@@ -245,11 +278,11 @@ const equipment: Equipment[] = [
         description: "An iron cutlass",
         type: "Equipment",
         equipment: {
-            slot: "Weapon"
+            slot: "Weapon",
+            armor: ResourceArmour.Iron,
         },
         rarity: "common",
         price: 20,
-        attack: 3,
         crafting: {
             requiredLevel: 5,
             ingredients: {
@@ -264,11 +297,11 @@ const equipment: Equipment[] = [
         description: "An iron shield",
         type: "Equipment",
         equipment: {
-            slot: "Shield"
+            slot: "Shield",
+            armor: ResourceArmour.Iron + EquipmentArmour.Shield,
         },
         rarity: "common",
         price: 20,
-        armor: 4,
         crafting: {
             requiredLevel: 5,
             ingredients: {
@@ -285,11 +318,11 @@ const equipment: Equipment[] = [
         description: "A bronze helmet.",
         type: "Equipment",
         equipment: {
-            slot: "Helmet"
+            slot: "Helmet",
+            armor: ResourceArmour.Bronze + EquipmentArmour.Helmet,
         },
         rarity: "common",
         price: 30,
-        armor: 2.25,
     },
     {
         name: "Bronze Chestplate",
@@ -297,11 +330,11 @@ const equipment: Equipment[] = [
         description: "A bronze chestplate.",
         type: "Equipment",
         equipment: {
-            slot: "Chestplate"
+            slot: "Chestplate",
+            armor: ResourceArmour.Bronze + EquipmentArmour.Chestplate,
         },
         rarity: "common",
         price: 30,
-        armor: 2.25 + 3,
     },
     {
         name: "Bronze Leggings",
@@ -309,11 +342,11 @@ const equipment: Equipment[] = [
         description: "A bronze leggings.",
         type: "Equipment",
         equipment: {
-            slot: "Leggings"
+            slot: "Leggings",
+            armor: ResourceArmour.Bronze + EquipmentArmour.Leggings,
         },
         rarity: "common",
         price: 30,
-        armor: 2.25 + 2,
     },
     {
         name: "Bronze Boots",
@@ -321,11 +354,11 @@ const equipment: Equipment[] = [
         description: "A bronze boots.",
         type: "Equipment",
         equipment: {
-            slot: "Boots"
+            slot: "Boots",
+            armor: ResourceArmour.Bronze + EquipmentArmour.Boots,
         },
         rarity: "common",
         price: 30,
-        armor: 2.25 + 1,
     },
 
     // Copper
@@ -335,11 +368,11 @@ const equipment: Equipment[] = [
         description: "A copper helmet.",
         type: "Equipment",
         equipment: {
-            slot: "Helmet"
+            slot: "Helmet",
+            armor: ResourceArmour.Copper + EquipmentArmour.Helmet,
         },
         rarity: "common",
         price: 10,
-        armor: 1.5,
     },
     {
         name: "Copper Chestplate",
@@ -347,11 +380,11 @@ const equipment: Equipment[] = [
         description: "A copper chestplate.",
         type: "Equipment",
         equipment: {
-            slot: "Chestplate"
+            slot: "Chestplate",
+            armor: ResourceArmour.Copper + EquipmentArmour.Chestplate,
         },
         rarity: "common",
         price: 10,
-        armor: 1.5 + 3,
     },
     {
         name: "Copper Leggings",
@@ -359,11 +392,11 @@ const equipment: Equipment[] = [
         description: "A copper leggings.",
         type: "Equipment",
         equipment: {
-            slot: "Leggings"
+            slot: "Leggings",
+            armor: ResourceArmour.Copper + EquipmentArmour.Leggings,
         },
         rarity: "common",
         price: 10,
-        armor: 1.5 + 2,
     },
     {
         name: "Copper Boots",
@@ -371,11 +404,11 @@ const equipment: Equipment[] = [
         description: "A copper boots.",
         type: "Equipment",
         equipment: {
-            slot: "Boots"
+            slot: "Boots",
+            armor: ResourceArmour.Copper + EquipmentArmour.Boots,
         },
         rarity: "common",
         price: 10,
-        armor: 1.5 + 1,
     },
 
     // Gold
@@ -385,11 +418,11 @@ const equipment: Equipment[] = [
         description: "A gold helmet.",
         type: "Equipment",
         equipment: {
-            slot: "Helmet"
+            slot: "Helmet",
+            armor: ResourceArmour.Gold + EquipmentArmour.Helmet,
         },
         rarity: "rare",
         price: 40,
-        armor: 4,
     },
     {
         name: "Gold Chestplate",
@@ -397,11 +430,11 @@ const equipment: Equipment[] = [
         description: "A gold chestplate.",
         type: "Equipment",
         equipment: {
-            slot: "Chestplate"
+            slot: "Chestplate",
+            armor: ResourceArmour.Gold + EquipmentArmour.Chestplate,
         },
         rarity: "rare",
         price: 40,
-        armor: 4 + 3,
     },
     {
         name: "Gold Leggings",
@@ -409,11 +442,11 @@ const equipment: Equipment[] = [
         description: "A gold leggings.",
         type: "Equipment",
         equipment: {
-            slot: "Leggings"
+            slot: "Leggings",
+            armor: ResourceArmour.Gold + EquipmentArmour.Leggings,
         },
         rarity: "rare",
         price: 40,
-        armor: 4 + 2,
     },
     {
         name: "Gold Boots",
@@ -421,11 +454,11 @@ const equipment: Equipment[] = [
         description: "A gold boots.",
         type: "Equipment",
         equipment: {
-            slot: "Boots"
+            slot: "Boots",
+            armor: ResourceArmour.Gold + EquipmentArmour.Boots,
         },
         rarity: "rare",
         price: 40,
-        armor: 4 + 1,
     },
 
     // Crystal
@@ -435,11 +468,11 @@ const equipment: Equipment[] = [
         description: "Ultra rare crystal helmet.",
         type: "Equipment",
         equipment: {
-            slot: "Helmet"
+            slot: "Helmet",
+            armor: ResourceArmour.Crystal + EquipmentArmour.Helmet,
         },
         rarity: "legendary",
         price: 2000,
-        armor: 10,
     },
     {
         name: "Crystal Chestplate",
@@ -447,11 +480,11 @@ const equipment: Equipment[] = [
         description: "Ultra rare crystal chestplate.",
         type: "Equipment",
         equipment: {
-            slot: "Chestplate"
+            slot: "Chestplate",
+            armor: ResourceArmour.Crystal + EquipmentArmour.Chestplate,
         },
         rarity: "legendary",
         price: 2000,
-        armor: 10 + 3,
     },
     {
         name: "Crystal Leggings",
@@ -459,11 +492,11 @@ const equipment: Equipment[] = [
         description: "Ultra rare crystal leggings.",
         type: "Equipment",
         equipment: {
-            slot: "Leggings"
+            slot: "Leggings",
+            armor: ResourceArmour.Crystal + EquipmentArmour.Leggings,
         },
         rarity: "legendary",
         price: 2000,
-        armor: 10 + 2,
     },
     {
         name: "Crystal Boots",
@@ -471,11 +504,11 @@ const equipment: Equipment[] = [
         description: "Ultra rare boots.",
         type: "Equipment",
         equipment: {
-            slot: "Boots"
+            slot: "Boots",
+            armor: ResourceArmour.Crystal + EquipmentArmour.Boots,
         },
         rarity: "legendary",
         price: 4000,
-        armor: 20 + 4,
     },
 
     // Dragon Scale
@@ -485,11 +518,11 @@ const equipment: Equipment[] = [
         description: "Made from the scales of the scariest beast, this helmet is said to be the stuff of legends.",
         type: "Equipment",
         equipment: {
-            slot: "Helmet"
+            slot: "Helmet",
+            armor: ResourceArmour["Dragon Scale"] + EquipmentArmour.Helmet,
         },
         rarity: "legendary",
         price: 32000,
-        armor: 20,
         crafting: {
             requiredLevel: 25,
             ingredients: {
@@ -504,11 +537,11 @@ const equipment: Equipment[] = [
         description: "Made from the scales of the scariest beast, this chestplate is said to be the stuff of legends.",
         type: "Equipment",
         equipment: {
-            slot: "Chestplate"
+            slot: "Chestplate",
+            armor: ResourceArmour["Dragon Scale"] + EquipmentArmour.Chestplate,
         },
         rarity: "legendary",
         price: 32000,
-        armor: 20 + 3,
         crafting: {
             requiredLevel: 25,
             ingredients: {
@@ -523,11 +556,11 @@ const equipment: Equipment[] = [
         description: "Made from the scales of the scariest beast, this leggings are said to be the stuff of legends.",
         type: "Equipment",
         equipment: {
-            slot: "Leggings"
+            slot: "Leggings",
+            armor: ResourceArmour["Dragon Scale"] + EquipmentArmour.Leggings,
         },
         rarity: "legendary",
         price: 32000,
-        armor: 20 + 2,
         crafting: {
             requiredLevel: 25,
             ingredients: {
@@ -542,11 +575,11 @@ const equipment: Equipment[] = [
         description: "Made from the scales of the scariest beast, these boots are said to be the stuff of legends.",
         type: "Equipment",
         equipment: {
-            slot: "Boots"
+            slot: "Boots",
+            armor: ResourceArmour["Dragon Scale"] + EquipmentArmour.Boots,
         },
         rarity: "legendary",
         price: 32000,
-        armor: 20 + 1,
         crafting: {
             requiredLevel: 25,
             ingredients: {

@@ -1,10 +1,9 @@
 import player, { addStatistic, saveData } from "../control/player";
 import { addMessage } from "../control/messages";
 import { addXp, levelUnlocks } from "../control/experience";
-import { itemsByName } from "../data/items";
 import { getRandomItem } from "../util";
 import { addToInventory, decreaseToolHealth, hasInInventory, InventoryItem, isInventoryFull, removeFromInventory } from "../control/inventory";
-import resources, { ResourceName } from "../data/items/resources";
+import resources, { Resource, resourcesByName } from "../data/items/resources";
 import * as dom from "../util/dom";
 import { ToolName } from "../data/items/tools";
 
@@ -42,7 +41,7 @@ export function collectBranches() {
     
     addToInventory("Wood", 1 / 5);
     addStatistic("cutWood", 1 / 5);
-    addXp(itemsByName["Wood"].treeCutting.xp / 5);
+    addXp(resourcesByName["Wood"].gathering.treeCuttingXp! / 5);
     saveData();
 }
 
@@ -51,7 +50,7 @@ export function collectStones() {
         return;
     
     addToInventory("Stone", 1 / 5);
-    addXp(itemsByName["Stone"].mining.xp / 5);
+    addXp(resourcesByName["Stone"].gathering.miningXp! / 5);
     saveData();
 }
 
@@ -63,7 +62,7 @@ export function tree() {
 
     addToInventory("Wood", 1);
     addStatistic("cutWood", 1);
-    addXp(itemsByName["Wood"].treeCutting.xp);
+    addXp(resourcesByName["Wood"].gathering.treeCuttingXp!);
 
     decreaseToolHealth(tool);
     saveData();
@@ -76,7 +75,7 @@ export function goFishing() {
 
     addToInventory("Fish", 1);
     addStatistic("caughtFish", 1);
-    addXp(itemsByName["Fish"].fishing.xp);
+    addXp(resourcesByName["Fish"].gathering.fishingXp!);
     
     decreaseToolHealth(tool);
     saveData();
@@ -89,15 +88,15 @@ export function goHunting() {
 
     addToInventory("Meat", 1);
     addStatistic("huntedMeat", 1);
-    addXp(itemsByName["Meat"].hunting.xp);
+    addXp(resourcesByName["Meat"].gathering.huntingXp!);
     
     decreaseToolHealth(tool);
     saveData();
 }
 
-const ores = resources.filter(x => x.mining);
+const ores = resources.filter(x => x.gathering.miningXp);
 
-function mineOre(ore: InventoryItem) {
+function mineOre(ore: Resource) {
     const tool = getTool(["Pickaxe"], "mine");
     if (!tool || hasNoSpace())
         return;
@@ -105,7 +104,7 @@ function mineOre(ore: InventoryItem) {
     addMessage(`You mined some ${ore.name}!`);
     addToInventory(ore.name, 1);
     addStatistic("minedRocks", 1);
-    addXp(ore.mining.xp);
+    addXp(ore.gathering.miningXp!);
     
     decreaseToolHealth(tool);
     saveData();
@@ -116,11 +115,11 @@ export function goMining() {
 }
 
 export function goIronMining() {
-    mineOre(ores.find(x => x.name === "Iron"));
+    mineOre(ores.filter(x => x.name === "Iron")[0]);
 }
 
 export function goStoneMining() {
-    mineOre(ores.find(x => x.name === "Stone"));
+    mineOre(ores.filter(x => x.name === "Stone")[0]);
 }
 
 export type Activity = "Crafting" | "Fighting" | "Store";

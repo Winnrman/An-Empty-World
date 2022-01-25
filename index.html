@@ -9,7 +9,7 @@
     <script>
         function checkDarkMode() { // this code is here so it loads as fast as possible, to reduce page flickering on refresh
             const theme = localStorage["theme"];
-            var hours = new Date().getHours();
+            const hours = new Date().getHours();
             if (theme === "dark" || theme != "light" && hours >= 15 || hours < 8) {
                 document.body.classList.add("dark");
             } else {

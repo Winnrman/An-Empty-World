@@ -1,19 +1,18 @@
-import * as dom from "../util/dom";
-import { achievements, checkAchievements, resetAchievementsToCheck } from "../control/achievements";
+import { AchievementName, checkAchievements, resetAchievementsToCheck } from "../control/achievements";
 import * as activities from "../activities/activities";
 import * as crafting from "../activities/crafting";
 import * as experience from "../control/experience";
 import * as equipment from "../control/equipment";
-import { itemsByName } from "../data/items";
 import * as main from "../main";
 import player, { pauseSaving, saveData, resetData, getDefaultData, restoreData, resumeSaving, Player } from "../control/player";
 import * as store from "../activities/store";
-import { EquipmentName } from "../data/items/equipment";
-import { ToolName } from "../data/items/tools";
-import { ResourceName } from "../data/items/resources";
+import { equipmentByName, EquipmentName } from "../data/items/equipment";
+import { ToolName, toolsByName } from "../data/items/tools";
+import { ResourceName, resourcesByName } from "../data/items/resources";
 import * as inventory from "../control/inventory";
+import { getEntries } from "../util";
 
-let data = getDefaultData();
+const data = getDefaultData();
 
 export default function runTests(keepTestDataAfterwards?: boolean) {
     pauseSaving();
@@ -26,20 +25,22 @@ export default function runTests(keepTestDataAfterwards?: boolean) {
         runScenario();
         console.log("Tests OK!")
     } finally {
-        if (!keepTestDataAfterwards) {
+        if (!keepTestDataAfterwards)
             restoreData();
-            resumeSaving();
-            main.checkAndRenderEverything();
-        }
+        
+        main.checkAndRenderEverything();
+        resumeSaving();
+    
+        saveData();
     }
 }
 
 function runScenario() {
-    data = getDefaultData();
-    data.inventory_dictionary["Axe"] = 0;
-    data.inventory_dictionary["Wood"] = 0;
-    data.inventory_dictionary["Wooden Harpoon"] = 0;
-    data.inventory_dictionary["Fish"] = 0;
+    Object.assign(data, getDefaultData());
+    data.inventory["Axe"] = 0;
+    data.inventory["Wood"] = 0;
+    data.inventory["Wooden Harpoon"] = 0;
+    data.inventory["Fish"] = 0;
     runWoodcuttingScenario()
     runFishingScenario();
     runCraftingScenario();
@@ -284,37 +285,37 @@ function equip(itemName: EquipmentName) {
 }
 
 function boughtItem(itemName: ToolName) {
-    data.gold -= itemsByName[itemName].price;
-    data.inventory_dictionary[itemName] = 1;
+    data.gold -= toolsByName[itemName].price;
+    data.inventory[itemName] = 1;
 }
 
 function didCutLogs(amount: number) {
-    data.inventory_dictionary["Wood"] ||= 0;
-    data.inventory_dictionary["Wood"] += amount;
+    data.inventory["Wood"] ||= 0;
+    data.inventory["Wood"] += amount;
     data.toolHealth["Axe"] -= amount;
-    data.xp += itemsByName["Wood"].treeCutting.xp * amount;
+    data.xp += resourcesByName["Wood"].gathering.treeCuttingXp! * amount;
 }
 
 function didCollectBranches(amount: number) {
-    data.inventory_dictionary["Wood"] ||= 0;
-    data.inventory_dictionary["Wood"] += amount;
-    data.xp += itemsByName["Wood"].treeCutting.xp * amount;
+    data.inventory["Wood"] ||= 0;
+    data.inventory["Wood"] += amount;
+    data.xp += resourcesByName["Wood"].gathering.treeCuttingXp! * amount;
 }
 
 function didCollectStones(amount: number) {
-    data.inventory_dictionary["Stone"] ||= 0;
-    data.inventory_dictionary["Stone"] += amount;
-    data.xp += itemsByName["Stone"].mining.xp * amount;
+    data.inventory["Stone"] ||= 0;
+    data.inventory["Stone"] += amount;
+    data.xp += resourcesByName["Stone"].gathering.miningXp! * amount;
 }
 
 function didMineStones(amount: number) {
-    data.inventory_dictionary["Stone"] ||= 0;
-    data.inventory_dictionary["Stone"] += amount;
-    data.xp += itemsByName["Stone"].mining.xp * amount;
+    data.inventory["Stone"] ||= 0;
+    data.inventory["Stone"] += amount;
+    data.xp += resourcesByName["Stone"].gathering.miningXp! * amount;
 }
 
 function toolBroke(itemName: ToolName) {
-    data.inventory_dictionary[itemName] = 0;
+    data.inventory[itemName] = 0;
 }
 
 function levelled(level: number) {
@@ -323,53 +324,53 @@ function levelled(level: number) {
 }
 
 function soldItem(itemName: ResourceName, amount: number) {
-    data.gold += amount * itemsByName[itemName].price;
-    data.inventory_dictionary[itemName] = amount === 0 ? 0 : data.inventory_dictionary[itemName] - amount;
+    data.gold += amount * resourcesByName[itemName].price;
+    data.inventory[itemName] = amount === 0 ? 0 : data.inventory[itemName]! - amount;
 }
 
 function droppedItem(itemName: ResourceName, amount: number) {
-    data.inventory_dictionary[itemName] = amount === 0 ? 0 : data.inventory_dictionary[itemName] - amount;
+    data.inventory[itemName] = amount === 0 ? 0 : data.inventory[itemName]! - amount;
 }
 
 function caughtFish(amount: number) {
-    data.inventory_dictionary["Fish"] ||= 0;
-    data.inventory_dictionary["Fish"] += amount;
+    data.inventory["Fish"] ||= 0;
+    data.inventory["Fish"] += amount;
     data.toolHealth["Wooden Harpoon"] -= amount;
-    data.xp += itemsByName["Fish"].fishing.xp * amount;
+    data.xp += resourcesByName["Fish"].gathering.fishingXp! * amount;
 }
 
-function gotAchievement(id: string, amount: number) {
+function gotAchievement(id: AchievementName, amount: number) {
     data.completedAchievements[id] = amount;
 }
 
 function craftedTool(itemName: ToolName) {
-    data.inventory_dictionary[itemName] = 1;
-    const craftable = itemsByName[itemName];
-    data.toolHealth[itemName] = craftable.health;
-    for (var key in craftable.crafting.ingredients) {
-        data.inventory_dictionary[key] -= craftable.crafting.ingredients[key];
+    data.inventory[itemName] = 1;
+    const craftable = toolsByName[itemName];
+    data.toolHealth[itemName] = craftable.tool.health;
+    for (const [key, requiredAmount] of getEntries(craftable.crafting!.ingredients)) {
+        data.inventory[key]! -= requiredAmount;
     }
 }
 
 function craftedEquipment(itemName: EquipmentName) {
     data.ownedEquipment.push(itemName);
-    const craftable = itemsByName[itemName];
-    for (var key in craftable.crafting.ingredients) {
-        data.inventory_dictionary[key] -= craftable.crafting.ingredients[key];
+    const craftable = equipmentByName[itemName];
+    for (const [key, requiredAmount] of getEntries(craftable.crafting!.ingredients)) {
+        data.inventory[key]! -= requiredAmount;
     }
 }
 
 function equippedItem(itemName: EquipmentName) {
-    const item = itemsByName[itemName];
-    if (data.equipment[item.equipment.slot]) {
-        const oldItem = itemsByName[data.equipment[item.equipment.slot]];
-        player.playerDefense -= oldItem.armor || 0;
-        player.playerAttack -= oldItem.attack || 0;
+    const item = equipmentByName[itemName];
+    if (data.equipment[item.equipment!.slot]) {
+        const oldItem = equipmentByName[data.equipment![item.equipment!.slot]!];
+        player.playerDefense -= oldItem.equipment.armor ?? 0;
+        player.playerAttack -= oldItem.equipment.attack ?? 0;
     }
 
-    data.equipment[item.equipment.slot] = itemName;
-    player.playerDefense += item.armor || 0;
-    player.playerAttack += item.attack || 0;
+    data.equipment[item.equipment!.slot] = itemName;
+    player.playerDefense += item.equipment.armor ?? 0;
+    player.playerAttack += item.equipment.attack ?? 0;
 }
 
 function nothingHappened(reason: string) {
@@ -403,7 +404,7 @@ function verify() {
 }
 
 const verifyProperty = (errors: string[], property: keyof Player) => expectAreEqual(errors, player[property], data[property], property);
-const verifyInventory = (errors: string[], item: inventory.InventoryItemName) => expectAreEqual(errors, inventory.getInventoryCount(item), data.inventory_dictionary[item], `inventory ${item}`);
+const verifyInventory = (errors: string[], item: inventory.InventoryItemName) => expectAreEqual(errors, inventory.getInventoryCount(item), data.inventory[item], `inventory ${item}`);
 const verifyToolHealth = (errors: string[], item: ToolName) => expectAreEqual(errors, player.toolHealth[item], data.toolHealth[item], `toolHealth ${item}`);
 const verifyArray = (errors: string[], property: keyof Player) => expectArraysAreEqual(errors, player[property] as any[], data[property] as any[], property);
 const verifyObject = (errors: string[], property: keyof Player) => expectObjectsAreEqual(errors, player[property], data[property], property);
@@ -421,10 +422,10 @@ function expectArraysAreEqual(errors: string[], actual: any[], expected: any[], 
 }
 
 function expectObjectsAreEqual(errors: string[], actual: any, expected: any, info: string) {
-    for (let key in actual) {
+    for (const key in actual) {
         expectAreEqual(errors, actual[key], expected[key], `${info}[${key}]`);
     }
-    for (let key in expected) {
+    for (const key in expected) {
         expectAreEqual(errors, actual[key], expected[key], `${info}[${key}]`);
     }
 }
