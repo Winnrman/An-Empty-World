@@ -64,7 +64,7 @@ const equipment: Equipment[] = [
         price: 10,
         armor: 1,
         crafting: {
-            requiredLevel: 1,
+            requiredLevel: 3,
             ingredients: {
                 "Wood": 4,
             }
@@ -82,7 +82,7 @@ const equipment: Equipment[] = [
         price: 10,
         armor: 1 + 3,
         crafting: {
-            requiredLevel: 1,
+            requiredLevel: 3,
             ingredients: {
                 "Wood": 8
             }
@@ -100,7 +100,7 @@ const equipment: Equipment[] = [
         price: 10,
         armor: 1 + 2,
         crafting: {
-            requiredLevel: 1,
+            requiredLevel: 3,
             ingredients: {
                 "Wood": 5,
             }
@@ -118,7 +118,7 @@ const equipment: Equipment[] = [
         price: 10,
         armor: 1 + 1,
         crafting: {
-            requiredLevel: 1,
+            requiredLevel: 3,
             ingredients: {
                 "Wood": 3,
             }
@@ -136,7 +136,7 @@ const equipment: Equipment[] = [
         price: 5,
         attack: 1,
         crafting: {
-            requiredLevel: 1,
+            requiredLevel: 3,
             ingredients: {
                 "Wood": 5,
             }

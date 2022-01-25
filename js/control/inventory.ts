@@ -4,14 +4,15 @@ import { Resource, ResourceName, resourcesByName } from "../data/items/resources
 import { Potion, PotionName, potionsByName } from "../data/items/potions";
 import { Tool, ToolName, toolsByName } from "../data/items/tools";
 import * as dom from "../util/dom";
-import { getEntries, getKeys, PartialRecord, tween, tweenArrays } from "../util";
+import { displayNumber, getEntries, getKeys, PartialRecord, tween, tweenArrays } from "../util";
 import { applyEffects } from "./effects";
-import { renderCraftableDetails } from "../activities/crafting";
+import { renderCraftableDetails, renderCraftables } from "../activities/crafting";
 import { addMessage } from "./messages";
-import iconCoins from "../../img/assets/materials/coins.png";
+import iconCoins from "../../img/assets/materials/Coins.png";
 
 import "../../css/inventory.css";
 import { renderStore } from "../activities/store";
+import { renderActivities } from "../activities/activities";
 
 export type InventoryItemName = ToolName | ResourceName | PotionName;
 export type InventoryItem = Tool | Resource | Potion;
@@ -30,7 +31,7 @@ export function isInventoryFull() {
 }
 
 export function getInventoryCount(itemName: InventoryItemName) {
-    return player.inventory_dictionary[itemName] ?? 0;
+    return displayNumber(player.inventory_dictionary[itemName] ?? 0);
 }
 
 export function hasInInventory(itemName: InventoryItemName) {
@@ -45,11 +46,16 @@ export function addToInventory(itemName: InventoryItemName, amount: number) {
     renderInventory();
 }
 
+export function addToolToInventory(tool: Tool) {
+    addToInventory(tool.name, 1);
+    player.toolHealth[tool.name] = tool.health;
+}
+
 export function removeFromInventory(itemName: InventoryItemName, amount: number) {
     if (!player.inventory_dictionary[itemName])
         player.inventory_dictionary[itemName] = 0;
     
-    player.inventory_dictionary[itemName] -= amount;
+    player.inventory_dictionary[itemName] = Math.max(0, player.inventory_dictionary[itemName] - amount);
     renderInventory();
 }
 
@@ -64,7 +70,6 @@ export function decreaseToolHealth(toolName: ToolName) {
     if (player.toolHealth[toolName] <= 0) {
         addMessage(`Your ${toolName} broke!`);
         removeFromInventory(toolName, 1);
-        player.toolHealth[toolName] = itemsByName[toolName].health;
     }
 
     renderInventory();
@@ -89,17 +94,21 @@ function getAllItemsInInventory () {
 };
 
 export function renderInventory() {
-    dom.setHtml("inventoryHeader", `Inventory (${calculateInventorySpace()}/${player.maxInventorySize})`);
+    dom.setHtml("inventoryHeader", `Inventory (${displayNumber(calculateInventorySpace())}/${player.maxInventorySize})`);
     renderItems();
     renderSelectedItemDetails();
+    renderCraftables();
     renderCraftableDetails();  
     renderStore();
+    renderActivities();
 }
 
 function renderToolList(items: InventoryItem[]) {
     let html = "";
 
-    html += `<div class="item"><div class="item-icon inventory" title="gold"><img src="${iconCoins}" /></div><br /><div class="inventory-count">${player.gold}</div></div>`;
+    if (player.gold > 0)
+        html += `<div class="item"><div class="item-icon inventory" title="gold"><img src="${iconCoins}" /></div><br /><div class="inventory-count">${displayNumber(player.gold)}</div></div>`;
+    
     for (const item of items) {
         const durability = player.toolHealth[item.name] / item.health;
         const height = 100 - durability * 100;
@@ -110,7 +119,7 @@ function renderToolList(items: InventoryItem[]) {
         html += `<img style="background: repeating-linear-gradient(transparent, transparent, ${height}%, ${rgb}, ${height}%, ${rgb} 100%);" src="${item.iconUrl}" />`;
         html += "</div>";
         html += "<br />";
-        html += `<div class="inventory-count">${getInventoryCount(item.name)}</div>`;
+        html += `<div class="inventory-count">${displayNumber(getInventoryCount(item.name))}</div>`;
         html += "</div>";
     }
 
@@ -120,7 +129,7 @@ function renderToolList(items: InventoryItem[]) {
 function renderItemList(items: InventoryItem[]) {
     let html = "";
     for (const item of items) {
-        html += `<div class="item" onClick="inventory.showItemDetails('${item.name}')">${renderItemIcon(item)}<br /><div class="inventory-count">${getInventoryCount(item.name)}</div></div>`;
+        html += `<div class="item" onClick="inventory.showItemDetails('${item.name}')">${renderItemIcon(item)}<br /><div class="inventory-count">${displayNumber(getInventoryCount(item.name))}</div></div>`;
     }
     html += items.length ? "<br />" : "";
 
@@ -151,19 +160,20 @@ function renderSelectedItemDetails() {
     const item = inventoryItemsByName[player.selectedItemName];
     const hasDurability = item.type === "Tool";
     const canDrink = item.type === "Potion";
-    const canSell = item.type !== "Tool";
-    const hasActions = canDrink || canSell;
+    const canSell = item.type !== "Tool" && player.currentActivity === "Store";
 
     let html = `
         <h3>Item details</h3>
         ${renderItemIcon(item)} ${item.name}<br />
         Description: ${item.description}<br />
         ${hasDurability ? `Durability: ${player.toolHealth[item.name]}/${item.health}<br />` : ""}
-        Amount owned: ${getInventoryCount(item.name)}<br />
+        Amount owned: ${displayNumber(getInventoryCount(item.name))}<br />
         <br />
-        ${hasActions ? "<h3>Actions<h3>" : ""}
+        ${"<h3>Actions<h3>"}
         ${canSell ? `<button class="button" onclick="store.sell('${item.name}', 1)">Sell one</button>&nbsp;` : ""}
         ${canSell ? `<button class="button" onclick="store.sell('${item.name}')">Sell all</button>&nbsp;` : ""}
+        ${canSell ? "" : `<button class="button" onclick="inventory.removeFromInventory('${item.name}', 1)">Drop one</button>&nbsp;`}
+        ${canSell ? "" : `<button class="button" onclick="inventory.removeAllFromInventory('${item.name}')">Drop all</button>&nbsp;`}
         ${canDrink ? `<button class="button" onclick="inventory.drinkPotion('${item.name}')">Drink</button>&nbsp;` : ""}
     `;
 

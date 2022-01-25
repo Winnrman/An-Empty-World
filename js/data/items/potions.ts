@@ -24,7 +24,7 @@ const potions: Potion[] = [
         price: 10,
         effects: [ { name: "addHealth", value: 10, } ],
         crafting: {
-            requiredLevel: 1,
+            requiredLevel: 5,
             ingredients: {}
         },
     },
@@ -37,7 +37,7 @@ const potions: Potion[] = [
         price: 10,
         effects: [{ name: "addAttack", value: 1, duration: 60000, }],
         crafting: {
-            requiredLevel: 1,
+            requiredLevel: 5,
             ingredients: {}
         },
     },
@@ -50,7 +50,7 @@ const potions: Potion[] = [
         price: 20,
         effects: [{ name: "decreaseAttack", value: 2, duration: 15000, }],
         crafting: {
-            requiredLevel: 1,
+            requiredLevel: 5,
             ingredients: {}
         },
     },
@@ -63,7 +63,7 @@ const potions: Potion[] = [
         price: 10,
         effects: [{ name: "addDefense", value: 1, duration: 60000, }],
         crafting: {
-            requiredLevel: 1,
+            requiredLevel: 5,
             ingredients: {}
         },
     },
@@ -76,7 +76,7 @@ const potions: Potion[] = [
         price: 10,
         effects: [{ name: "addStamina", value: 10, }],
         crafting: {
-            requiredLevel: 1,
+            requiredLevel: 5,
             ingredients: {}
         },
     },
@@ -89,7 +89,7 @@ const potions: Potion[] = [
         price: 10,
         effects: [{ name: "addSpeed", value: 1, duration: 60000, }],
         crafting: {
-            requiredLevel: 1,
+            requiredLevel: 5,
             ingredients: {}
         },
     },
@@ -102,7 +102,7 @@ const potions: Potion[] = [
         price: 10,
         effects: [{ name: "makeInvisible", duration: 25000, }],
         crafting: {
-            requiredLevel: 1,
+            requiredLevel: 5,
             ingredients: {}
         },
     },

@@ -17,8 +17,7 @@ export function addXp(value) {
         player.level++;
         player.xp = 0;
         dom.getElement("progressXp").style.width = "0px";
-        addMessage(`You leveled up! You are now level ${player.level}! [ ${player.level * 100} gold awarded ]`);
-        addGold(player.level * 100);
+        addMessage(`You leveled up! You are now level ${player.level}!`);
         checkLevelUnlocks();
     }
 
@@ -26,16 +25,19 @@ export function addXp(value) {
 }
 
 export const levelUnlocks = {
+    branchCollecting: 1,
+    stoneCollecting: 1,
+    stoneMining: 1,
     treeCutting: 1,
-    fishing: 1,
     crafting: 1,
-    fighting: 1,
-    store: 1,
-    hunting: 2,
-    mining: 3,
-    ironMining: 3,
-    inventoryUpgrade: 4,
-    questing: 8
+    fishing: 2,
+    fighting: 3,
+    hunting: 3,
+    ironMining: 5,
+    mining: 6,
+    store: 7,
+    inventoryUpgrade: 7,
+    questing: 8,
 }
 
 export function checkLevelUnlocks() {

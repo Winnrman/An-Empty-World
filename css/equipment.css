@@ -9,6 +9,7 @@
 #equipment-chooser-items {
     display: flex;
     flex-wrap: wrap;
+    min-height: 38px;
 }
 
 #equipment-chooser-item {

@@ -17,6 +17,7 @@ import iconSlotWeapon from "../../img/assets/equipment/Slot/Slot Weapon.png";
 import iconSlotOffhand from "../../img/assets/equipment/Slot/Slot Offhand.png";
 import iconSlotRanged from "../../img/assets/equipment/Slot/Slot Ranged.png";
 import iconSlotShield from "../../img/assets/equipment/Slot/Slot Shield.png";
+import { getWithIndefiniteArticle } from "../util";
 
 const emptyEquipmentIcons: Record<EquipmentSlot, string> = {
     "Helmet": iconSlotHelmet,
@@ -32,11 +33,11 @@ const emptyEquipmentIcons: Record<EquipmentSlot, string> = {
 export function addToOwnedEquipment(item: Equipment) {
     if (ownsEquipment(item.name)) {
         if (transient.isQuesting == true) {
-            addMessage(`You already have a ${item.name}, so you toss them away.`);
+            addMessage(`You already have ${getWithIndefiniteArticle(item.name)}, so you toss them away.`);
             return;
         }
 
-        addMessage(`You already have a ${item.name}! [Refunded 1000 Gold]`);
+        addMessage(`You already have ${getWithIndefiniteArticle(item.name)}! [Refunded 1000 Gold]`);
         addGold(1000);
         return;
     }
@@ -47,10 +48,10 @@ export function addToOwnedEquipment(item: Equipment) {
 export function showEquipmentChooser(slot: EquipmentSlot) {
     if (player.selectedEquipmentSlot === slot) {
         slot = undefined;
-        selectEquipment(undefined);
     }
     
     player.selectedEquipmentSlot = slot;
+    player.selectedEquipment = undefined;
     renderEquipmentChooser();
     saveData();
 }
@@ -69,7 +70,17 @@ export function equip(itemName: EquipmentName) {
     player.equipment[equipment.equipment.slot] = equipment.name;
     player.selectedEquipment = undefined;
     updateArmour();
+    renderEquipmentChooser();
     renderSelectedEquipment();
+    saveData();
+}
+
+export function unequipSlot(slot: EquipmentSlot) {
+    player.equipment[slot] = undefined;
+    updateArmour();
+    renderEquipmentChooser();
+    renderSelectedEquipment();
+    saveData();
 }
 
 export function ownsEquipment(itemName: EquipmentName) {
@@ -156,6 +167,7 @@ export function renderEquipment() {
 export function renderEquipmentChooser() {
     if (!player.selectedEquipmentSlot) {
         dom.setHtml("equipment-chooser-selector", "");
+        renderSelectedEquipment();
         return;
     }
 
@@ -170,45 +182,63 @@ export function renderEquipmentChooser() {
     const slot = player.selectedEquipmentSlot;
     let html = "";
 
-    const equipmentForSlot = player.ownedEquipment.map(x => equipmentByName[x]).filter(x => x.equipment.slot === slot)
+    const equipmentForSlot = player.ownedEquipment.map(x => equipmentByName[x]).filter(x => x.equipment.slot === slot && player.equipment[slot] != x.name)
     html += `<div>Slot: ${slot}</div>`;
     html += `<div id="equipment-chooser-items">`
     for (let equipment of equipmentForSlot) {
         html += renderEquipmentIcon(equipment);
     }
+
     html += "</div>"
     html += "<br />"
 
     dom.setHtml("equipment-chooser-selector", html);
+    
+    renderSelectedEquipment();
 }
 
 export function renderSelectedEquipment() {
-    if (!player.selectedEquipment) {
-        dom.setHtml("equipment-chooser-selected", "");
+    const renderEquipment = (equipment: Equipment, isEquipped: boolean) => {
+        
+        let html = "";
+        html += `<div class="row">`
+
+        html += `<div class="auto-column">`
+        html += `<div id="equipment-chooser-item">`
+        html += `<span class="equipment-slot">`;
+        html += `<img src="${equipment.iconUrl}" />`;
+        html += "</span>";
+        html += "</div>";
+        html += "</div>";
+        
+        html += `<div class="auto-column">`
+        html += `<h4>${equipment.name}</h4>`;
+        html += `Attack: ${equipment.attack || 0}<br />`;
+        html += `Armor: ${equipment.armor || 0}<br />`;
+        html += "<br />";
+        if (isEquipped)
+            html += `<button onClick="equipment.unequipSlot('${equipment.equipment.slot}')" class="button">Unequip</button>`;
+        else
+            html += `<button onClick="equipment.equip('${equipment.name}')" class="button">Equip</button>`;
+
+        html += "</div>";
+
+        html += "</div>";
+        
+        dom.setHtml("equipment-chooser-selected", html);
+    }
+
+    if (player.selectedEquipment) {
+        const equipment = equipmentByName[player.selectedEquipment];
+        renderEquipment(equipment, false);
+        return;
+    }
+    
+    if (player.equipment[player.selectedEquipmentSlot]) {
+        const equipment = equipmentByName[player.equipment[player.selectedEquipmentSlot]];
+        renderEquipment(equipment, true);
         return;
     }
 
-    const equipment = equipmentByName[player.selectedEquipment];
-    let html = "";
-    html += `<div class="row">`
-    
-    html += `<div class="auto-column">`
-    html += `<h4>${equipment.name}</h4>`;
-    html += `Attack: ${equipment.attack || 0}<br />`;
-    html += `Armor: ${equipment.armor || 0}<br />`;
-    html += "<br />";
-    html += `<button onClick="equipment.equip('${equipment.name}')" class="button">Equip</button>`;
-    html += "</div>";
-
-    html += `<div class="column">`
-    html += `<div id="equipment-chooser-item">`
-    html += `<span class="equipment-slot">`;
-    html += `<img src="${equipment.iconUrl}" />`;
-    html += "</span>";
-    html += "</div>";
-    html += "</div>";
-
-    html += "</div>";
-    
-    dom.setHtml("equipment-chooser-selected", html);
+    dom.setHtml("equipment-chooser-selected", "");
 }

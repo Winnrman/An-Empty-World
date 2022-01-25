@@ -6,7 +6,7 @@ import { hasEquiped } from "../control/equipment";
 import { addMessage } from '../control/messages';
 import player, { addGold, addStatistic, removeGold, saveData }  from "../control/player";
 import transient from '../control/transient';
-import { getRandomInt, getRandomItem, sleep } from '../util';
+import { getRandomInt, getRandomItem, getWithIndefiniteArticle, sleep } from '../util';
 import { Rarity } from "../data/items";
 import { addLoot } from "./looting";
 
@@ -98,7 +98,7 @@ async function findCave() {
 
 async function fightMonster() {
     const enemy = enemy_dictionary[getRandomItem(["Goblin", "Troll", "Skeleton"])];
-    await waitForPart(2000, `Upon closer inspection, the monster appears to be a ${enemy.name}!`)
+    await waitForPart(2000, `Upon closer inspection, the monster appears to be ${getWithIndefiniteArticle(enemy.name)}!`)
 
     if (player.playerDefense > enemy.defense) {
         await waitForPart(2000, `After a brief battle, you manage to defeat the ${enemy.name}!`);
@@ -124,7 +124,7 @@ async function lootChest() {
     addMessage(`You find ${goldAmount} gold in the old chest!`);
 
     const item = getLootDrop(hasAmuletOfLuck() ? ["rare", "legendary"] : ["common", "uncommon"]);
-    addMessage(`You found a ${item.name}!${(hasAmuletOfLuck() ? " You feel lucky!" : "")}`);
+    addMessage(`You found ${getWithIndefiniteArticle(item.name)}!${(hasAmuletOfLuck() ? " You feel lucky!" : "")}`);
     addLoot(item);
     questWasSuccessful();
 }

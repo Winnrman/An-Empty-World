@@ -1,6 +1,6 @@
 import * as dom from '../util/dom';
 import { randomLootDrop } from "./events";
-import { addToInventory, getInventoryCount, hasInInventory, InventoryItemName, isInventoryFull, removeAllFromInventory, removeFromInventory, renderInventory } from "../control/inventory";
+import { addToolToInventory, getInventoryCount, hasInInventory, InventoryItemName, isInventoryFull, removeAllFromInventory, removeFromInventory, renderInventory } from "../control/inventory";
 import { itemsByName } from "../data/items";
 import { addMessage } from '../control/messages';
 import player, { addGold, removeGold, saveData } from "../control/player";
@@ -8,27 +8,27 @@ import { ToolName, toolsByName } from '../data/items/tools';
 import { addLoot } from './looting';
 import { levelUnlocks } from '../control/experience';
 import resources from '../data/items/resources';
+import { getWithIndefiniteArticle } from '../util';
 
-export function buyTool(type: ToolName, text: string) {
-    const price = itemsByName[type].price;
-    if (player.gold < price) {
-        addMessage(`You don't have enough gold to buy ${text}!`);
+export function buyTool(toolName: ToolName) {
+    const tool = toolsByName[toolName];
+    if (player.gold < tool.price) {
+        addMessage(`You don't have enough gold to buy ${getWithIndefiniteArticle(tool.name)}!`);
         return;
     }
 
-    if (hasInInventory(type)) {
-        addMessage(`You already have ${text}!`);
+    if (hasInInventory(toolName)) {
+        addMessage(`You already have ${getWithIndefiniteArticle(tool.name)}!`);
         return;
     }
-
+ 
     if (isInventoryFull()) {
         addMessage(`Your inventory is full!`);
         return;
     }
 
-    removeGold(price);
-    addToInventory(type, 1);
-    renderInventory();
+    removeGold(tool.price);
+    addToolToInventory(tool);
     saveData();
 }
 
@@ -103,8 +103,8 @@ export function renderStore() {
         return `<button class="store button" onclick="store.${action}">${text}${pricePart}</button> `
     }
 
-    const renderToolButton = (requiredLevel: number, toolName: ToolName, text: string) => {
-        return renderButton(requiredLevel, !hasInInventory(toolName), `buyTool('${toolName}', '${text}')`, `Buy ${toolName}`, toolsByName[toolName].price);
+    const renderToolButton = (requiredLevel: number, toolName: ToolName) => {
+        return renderButton(requiredLevel, !hasInInventory(toolName), `buyTool('${toolName}')`, `Buy ${toolName}`, toolsByName[toolName].price);
     }
 
     const ores = resources.filter(x => x.mining && x.name != "Stone");
@@ -114,10 +114,10 @@ export function renderStore() {
     html += `<span style="display: inline-flex">`;
     html += `<h3 class="subheader" id="buyHeader">Buy</h3>`;
 
-    html += renderToolButton(levelUnlocks.treeCutting, "Axe", "an axe");
-    html += renderToolButton(levelUnlocks.treeCutting, "Fishing Pole", "a fishing pole");
-    html += renderToolButton(levelUnlocks.treeCutting, "Hunting Rifle", "a hunting rifle");
-    html += renderToolButton(levelUnlocks.treeCutting, "Pickaxe", "a pickaxe");
+    html += renderToolButton(levelUnlocks.treeCutting, "Axe");
+    html += renderToolButton(levelUnlocks.treeCutting, "Fishing Pole");
+    html += renderToolButton(levelUnlocks.treeCutting, "Hunting Rifle");
+    html += renderToolButton(levelUnlocks.treeCutting, "Pickaxe");
     html += renderButton(levelUnlocks.inventoryUpgrade, player.boughtInventoryUpgrade < 3, "buyInventoryUpgrade()", `Buy Inventory Upgrade ${player.boughtInventoryUpgrade} / 3`, getInventoryUpgradeCost());
 
     html += `<h3 class="subheader">Special Deals</h3>`;

@@ -2,19 +2,20 @@ import * as dom from "../util/dom";
 import { addMessage } from '../control/messages';
 import { ownsEquipment } from "../control/equipment";
 import player, { saveData } from "../control/player";
-import { getInventoryCount, removeFromInventory, renderInventory } from "../control/inventory";
+import { getInventoryCount, hasInInventory, removeFromInventory, renderInventory } from "../control/inventory";
 import equipment, { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
 import potions, { Potion, PotionName, potionsByName } from "../data/items/potions";
 import { ResourceName, resourcesByName } from "../data/items/resources";
-import { getKeys } from "../util";
+import { displayNumber, getKeys, getWithIndefiniteArticle } from "../util";
 import { addLoot } from "./looting";
 import { Item } from "../data/items";
 
 import "../../css/crafting.css";
+import tools, { Tool, ToolName, toolsByName } from "../data/items/tools";
 
-export type CraftableName = EquipmentName | PotionName;
-export type Craftable = Equipment | Potion;
-export const craftablesByName: Record<CraftableName, Craftable> = { ...equipmentByName, ...potionsByName };
+export type CraftableName = EquipmentName | PotionName | ToolName;
+export type Craftable = Equipment | Potion | Tool;
+export const craftablesByName: Record<CraftableName, Craftable> = { ...equipmentByName, ...potionsByName, ...toolsByName };
 
 export function selectItemToCraft(craftableName: CraftableName) {
     player.selectedCraftable = craftablesByName[craftableName];
@@ -33,7 +34,7 @@ export function doCrafting() {
     
     for (var key in craftable.crafting.ingredients) {
         if (getInventoryCount(key as ResourceName) < craftable.crafting.ingredients[key]) {
-            addMessage(`You don't have enough ${key} to craft a ${craftable.name}!`);
+            addMessage(`You don't have enough ${key} to craft ${getWithIndefiniteArticle(craftable.name)}!`);
             return;
         }
     }
@@ -43,13 +44,19 @@ export function doCrafting() {
     }
 
     let craftableIndex = craftable.type === "Equipment" ? getCraftableEquipment().indexOf(craftable as Equipment) : 0;
-    addMessage(`You crafted a ${craftable.name}!`);
+    addMessage(`You crafted ${getWithIndefiniteArticle(craftable.name)}!`);
     addLoot(craftable);
 
     if (craftable.type === "Equipment") {
         const craftableEquipment = getCraftableEquipment();
         const nextCraftableIndex = craftableEquipment.length ? craftableIndex++ % craftableEquipment.length : -1;
         player.selectedCraftable = craftableEquipment[nextCraftableIndex];
+    }
+
+    if (craftable.type === "Tool") {
+        const craftableTool = getCraftableTools();
+        const nextCraftableIndex = craftableTool.length ? craftableIndex++ % craftableTool.length : -1;
+        player.selectedCraftable = craftableTool[nextCraftableIndex];
     }
     
     renderCraftables();
@@ -63,17 +70,25 @@ function renderCraftable(craftable: Craftable) {
     return `<div onclick="crafting.selectItemToCraft('${craftable.name}')" class="item-icon" title="${craftable.name}"><img src="${craftable.iconUrl}" /></div>`;
 }
 
+function getCraftableTools() {
+    return tools.filter(x => canCraft(x) && !hasInInventory(x.name));
+}
+
 function getCraftableEquipment() {
     return equipment.filter(x => canCraft(x) && !ownsEquipment(x.name));
 }
 
 export function renderCraftables() {
+    const craftableTools = getCraftableTools();
     const craftableEquipment = getCraftableEquipment();
     const craftablePotions = potions.filter(x => canCraft(x));
     
     let html = "<div>";
 
-    if (craftableEquipment.length) {
+    if (craftableEquipment.length || craftableTools.length) {
+        for (const craftable of craftableTools) {
+            html += renderCraftable(craftable);
+        }
         for (const craftable of craftableEquipment) {
             html += renderCraftable(craftable);
         }
@@ -102,7 +117,10 @@ export function renderCraftableDetails() {
 
     let html = "<div>";
     html += `<h3>Item to craft</h3>`;
-    html += `<div class="item-icon" title="${craftable.name}"><img src="${craftable.iconUrl}" /></div>${craftable.name}<br />`;
+    html += `<div class="row">`
+    html += `<div class="auto-column item-icon" title="${craftable.name}"><img src="${craftable.iconUrl}" /></div>`;
+    html += `<div>${craftable.name}<br />${craftable.description}<br /></div>`;
+    html += "</div>";
     html += "<br />"
 
     html += `<h3>Ingredients</h3>`
@@ -116,7 +134,7 @@ export function renderCraftableDetails() {
         const ownedAmount = getInventoryCount(ingredientName);
         const requiredAmount = ingredients[ingredientName];
         const classForAmount = ownedAmount < requiredAmount ? "red" : ""
-        html += `<span class="${classForAmount}">${ownedAmount}/${requiredAmount}</span>`;
+        html += `<span class="${classForAmount}">${displayNumber(ownedAmount)}/${requiredAmount}</span>`;
 
         html += "</span>";
     }
