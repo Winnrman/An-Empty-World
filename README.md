@@ -3,7 +3,7 @@
 Main Story:
 You wake up in a strange place, surrounded by debris. Unaware of how you got there, it becomes immediately aware that you're not where you should be. Your objective becomes one thing and one thing only; survive. Using your knowledge of tool building, combat, and various other skills, you must find a way to survive and escape this empty world.
 
-## Github Link: ## 
+## Discord Link: ## 
 https://discord.gg/mBZNdYnY
 
 ## Project Setup: ##
