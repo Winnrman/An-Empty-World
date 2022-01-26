@@ -31,9 +31,6 @@
     border: none;
 }
 
-.dark #footerContainer {
-    background-color: transparent;
-}
 .dark #messagesContainer {
     border-color: white;
 }
