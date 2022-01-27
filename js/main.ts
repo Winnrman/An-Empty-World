@@ -5,6 +5,7 @@ import * as combat from "./activities/combat";
 import * as crafting from "./activities/crafting";
 import * as effects from "./control/effects";
 import * as experience from "./control/experience";
+import * as gathering from "./activities/gathering";
 import * as inventory from "./control/inventory";
 import * as equipment from "./control/equipment";
 import * as messages from "./control/messages";
@@ -32,6 +33,7 @@ declare global {
         combat: typeof combat;
         crafting: typeof crafting;
         equipment: typeof equipment;
+        gathering: typeof gathering;
         inventory: typeof inventory;
         settings: typeof settings;
         questing: typeof questing;
@@ -46,6 +48,7 @@ window.activities = activities;
 window.combat = combat;
 window.crafting = crafting;
 window.equipment = equipment;
+window.gathering = gathering;
 window.inventory = inventory;
 window.settings = settings;
 window.questing = questing;
@@ -82,6 +85,7 @@ export function checkAndRenderEverything() {
     questing.renderStamina();
     inventory.renderInventory();
     combat.renderPreCombatInfo();
+    gathering.resumeGatheringActivity();
 }
 
 startIntervals();

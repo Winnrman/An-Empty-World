@@ -7,6 +7,7 @@ import { InventoryItemName, renderInventory } from './inventory';
 import { PartialRecord } from '../util';
 import { Activity } from '../activities/activities';
 import { Craftable } from '../activities/crafting';
+import { GatheringActivityName } from '../activities/gathering';
 
 export type Player = ReturnType<typeof getPlayerData>;
 const player: Player = getPlayerData();
@@ -107,7 +108,9 @@ export function getDefaultData() {
 
         completedAchievements: {} as PartialRecord<AchievementName, number>,
 
-        currentActivity: "Crafting" as Activity | undefined,
+        currentActivity: "Crafting" as Activity,
+        currentGatheringActivity: undefined as GatheringActivityName | undefined,
+        currentGatheringActivityId: undefined as number | undefined,
         selectedItemName: undefined as InventoryItemName | undefined,
         selectedCraftable: undefined as Craftable | undefined,
         selectedEquipmentSlot: undefined as EquipmentSlot | undefined,
