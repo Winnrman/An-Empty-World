@@ -10,6 +10,7 @@ import { showActivity } from "./activities";
 
 import iconWood from "../../img/assets/materials/Wood.png";
 import iconStone from "../../img/assets/materials/Stone.png";
+import iconAxe from "../../img/assets/tools/stone_axe.png";
 import iconPickaxe from "../../img/assets/tools/Pickaxe.png";
 import iconFish from "../../img/assets/materials/Fish.png";
 import iconMeat from "../../img/assets/materials/Meat.png";
@@ -18,9 +19,42 @@ import levelUnlocks from "../data/levelUnlocks";
 import { sleep } from "../control/timing";
 
 export type GatheringActivityName = "Collect Branches" | "Collect Stones" | "Cut down Tree" | "Mine Stone" | "Catch Fish" | "Hunt Meat" | "Mine Iron" | "Mine Ore";
+export type GatheringCategoryName = "Wood" | "Stone" | "Food" | "Ore";
+
+export type GatheringCategory = {
+    name: GatheringCategoryName;
+    icon: string;
+    requiredLevel: number;
+}
+
+export const gatheringCategories: GatheringCategory[] = [
+    {
+        name: "Wood",
+        icon: iconWood,
+        requiredLevel: levelUnlocks.branchCollecting,
+    },
+    {
+        name: "Stone",
+        icon: iconStone,
+        requiredLevel: levelUnlocks.stoneCollecting,
+    },
+    {
+        name: "Food",
+        icon: iconMeat,
+        requiredLevel: levelUnlocks.fishing,
+    },
+    {
+        name: "Ore",
+        icon: iconIron,
+        requiredLevel: levelUnlocks.ironMining,
+    },
+];
+
+export const gatheringCategoriesByName: { [key in GatheringCategoryName]: GatheringCategory } = Object.assign({}, ...gatheringCategories.map(x => ({ [x.name]: x })));
 
 export type GatheringActivity = {
     name: GatheringActivityName;
+    category: GatheringCategoryName;
     requiredLevel: number;
     neededTools: ToolName[] | undefined;
     time: number;
@@ -28,11 +62,12 @@ export type GatheringActivity = {
     getXp: (itemGathered: Resource) => number | undefined;
     getStatistic: (itemGathered: Resource) => StatisticName | undefined;
     icon: string;
-}
+};
 
 const gatheringActivities: GatheringActivity[] = [
     {
         name: "Collect Branches",
+        category: "Wood",
         neededTools: undefined,
         requiredLevel: levelUnlocks.branchCollecting,
         time: 5000,
@@ -43,6 +78,7 @@ const gatheringActivities: GatheringActivity[] = [
     },
     {
         name: "Collect Stones",
+        category: "Stone",
         requiredLevel: levelUnlocks.stoneCollecting,
         neededTools: undefined,
         time: 5000,
@@ -53,26 +89,29 @@ const gatheringActivities: GatheringActivity[] = [
     },
     {
         name: "Cut down Tree",
+        category: "Wood",
         requiredLevel: levelUnlocks.treeCutting,
         neededTools: ["Axe"],
         time: 2000,
         getItem: () => "Wood",
         getXp: (itemGathered: Resource) => itemGathered.gathering.treeCuttingXp,
         getStatistic: () => "cutWood",
-        icon: iconWood,
+        icon: iconAxe,
     },
     {
         name: "Mine Stone",
+        category: "Stone",
         requiredLevel: levelUnlocks.stoneMining,
         neededTools: ["Pickaxe"],
         time: 2000,
         getItem: () => "Stone",
         getXp: (itemGathered: Resource) => itemGathered.gathering.miningXp,
         getStatistic: () => "minedRocks",
-        icon: iconStone,
+        icon: iconPickaxe,
     },
     {
         name: "Catch Fish",
+        category: "Food",
         requiredLevel: levelUnlocks.fishing,
         neededTools: ["Wooden Harpoon", "Fishing Pole"],
         time: 2000,
@@ -83,6 +122,7 @@ const gatheringActivities: GatheringActivity[] = [
     },
     {
         name: "Hunt Meat",
+        category: "Food",
         requiredLevel: levelUnlocks.hunting,
         neededTools: ["Stone Spear", "Hunting Rifle"],
         time: 5000,
@@ -93,6 +133,7 @@ const gatheringActivities: GatheringActivity[] = [
     },
     {
         name: "Mine Iron",
+        category: "Ore",
         requiredLevel: levelUnlocks.ironMining,
         neededTools: ["Pickaxe"],
         time: 5000,
@@ -103,6 +144,7 @@ const gatheringActivities: GatheringActivity[] = [
     },
     {
         name: "Mine Ore",
+        category: "Ore",
         requiredLevel: levelUnlocks.mining,
         neededTools: ["Pickaxe"],
         time: 10000,
@@ -114,6 +156,15 @@ const gatheringActivities: GatheringActivity[] = [
 ];
 
 export const gatheringActivitiesByName: { [key in GatheringActivityName]: GatheringActivity } = Object.assign({}, ...gatheringActivities.map(x => ({ [x.name]: x })));
+
+export function showGatheringCategory(categoryName: GatheringCategoryName) {
+    if (player.currentGatheringCategory === categoryName)
+        return;
+
+    player.currentGatheringCategory = categoryName;
+    showActivity("Gathering");
+    saveData();
+}
 
 export async function startGatheringActivity(activityName: GatheringActivityName) {
     if (player.currentGatheringActivity === activityName)
@@ -151,6 +202,12 @@ export async function startGatheringActivity(activityName: GatheringActivityName
     }
 }
 
+export function clearGatheringCategory() {
+    player.currentGatheringCategory = undefined;
+    renderGatheringCategory();
+    clearGatheringActivity();
+}
+
 export function clearGatheringActivity() {
     player.currentGatheringActivity = undefined;
     player.currentGatheringActivityId = undefined;
@@ -165,6 +222,10 @@ export function resumeGatheringActivity() {
     
     player.currentGatheringActivity = undefined;
     startGatheringActivity(activity);
+}
+
+function hasTool(toolNames: ToolName[] | undefined) {
+    return !toolNames || toolNames.some(x => hasInInventory(x));
 }
 
 function getTool(toolNames: ToolName[] | undefined, action: string) {
@@ -187,15 +248,30 @@ function hasNoSpace() {
     return true;
 }
 
+export function renderGatheringCategory() {
+    if (!player.currentGatheringCategory) {
+        dom.setHtml("gathering-category", "");
+        return;
+    }
+
+    let html = "";
+    const availablecategories = gatheringActivities.filter(x => x.category === player.currentGatheringCategory && player.level >= x.requiredLevel);
+    for (const activity of availablecategories) {
+        html += `<button class="button" onclick="gathering.startGatheringActivity('${activity.name}')"><img src='${activity.icon}' />${activity.name}</button> `;
+    }
+    
+    dom.setHtml("gathering-category", html);
+}
+
 export function renderGatheringActivity() {
     if (!player.currentGatheringActivity) {
-        dom.setHtml("gathering", "");
+        dom.setHtml("gathering-activity", "");
         return;
     }
 
     let html = "";
     html += `${player.currentGatheringActivity} `;
     html += `<div class="progress-bar"><span id="gathering-progress" style="width: 0%;"></span></div> `;
-    html += `<button onClick="gathering.clearGatheringActivity()">Stop</button>`;
-    dom.setHtml("gathering", html);
+    html += `<button class="button" onClick="gathering.clearGatheringActivity()">Stop</button>`;
+    dom.setHtml("gathering-activity", html);
 }
