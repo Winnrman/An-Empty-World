@@ -49,3 +49,14 @@ export function addClass(elementId: string, className: string) {
 export function removeClass(elementId: string, className: string) {
     getElement(elementId).classList.remove(className);
 }
+
+export function resetProgressbar(id: string, time: number) {
+    const element = getElement(id);
+    element.style.width = "0%";
+    element.classList.add('notransition');
+    setTimeout(() => {
+        element.classList.remove('notransition');
+        element.style.width = "100%";
+        element.style.transition = `width ${time}ms linear`;
+    }, 10);
+}

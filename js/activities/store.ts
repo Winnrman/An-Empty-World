@@ -5,9 +5,9 @@ import { addMessage } from '../control/messages';
 import player, { addGold, removeGold, saveData } from "../control/player";
 import { ToolName, toolsByName } from '../data/items/tools';
 import { addLoot } from './looting';
-import { levelUnlocks } from '../control/experience';
 import resources from '../data/items/resources';
 import { getWithIndefiniteArticle } from '../util';
+import levelUnlocks from '../data/levelUnlocks';
 
 export function buyTool(toolName: ToolName) {
     const tool = toolsByName[toolName];
@@ -85,7 +85,7 @@ function sellItems(itemNames: InventoryItemName[]) {
 }
 
 function sellItem(itemName: InventoryItemName, amount?: number) {
-    amount ||= getInventoryCount(itemName);
+    amount = Math.min(0, amount ?? getInventoryCount(itemName));
     addGold(amount * inventoryItemsByName[itemName].price);
     removeFromInventory(itemName, amount);
     renderInventory();

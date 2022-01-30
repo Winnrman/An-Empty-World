@@ -8,10 +8,10 @@ import potions, { Potion, PotionName, potionsByName } from "../data/items/potion
 import { resourcesByName } from "../data/items/resources";
 import { displayNumber, getEntries, getWithIndefiniteArticle } from "../util";
 import { addLoot } from "./looting";
-import { Item } from "../data/items";
 
 import "../../css/crafting.css";
 import tools, { Tool, ToolName, toolsByName } from "../data/items/tools";
+import { sleep } from "../control/timing";
 
 export type CraftableName = EquipmentName | PotionName | ToolName;
 export type Craftable = Equipment | Potion | Tool;
@@ -22,7 +22,25 @@ export function selectItemToCraft(craftableName: CraftableName) {
     renderCraftableDetails();
 }
 
-export function doCrafting() {
+let isCrafting = false;
+
+export function stopCrafting() {
+    isCrafting = false;
+    renderCraftableDetails();
+}
+
+function checkIngredientCount(craftable: Craftable) {
+    for (const [ingredientName, ingredient] of getEntries(craftable.crafting!.ingredients)) {
+        if (getInventoryCount(ingredientName) < ingredient) {
+            addMessage(`You don't have enough ${ingredientName} to craft ${getWithIndefiniteArticle(craftable.name)}!`);
+            return false;
+        }
+    }
+
+    return true;
+}
+
+export async function doCrafting() {
     const craftable = player.selectedCraftable;
     if (!craftable || !craftable.crafting)
         return;
@@ -31,16 +49,31 @@ export function doCrafting() {
         addMessage(`You need level ${craftable.crafting.requiredLevel} to craft ${craftable.name}!`);
         return;
     }
+
+    if (!checkIngredientCount(craftable))
+        return;
     
-    for (const [ingredientName, ingredient] of getEntries(craftable.crafting.ingredients)) {
-        if (getInventoryCount(ingredientName) < ingredient) {
-            addMessage(`You don't have enough ${ingredientName} to craft ${getWithIndefiniteArticle(craftable.name)}!`);
-            return;
-        }
+    let craftingTime = 5000;
+    for (const [ingredientName, amount] of getEntries(craftable.crafting.ingredients)) {
+        craftingTime += 2000 * amount;
     }
+
+    isCrafting = true;
+    renderCraftableDetails();
+    dom.resetProgressbar("crafting-progress", craftingTime);
+
+    await sleep(craftingTime);
+
+    if (!isCrafting)
+        return;
     
-    for (const [ingredientName, ingredient] of getEntries(craftable.crafting.ingredients)) {
-        removeFromInventory(ingredientName, ingredient)
+    isCrafting = false;
+
+    if (!checkIngredientCount(craftable))
+        return;
+        
+    for (const [ingredientName, amount] of getEntries(craftable.crafting.ingredients)) {
+        removeFromInventory(ingredientName, amount);
     }
 
     let craftableIndex = craftable.type === "Equipment" ? getCraftableEquipment().indexOf(craftable as Equipment) : 0;
@@ -121,26 +154,32 @@ export function renderCraftableDetails() {
     html += `<div class="auto-column item-icon" title="${craftable.name}"><img src="${craftable.iconUrl}" /></div>`;
     html += `<div>${craftable.name}<br />${craftable.description}<br /></div>`;
     html += "</div>";
-    html += "<br />"
-
-    html += `<h3>Ingredients</h3>`
-    html += `<div class="crafting-ingredients">`
-    for (const [ingredientName, requiredAmount] of getEntries(ingredients)) {
-        html += `<span class="crafting-ingredient">`;
-
-        const ingredient = resourcesByName[ingredientName];
-        html += `<div class="item-icon" title="${ingredient.name}"><img src="${ingredient.iconUrl}" /></div>`;
-        
-        const ownedAmount = getInventoryCount(ingredientName);
-        const classForAmount = ownedAmount < requiredAmount ? "red" : ""
-        html += `<span class="${classForAmount}">${displayNumber(ownedAmount)}/${requiredAmount}</span>`;
-
-        html += "</span>";
-    }
-    html += "</div>";
-
     html += "<br />";
-    html += `<button class="button" onclick="crafting.doCrafting()">Craft</button>`;
+
+    if (isCrafting) {
+        html += `<div class="progress-bar"><span id="crafting-progress" style="width: 0%;"></span></div>`;
+        html += `<button class="button" onClick="crafting.stopCrafting()">Stop</button>`;
+    } else {
+        html += `<h3>Ingredients</h3>`
+        html += `<div class="crafting-ingredients">`
+        for (const [ingredientName, requiredAmount] of getEntries(ingredients)) {
+            html += `<span class="crafting-ingredient">`;
+    
+            const ingredient = resourcesByName[ingredientName];
+            html += `<div class="item-icon" title="${ingredient.name}"><img src="${ingredient.iconUrl}" /></div>`;
+            
+            const ownedAmount = getInventoryCount(ingredientName);
+            const classForAmount = ownedAmount < requiredAmount ? "red" : ""
+            html += `<span class="${classForAmount}">${displayNumber(ownedAmount)}/${requiredAmount}</span>`;
+    
+            html += "</span>";
+        }
+        html += "</div>";
+    
+        html += "<br />";
+        html += `<button class="button" onclick="crafting.doCrafting()">Craft</button>`;
+    }
+
     html += "</div>";
     
     dom.setHtml("craftable-details", html);

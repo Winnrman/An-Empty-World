@@ -34,6 +34,11 @@ export function hasInInventory(itemName: InventoryItemName) {
 }
 
 export function addToInventory(itemName: InventoryItemName, amount: number) {
+    const leftSpace = player.maxInventorySize - calculateInventorySpace();
+    if (leftSpace < amount) {
+        addMessage(`you were receiving ${amount} ${itemName}, but didn't have space for it so you got ${leftSpace > 0 ? `only ${leftSpace}` : 'none'}!`);
+        amount = leftSpace;
+    }
     player.inventory[itemName] = (player.inventory[itemName] ?? 0) + amount;
     renderInventory();
 }

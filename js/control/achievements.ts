@@ -2,9 +2,9 @@ import * as dom from "../util/dom";
 import player from "./player";
 import { hasEquiped } from "./equipment";
 import { addMessage } from './messages';
-import { levelUnlocks } from "./experience";
 import { EquipmentName } from "../data/items/equipment";
 import { displayNumber, getEntries, PartialRecord } from "../util";
+import levelUnlocks from "../data/levelUnlocks";
 
 const getEquipCount = (type: EquipmentName) => hasEquiped(type) ? 1 : 0;
 

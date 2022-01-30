@@ -61,7 +61,7 @@ export type Equipment = Item & {
     };
     crafting?: {
         requiredLevel: number;
-        ingredients: PartialRecord<ResourceName, number>,
+        ingredients: PartialRecord<ResourceName, number>;
     };
 };
 

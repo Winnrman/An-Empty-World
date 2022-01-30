@@ -15,10 +15,6 @@ export function getRandomItem<T>(items: T[]) {
     return items[Math.floor(Math.random()*items.length)];
 }
 
-export function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 export function getKeys<T extends string | number | symbol, V>(record: Record<T, V> | PartialRecord<T, V>) {
     return Object.keys(record) as Array<T>
 }
@@ -56,5 +52,5 @@ function startsWithVowelOrHPlusVowel(value: string) {
 
 export function getWithIndefiniteArticle(value: string) {
     const lowerValue = value.toLowerCase();
-    return (startsWithVowelOrHPlusVowel(lowerValue) ? "a " : "an ") + lowerValue;
+    return (startsWithVowelOrHPlusVowel(lowerValue) ? "an " : "a ") + lowerValue;
 }
