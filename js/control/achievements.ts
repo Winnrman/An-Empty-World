@@ -24,7 +24,7 @@ export const achievements = [
     },
     {
         id: "wooden_armor",
-        name: () => "Wooden Armor",
+        name: () => "Wear full Wooden Armor",
         reward: () => 50,
         getProgress: () => getEquipCount("Wooden Helmet") + getEquipCount("Wooden Chestplate") + getEquipCount("Wooden Leggings") + getEquipCount("Wooden Boots"),
         levels: [4]
@@ -62,7 +62,7 @@ export const achievements = [
     {
         id: "iron_armor",
         requirements: { achievements: { "wood_armor": 1 }, level: 5 },
-        name: () => "Iron Armor",
+        name: () => "Wear full Iron Armor",
         reward: () => 250,
         getProgress: () => getEquipCount("Iron Helmet") + getEquipCount("Iron Chestplate") + getEquipCount("Iron Leggings") + getEquipCount("Iron Boots"),
         levels: [4]
@@ -199,7 +199,7 @@ function renderAchievements() {
 }
 
 function getAchievementsInProgress() {
-    return achievementsToCheck.filter(x => checkRequirements(x)).map(achievement => {
+    return achievementsToCheck.filter(x => checkRequirements(x) && x.progress > 0).map(achievement => {
         const levelValue = achievement.levels[achievement.currentLevel];
         return {
             name: achievement.name(`${achievement.progress}/${levelValue}`),
