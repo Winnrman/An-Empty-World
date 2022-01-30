@@ -82,68 +82,14 @@
         <legend>
             <h2>Activities</h2>
         </legend>
-        <div style="padding-top:5px;" id="activitiesContainer">
-            <button id="treeButton" class="button" onclick="activities.tree()">
-                <img src='img/assets/tools/stone_axe.png'>Cut Down Tree</button>
-            <button id="goFishingButton" class="button" onclick="activities.goFishing()">
-                <img src='img/assets/materials/Fish.png'>
-                Go Fishing</button>
-            <button style="visibility: hidden;" id="goHuntingButton" class="button" onclick="activities.goHunting()">
-                <img src='img/assets/materials/Meat.png'>
-                Go Hunting</button>
-            <button style="visibility: hidden;" id="goMiningButton" class="button" onclick="activities.goMining()">Go
-                Mining</button>
-            <button style="visibility: hidden;" id="goIronMiningButton" class="button"
-                onclick="activities.goIronMining()">Go Iron Mining</button>
-            <button style="visibility: hidden;" id="goQuestingButton" class="button" onclick="questing.doQuest()">Go
-                Questing</button>
-            <button class="button" onclick="activities.goCrafting()">Go Crafting</button>
-            <button class="button" onclick="activities.goFighting()">Go Fighting</button>
-            <button class="button" onclick="activities.goToStore()">Go to store</button>
-        </div>
+        <div id="activities"></div>
     </fieldset>
 
     <fieldset id="storeContainer" class="container">
         <legend>
             <h2>Store</h2>
         </legend>
-        <span style="display: inline-flex">
-            <h3 class="subheader" id="buyHeader">Buy</h3>
-            <button id="axe" class="store button" onclick="store.buyAxe()">Buy Axe [ 20 ]</button>
-            <button id="fishingPole" class="store button" onclick="store.buyFishingPole()">Buy Fishing Pole [ 50
-                ]</button>
-            <button style="visibility: hidden;" id="huntingRifle" class="store button"
-                onclick="store.buyHuntingRifle()">Buy
-                Hunting Rifle [ 300
-                ]</button>
-            <button style="visibility: hidden;" id="pickaxe" class="store button" onclick="store.buyPickaxe()">Buy
-                Pickaxe [
-                1200
-                ]</button>
-            <button style="visibility: hidden;" id="inventoryUpgrade" class="store button"
-                onclick="store.buyInventoryUpgrade()">Buy
-                Inventory Upgrade [PRICE]</button>
-            <h3 class="subheader">Special Deals</h3>
-            <button id="specialDeal" class="store button" onclick="store.buySpecialDeal()">Buy
-                Random Armor Piece [
-                1000
-                ]</button>
-        </span>
-        <br><br>
-        <span style="display: inline-flex">
-            <h3 class="subheader" id="sellHeader">Sell</h3>
-            <button id="sellWood" class="store button" onclick="store.sell('Wood')">Sell Wood</button>
-            <button id="sellFish" class="store button" onclick="store.sell('Fish')">Sell Fish</button>
-            <button style="visibility: hidden;" id="sellMeat" class="store button" onclick="store.sell('Meat')">Sell
-                Meat</button>
-            <button style="visibility: hidden;" id="sellStone" class="store button" onclick="store.sell('Stone')">Sell
-                Stone</button>
-            <button style="visibility: hidden;" id="sellOres" class="store button" onclick="store.sell('Ores')">Sell
-                Ores</button>
-            <button style="visibility: hidden;" id="sellIron" class="store button" onclick="store.sell('Iron')">Sell
-                Iron</button>
-
-        </span>
+        <div id="store"></div>
     </fieldset>
 
     <fieldset id="combatContainer" class="container">
@@ -221,7 +167,6 @@
         <a>share</a>
         <a onclick="resetData()">restart</a>
         <a id="switchTheme" onClick="settings.switchTheme()"></a>
-        <!-- <p>&copy; Idle Game</p> -->
     </footer>
 </body>
 

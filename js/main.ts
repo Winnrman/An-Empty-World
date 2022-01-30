@@ -77,7 +77,6 @@ export function checkAndRenderEverything() {
     equipment.renderEquipment();
     equipment.renderEquipmentChooser();
     equipment.renderSelectedEquipment();
-    store.renderInventoryUpgrade();
     crafting.renderCraftables();
     questing.renderStamina();
     inventory.renderInventory();

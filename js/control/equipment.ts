@@ -159,7 +159,7 @@ export function renderEquipmentChooser() {
         return;
     }
 
-    const renderEquipmentIconForSelectedSlot = (equipment: Equipment) => {
+    const renderEquipmentIcon = (equipment: Equipment) => {
         let html = "";
         html += `<span onClick="equipment.selectEquipment('${equipment.name}')" ondblclick="equipment.equip('${equipment.name}')" class="equipment-slot" title="${equipment.name}">`
         html += `<img src="${equipment.iconUrl}" />`;
@@ -174,7 +174,7 @@ export function renderEquipmentChooser() {
     html += `<div>Slot: ${slot}</div>`;
     html += `<div id="equipment-chooser-items">`
     for (let equipment of equipmentForSlot) {
-        html += renderEquipmentIconForSelectedSlot(equipment);
+        html += renderEquipmentIcon(equipment);
     }
     html += "</div>"
     html += "<br />"
