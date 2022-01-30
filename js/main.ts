@@ -51,6 +51,7 @@ window.settings = settings;
 window.questing = questing;
 window.saveData = saveData;
 window.runTests = runTests;
+console.log("runTests is set");
 
 window.resetData = function () {
     resetData()

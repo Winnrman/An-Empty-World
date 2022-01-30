@@ -84,7 +84,7 @@ export function getDefaultData() {
         level: 1,
         boughtInventoryUpgrade: 0,
         inventory_dictionary: {} as PartialRecord<InventoryItemName, number | undefined>,
-        gold: 100,
+        gold: 0,
         maxInventorySize: 25,
         maxStamina: 25,
         stamina: 25,
@@ -92,12 +92,7 @@ export function getDefaultData() {
         ownedEquipment: [] as EquipmentName[],
         equipment: {} as PartialRecord<EquipmentSlot, EquipmentName | undefined>,
 
-        toolHealth: {
-            "Axe": 20,
-            "Fishing Pole": 10,
-            "Hunting Rifle": 50,
-            "Pickaxe": 75,
-        } as PartialRecord<ToolName, number>,
+        toolHealth: {} as PartialRecord<ToolName, number>,
 
         playerHealth: 100,
         maxHealth: 100,
@@ -120,7 +115,7 @@ export function getDefaultData() {
 
         completedAchievements: {},
 
-        currentActivity: "Store" as Activity | undefined,
+        currentActivity: "Crafting" as Activity | undefined,
         selectedItemName: undefined as InventoryItemName | undefined,
         selectedCraftable: undefined as Craftable | undefined,
         selectedEquipmentSlot: undefined as EquipmentSlot | undefined,

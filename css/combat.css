@@ -1,4 +1,4 @@
-#combatContainer .auto-column {
+#combatContainer > .row > .auto-column {
     padding-right: 50px;
 }
 

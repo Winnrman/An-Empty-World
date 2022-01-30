@@ -11,7 +11,7 @@ import * as store from "../activities/store";
 import { EquipmentName } from "../data/items/equipment";
 import { ToolName } from "../data/items/tools";
 import { ResourceName } from "../data/items/resources";
-import { getInventoryCount, InventoryItemName } from "../control/inventory";
+import * as inventory from "../control/inventory";
 
 let data = getDefaultData();
 
@@ -38,8 +38,8 @@ function runScenario() {
     data = getDefaultData();
     data.inventory_dictionary["Axe"] = 0;
     data.inventory_dictionary["Wood"] = 0;
+    data.inventory_dictionary["Wooden Harpoon"] = 0;
     data.inventory_dictionary["Fish"] = 0;
-    data.inventory_dictionary["Fishing Pole"] = 0;
     runWoodcuttingScenario()
     runFishingScenario();
     runCraftingScenario();
@@ -51,38 +51,57 @@ function runWoodcuttingScenario() {
     nothingHappened("To make sure we don't run into problems when we sell something we don't have");
     verify();
 
-    buyAxe();
-    boughtItem("Axe");
+    collectBranches(4 * 5);
+    didCollectBranches(4);
     verify();
 
-    cutLogs(19);
-    didCutLogs(19);
+    collectStones(10 * 5);
+    didCollectStones(10);
     verify();
 
+    craft("Axe");
+    craftedTool("Axe");
+    verify();
+
+    craft("Pickaxe");
+    craftedTool("Pickaxe");
+    verify();
+
+    cutLogs(10);
+    didCutLogs(10);
+    verify();
+    
+    cutLogs(1);
+    didCutLogs(1);
+    levelled(2);
+    verify();
+    
+    cutLogs(8);
+    didCutLogs(8);
+    verify();
+    
     cutLogs(1);
     didCutLogs(1);
     toolBroke("Axe");
-    levelled(2, 200);
     verify();
     
     cutLogs(1);
     nothingHappened("No Axe");
     verify();
-    
-    buyAxe();
-    boughtItem("Axe");
+
+    craft("Axe");
+    nothingHappened("No stone");
     verify();
 
-    cutLogs(4);
-    didCutLogs(4);
+    drop("Wood", 1);
+    droppedItem("Wood", 1);
+
+    collectStones(5 * 5);
+    didCollectStones(5);
     verify();
 
-    cutLogs(1);
-    nothingHappened("Inventory full");
-    verify();
-
-    sell("Wood");
-    soldItem("Wood", 24);
+    craft("Axe");
+    craftedTool("Axe");
     verify();
 
     cutLogs(1);
@@ -90,107 +109,113 @@ function runWoodcuttingScenario() {
     gotAchievement("cut_down_trees", 1);
     verify();
 
-    sell("Wood");
-    soldItem("Wood", 1);
+    cutLogs(5);
+    didCutLogs(5);
     verify();
+
+    cutLogs(1);
+    nothingHappened("Inventory full");
+    verify();
+
+    drop("Wood", 8);
+    droppedItem("Wood", 8);
 }
 
 function runFishingScenario() {
-    buyFishingPole();
-    boughtItem("Fishing Pole");
+    craft("Wooden Harpoon");
+    craftedTool("Wooden Harpoon");
     verify();
 
-    catchFish(9);
-    caughtFish(9);
-    verify();
-
-    catchFish(1);
-    caughtFish(1);
-    toolBroke("Fishing Pole");
-    verify();
-    
-    catchFish(1);
-    nothingHappened("No fishing Pole");
-    verify();
-    
-    buyFishingPole();
-    boughtItem("Fishing Pole");
-    verify();
-    
     catchFish(10);
     caughtFish(10);
-    toolBroke("Fishing Pole");
+    toolBroke("Wooden Harpoon");
     verify();
     
-    buyFishingPole();
-    boughtItem("Fishing Pole");
+    catchFish(1);
+    nothingHappened("No harpoon");
+    verify();
+    
+    craft("Wooden Harpoon");
+    craftedTool("Wooden Harpoon");
+    verify();
+    
+    catchFish(8);
+    caughtFish(7); // Inventory full
+    verify();
+
+    drop("Fish", 17);
+    droppedItem("Fish", 17);
     verify();
     
     catchFish(3);
     caughtFish(3);
+    toolBroke("Wooden Harpoon");
     verify();
     
-    catchFish(1);
-    nothingHappened("Inventory full");
+    craft("Wooden Harpoon");
+    craftedTool("Wooden Harpoon");
+    verify();
+    
+    catchFish(5);
+    caughtFish(5);
+    gotAchievement("catch_fish", 1);
     verify();
 
-    sell("Fish");
-    soldItem("Fish", 23);
-    gotAchievement("earned_gold", 1);
-    verify();
-    
-    catchFish(2);
-    caughtFish(2);
-    gotAchievement("catch_fish", 1);
+    drop("Fish", 8);
+    droppedItem("Fish", 8);
     verify();
 }
 
 function runCraftingScenario() {
-    cutLogs(15);
-    didCutLogs(15);
+    cutLogs(5);
+    didCutLogs(5);
+    levelled(3);
+    verify(); 
+
+    cutLogs(9);
+    didCutLogs(9);
     toolBroke("Axe");
+    verify(); 
+
+    mineStones(5);
+    didMineStones(5);
     verify();
-    
+
+    craft("Axe");
+    craftedTool("Axe");
+    verify();
+
     craft("Wooden Helmet");
-    craftedItem("Wooden Helmet");
+    craftedEquipment("Wooden Helmet");
     verify();
     
     craft("Wooden Chestplate");
-    craftedItem("Wooden Chestplate");
+    craftedEquipment("Wooden Chestplate");
     verify();
     
     craft("Wooden Leggings");
     nothingHappened("Not enough wood");
 
-    buyAxe();
-    boughtItem("Axe");
-    verify();
-
-    cutLogs(3);
-    didCutLogs(3);
-    levelled(3, 300);
-    gotAchievement("earned_gold", 2);
-    verify();
-    
-    cutLogs(9);
-    didCutLogs(9);
+    cutLogs(6);
+    didCutLogs(6);
     gotAchievement("cut_down_trees", 2);
     verify();
     
-    cutLogs(6);
-    didCutLogs(6);
+    cutLogs(14);
+    didCutLogs(14);
+    toolBroke("Axe");
     verify();
 
     craft("Wooden Leggings");
-    craftedItem("Wooden Leggings");
+    craftedEquipment("Wooden Leggings");
     verify();
     
     craft("Wooden Boots");
-    craftedItem("Wooden Boots");
+    craftedEquipment("Wooden Boots");
     verify();
     
     craft("Wooden Sword");
-    craftedItem("Wooden Sword");
+    craftedEquipment("Wooden Sword");
     verify();
 }
 
@@ -218,15 +243,23 @@ function runEquipmentScenario() {
 }
 
 function buyAxe() {
-    store.buyTool("Axe", "an axe");
+    store.buyTool("Axe");
+}
+
+function collectBranches(amount: number) {
+    times(amount, activities.collectBranches);
+}
+
+function collectStones(amount: number) {
+    times(amount, activities.collectStones);
+}
+
+function mineStones(amount: number) {
+    times(amount, activities.goStoneMining);
 }
 
 function cutLogs(amount: number) {
     times(amount, activities.tree);
-}
-
-function buyFishingPole() {
-    store.buyTool("Fishing Pole", "a fishing pole");
 }
 
 function catchFish(amount: number) {
@@ -235,6 +268,10 @@ function catchFish(amount: number) {
 
 function sell(itemName: store.SellType) {
     store.sell(itemName);
+}
+
+function drop(itemName: inventory.InventoryItemName, amount: number) {
+    inventory.removeFromInventory(itemName, amount);
 }
 
 function craft(itemName: crafting.CraftableName) {
@@ -258,38 +295,63 @@ function didCutLogs(amount: number) {
     data.xp += itemsByName["Wood"].treeCutting.xp * amount;
 }
 
-function toolBroke(itemName: ToolName) {
-    data.inventory_dictionary[itemName] = 0;
-    data.toolHealth[itemName] = itemsByName[itemName].health;
+function didCollectBranches(amount: number) {
+    data.inventory_dictionary["Wood"] ||= 0;
+    data.inventory_dictionary["Wood"] += amount;
+    data.xp += itemsByName["Wood"].treeCutting.xp * amount;
 }
 
-function levelled(level: number, expectedGold: number) {
+function didCollectStones(amount: number) {
+    data.inventory_dictionary["Stone"] ||= 0;
+    data.inventory_dictionary["Stone"] += amount;
+    data.xp += itemsByName["Stone"].mining.xp * amount;
+}
+
+function didMineStones(amount: number) {
+    data.inventory_dictionary["Stone"] ||= 0;
+    data.inventory_dictionary["Stone"] += amount;
+    data.xp += itemsByName["Stone"].mining.xp * amount;
+}
+
+function toolBroke(itemName: ToolName) {
+    data.inventory_dictionary[itemName] = 0;
+}
+
+function levelled(level: number) {
     data.level = level;
     data.xp = 0;
-    data.gold += expectedGold;
 }
 
 function soldItem(itemName: ResourceName, amount: number) {
     data.gold += amount * itemsByName[itemName].price;
-    data.inventory_dictionary[itemName] = 0;
+    data.inventory_dictionary[itemName] = amount === 0 ? 0 : data.inventory_dictionary[itemName] - amount;
+}
+
+function droppedItem(itemName: ResourceName, amount: number) {
+    data.inventory_dictionary[itemName] = amount === 0 ? 0 : data.inventory_dictionary[itemName] - amount;
 }
 
 function caughtFish(amount: number) {
     data.inventory_dictionary["Fish"] ||= 0;
     data.inventory_dictionary["Fish"] += amount;
-    data.toolHealth["Fishing Pole"] -= amount;
+    data.toolHealth["Wooden Harpoon"] -= amount;
     data.xp += itemsByName["Fish"].fishing.xp * amount;
 }
 
 function gotAchievement(id: string, amount: number) {
     data.completedAchievements[id] = amount;
-    const achievement = achievements.find(x => x.id === id);
-    const level = amount - 1;
-    const levelValue = achievement.levels[level];
-    data.gold += achievement.reward(amount -1, levelValue);
 }
 
-function craftedItem(itemName: EquipmentName) {
+function craftedTool(itemName: ToolName) {
+    data.inventory_dictionary[itemName] = 1;
+    const craftable = itemsByName[itemName];
+    data.toolHealth[itemName] = craftable.health;
+    for (var key in craftable.crafting.ingredients) {
+        data.inventory_dictionary[key] -= craftable.crafting.ingredients[key];
+    }
+}
+
+function craftedEquipment(itemName: EquipmentName) {
     data.ownedEquipment.push(itemName);
     const craftable = itemsByName[itemName];
     for (var key in craftable.crafting.ingredients) {
@@ -318,44 +380,52 @@ function verify() {
     checkAchievements();
     experience.checkLevelUnlocks();
 
-    verifyProperty("gold");
-    verifyProperty("level");
-    verifyProperty("xp");
+    const errors = Array<string>();
+    verifyProperty(errors, "gold");
+    verifyProperty(errors, "level");
+    verifyProperty(errors, "xp");
 
-    verifyInventory("Wood");
-    verifyInventory("Fish");
-    verifyInventory("Axe");
-    verifyInventory("Fishing Pole");
+    verifyInventory(errors, "Wood");
+    verifyInventory(errors, "Fish");
+    verifyInventory(errors, "Axe");
+    verifyInventory(errors, "Wooden Harpoon");
 
-    verifyToolHealth("Axe");
-    verifyToolHealth("Fishing Pole");
+    verifyToolHealth(errors, "Axe");
+    verifyToolHealth(errors, "Wooden Harpoon");
 
-    verifyArray("ownedEquipment");
-    verifyObject("equipment");
-    verifyObject("completedAchievements");
-}
+    verifyArray(errors, "ownedEquipment");
+    verifyObject(errors, "equipment");
+    verifyObject(errors, "completedAchievements");
 
-const verifyProperty = (property: keyof Player) => expectAreEqual(player[property], data[property], property);
-const verifyInventory = (item: InventoryItemName) => expectAreEqual(getInventoryCount(item), data.inventory_dictionary[item], `inventory ${item}`);
-const verifyToolHealth = (item: ToolName) => expectAreEqual(player.toolHealth[item], data.toolHealth[item], `toolHealth ${item}`);
-const verifyArray = (property: keyof Player) => expectArraysAreEqual(player[property] as any[], data[property] as any[], property);
-const verifyObject = (property: keyof Player) => expectObjectsAreEqual(player[property], data[property], property);
-
-function expectAreEqual(actual: any, expected: any, info: string) {
-    if (actual !== expected)
-        throw `${info} is ${actual} but expected ${expected}`;
-}
-
-function expectArraysAreEqual(actual: any[], expected: any[], info: string) {
-    expectAreEqual(actual.length, expected.length,`${info}.length`);
-    for (let i = 0; i < actual.length; i++) {
-        expectAreEqual(actual[i], expected[i], `${info}[${i}]`);
+    if (errors.length > 0) {
+        throw errors.join(",");
     }
 }
 
-function expectObjectsAreEqual(actual: any, expected: any, info: string) {
+const verifyProperty = (errors: string[], property: keyof Player) => expectAreEqual(errors, player[property], data[property], property);
+const verifyInventory = (errors: string[], item: inventory.InventoryItemName) => expectAreEqual(errors, inventory.getInventoryCount(item), data.inventory_dictionary[item], `inventory ${item}`);
+const verifyToolHealth = (errors: string[], item: ToolName) => expectAreEqual(errors, player.toolHealth[item], data.toolHealth[item], `toolHealth ${item}`);
+const verifyArray = (errors: string[], property: keyof Player) => expectArraysAreEqual(errors, player[property] as any[], data[property] as any[], property);
+const verifyObject = (errors: string[], property: keyof Player) => expectObjectsAreEqual(errors, player[property], data[property], property);
+
+function expectAreEqual(errors: string[], actual: any, expected: any, info: string) {
+    if (actual !== expected)
+        errors.push(`${info} is ${actual} but expected ${expected}`);
+}
+
+function expectArraysAreEqual(errors: string[], actual: any[], expected: any[], info: string) {
+    expectAreEqual(errors, actual.length, expected.length,`${info}.length`);
+    for (let i = 0; i < actual.length; i++) {
+        expectAreEqual(errors, actual[i], expected[i], `${info}[${i}]`);
+    }
+}
+
+function expectObjectsAreEqual(errors: string[], actual: any, expected: any, info: string) {
     for (let key in actual) {
-        expectAreEqual(actual[key], expected[key], `${info}[${key}]`);
+        expectAreEqual(errors, actual[key], expected[key], `${info}[${key}]`);
+    }
+    for (let key in expected) {
+        expectAreEqual(errors, actual[key], expected[key], `${info}[${key}]`);
     }
 }
 

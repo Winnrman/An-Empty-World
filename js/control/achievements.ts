@@ -4,6 +4,7 @@ import { hasEquiped } from "./equipment";
 import { addMessage } from './messages';
 import { levelUnlocks } from "./experience";
 import { EquipmentName } from "../data/items/equipment";
+import { displayNumber } from "../util";
 
 const getEquipCount = (type: EquipmentName) => hasEquiped(type) ? 1 : 0;
 
@@ -127,8 +128,7 @@ function checkAchievement(achievement) {
             return false;
         }
 
-        addMessage(`You have completed the ${achievement.name(levelValue)} achievement! [${achievement.reward(level, levelValue)} gold awarded]`);
-        addGold(achievement.reward(level, levelValue));
+        addMessage(`You have completed the ${achievement.name(levelValue)} achievement! You feel like you earned a reward, but you don't know what.`);
         player.completedAchievements[achievement.id] = level + 1;
     }
 
@@ -202,7 +202,7 @@ function getAchievementsInProgress() {
     return achievementsToCheck.filter(x => checkRequirements(x) && x.progress > 0).map(achievement => {
         const levelValue = achievement.levels[achievement.currentLevel];
         return {
-            name: achievement.name(`${achievement.progress}/${levelValue}`),
+            name: achievement.name(`${displayNumber(achievement.progress)}/${levelValue}`),
             progress: achievement.progress,
             levelValue: levelValue,
             previousLevelValue: achievement.levels[achievement.currentLevel - 1] || 0

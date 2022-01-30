@@ -6,6 +6,7 @@ import { setHtml } from "../util/dom";
 import { updateArmour } from "./equipment";
 
 import "../../css/effects.css";
+import { displayNumber } from "../util";
 
 export type PlayerEffect = {
     name: EffectName;
@@ -165,7 +166,7 @@ export function renderEffects() {
         const timeUntilExpiry = Math.ceil(millisecondsUntilExpiry / 100) / 10;
         const width = millisecondsUntilExpiry / effect.duration * 100;
         const description = effectData.getDescription(effect.value);
-        html += `<div class="progress-bar"><span style="width: ${width}%;"></span></div> ${description} (${timeUntilExpiry.toFixed(1)}s)<br />`;
+        html += `<div class="progress-bar"><span style="width: ${width}%;"></span></div> ${description} (${displayNumber(timeUntilExpiry)}s)<br />`;
     }
 
     if (player.effects.length === 0) {

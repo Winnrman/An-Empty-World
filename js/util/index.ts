@@ -42,3 +42,19 @@ export function tween(value: number, a: number, b: number) {
 export function tweenArrays(value: number, a: number[], b: number[]) {
     return a.map((_, i) => tween(value, a[i], b[i]));
 }
+
+export function displayNumber(value: number) {
+    return Math.round(value * 10) / 10;
+}
+
+
+function startsWithVowelOrHPlusVowel(value: string) {
+    const isVowel = (char: string) => "aeiou".indexOf(char) >= 0;
+    
+    return isVowel(value[0]) || value[0] == "h" && isVowel(value[1]);
+}
+
+export function getWithIndefiniteArticle(value: string) {
+    const lowerValue = value.toLowerCase();
+    return (startsWithVowelOrHPlusVowel(lowerValue) ? "a " : "an ") + lowerValue;
+}
