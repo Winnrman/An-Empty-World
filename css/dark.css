@@ -19,6 +19,9 @@
 .dark div {
     border-color: white;
 }
+.dark span {
+    border-color: white;
+}
 .dark fieldset {
     border-color: white;
 }

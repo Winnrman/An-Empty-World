@@ -21,7 +21,11 @@ export function getValue(elementId: string) {
 }
 
 export function getElement<T extends HTMLElement>(elementId: string) {
-    return document.getElementById(elementId) as T;
+    const element = document.getElementById(elementId) as T;
+    if (!element)
+        throw new Error(`Could not find element with id ${elementId}!`);
+        
+    return element;
 }
 
 export function createElement<T extends HTMLElement>(tagName: string, properties?: PartialRecord<keyof T, any>) {

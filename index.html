@@ -70,11 +70,7 @@
         </legend>
         <div class="row">
             <div class="column">
-                <p id="goldHeader">Gold: <span id="gold">0</span></p>
-                <br>
-                <span style="display: inline-flex;">
-                    <div id="inventory"></div>
-                </span>
+                <div id="inventory"></div>
             </div>
             <div class="column">
                 <div id="itemDetails"></div>
@@ -155,8 +151,11 @@
             <h2>Combat</h2>
         </legend>
         <div class="row">
-            <div class="auto-column equipment" id="armor"></div>
-            <div class="auto-column equipment" id="weapons"></div>
+            <div class="auto-column equipment" id="equipment-chooser">
+                <div id="equipment-chooser-selector"></div>
+                <div id="equipment-chooser-selected"></div>
+            </div>
+            <div class="auto-column equipment" id="equipment"></div>
             <div class="auto-column">
                 <div id="playerStats">
                     <h4 style="text-decoration: underline;" id="playerHeader">Player</h4>

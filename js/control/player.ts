@@ -4,7 +4,7 @@ import { EquipmentSlot } from '../data/items';
 import { PlayerEffect } from './effects';
 import { EquipmentName } from '../data/items/equipment';
 import { ToolName } from '../data/items/tools';
-import { InventoryItemName } from './inventory';
+import { InventoryItemName, renderInventory } from './inventory';
 import { PartialRecord } from '../util';
 import { Activity } from '../activities/activities';
 import { Craftable } from '../activities/crafting';
@@ -123,6 +123,8 @@ export function getDefaultData() {
         currentActivity: "Store" as Activity | undefined,
         selectedItemName: undefined as InventoryItemName | undefined,
         selectedCraftable: undefined as Craftable | undefined,
+        selectedEquipmentSlot: undefined as EquipmentSlot | undefined,
+        selectedEquipment: undefined as EquipmentName | undefined,
     }
 }
 
@@ -130,16 +132,12 @@ export function addGold(value) {
     player.gold += value;
     addStatistic("earnedGold", value);
 
-    renderGold();
+    renderInventory();
 }
 
 export function removeGold(value) {
     player.gold = Math.max(0, player.gold - value);
-    renderGold();
-}
-
-export function renderGold() {
-    dom.setHtml("gold", player.gold.toString());
+    renderInventory();
 }
 
 export function addStatistic(type, amount) {

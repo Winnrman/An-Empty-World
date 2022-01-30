@@ -8,7 +8,7 @@ import * as experience from "./control/experience";
 import * as inventory from "./control/inventory";
 import * as equipment from "./control/equipment";
 import * as messages from "./control/messages";
-import player, { saveData, resetData, renderGold, resumeSaving, Player } from "./control/player";
+import player, { saveData, resetData, resumeSaving, Player } from "./control/player";
 import * as store from "./activities/store";
 import * as questing from "./activities/questing";
 import runTests from "./tests";
@@ -31,6 +31,7 @@ declare global {
         activities: typeof activities;
         combat: typeof combat;
         crafting: typeof crafting;
+        equipment: typeof equipment;
         inventory: typeof inventory;
         settings: typeof settings;
         questing: typeof questing;
@@ -44,6 +45,7 @@ window.store = store;
 window.activities = activities;
 window.combat = combat;
 window.crafting = crafting;
+window.equipment = equipment;
 window.inventory = inventory;
 window.settings = settings;
 window.questing = questing;
@@ -66,18 +68,20 @@ function startIntervals() {
 
 export function checkAndRenderEverything() {
     experience.checkLevelUnlocks();
-    equipment.loadOptionsFromOwnedEquipment();
+    equipment.updateArmour();
     effects.registerEffectExpiries();
     activities.showCurrentActivity();
     settings.loadTheme();
 
     experience.renderLevel();
+    equipment.renderEquipment();
+    equipment.renderEquipmentChooser();
+    equipment.renderSelectedEquipment();
     store.renderInventoryUpgrade();
     crafting.renderCraftables();
     questing.renderStamina();
     inventory.renderInventory();
     combat.renderPreCombatInfo();
-    renderGold();
 }
 
 startIntervals();

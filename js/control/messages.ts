@@ -25,7 +25,7 @@ export function addMessage(message_text) {
 }
 
 window.onerror = function(msg, url, lineNo, columnNo, error) {
-    addMessage(`Error: ${msg} ${error}`)
+    addMessage(error || `Error: ${msg}`)
 }
 
 export function startClearInterval() {

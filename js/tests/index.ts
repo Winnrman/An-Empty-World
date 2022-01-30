@@ -20,7 +20,7 @@ export default function runTests(keepTestDataAfterwards?: boolean) {
     saveData();
     resetData();
     resetAchievementsToCheck();
-    equipment.loadOptionsFromOwnedEquipment();
+    equipment.updateArmour();
     
     try {
         runScenario();
@@ -243,9 +243,7 @@ function craft(itemName: crafting.CraftableName) {
 }
 
 function equip(itemName: EquipmentName) {
-    const slot = itemsByName[itemName].equipment.slot;
-    dom.setValue(`${slot}Select`, itemName);
-    dom.getElement(`${slot}Select`).dispatchEvent(new Event('change'));
+    equipment.equip(itemName);
 }
 
 function boughtItem(itemName: ToolName) {
