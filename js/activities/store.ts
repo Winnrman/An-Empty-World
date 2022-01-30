@@ -4,12 +4,12 @@ import { addToInventory, getInventoryCount, hasInInventory, InventoryItemName, i
 import { itemsByName } from "../data/items";
 import { addMessage } from '../control/messages';
 import player, { addGold, removeGold, saveData } from "../control/player";
-import { ToolName } from '../data/items/tools';
+import { ToolName, toolsByName } from '../data/items/tools';
 import { addLoot } from './looting';
 import { levelUnlocks } from '../control/experience';
 import resources from '../data/items/resources';
 
-function buyTool(type: ToolName, text: string) {
+export function buyTool(type: ToolName, text: string) {
     const price = itemsByName[type].price;
     if (player.gold < price) {
         addMessage(`You don't have enough gold to buy ${text}!`);
@@ -30,22 +30,6 @@ function buyTool(type: ToolName, text: string) {
     addToInventory(type, 1);
     renderInventory();
     saveData();
-}
-
-export function buyAxe() {
-    buyTool("Axe", "an axe");
-}
-
-export function buyFishingPole() {
-    buyTool("Fishing Pole", "a fishing pole");
-}
-
-export function buyHuntingRifle() {
-    buyTool("Hunting Rifle", "a hunting rifle");
-}
-
-export function buyPickaxe() {
-    buyTool("Pickaxe", "a pickaxe");
 }
 
 export function buySpecialDeal() {
@@ -119,6 +103,10 @@ export function renderStore() {
         return `<button class="store button" onclick="store.${action}">${text}${pricePart}</button> `
     }
 
+    const renderToolButton = (requiredLevel: number, toolName: ToolName, text: string) => {
+        return renderButton(requiredLevel, !hasInInventory(toolName), `buyTool('${toolName}', '${text}')`, `Buy ${toolName}`, toolsByName[toolName].price);
+    }
+
     const ores = resources.filter(x => x.mining && x.name != "Stone");
 
     let html = "";
@@ -126,10 +114,10 @@ export function renderStore() {
     html += `<span style="display: inline-flex">`;
     html += `<h3 class="subheader" id="buyHeader">Buy</h3>`;
 
-    html += renderButton(levelUnlocks.treeCutting, !hasInInventory("Axe"), "buyAxe()", "Buy Axe", 20);    
-    html += renderButton(levelUnlocks.fishing, !hasInInventory("Fishing Pole"), "buyFishingPole()", "Buy Fishing Pole", 50);
-    html += renderButton(levelUnlocks.hunting, !hasInInventory("Hunting Rifle"), "buyHuntingRifle()", "Buy Hunting Rifle", 300);
-    html += renderButton(levelUnlocks.mining, !hasInInventory("Pickaxe"), "buyPickaxe()", "Buy Pickaxe", 1200);
+    html += renderToolButton(levelUnlocks.treeCutting, "Axe", "an axe");
+    html += renderToolButton(levelUnlocks.treeCutting, "Fishing Pole", "a fishing pole");
+    html += renderToolButton(levelUnlocks.treeCutting, "Hunting Rifle", "a hunting rifle");
+    html += renderToolButton(levelUnlocks.treeCutting, "Pickaxe", "a pickaxe");
     html += renderButton(levelUnlocks.inventoryUpgrade, player.boughtInventoryUpgrade < 3, "buyInventoryUpgrade()", `Buy Inventory Upgrade ${player.boughtInventoryUpgrade} / 3`, getInventoryUpgradeCost());
 
     html += `<h3 class="subheader">Special Deals</h3>`;
