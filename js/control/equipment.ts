@@ -45,7 +45,7 @@ export function addToOwnedEquipment(item: Equipment) {
     renderEquipmentChooser();
 }
 
-export function showEquipmentChooser(slot: EquipmentSlot) {
+export function showEquipmentChooser(slot: EquipmentSlot | undefined) {
     if (player.selectedEquipmentSlot === slot) {
         slot = undefined;
     }
@@ -56,7 +56,7 @@ export function showEquipmentChooser(slot: EquipmentSlot) {
     saveData();
 }
 
-export function selectEquipment(itemName: EquipmentName) {
+export function selectEquipment(itemName: EquipmentName | undefined) {
     if (player.selectedEquipment === itemName)
         itemName = undefined;
     
@@ -90,8 +90,11 @@ export function hasEquiped(itemName: EquipmentName) {
     return Object.values(player.equipment).includes(itemName);
 }
 
+const getEquipmentNameInSlot = (slot: EquipmentSlot) => player.equipment[slot];
+const getEquipmentInSlot = (slot: EquipmentSlot) => getEquipmentNameInSlot(slot) ? equipmentByName[getEquipmentNameInSlot(slot)!] : undefined;
+
 export function updateArmour() {
-    const getArmorValue = (slot: EquipmentSlot) => equipmentByName[player.equipment[slot]]?.armor || 0;
+    const getArmorValue = (slot: EquipmentSlot) => getEquipmentInSlot(slot)?.equipment.armor ?? 0;
     player.playerDefense =
           getArmorValue("Helmet")
         + getArmorValue("Chestplate")
@@ -100,7 +103,7 @@ export function updateArmour() {
         + getArmorValue("Shield")
         + getEffectValue("addDefense");
 
-    const getAttackValue = (slot: EquipmentSlot) => equipmentByName[player.equipment[slot]]?.attack || 0;
+    const getAttackValue = (slot: EquipmentSlot) => getEquipmentInSlot(slot)?.equipment.attack ?? 0;
     player.playerAttack =
           1
         + getAttackValue("Weapon")
@@ -122,7 +125,7 @@ export function updateArmour() {
 
 export function renderEquipment() {
     const renderEquipmentIconForSlot = (slot: EquipmentSlot) => {
-        const item = equipmentByName[player.equipment[slot]];
+        const item = equipmentByName[player.equipment[slot]!];
         let html = "";
         html += `<span onClick="equipment.showEquipmentChooser('${slot}')" class="equipment-slot" title="${slot}: ${item?.name || 'None!'}">`
         html += `<img src="${item?.iconUrl || emptyEquipmentIcons[slot]}" />`;
@@ -182,10 +185,10 @@ export function renderEquipmentChooser() {
     const slot = player.selectedEquipmentSlot;
     let html = "";
 
-    const equipmentForSlot = player.ownedEquipment.map(x => equipmentByName[x]).filter(x => x.equipment.slot === slot && player.equipment[slot] != x.name)
+    const equipmentForSlot = player.ownedEquipment.map(x => equipmentByName[x]).filter(x => x.equipment!.slot === slot && player.equipment[slot] != x.name)
     html += `<div>Slot: ${slot}</div>`;
     html += `<div id="equipment-chooser-items">`
-    for (let equipment of equipmentForSlot) {
+    for (const equipment of equipmentForSlot) {
         html += renderEquipmentIcon(equipment);
     }
 
@@ -213,11 +216,11 @@ export function renderSelectedEquipment() {
         
         html += `<div class="auto-column">`
         html += `<h4>${equipment.name}</h4>`;
-        html += `Attack: ${equipment.attack || 0}<br />`;
-        html += `Armor: ${equipment.armor || 0}<br />`;
+        html += `Attack: ${equipment.equipment.attack ?? 0}<br />`;
+        html += `Armor: ${equipment.equipment.armor ?? 0}<br />`;
         html += "<br />";
         if (isEquipped)
-            html += `<button onClick="equipment.unequipSlot('${equipment.equipment.slot}')" class="button">Unequip</button>`;
+            html += `<button onClick="equipment.unequipSlot('${equipment.equipment!.slot}')" class="button">Unequip</button>`;
         else
             html += `<button onClick="equipment.equip('${equipment.name}')" class="button">Equip</button>`;
 
@@ -234,8 +237,8 @@ export function renderSelectedEquipment() {
         return;
     }
     
-    if (player.equipment[player.selectedEquipmentSlot]) {
-        const equipment = equipmentByName[player.equipment[player.selectedEquipmentSlot]];
+    if (player.selectedEquipmentSlot && player.equipment[player.selectedEquipmentSlot]) {
+        const equipment = equipmentByName[player.equipment[player.selectedEquipmentSlot!]!];
         renderEquipment(equipment, true);
         return;
     }

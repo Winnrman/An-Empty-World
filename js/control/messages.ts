@@ -1,12 +1,18 @@
 import * as dom from "../util/dom";
 
+type Message = {
+    id: number;
+    time: Date;
+    isFading?: boolean;
+}
+
 let nextMessageId = 0;
 const maxMessages = 20;
 const maxMessageTime = 10000;
 const messageFadeoutTime = 1000;
-const messages = [];
+const messages = Array<Message>();
 
-export function addMessage(message_text) {
+export function addMessage(message_text: string) {
     const messageId = nextMessageId++;
     messages.push({
         id: messageId,
@@ -25,19 +31,19 @@ export function addMessage(message_text) {
 }
 
 window.onerror = function(msg, url, lineNo, columnNo, error) {
-    addMessage(error || `Error: ${msg}`)
+    addMessage(error?.toString() || `Error: ${msg}`)
 }
 
 export function startClearInterval() {
     setInterval(() => {
         const minTimeForFadeout = new Date(new Date().getTime() - maxMessageTime);
-        for (let message of messages.filter(x => !x.isFading && x.time < minTimeForFadeout)) {
+        for (const message of messages.filter(x => !x.isFading && x.time < minTimeForFadeout)) {
             dom.addClass(`message-${message.id}`, "fadeOut");
             message.isFading = true;
         }
     
         const minTimeForDelete = new Date(new Date().getTime() - maxMessageTime - messageFadeoutTime);
-        for (let message of messages.filter(x => x.time < minTimeForDelete)) {
+        for (const message of messages.filter(x => x.time < minTimeForDelete)) {
             dom.removeElement(`message-${message.id}`);
             messages.splice(messages.indexOf(message), 1);
         }

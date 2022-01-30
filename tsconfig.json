@@ -1,13 +1,15 @@
 {
     "compilerOptions": {
       "outDir": "./dist/",
-      "noImplicitAny": false,
+      "noImplicitAny": true,
+      "strictNullChecks": true,
       "module": "es6",
       "target": "es5",
       "jsx": "react",
       "allowJs": true,
       "moduleResolution": "node",
-      "sourceMap": true
+      "sourceMap": true,
+      "noErrorTruncation": true
     },
     "include": ["js/**/*", "js/typings.d.ts"],
     "exclude": ["node_modules"]

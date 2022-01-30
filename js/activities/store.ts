@@ -1,7 +1,6 @@
 import * as dom from '../util/dom';
 import { randomLootDrop } from "./events";
-import { addToolToInventory, getInventoryCount, hasInInventory, InventoryItemName, isInventoryFull, removeAllFromInventory, removeFromInventory, renderInventory } from "../control/inventory";
-import { itemsByName } from "../data/items";
+import { addToolToInventory, getInventoryCount, hasInInventory, InventoryItemName, inventoryItemsByName, isInventoryFull, removeAllFromInventory, removeFromInventory, renderInventory } from "../control/inventory";
 import { addMessage } from '../control/messages';
 import player, { addGold, removeGold, saveData } from "../control/player";
 import { ToolName, toolsByName } from '../data/items/tools';
@@ -51,7 +50,7 @@ export function buyInventoryUpgrade() {
     if (player.boughtInventoryUpgrade >= 3)
         return;
 
-    var price = getInventoryUpgradeCost();
+    const price = getInventoryUpgradeCost();
     if (player.gold < price) {
         addMessage("You don't have enough gold to buy an inventory upgrade!");
         return;
@@ -78,7 +77,7 @@ export function sell(item: SellType, amount?: number) {
 
 function sellItems(itemNames: InventoryItemName[]) {
     for (const itemName of itemNames) {
-        addGold(getInventoryCount(itemName) * itemsByName[itemName].price);
+        addGold(getInventoryCount(itemName) * inventoryItemsByName[itemName].price);
         removeAllFromInventory(itemName);
     }
     renderInventory();
@@ -87,7 +86,7 @@ function sellItems(itemNames: InventoryItemName[]) {
 
 function sellItem(itemName: InventoryItemName, amount?: number) {
     amount ||= getInventoryCount(itemName);
-    addGold(amount * itemsByName[itemName].price);
+    addGold(amount * inventoryItemsByName[itemName].price);
     removeFromInventory(itemName, amount);
     renderInventory();
     saveData();
@@ -107,7 +106,7 @@ export function renderStore() {
         return renderButton(requiredLevel, !hasInInventory(toolName), `buyTool('${toolName}')`, `Buy ${toolName}`, toolsByName[toolName].price);
     }
 
-    const ores = resources.filter(x => x.mining && x.name != "Stone");
+    const ores = resources.filter(x => x.gathering.miningXp && x.name != "Stone");
 
     let html = "";
     html += ``;

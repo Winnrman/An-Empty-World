@@ -5,8 +5,8 @@ import player, { saveData } from "../control/player";
 import { getInventoryCount, hasInInventory, removeFromInventory, renderInventory } from "../control/inventory";
 import equipment, { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
 import potions, { Potion, PotionName, potionsByName } from "../data/items/potions";
-import { ResourceName, resourcesByName } from "../data/items/resources";
-import { displayNumber, getKeys, getWithIndefiniteArticle } from "../util";
+import { resourcesByName } from "../data/items/resources";
+import { displayNumber, getEntries, getWithIndefiniteArticle } from "../util";
 import { addLoot } from "./looting";
 import { Item } from "../data/items";
 
@@ -32,15 +32,15 @@ export function doCrafting() {
         return;
     }
     
-    for (var key in craftable.crafting.ingredients) {
-        if (getInventoryCount(key as ResourceName) < craftable.crafting.ingredients[key]) {
-            addMessage(`You don't have enough ${key} to craft ${getWithIndefiniteArticle(craftable.name)}!`);
+    for (const [ingredientName, ingredient] of getEntries(craftable.crafting.ingredients)) {
+        if (getInventoryCount(ingredientName) < ingredient) {
+            addMessage(`You don't have enough ${ingredientName} to craft ${getWithIndefiniteArticle(craftable.name)}!`);
             return;
         }
     }
     
-    for (const key of getKeys(craftable.crafting.ingredients)) {
-        removeFromInventory(key, craftable.crafting.ingredients[key])
+    for (const [ingredientName, ingredient] of getEntries(craftable.crafting.ingredients)) {
+        removeFromInventory(ingredientName, ingredient)
     }
 
     let craftableIndex = craftable.type === "Equipment" ? getCraftableEquipment().indexOf(craftable as Equipment) : 0;
@@ -64,7 +64,7 @@ export function doCrafting() {
     saveData();
 }
 
-const canCraft = (item: Item) => item.crafting && item.crafting.requiredLevel <= player.level;
+const canCraft = (item: Craftable) => item.crafting && item.crafting.requiredLevel <= player.level;
 
 function renderCraftable(craftable: Craftable) {
     return `<div onclick="crafting.selectItemToCraft('${craftable.name}')" class="item-icon" title="${craftable.name}"><img src="${craftable.iconUrl}" /></div>`;
@@ -113,7 +113,7 @@ export function renderCraftableDetails() {
     }
 
     const craftable = player.selectedCraftable;
-    const ingredients = craftable.crafting.ingredients;
+    const ingredients = craftable.crafting!.ingredients;
 
     let html = "<div>";
     html += `<h3>Item to craft</h3>`;
@@ -125,14 +125,13 @@ export function renderCraftableDetails() {
 
     html += `<h3>Ingredients</h3>`
     html += `<div class="crafting-ingredients">`
-    for (const ingredientName of getKeys(ingredients)) {
+    for (const [ingredientName, requiredAmount] of getEntries(ingredients)) {
         html += `<span class="crafting-ingredient">`;
 
         const ingredient = resourcesByName[ingredientName];
         html += `<div class="item-icon" title="${ingredient.name}"><img src="${ingredient.iconUrl}" /></div>`;
         
         const ownedAmount = getInventoryCount(ingredientName);
-        const requiredAmount = ingredients[ingredientName];
         const classForAmount = ownedAmount < requiredAmount ? "red" : ""
         html += `<span class="${classForAmount}">${displayNumber(ownedAmount)}/${requiredAmount}</span>`;
 

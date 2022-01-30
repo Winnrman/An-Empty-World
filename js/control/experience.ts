@@ -10,7 +10,7 @@ function getNeededLevelUpXp() {
     return player.level * 100 * (player.level + 1);
 }
 
-export function addXp(value) {
+export function addXp(value: number) {
     player.xp += value;
 
     if (player.xp >= getNeededLevelUpXp()) {

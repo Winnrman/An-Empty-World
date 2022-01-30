@@ -1,7 +1,7 @@
 import { addPlayerHealth } from "../activities/combat";
 import { addStamina } from "../activities/questing";
 import player from "../control/player";
-import { ItemEffect } from "../data/items";
+import { DurationItemEffect, ImmediateItemEffect, ItemEffect } from "../data/items";
 import { setHtml } from "../util/dom";
 import { updateArmour } from "./equipment";
 
@@ -9,8 +9,8 @@ import "../../css/effects.css";
 import { displayNumber } from "../util";
 
 export type PlayerEffect = {
-    name: EffectName;
-    value?: number;
+    name: DurationEffectName;
+    value: number;
     appliedOn: Date;
     expiresOn: Date;
     duration: number;
@@ -26,18 +26,26 @@ enum EffectCalculation {
     IsPresent
 }
 
-export type EffectName = "addHealth" | "addStamina" | "addAttack" | "decreaseAttack" | "addDefense" | "addSpeed" | "makeInvisible";
-export type EffectData = {
-    name: EffectName;
+export type ImmediateEffectName = "addHealth" | "addStamina";
+export type DurationEffectName =  "addAttack" | "decreaseAttack" | "addDefense" | "addSpeed" | "makeInvisible";
+export type EffectName = ImmediateEffectName | DurationEffectName;
+
+type ImmediateEffectData = {
+    name: ImmediateEffectName;
     type: EffectType;
-    calculation?: EffectCalculation;
-    getDescription?: (value: number) => string;
-    execute?: (value: number) => void;
-    start?: () => void;
-    end?: () => void;
+    execute: (value: number) => void;
 }
 
-const effects: EffectData[] = [
+type DurationEffectData = {
+    name: DurationEffectName;
+    type: EffectType;
+    calculation: EffectCalculation;
+    getDescription: (value: number) => string;
+    start: () => void;
+    end: () => void;
+}
+
+const immediateEffects: ImmediateEffectData[] = [
     {
         name: "addHealth",
         type: EffectType.Immediate,
@@ -48,6 +56,9 @@ const effects: EffectData[] = [
         type: EffectType.Immediate,
         execute: (value) => addStamina(value),
     },
+];
+
+const durationEffects: DurationEffectData[] = [
     {
         name: "addAttack",
         getDescription: (value) => `${value} Attack bonus`,
@@ -89,6 +100,12 @@ const effects: EffectData[] = [
         end: () => {},
     },
 ];
+
+const immediateEffectsByName: { [key in ImmediateEffectName]: ImmediateEffectData } = Object.assign({}, ...immediateEffects.map(x => ({ [x.name]: x })));
+const durationEffectsByName: { [key in DurationEffectName]: DurationEffectData } = Object.assign({}, ...durationEffects.map(x => ({ [x.name]: x })));
+
+export type EffectData = ImmediateEffectData | DurationEffectData;
+const effects: EffectData[] = [...immediateEffects, ...durationEffects];
 const effectsByName: { [key in EffectName]: EffectData } = Object.assign({}, ...effects.map(x => ({ [x.name]: x })));
 
 export function applyEffects(itemEffects: ItemEffect[]) {
@@ -98,29 +115,32 @@ export function applyEffects(itemEffects: ItemEffect[]) {
 }
 
 export function applyEffect(itemEffect: ItemEffect) {
-    const effectData = effectsByName[itemEffect.name];
-    if (effectData.type === EffectType.Immediate) {
-        effectData.execute(itemEffect.value);
+    if (!itemEffect.duration) {
+        const immediateItemEffect = itemEffect as ImmediateItemEffect;
+        const immediateEffect = immediateEffectsByName[immediateItemEffect.name];
+        immediateEffect.execute(itemEffect.value);
         return;
     }
 
+    const durationItemEffect = itemEffect as DurationItemEffect;
+    const durationEffect = durationEffectsByName[durationItemEffect.name];
     const appliedOn = new Date();
     const effect: PlayerEffect = {
-        name: itemEffect.name,
-        value: itemEffect.value,
+        name: durationEffect.name,
+        value: durationItemEffect.value,
         appliedOn: appliedOn,
-        expiresOn: new Date(appliedOn.getTime() + itemEffect.duration),
-        duration: itemEffect.duration
+        expiresOn: new Date(appliedOn.getTime() + durationItemEffect.duration),
+        duration: durationItemEffect.duration
     }
     player.effects.push(effect);
-    effectData.end();
+    durationEffect.start();
 
     registerExpiry(effect);
     renderEffects();
 }
 
 export function registerEffectExpiries() {
-    for (let effect of player.effects) {
+    for (const effect of player.effects) {
         registerExpiry(effect);
     }
 }
@@ -135,16 +155,16 @@ function registerExpiry(effect: PlayerEffect) {
 
 function removeEffect(effect: PlayerEffect) {
     player.effects.splice(player.effects.indexOf(effect));
-    const effectData = effectsByName[effect.name];
-    effectData.end();
+    const effectData = durationEffectsByName[effect.name];
+    effectData.end!();
     renderEffects();
 }
 
-export function getEffectValue(effectName: EffectName) {
+export function getEffectValue(effectName: DurationEffectName) {
     if (!hasEffect(effectName))
         return 0;
 
-    const effectData = effectsByName[effectName];
+    const effectData = durationEffectsByName[effectName];
     const playerEffectsOfType = player.effects.filter(x => x.name == effectName);
     
     switch (effectData.calculation) {
@@ -160,8 +180,8 @@ export function hasEffect(effectName: EffectName) {
 
 export function renderEffects() {
     let html = "";
-    for (let effect of player.effects) {
-        const effectData = effectsByName[effect.name];
+    for (const effect of player.effects) {
+        const effectData = durationEffectsByName[effect.name];
         const millisecondsUntilExpiry = getMilisecondsUntilExpiry(effect);
         const timeUntilExpiry = Math.ceil(millisecondsUntilExpiry / 100) / 10;
         const width = millisecondsUntilExpiry / effect.duration * 100;

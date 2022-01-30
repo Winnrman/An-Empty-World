@@ -1,10 +1,6 @@
-import { Item } from ".";
-
-export type PotionName = 
-        "Potion of Healing" | "Potion of Strength" | "Potion of Harming"  | "Potion of Defense" 
-      | "Potion of Stamina" | "Potion of Speed" | "Potion of Invisibility";
-
-export type Potion = Omit<Item, 'name'> & { name: PotionName };
+import { Item, ItemEffect, Rarity } from ".";
+import { ResourceName } from "./resources";
+import { PartialRecord } from "../../util";
 
 import iconPotionofHealing from "../../../img/assets/potions/Potion of Healing.png";
 import iconPotionofStrength from "../../../img/assets/potions/Potion of Strength.png";
@@ -13,6 +9,20 @@ import iconPotionofDefense from "../../../img/assets/potions/Potion of Defense.p
 import iconPotionofStamina from "../../../img/assets/potions/Potion of Stamina.png";
 import iconPotionofSpeed from "../../../img/assets/potions/Potion of Speed.png";
 import iconPotionofInvisibility from "../../../img/assets/potions/Potion of Invisibility.png";
+
+export type PotionName = 
+        "Potion of Healing" | "Potion of Strength" | "Potion of Harming"  | "Potion of Defense" 
+      | "Potion of Stamina" | "Potion of Speed" | "Potion of Invisibility";
+
+export type Potion = Item & {
+    name: PotionName,
+    rarity: Rarity;
+    crafting: {
+        requiredLevel: number;
+        ingredients: PartialRecord<ResourceName, number>,
+    };
+    effects: ItemEffect[];
+};
 
 const potions: Potion[] = [
     {
@@ -100,7 +110,7 @@ const potions: Potion[] = [
         description: "Makes you invisible, allowing you to sneak past enemies and avoid being seen.",
         rarity: "legendary",
         price: 10,
-        effects: [{ name: "makeInvisible", duration: 25000, }],
+        effects: [{ name: "makeInvisible", duration: 25000, value: 1 }],
         crafting: {
             requiredLevel: 5,
             ingredients: {}
