@@ -4,9 +4,9 @@ import player from "../control/player";
 import { DurationItemEffect, ImmediateItemEffect, ItemEffect } from "../data/items";
 import { setHtml } from "../util/dom";
 import { updateArmour } from "./equipment";
+import { displayNumber } from "../util";
 
 import "../../css/effects.css";
-import { displayNumber } from "../util";
 
 export type PlayerEffect = {
     name: DurationEffectName;
@@ -132,11 +132,13 @@ export function applyEffect(itemEffect: ItemEffect) {
         expiresOn: new Date(appliedOn.getTime() + durationItemEffect.duration),
         duration: durationItemEffect.duration
     }
+
     player.effects.push(effect);
     durationEffect.start();
 
     registerExpiry(effect);
-    renderEffects();
+    if (player.effects.length === 1)
+        renderEffects();
 }
 
 export function registerEffectExpiries() {
@@ -179,6 +181,11 @@ export function hasEffect(effectName: EffectName) {
 }
 
 export function renderEffects() {
+    if (!player.effects.length) {
+        setHtml("effects", "None!");
+        return;
+    }
+
     let html = "";
     for (const effect of player.effects) {
         const effectData = durationEffectsByName[effect.name];
@@ -189,11 +196,7 @@ export function renderEffects() {
         html += `<div class="progress-bar"><span style="width: ${width}%;"></span></div> ${description} (${displayNumber(timeUntilExpiry)}s)<br />`;
     }
 
-    if (player.effects.length === 0) {
-        html += "None!";
-    }
-
     setHtml("effects", html);
-}
 
-setInterval(renderEffects, 100);
+    setTimeout(renderEffects, 100);
+}

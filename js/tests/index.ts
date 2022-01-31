@@ -18,7 +18,6 @@ const data = getDefaultData();
 export default async function runTests(keepTestDataAfterwards?: boolean, levelUp?: boolean) {
     const start = new Date();
     pauseSaving();
-    saveData();
     resetData();
     resetAchievementsToCheck();
     equipment.updateArmour();
@@ -36,7 +35,7 @@ export default async function runTests(keepTestDataAfterwards?: boolean, levelUp
         main.checkAndRenderEverything();
         resumeSaving();
     
-        saveData();
+        saveData("Saving after test");
     }
 }
 
@@ -63,28 +62,28 @@ async function runWoodcuttingScenario() {
     await step("1.06", craftTool("Pickaxe")); 
     await step("1.07", cutDownTree(11,        true, levelled(2)));
     await step("1.08", cutDownTree(9,         true, toolBroke("Axe")));
-    await step("1.13", cutDownTree(1,         nothingHappened("no harpoon"))); 
-    await step("1.09", craftTool("Axe",       nothingHappened("no stone")));           
-    await step("1.10", drop("Wood", 1));      
-    await step("1.11", mineStone(5));         
-    await step("1.12", craftTool("Axe"));     
-    await step("1.13", cutDownTree(6,         true, gotAchievement("cut_down_trees", 1))); 
-    await step("1.13", cutDownTree(1,         nothingHappened("Inventory full"))); 
-    await step("1.14", drop("Wood", 8));
+    await step("1.19", cutDownTree(1,         nothingHappened("no harpoon"))); 
+    await step("1.10", craftTool("Axe",       nothingHappened("no stone")));           
+    await step("1.11", drop("Wood", 1));      
+    await step("1.12", mineStone(5));         
+    await step("1.13", craftTool("Axe"));     
+    await step("1.14", cutDownTree(6,         true, gotAchievement("cut_down_trees", 1))); 
+    await step("1.15", cutDownTree(1,         nothingHappened("Inventory full"))); 
+    await step("1.16", drop("Wood", 8));
 }
 
 async function runFishingScenario() {
     await step("2.01", craftTool("Wooden Harpoon"));
     await step("2.02", catchFish(10,                 true, toolBroke("Wooden Harpoon")));
-    await step("1.13", catchFish(1,                  nothingHappened("no harpoon"))); 
-    await step("2.03", craftTool("Wooden Harpoon")); 
-    await step("2.04", catchFish(7));       
-    await step("1.13", catchFish(1,                  nothingHappened("Inventory full"))); 
-    await step("2.05", drop("Fish", 17));       
-    await step("2.06", catchFish(3,                  true, toolBroke("Wooden Harpoon")));
-    await step("2.07", craftTool("Wooden Harpoon")); 
-    await step("2.08", catchFish(5,                  true, gotAchievement("catch_fish", 1)));
-    await step("2.09", drop("Fish", 8));
+    await step("2.03", catchFish(1,                  nothingHappened("no harpoon"))); 
+    await step("2.04", craftTool("Wooden Harpoon")); 
+    await step("2.05", catchFish(7));       
+    await step("2.06", catchFish(1,                  nothingHappened("Inventory full"))); 
+    await step("2.07", drop("Fish", 17));       
+    await step("2.08", catchFish(3,                  true, toolBroke("Wooden Harpoon")));
+    await step("2.09", craftTool("Wooden Harpoon")); 
+    await step("2.10", catchFish(5,                  true, gotAchievement("catch_fish", 1)));
+    await step("2.11", drop("Fish", 8));
 }
 
 async function runCraftingScenario() {
@@ -103,10 +102,10 @@ async function runCraftingScenario() {
 
 async function runEquipmentScenario() {
     await step("4.01", equip("Wooden Helmet"));
-    await step("4.01", equip("Wooden Chestplate"));
-    await step("4.01", equip("Wooden Leggings"));
-    await step("4.01", equip("Wooden Boots",        true, gotAchievement("wooden_armor", 1)));
-    await step("4.01", equip("Wooden Sword"));
+    await step("4.02", equip("Wooden Chestplate"));
+    await step("4.03", equip("Wooden Leggings"));
+    await step("4.04", equip("Wooden Boots",        true, gotAchievement("wooden_armor", 1)));
+    await step("4.05", equip("Wooden Sword"));
 }
 
 async function justLevelUp() {
@@ -333,8 +332,7 @@ function applyChanges(successChange: () => void, changes: (true | (() => void))[
 
 function verify(name?: string) {
     checkAchievements();
-    experience.checkLevelUnlocks();
-
+    
     const errors = Array<string>();
     verifyProperty(errors, "gold");
     verifyProperty(errors, "level");

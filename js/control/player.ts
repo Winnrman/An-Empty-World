@@ -1,4 +1,4 @@
-import { AchievementName, checkAchievements } from './achievements';
+import { AchievementName } from './achievements';
 import { EquipmentSlot } from '../data/items';
 import { PlayerEffect } from './effects';
 import { EquipmentName } from '../data/items/equipment';
@@ -8,17 +8,23 @@ import { PartialRecord } from '../util';
 import { Activity } from '../activities/activities';
 import { Craftable } from '../activities/crafting';
 import { GatheringActivityName, GatheringCategoryName } from '../activities/gathering';
+import { addMessage } from './messages';
 
 export type Player = ReturnType<typeof getPlayerData>;
 const player: Player = getPlayerData();
+
+// player data migration
+if (player.isDev === undefined)
+    player.isDev = false;
 
 export default player;
 
 let isAllowedToSave = true;
 
-export function saveData() {
+export function saveData(reason: string) {
     if (isAllowedToSave) {
         localStorage["player"] = JSON.stringify(player);
+        player.isDev && console.log(`saving: ${reason}`)
     }
 }
 
@@ -102,6 +108,8 @@ export function getDefaultData() {
         selectedCraftable: undefined as Craftable | undefined,
         selectedEquipmentSlot: undefined as EquipmentSlot | undefined,
         selectedEquipment: undefined as EquipmentName | undefined,
+
+        isDev: false
     }
 }
 
@@ -122,15 +130,28 @@ export function addStatistic(type: StatisticName | undefined, amount: number) {
         return;
     
     player.statistics[type] = (player.statistics[type] ?? 0) + amount;
-    setTimeout(checkAchievements);
 }
 
 export let saveInterval: NodeJS.Timer | undefined;
 export function resumeSaving() {
     isAllowedToSave = true;
     if (!saveInterval)
-        saveInterval = setInterval(saveData, 5000);
+        saveInterval = setInterval(checkAndSaveData, 100);
 }
+
+function checkAndSaveData() {
+    const savedData = localStorage["player"];
+    const currentData = JSON.stringify(player);
+    if (savedData != currentData) {
+        if (player.isDev) {
+            addMessage("Saving because something changed unexpectedly! Check data to see where a save needs to happen!");
+            console.log(currentData);
+            console.log(savedData);
+        }
+        saveData("Failsafe");
+    }
+}
+
 export function pauseSaving() {
     isAllowedToSave = false;
     saveInterval && clearInterval(saveInterval);

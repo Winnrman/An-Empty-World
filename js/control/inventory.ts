@@ -10,6 +10,7 @@ import { addMessage } from "./messages";
 import iconCoins from "../../img/assets/materials/Coins.png";
 import { renderStore } from "../activities/store";
 import { renderActivities } from "../activities/activities";
+import { wrapAction } from "./user";
 
 import "../../css/inventory.css";
 
@@ -173,4 +174,11 @@ function renderSelectedItemDetails() {
     `;
 
     dom.setHtml("itemDetails", html);
+}
+
+export const actions = {
+    showItemDetails: wrapAction(showItemDetails),
+    removeFromInventory: wrapAction(removeFromInventory),
+    removeAllFromInventory: wrapAction(removeAllFromInventory),
+    drinkPotion: wrapAction(drinkPotion),
 }

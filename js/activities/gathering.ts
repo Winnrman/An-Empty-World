@@ -1,4 +1,4 @@
-import player, { addStatistic, saveData, StatisticName } from "../control/player";
+import player, { addStatistic, StatisticName } from "../control/player";
 import { addMessage } from "../control/messages";
 import { addXp } from "../control/experience";
 import { displayNumber, getEntries, getRandomInt, PartialRecord, sum } from "../util";
@@ -9,7 +9,9 @@ import { ToolName } from "../data/items/tools";
 import { showActivity } from "./activities";
 import levelUnlocks from "../data/levelUnlocks";
 import { sleep } from "../control/timing";
-import { getAllPossibleItems, getItemChances, getRandomLootFromTable, LootTable } from "./looting";
+import { getItemChances, getRandomLootFromTable, LootTable } from "./looting";
+import { wrapAction } from "../control/user";
+
 
 import iconWood from "../../img/assets/materials/Wood.png";
 import iconStone from "../../img/assets/materials/Stone.png";
@@ -21,7 +23,6 @@ import iconIron from "../../img/assets/materials/Iron.png";
 import iconMonofolia from "../../img/assets/materials/Monofolia.png";
 import iconBifolia from "../../img/assets/materials/Bifolia.png";
 import iconCrimsonica from "../../img/assets/materials/Crimsonica.png";
-
 export type GatheringCategoryName = "Wood" | "Stone" | "Food" | "Ore" | "Herb";
 
 export type GatheringCategory = {
@@ -194,16 +195,16 @@ export async function showGatheringCategory(categoryName: GatheringCategoryName)
         return;
 
     player.currentGatheringCategory = categoryName;
+    clearGatheringActivity();
     showActivity("Gathering");
-    saveData();
 }
 
 export async function showGatheringActivity(activityName: GatheringActivityName) {
     if (player.currentGatheringActivity === activityName)
         return;
     
+    clearGatheringActivity();
     player.currentGatheringActivity = activityName;
-    chosenItems.length = 0;
     const activity = gatheringActivitiesByName[activityName];
     if (!activity.needsToChooseItem) {
         await startGatheringActivity();
@@ -270,7 +271,6 @@ export async function startGatheringActivity() {
         setStatus(`Gathering ${itemName}...`);
 
         dom.resetProgressbar("gathering-progress", activity.time);
-        saveData();
         await sleep(activity.time);
     
         if (player.currentGatheringActivityId !== currentActivityId)
@@ -299,8 +299,8 @@ export async function clearGatheringActivity() {
     player.currentGatheringActivity = undefined;
     player.currentGatheringActivityId = undefined;
     activityStatus = undefined;
+    chosenItems.length = 0;
     renderGatheringActivity();
-    saveData();
 }
 
 export function resumeGatheringActivity() {
@@ -389,4 +389,12 @@ export function renderGatheringActivity() {
     html += `<div class="progress-bar"><span id="gathering-progress" style="width: 0%;"></span></div> `;
     html += `<button class="button" onClick="gathering.clearGatheringActivity()">Stop</button>`;
     dom.setHtml("gathering-activity", html);
+}
+
+export const actions = {
+    showGatheringCategory: wrapAction(showGatheringCategory),
+    showGatheringActivity: wrapAction(showGatheringActivity),
+    toggleItem: wrapAction(toggleItem),
+    startGatheringActivity: wrapAction(startGatheringActivity),
+    clearGatheringActivity: wrapAction(clearGatheringActivity),
 }

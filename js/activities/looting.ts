@@ -7,7 +7,6 @@ import { getEntries, getRandomInt, PartialRecord, sum } from "../util";
 
 export type Loot = Potion | Equipment;
 
-
 export function addLoot(item: Potion | Equipment | Tool) {
     if (item.type === "Equipment") {
         addToOwnedEquipment(item as Equipment);

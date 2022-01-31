@@ -2,12 +2,15 @@ import * as dom from '../util/dom';
 import { randomLootDrop } from "./events";
 import { addToolToInventory, getInventoryCount, hasInInventory, InventoryItemName, inventoryItemsByName, isInventoryFull, removeAllFromInventory, removeFromInventory, renderInventory } from "../control/inventory";
 import { addMessage } from '../control/messages';
-import player, { addGold, removeGold, saveData } from "../control/player";
+import player, { addGold, removeGold } from "../control/player";
 import { ToolName, toolsByName } from '../data/items/tools';
 import { addLoot } from './looting';
 import resources from '../data/items/resources';
 import { getWithIndefiniteArticle } from '../util';
 import levelUnlocks from '../data/levelUnlocks';
+import { wrapAction } from '../control/user';
+
+import "../../css/store.css";
 
 export async function buyTool(toolName: ToolName) {
     const tool = toolsByName[toolName];
@@ -28,7 +31,6 @@ export async function buyTool(toolName: ToolName) {
 
     removeGold(tool.price);
     addToolToInventory(tool);
-    saveData();
 }
 
 export async function buySpecialDeal() {
@@ -61,7 +63,6 @@ export async function buyInventoryUpgrade() {
     player.boughtInventoryUpgrade++;
     addMessage(`Inventory Space increased by 25! [Currently ${player.maxInventorySize}]`);
     renderInventory();
-    saveData();
 }
 
 export type SellType = "Ores" | InventoryItemName;
@@ -81,7 +82,6 @@ function sellItems(itemNames: InventoryItemName[]) {
         removeAllFromInventory(itemName);
     }
     renderInventory();
-    saveData();
 }
 
 function sellItem(itemName: InventoryItemName, amount?: number) {
@@ -90,7 +90,6 @@ function sellItem(itemName: InventoryItemName, amount?: number) {
     addGold(amount * inventoryItemsByName[itemName].price);
     removeFromInventory(itemName, amount);
     renderInventory();
-    saveData();
 }
 
 export function renderStore() {
@@ -137,4 +136,11 @@ export function renderStore() {
     html += `</div>`;
 
     dom.setHtml("store", html);
+}
+
+export const actions = {
+    buyTool: wrapAction(buyTool),
+    buyInventoryUpgrade: wrapAction(buyInventoryUpgrade),
+    buySpecialDeal: wrapAction(buySpecialDeal),
+    sell: wrapAction(sell),
 }

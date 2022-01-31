@@ -1,5 +1,7 @@
 import * as dom from "../util/dom";
 
+import "../../css/messages.css";
+
 type Message = {
     id: number;
     time: Date;

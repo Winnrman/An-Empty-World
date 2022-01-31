@@ -1,12 +1,13 @@
 import player from "../control/player";
 import * as dom from "../util/dom";
+import { clearGatheringCategory, gatheringCategories, renderGatheringActivity, renderGatheringCategory } from "./gathering";
+import levelUnlocks from "../data/levelUnlocks";
+import { wrapAction } from "../control/user";
 
 import iconCoins from "../../img/assets/materials/Coins.png";
 import iconSword from "../../img/assets/equipment/Iron/Iron Sword.png";
 import iconAmulet from "../../img/assets/equipment/Amulet of Luck.png";
 import iconSpyGlass from "../../img/assets/tools/Spyglass.png";
-import { clearGatheringCategory, gatheringCategories, renderGatheringActivity, renderGatheringCategory } from "./gathering";
-import levelUnlocks from "../data/levelUnlocks";
 
 export type Activity = "Crafting" | "Fighting" | "Store" | "Gathering";
 
@@ -63,4 +64,8 @@ export function renderActivities() {
     html += renderButton(levelUnlocks.store,    "activities.showActivity('Store')",    "Go to Store", iconCoins);
 
     dom.setHtml('activities', html);
+}
+
+export const actions = {
+    showActivity: wrapAction(showActivity),
 }

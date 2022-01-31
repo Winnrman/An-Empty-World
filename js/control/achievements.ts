@@ -6,6 +6,8 @@ import { EquipmentName } from "../data/items/equipment";
 import { displayNumber, getEntries, PartialRecord } from "../util";
 import levelUnlocks from "../data/levelUnlocks";
 
+import "../../css/achievements.css";
+
 const getEquipCount = (type: EquipmentName) => hasEquiped(type) ? 1 : 0;
 
 export type AchievementName = "cut_down_trees" | "earned_gold" | "wooden_armor" | "catch_fish" | "hunted_meat" | "killed_enemies" | "mined_stones" | "mined_ores" | "iron_armor" | "completed_quests";
@@ -161,18 +163,6 @@ function checkAchievement(achievement: AchievementToCheckData) {
     }
 
     return (player.completedAchievements[achievement.id] ?? 0) >= levels.length;
-}
-
-export function startCheckInterval() {
-    checkAchievements();
-
-    const interval = setInterval(function () {
-        checkAchievements();
-
-        if (achievementsToCheck.length === 0) {
-            clearInterval(interval);
-        }
-    }, 20000);
 }
 
 export function checkAchievements() {

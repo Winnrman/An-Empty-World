@@ -6,6 +6,10 @@ import player, { addGold, addStatistic, saveData } from "../control/player";
 import { addMessage } from '../control/messages';
 import { getRandomInt, minMax } from '../util';
 import { addLoot } from './looting';
+import { wrapAction } from '../control/user';
+
+import "../../css/combat.css";
+import { checkAchievements } from '../control/achievements';
 
 type Fight = {
     enemy: Enemy;
@@ -126,7 +130,8 @@ function clearFight() {
     selectedEnemy = undefined;
 
     renderPreCombatInfo();
-    saveData();
+    checkAchievements();
+    saveData("Clear fight");
 }
 
 export function addPlayerHealth(value: number) {
@@ -167,4 +172,10 @@ export function renderPreCombatInfo(){
     dom.setIsDisplayed("enemyStats", isInCombat);
 
     renderPlayerHealth();
+}
+
+export const actions = {
+    selectEnemy: wrapAction(selectEnemy),
+    startCombat: wrapAction(startCombat),
+    doFlee: wrapAction(doFlee),
 }
