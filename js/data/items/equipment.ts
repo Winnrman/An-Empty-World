@@ -260,7 +260,7 @@ const equipment: Equipment[] = [
         type: "Equipment",
         equipment: {
             slot: "Weapon",
-            armor: ResourceArmour.Iron,
+            attack: ResourceArmour.Iron,
         },
         rarity: "common",
         price: 20,

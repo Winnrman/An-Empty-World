@@ -25,33 +25,94 @@ import "../css/progress.css";
 import "../css/progress-bar.css";
 import "../css/store.css";
 
+const wrapAction = (action: ((...args: any[]) => Promise<void>)) => {
+    return async (...args: any[]) => {
+        try {
+            await action(...args);
+            saveData();
+        } catch(e) {
+            messages.addMessage(e);
+        }
+    }
+}
+
+const activitiesActions = {
+    showActivity: wrapAction(activities.showActivity),
+}
+
+const combatActions = {
+    selectEnemy: wrapAction(combat.selectEnemy),
+    startCombat: wrapAction(combat.startCombat),
+    doFlee: wrapAction(combat.doFlee),
+}
+
+const craftingActions = {
+    selectItemToCraft: wrapAction(crafting.selectItemToCraft),
+    doCrafting: wrapAction(crafting.doCrafting),
+    stopCrafting: wrapAction(crafting.stopCrafting),
+}
+
+const equipmentActions = {
+    showEquipmentChooser: wrapAction(equipment.showEquipmentChooser),
+    selectEquipment: wrapAction(equipment.selectEquipment),
+    equip: wrapAction(equipment.equip),
+    unequipSlot: wrapAction(equipment.unequipSlot),
+}
+
+const gatheringActions = {
+    showGatheringCategory: wrapAction(gathering.showGatheringCategory),
+    showGatheringActivity: wrapAction(gathering.showGatheringActivity),
+    toggleItem: wrapAction(gathering.toggleItem),
+    startGatheringActivity: wrapAction(gathering.startGatheringActivity),
+    clearGatheringActivity: wrapAction(gathering.clearGatheringActivity),
+}
+
+const inventoryActions = {
+    showItemDetails: wrapAction(inventory.showItemDetails),
+    removeFromInventory: wrapAction(inventory.removeFromInventory),
+    removeAllFromInventory: wrapAction(inventory.removeAllFromInventory),
+    drinkPotion: wrapAction(inventory.drinkPotion),
+}
+
+const storeActions = {
+    buyTool: wrapAction(store.buyTool),
+    buyInventoryUpgrade: wrapAction(store.buyInventoryUpgrade),
+    buySpecialDeal: wrapAction(store.buySpecialDeal),
+    sell: wrapAction(store.sell),
+}
+
+const questingActions = {
+    doQuest: wrapAction(questing.doQuest),
+}
+
+
 declare global {
     interface Window {
         player: Player;
-        store: typeof store;
-        activities: typeof activities;
-        combat: typeof combat;
-        crafting: typeof crafting;
-        equipment: typeof equipment;
-        gathering: typeof gathering;
-        inventory: typeof inventory;
+        activities: typeof activitiesActions;
+        combat: typeof combatActions;
+        crafting: typeof craftingActions;
+        equipment: typeof equipmentActions;
+        gathering: typeof gatheringActions;
+        inventory: typeof inventoryActions;
+        store: typeof storeActions;
         settings: typeof settings;
-        questing: typeof questing;
+        questing: typeof questingActions;
         saveData: () => void;
         resetData: () => void;
         runTests: (x: boolean) => void;
     }
 }
 window.player = player;
-window.store = store;
-window.activities = activities;
-window.combat = combat;
-window.crafting = crafting;
-window.equipment = equipment;
-window.gathering = gathering;
-window.inventory = inventory;
+window.activities = activitiesActions;
+window.combat = combatActions;
+window.crafting = craftingActions;
+window.equipment = equipmentActions;
+window.gathering = gatheringActions;
+window.inventory = inventoryActions;
+window.store = storeActions;
 window.settings = settings;
-window.questing = questing;
+window.questing = questingActions;
 window.saveData = saveData;
 window.runTests = runTests;
 console.log("runTests is set");

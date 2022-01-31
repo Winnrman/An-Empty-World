@@ -17,6 +17,10 @@
     cursor: pointer;
 }
 
+.item-icon.selected {
+    border-color: green;
+}
+
 .item-icon img {
     padding: 2px;
     display: block;

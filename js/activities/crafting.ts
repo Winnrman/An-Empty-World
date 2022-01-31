@@ -17,14 +17,14 @@ export type CraftableName = EquipmentName | PotionName | ToolName;
 export type Craftable = Equipment | Potion | Tool;
 export const craftablesByName: Record<CraftableName, Craftable> = { ...equipmentByName, ...potionsByName, ...toolsByName };
 
-export function selectItemToCraft(craftableName: CraftableName) {
+export async function selectItemToCraft(craftableName: CraftableName) {
     player.selectedCraftable = craftablesByName[craftableName];
     renderCraftableDetails();
 }
 
 let isCrafting = false;
 
-export function stopCrafting() {
+export async function stopCrafting() {
     isCrafting = false;
     renderCraftableDetails();
 }

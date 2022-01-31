@@ -15,7 +15,7 @@ import { skipSleeps } from "../control/timing";
 
 const data = getDefaultData();
 
-export default async function runTests(keepTestDataAfterwards?: boolean) {
+export default async function runTests(keepTestDataAfterwards?: boolean, levelUp?: boolean) {
     const start = new Date();
     pauseSaving();
     saveData();
@@ -24,7 +24,7 @@ export default async function runTests(keepTestDataAfterwards?: boolean) {
     equipment.updateArmour();
 
     try {
-        await runScenario();
+        await runScenario(levelUp);
         const end = new Date();
         const diff = end.getTime() - start.getTime();
         console.log(`Tests OK! Took ${diff / 1000}s`)
@@ -40,7 +40,7 @@ export default async function runTests(keepTestDataAfterwards?: boolean) {
     }
 }
 
-async function runScenario() {
+async function runScenario(levelUp?: boolean) {
     Object.assign(data, getDefaultData());
     data.inventory["Axe"] = 0;
     data.inventory["Wood"] = 0;
@@ -50,6 +50,8 @@ async function runScenario() {
     await runFishingScenario();
     await runCraftingScenario();
     await runEquipmentScenario();
+    if (levelUp)
+        await justLevelUp();
 }
 
 async function runWoodcuttingScenario() {
@@ -107,6 +109,37 @@ async function runEquipmentScenario() {
     await step("4.01", equip("Wooden Sword"));
 }
 
+async function justLevelUp() {
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+
+    await collectStones(5)();
+    await craftTool("Pickaxe")();
+
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+
+    await collectStones(5)();
+    await craftTool("Pickaxe")();
+    
+    await mineIron(16)();
+    await drop("Iron", 16)();
+}
+
 function sell(itemName: ResourceName, amount: number, ...changes: ChangeSet) {
     return execute(async () => store.sell(itemName, amount), soldItem(itemName, amount), changes);
 }
@@ -135,10 +168,14 @@ function catchFish(amount: number, ...changes: ChangeSet) {
     return gather("Catch Fish", amount, caughtFish(amount), changes);
 }
 
+function mineIron(amount: number, ...changes: ChangeSet) {
+    return gather("Mine Iron", amount, minedIron(amount), changes);
+}
+
 function gather(activityName: gathering.GatheringActivityName, amount: number, successChange: () => void, changes: ChangeSet) {
     return execute(async () => {
         skipSleeps(amount, gathering.clearGatheringActivity);
-        await gathering.startGatheringActivity(activityName);
+        await gathering.showGatheringActivity(activityName);
     }, successChange, changes);
 }
 
@@ -172,14 +209,12 @@ function execute(action: () => Promise<void>, successChange: () => void, changes
     };
 }
 
-type XpName = "treeCuttingXp" | "miningXp" | "fishingXp"
-
-function gathered(resourceName: ResourceName, amount: number, toolname: ToolName | undefined, xpName: XpName) {
+function gathered(resourceName: ResourceName, amount: number, toolname: ToolName | undefined, category: gathering.GatheringCategoryName) {
     return () => {
         data.inventory[resourceName] = (data.inventory[resourceName] ?? 0) + amount;
         if (toolname)
             data.toolHealth[toolname] -= amount;
-        data.xp += resourcesByName[resourceName].gathering[xpName]! * amount;
+        data.xp += resourcesByName[resourceName].gathering[category]!.experience * amount;
     }
 }
 
@@ -191,23 +226,27 @@ function soldItem(itemName: ResourceName, amount: number) {
 }
 
 function cutWood(amount: number) {
-    return gathered("Wood", amount, "Axe", "treeCuttingXp");
+    return gathered("Wood", amount, "Axe", "Wood");
 }
 
 function collectedBranches(amount: number) {
-    return gathered("Wood", amount, undefined, "treeCuttingXp");
+    return gathered("Wood", amount, undefined, "Wood");
 }
 
 function collectedStones(amount: number) {
-    return gathered("Stone", amount, undefined, "miningXp");
+    return gathered("Stone", amount, undefined, "Stone");
 }
 
 function minedStone(amount: number) {
-    return gathered("Stone", amount, "Pickaxe", "miningXp");
+    return gathered("Stone", amount, "Pickaxe", "Stone");
+}
+
+function minedIron(amount: number) {
+    return gathered("Iron", amount, "Pickaxe", "Ore");
 }
 
 function caughtFish(amount: number) {
-    return gathered("Fish", amount, "Wooden Harpoon", "fishingXp");
+    return gathered("Fish", amount, "Wooden Harpoon", "Food");
 }
 
 function toolBroke(itemName: ToolName) {

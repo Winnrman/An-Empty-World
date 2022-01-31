@@ -154,7 +154,7 @@ function registerExpiry(effect: PlayerEffect) {
 }
 
 function removeEffect(effect: PlayerEffect) {
-    player.effects.splice(player.effects.indexOf(effect));
+    player.effects.splice(player.effects.indexOf(effect), 1);
     const effectData = durationEffectsByName[effect.name];
     effectData.end!();
     renderEffects();

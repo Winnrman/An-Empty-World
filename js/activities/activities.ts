@@ -1,21 +1,20 @@
 import player from "../control/player";
-import { hasInInventory } from "../control/inventory";
 import * as dom from "../util/dom";
 
 import iconCoins from "../../img/assets/materials/Coins.png";
 import iconSword from "../../img/assets/equipment/Iron/Iron Sword.png";
 import iconAmulet from "../../img/assets/equipment/Amulet of Luck.png";
 import iconSpyGlass from "../../img/assets/tools/Spyglass.png";
-import { clearGatheringActivity, clearGatheringCategory, gatheringActivitiesByName, GatheringActivityName, gatheringCategories, gatheringCategoriesByName, GatheringCategoryName, renderGatheringActivity, renderGatheringCategory } from "./gathering";
+import { clearGatheringCategory, gatheringCategories, renderGatheringActivity, renderGatheringCategory } from "./gathering";
 import levelUnlocks from "../data/levelUnlocks";
 
 export type Activity = "Crafting" | "Fighting" | "Store" | "Gathering";
 
-export function goCrafting() {
+export async function goCrafting() {
     showActivity("Crafting");
 }
 
-export function goFighting() {
+export async function goFighting() {
     showActivity("Fighting");
 }
 
@@ -23,7 +22,7 @@ export function goToStore() {
     showActivity("Store");
 }
 
-export function showActivity(activity: Activity) {
+export async function showActivity(activity: Activity) {
     player.currentActivity = activity;
     if (activity != "Gathering")
         clearGatheringCategory();
@@ -58,10 +57,10 @@ export function renderActivities() {
         html += renderButton(category.requiredLevel, `gathering.showGatheringCategory('${category.name}')`, category.name, category.icon);
     }
 
-    html += renderButton(levelUnlocks.crafting, "activities.goCrafting()", "Go Crafting", iconAmulet);
-    html += renderButton(levelUnlocks.fighting, "activities.goFighting()", "Go Fighting", iconSword);
-    html += renderButton(levelUnlocks.questing, "questing.doQuest()",      "Go Questing", iconSpyGlass);
-    html += renderButton(levelUnlocks.store,    "activities.goToStore()",  "Go to Store", iconCoins);
+    html += renderButton(levelUnlocks.crafting, "activities.showActivity('Crafting')", "Go Crafting", iconAmulet);
+    html += renderButton(levelUnlocks.fighting, "activities.showActivity('Fighting')", "Go Fighting", iconSword);
+    html += renderButton(levelUnlocks.questing, "questing.doQuest()",                  "Go Questing", iconSpyGlass);
+    html += renderButton(levelUnlocks.store,    "activities.showActivity('Store')",    "Go to Store", iconCoins);
 
     dom.setHtml('activities', html);
 }

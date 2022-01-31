@@ -8,7 +8,7 @@ import levelUnlocks from "../data/levelUnlocks";
 
 const getEquipCount = (type: EquipmentName) => hasEquiped(type) ? 1 : 0;
 
-export type AchievementName = "cut_down_trees" | "earned_gold" | "wooden_armor" | "catch_fish" | "hunted_meat" | "killed_enemies" | "mined_rock" | "iron_armor" | "completed_quests";
+export type AchievementName = "cut_down_trees" | "earned_gold" | "wooden_armor" | "catch_fish" | "hunted_meat" | "killed_enemies" | "mined_stones" | "mined_ores" | "iron_armor" | "completed_quests";
 
 export type AchievementData = {
     id: AchievementName;
@@ -73,11 +73,19 @@ export const achievements: AchievementData[] = [
         levels: [1, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
     },
     {
-        id: "mined_rock",
+        id: "mined_stones",
         requirements: { level: levelUnlocks.mining },
-        name: (progress) => `Mined ${progress} Rocks`,
+        name: (progress) => `Mined ${progress} Stones`,
         reward: (level, levelValue) => levelValue * 5,
-        getProgress: () => player.statistics.minedRocks,
+        getProgress: () => player.statistics.minedStone,
+        levels: [25, 50, 100, 250, 500, 1000, 2500, 5000],
+    },
+    {
+        id: "mined_ores",
+        requirements: { level: levelUnlocks.mining },
+        name: (progress) => `Mined ${progress} Ores`,
+        reward: (level, levelValue) => levelValue * 5,
+        getProgress: () => player.statistics.minedOre,
         levels: [25, 50, 100, 250, 500, 1000, 2500, 5000],
     },
     {

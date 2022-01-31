@@ -17,12 +17,12 @@ type Fight = {
 let selectedEnemy: Enemy | undefined;
 let currentFight: Fight | undefined;
 
-export function selectEnemy (enemyName: EnemyName) {
+export async function selectEnemy (enemyName: EnemyName) {
     selectedEnemy = enemiesByName[enemyName];
     renderPreCombatInfo();
 }
 
-export function startCombat () {
+export async function startCombat () {
     if (currentFight || !selectedEnemy)
         return;
     
@@ -113,7 +113,7 @@ function playerDied() {
     clearFight();
 }
 
-export function doFlee() {
+export async function doFlee() {
     addMessage("You fled!");
     setPlayerHealth(player.maxHealth);
     clearFight();
@@ -123,6 +123,7 @@ function clearFight() {
     currentFight?.playerAttackTimer && clearTimeout(currentFight.playerAttackTimer);
     currentFight?.enemyAttackTimer && clearTimeout(currentFight.enemyAttackTimer);
     currentFight = undefined;
+    selectedEnemy = undefined;
 
     renderPreCombatInfo();
     saveData();

@@ -45,7 +45,7 @@ export function addToOwnedEquipment(item: Equipment) {
     renderEquipmentChooser();
 }
 
-export function showEquipmentChooser(slot: EquipmentSlot | undefined) {
+export async function showEquipmentChooser(slot: EquipmentSlot | undefined) {
     if (player.selectedEquipmentSlot === slot) {
         slot = undefined;
     }
@@ -56,7 +56,7 @@ export function showEquipmentChooser(slot: EquipmentSlot | undefined) {
     saveData();
 }
 
-export function selectEquipment(itemName: EquipmentName | undefined) {
+export async function selectEquipment(itemName: EquipmentName | undefined) {
     if (player.selectedEquipment === itemName)
         itemName = undefined;
     
@@ -65,7 +65,7 @@ export function selectEquipment(itemName: EquipmentName | undefined) {
     saveData();
 }
 
-export function equip(itemName: EquipmentName) {
+export async function equip(itemName: EquipmentName) {
     const equipment = equipmentByName[itemName];
     player.equipment[equipment.equipment.slot] = equipment.name;
     player.selectedEquipment = undefined;
@@ -75,7 +75,7 @@ export function equip(itemName: EquipmentName) {
     saveData();
 }
 
-export function unequipSlot(slot: EquipmentSlot) {
+export async function unequipSlot(slot: EquipmentSlot) {
     player.equipment[slot] = undefined;
     updateArmour();
     renderEquipmentChooser();

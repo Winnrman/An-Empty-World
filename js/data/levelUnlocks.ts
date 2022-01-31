@@ -8,6 +8,7 @@ const levelUnlocks = {
     fighting: 3,
     hunting: 3,
     ironMining: 5,
+    herbScavenging: 5,
     mining: 6,
     store: 7,
     inventoryUpgrade: 7,
