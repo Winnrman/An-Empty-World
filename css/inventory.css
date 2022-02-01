@@ -21,6 +21,10 @@
     border-color: green;
 }
 
+.item-icon.not-possible {
+    border-color: red;
+}
+
 .item-icon img {
     padding: 2px;
     display: block;

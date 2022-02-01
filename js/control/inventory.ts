@@ -122,8 +122,9 @@ function renderToolList(items: Tool[]) {
         const height = 100 - durability * 100;
         const color = tweenArrays(durability, [255, 0, 0], [39, 39, 39]); // this will get a color that's red for 0% durability and our grey for 100% durability
         const rgb = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+        const isSelected = player.selectedItemName == item.name;
         html += `<div class="item" onClick="inventory.showItemDetails('${item.name}')">`
-        html += `<div class="item-icon inventory" title="${item.name} - ${player.toolHealth[item.name]}/${item.tool.health}">`
+        html += `<div class="item-icon${isSelected ? " selected" : ""} inventory" title="${item.name} - ${player.toolHealth[item.name]}/${item.tool.health}">`
         html += `<img style="background: repeating-linear-gradient(transparent, transparent, ${height}%, ${rgb}, ${height}%, ${rgb} 100%);" src="${item.iconUrl}" />`;
         html += "</div>";
         html += "<br />";
@@ -137,7 +138,7 @@ function renderToolList(items: Tool[]) {
 function renderItemList(items: InventoryItem[]) {
     let html = "";
     for (const item of items) {
-        html += `<div class="item" onClick="inventory.showItemDetails('${item.name}')">${renderItemIcon(item)}<br /><div class="inventory-count">${displayNumber(getInventoryCount(item.name))}</div></div>`;
+        html += `<div class="item" onClick="inventory.showItemDetails('${item.name}')">${renderItemIcon(item, true)}<br /><div class="inventory-count">${displayNumber(getInventoryCount(item.name))}</div></div>`;
     }
     html += items.length ? "<br />" : "";
 
@@ -154,8 +155,9 @@ function renderItems() {
     dom.setHtml("inventory", html);
 }
 
-function renderItemIcon(item: InventoryItem) {
-    return `<div class="item-icon" title="${item.name}"><img src="${item.iconUrl}" /></div>`;
+function renderItemIcon(item: InventoryItem, showSelected: boolean) {
+    const isSelected = showSelected && player.selectedItemName == item.name;
+    return `<div class="item-icon${isSelected ? " selected" : ""}" title="${item.name}"><img src="${item.iconUrl}" /></div>`;
 }
 
 function renderSelectedItemDetails() {
@@ -173,7 +175,7 @@ function renderSelectedItemDetails() {
 
     let html = `
         <h3>Item details</h3>
-        ${renderItemIcon(item)} ${item.name}<br />
+        ${renderItemIcon(item, false)} ${item.name}<br />
         Description: ${item.description}<br />
         ${hasDurability ? `Durability: ${player.toolHealth[tool.name]}/${tool.tool.health}<br />` : ""}
         Amount owned: ${displayNumber(getInventoryCount(item.name))}<br />

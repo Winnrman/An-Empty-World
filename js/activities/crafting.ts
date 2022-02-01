@@ -19,7 +19,8 @@ export type Craftable = Equipment | Potion | Tool;
 export const craftablesByName: Record<CraftableName, Craftable> = { ...equipmentByName, ...potionsByName, ...toolsByName };
 
 export async function selectItemToCraft(craftableName: CraftableName) {
-    player.selectedCraftable = craftablesByName[craftableName];
+    player.selectedCraftable = craftableName;
+    renderCraftables();
     renderCraftableDetails();
 }
 
@@ -30,10 +31,15 @@ export async function stopCrafting() {
     renderCraftableDetails();
 }
 
-function checkIngredientCount(craftable: Craftable) {
+function getSelectedCraftable() {
+    return player.selectedCraftable ? craftablesByName[player.selectedCraftable] : undefined;
+}
+
+function checkIngredientCount(craftable: Craftable, showMessage: boolean) {
     for (const [ingredientName, ingredient] of getEntries(craftable.crafting!.ingredients)) {
         if (getInventoryCount(ingredientName) < ingredient) {
-            addMessage(`You don't have enough ${ingredientName} to craft ${getWithIndefiniteArticle(craftable.name)}!`);
+            if (showMessage)
+                addMessage(`You don't have enough ${ingredientName} to craft ${getWithIndefiniteArticle(craftable.name)}!`);
             return false;
         }
     }
@@ -42,8 +48,8 @@ function checkIngredientCount(craftable: Craftable) {
 }
 
 export async function doCrafting() {
-    const craftable = player.selectedCraftable;
-    if (!craftable || !craftable.crafting)
+    const craftable = getSelectedCraftable();
+    if (!craftable?.crafting)
         return;
 
     if (player.level < craftable.crafting.requiredLevel) {
@@ -51,7 +57,7 @@ export async function doCrafting() {
         return;
     }
 
-    if (!checkIngredientCount(craftable))
+    if (!checkIngredientCount(craftable, true))
         return;
     
     let craftingTime = 5000;
@@ -70,7 +76,7 @@ export async function doCrafting() {
     
     isCrafting = false;
 
-    if (!checkIngredientCount(craftable))
+    if (!checkIngredientCount(craftable, true))
         return;
         
     for (const [ingredientName, amount] of getEntries(craftable.crafting.ingredients)) {
@@ -84,13 +90,13 @@ export async function doCrafting() {
     if (craftable.type === "Equipment") {
         const craftableEquipment = getCraftableEquipment();
         const nextCraftableIndex = craftableEquipment.length ? craftableIndex++ % craftableEquipment.length : -1;
-        player.selectedCraftable = craftableEquipment[nextCraftableIndex];
+        player.selectedCraftable = craftableEquipment[nextCraftableIndex].name;
     }
 
     if (craftable.type === "Tool") {
         const craftableTool = getCraftableTools();
         const nextCraftableIndex = craftableTool.length ? craftableIndex++ % craftableTool.length : -1;
-        player.selectedCraftable = craftableTool[nextCraftableIndex];
+        player.selectedCraftable = craftableTool[nextCraftableIndex].name;
     }
     
     renderCraftables();
@@ -100,7 +106,9 @@ export async function doCrafting() {
 const canCraft = (item: Craftable) => item.crafting && item.crafting.requiredLevel <= player.level;
 
 function renderCraftable(craftable: Craftable) {
-    return `<div onclick="crafting.selectItemToCraft('${craftable.name}')" class="item-icon" title="${craftable.name}"><img src="${craftable.iconUrl}" /></div>`;
+    const hasIngredients = checkIngredientCount(craftable, false);
+    const isSelected = player.selectedCraftable === craftable.name;
+    return `<div onclick="crafting.selectItemToCraft('${craftable.name}')" class="item-icon${isSelected ? " selected" : hasIngredients ? "" : " not-possible"}" title="${craftable.name}"><img src="${craftable.iconUrl}" /></div>`;
 }
 
 function getCraftableTools() {
@@ -140,13 +148,13 @@ export function renderCraftables() {
 }
 
 export function renderCraftableDetails() {
-    if (!player.selectedCraftable || !player.selectedCraftable.crafting) {
+    const craftable = getSelectedCraftable();
+    if (!craftable?.crafting) {
         dom.setHtml("craftable-details", "");
         return;
     }
 
-    const craftable = player.selectedCraftable;
-    const ingredients = craftable.crafting!.ingredients;
+    const ingredients = craftable.crafting.ingredients;
 
     let html = "<div>";
     html += `<h3>Item to craft</h3>`;
@@ -166,9 +174,9 @@ export function renderCraftableDetails() {
             html += `<span class="crafting-ingredient">`;
     
             const ingredient = resourcesByName[ingredientName];
-            html += `<div class="item-icon" title="${ingredient.name}"><img src="${ingredient.iconUrl}" /></div>`;
-            
             const ownedAmount = getInventoryCount(ingredientName);
+            html += `<div class="item-icon${ownedAmount < requiredAmount ? " not-possible" : ""}" title="${ingredient.name}"><img src="${ingredient.iconUrl}" /></div>`;
+            
             const classForAmount = ownedAmount < requiredAmount ? "red" : ""
             html += `<span class="${classForAmount}">${displayNumber(ownedAmount)}/${requiredAmount}</span>`;
     

@@ -6,7 +6,7 @@ import { ToolName } from '../data/items/tools';
 import { InventoryItemName } from './inventory';
 import { PartialRecord } from '../util';
 import { Activity } from '../activities/activities';
-import { Craftable } from '../activities/crafting';
+import { CraftableName } from '../activities/crafting';
 import { GatheringActivityName, GatheringCategoryName } from '../activities/gathering';
 import { addMessage } from './messages';
 import { StatisticName } from './statistics';
@@ -104,7 +104,7 @@ export function getDefaultData() {
         currentGatheringActivity: undefined as GatheringActivityName | undefined,
         currentGatheringActivityId: undefined as number | undefined,
         selectedItemName: undefined as InventoryItemName | undefined,
-        selectedCraftable: undefined as Craftable | undefined,
+        selectedCraftable: undefined as CraftableName | undefined,
         selectedEquipmentSlot: undefined as EquipmentSlot | undefined,
         selectedEquipment: undefined as EquipmentName | undefined,
 
