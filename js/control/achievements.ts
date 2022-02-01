@@ -186,11 +186,8 @@ function renderAchievements() {
     html += "<h3>In progress:</h3>";
     if (achievementsInProgress.length > 0) {
         html += "<ul>";
-        for (const achievement of achievementsInProgress) {
-            const value = achievement.progress - achievement.previousLevelValue;
-            const max = achievement.levelValue - achievement.previousLevelValue;
-            const width = value / max * 100;
-            html += `<li><div class="progress-bar"><span style="width: ${width}%;"></span></div> ${achievement.name}</li>`;
+        for (const achievement of [...achievementsInProgress].sort((a, b) => b.progressPercentage - a.progressPercentage)) {
+            html += `<li><div class="progress-bar"><span style="width: ${achievement.progressPercentage}%;"></span></div> ${achievement.name}</li>`;
         }
         html += "</ul>";
     } else {
@@ -219,11 +216,15 @@ function renderAchievements() {
 function getAchievementsInProgress() {
     return achievementsToCheck.filter(x => checkRequirements(x) && x.progress > 0).map(achievement => {
         const levelValue = achievement.levels[achievement.currentLevel];
+        const previousLevelValue = achievement.levels[achievement.currentLevel - 1] ?? 0;
+        const currentLevelProgress = achievement.progress - previousLevelValue;
+        const currentLevelMax = levelValue - previousLevelValue;
         return {
             name: achievement.name(`${displayNumber(achievement.progress)}/${levelValue}`),
             progress: achievement.progress,
             levelValue: levelValue,
-            previousLevelValue: achievement.levels[achievement.currentLevel - 1] ?? 0
+            previousLevelValue: previousLevelValue,
+            progressPercentage: currentLevelProgress / currentLevelMax * 100
         }
     });
 }
