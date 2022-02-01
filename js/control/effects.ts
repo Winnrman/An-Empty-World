@@ -1,3 +1,5 @@
+import "../../css/effects.css";
+
 import { addPlayerHealth } from "../activities/combat";
 import { addStamina } from "../activities/questing";
 import player from "../control/player";
@@ -5,8 +7,6 @@ import { DurationItemEffect, ImmediateItemEffect, ItemEffect } from "../data/ite
 import { setHtml } from "../util/dom";
 import { updateArmour } from "./equipment";
 import { displayNumber } from "../util";
-
-import "../../css/effects.css";
 
 export type PlayerEffect = {
     name: DurationEffectName;

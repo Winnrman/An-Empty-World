@@ -1,7 +1,3 @@
-import { Item, ItemEffect, Rarity } from ".";
-import { ResourceName } from "./resources";
-import { PartialRecord } from "../../util";
-
 import iconPotionofHealing from "../../../img/assets/potions/Potion of Healing.png";
 import iconPotionofStrength from "../../../img/assets/potions/Potion of Strength.png";
 import iconPotionofHarming from "../../../img/assets/potions/Potion of Harming.png";
@@ -9,6 +5,10 @@ import iconPotionofDefense from "../../../img/assets/potions/Potion of Defense.p
 import iconPotionofStamina from "../../../img/assets/potions/Potion of Stamina.png";
 import iconPotionofSpeed from "../../../img/assets/potions/Potion of Speed.png";
 import iconPotionofInvisibility from "../../../img/assets/potions/Potion of Invisibility.png";
+
+import { Item, ItemEffect, Rarity } from ".";
+import { ResourceName } from "./resources";
+import { PartialRecord } from "../../util";
 
 export type PotionName = 
         "Potion of Healing" | "Potion of Strength" | "Potion of Harming"  | "Potion of Defense" 

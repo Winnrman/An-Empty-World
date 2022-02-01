@@ -1,7 +1,6 @@
 import { AchievementName, checkAchievements, resetAchievementsToCheck } from "../control/achievements";
 import * as crafting from "../activities/crafting";
 import * as gathering from "../activities/gathering";
-import * as experience from "../control/experience";
 import * as equipment from "../control/equipment";
 import * as main from "../main";
 import player, { pauseSaving, saveData, resetData, getDefaultData, restoreData, resumeSaving, Player } from "../control/player";

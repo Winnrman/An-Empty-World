@@ -1,12 +1,4 @@
-import * as dom from "../util/dom";
-import { EquipmentSlot } from "../data/items";
-import { addMessage } from './messages';
-import player, { addGold } from "./player";
-import transient from "./transient";
-import { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
-import { getEffectValue } from "./effects";
-import { getWithIndefiniteArticle } from "../util";
-import { wrapAction } from "./user";
+import "../../css/equipment.css";
 
 import iconSlotHelmet from "../../img/assets/equipment/Slot/Slot Helmet.png";
 import iconSlotChest from "../../img/assets/equipment/Slot/Slot Chest.png";
@@ -17,8 +9,17 @@ import iconSlotOffhand from "../../img/assets/equipment/Slot/Slot Offhand.png";
 import iconSlotRanged from "../../img/assets/equipment/Slot/Slot Ranged.png";
 import iconSlotShield from "../../img/assets/equipment/Slot/Slot Shield.png";
 
-import "../../css/equipment.css";
-import { renderCombat, renderCombatPlayer } from "../activities/combat";
+import * as dom from "../util/dom";
+import { EquipmentSlot } from "../data/items";
+import { addMessage } from './messages';
+import player from "./player";
+import transient from "./transient";
+import { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
+import { getEffectValue } from "./effects";
+import { getWithIndefiniteArticle } from "../util";
+import { wrapAction } from "./user";
+import { renderCombatPlayer } from "../activities/combat";
+import { addGold } from "./inventory";
 
 const emptyEquipmentIcons: Record<EquipmentSlot, string> = {
     "Helmet": iconSlotHelmet,

@@ -3,12 +3,13 @@ import { EquipmentSlot } from '../data/items';
 import { PlayerEffect } from './effects';
 import { EquipmentName } from '../data/items/equipment';
 import { ToolName } from '../data/items/tools';
-import { InventoryItemName, renderInventory } from './inventory';
+import { InventoryItemName } from './inventory';
 import { PartialRecord } from '../util';
 import { Activity } from '../activities/activities';
 import { Craftable } from '../activities/crafting';
 import { GatheringActivityName, GatheringCategoryName } from '../activities/gathering';
 import { addMessage } from './messages';
+import { StatisticName } from './statistics';
 
 export type Player = ReturnType<typeof getPlayerData>;
 const player: Player = getPlayerData();
@@ -69,8 +70,6 @@ export function restoreData() {
     resetData(getPlayerData());
 }
 
-export type StatisticName = "cutWood" | "minedStone" | "caughtFish" | "huntedMeat" | "minedOre" | "killedEnemies" | "completedQuests" | "earnedGold" | "scavengedHerbs"
-
 export function getDefaultData() {
     return {
         xp: 0,
@@ -111,25 +110,6 @@ export function getDefaultData() {
 
         isDev: false
     }
-}
-
-export function addGold(value: number) {
-    player.gold += value;
-    addStatistic("earnedGold", value);
-
-    renderInventory();
-}
-
-export function removeGold(value: number) {
-    player.gold = Math.max(0, player.gold - value);
-    renderInventory();
-}
-
-export function addStatistic(type: StatisticName | undefined, amount: number) {
-    if (!type)
-        return;
-    
-    player.statistics[type] = (player.statistics[type] ?? 0) + amount;
 }
 
 export let saveInterval: NodeJS.Timer | undefined;

@@ -1,16 +1,15 @@
+import "../../css/store.css";
+
 import * as dom from '../util/dom';
-import { randomLootDrop } from "./events";
-import { addToolToInventory, getInventoryCount, hasInInventory, InventoryItemName, inventoryItemsByName, isInventoryFull, removeAllFromInventory, removeFromInventory, renderInventory } from "../control/inventory";
+import { addGold, addToolToInventory, getInventoryCount, hasInInventory, InventoryItemName, inventoryItemsByName, isInventoryFull, removeAllFromInventory, removeFromInventory, removeGold, renderInventory } from "../control/inventory";
 import { addMessage } from '../control/messages';
-import player, { addGold, removeGold } from "../control/player";
+import player from "../control/player";
 import { ToolName, toolsByName } from '../data/items/tools';
-import { addLoot } from './looting';
+import { addLoot, randomLootDrop } from './looting';
 import resources from '../data/items/resources';
 import { getWithIndefiniteArticle } from '../util';
 import levelUnlocks from '../data/levelUnlocks';
 import { wrapAction } from '../control/user';
-
-import "../../css/store.css";
 
 export async function buyTool(toolName: ToolName) {
     const tool = toolsByName[toolName];

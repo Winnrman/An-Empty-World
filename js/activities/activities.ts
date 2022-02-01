@@ -1,13 +1,13 @@
-import player from "../control/player";
-import * as dom from "../util/dom";
-import { clearGatheringCategory, gatheringCategories, renderGatheringActivity, renderGatheringCategory } from "./gathering";
-import levelUnlocks from "../data/levelUnlocks";
-import { wrapAction } from "../control/user";
-
 import iconCoins from "../../img/assets/materials/Coins.png";
 import iconSword from "../../img/assets/equipment/Iron/Iron Sword.png";
 import iconAmulet from "../../img/assets/equipment/Amulet of Luck.png";
 import iconSpyGlass from "../../img/assets/tools/Spyglass.png";
+import player from "../control/player";
+
+import * as dom from "../util/dom";
+import { clearGatheringCategory, gatheringCategories, renderGatheringActivity, renderGatheringCategory } from "./gathering";
+import levelUnlocks from "../data/levelUnlocks";
+import { wrapAction } from "../control/user";
 import { renderCombat } from "./combat";
 
 export type Activity = "Crafting" | "Fighting" | "Store" | "Gathering";

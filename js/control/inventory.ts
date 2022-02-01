@@ -1,3 +1,5 @@
+import "../../css/inventory.css";
+
 import player from "./player";
 import { Resource, ResourceName, resourcesByName } from "../data/items/resources";
 import { Potion, PotionName, potionsByName } from "../data/items/potions";
@@ -11,8 +13,7 @@ import iconCoins from "../../img/assets/materials/Coins.png";
 import { renderStore } from "../activities/store";
 import { renderActivities } from "../activities/activities";
 import { wrapAction } from "./user";
-
-import "../../css/inventory.css";
+import { addStatistic } from "./statistics";
 
 export type InventoryItemName = ToolName | ResourceName | PotionName;
 export type InventoryItem = Tool | Resource | Potion;
@@ -56,6 +57,18 @@ export async function removeFromInventory(itemName: InventoryItemName, amount: n
 
 export async function removeAllFromInventory(itemName: InventoryItemName) {
     player.inventory[itemName] = 0;
+    renderInventory();
+}
+
+export function addGold(value: number) {
+    player.gold += value;
+    addStatistic("earnedGold", value);
+
+    renderInventory();
+}
+
+export function removeGold(value: number) {
+    player.gold = Math.max(0, player.gold - value);
     renderInventory();
 }
 

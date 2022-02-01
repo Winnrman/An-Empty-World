@@ -1,4 +1,15 @@
-import player, { addStatistic, StatisticName } from "../control/player";
+import iconWood from "../../img/assets/materials/Wood.png";
+import iconStone from "../../img/assets/materials/Stone.png";
+import iconAxe from "../../img/assets/tools/stone_axe.png";
+import iconPickaxe from "../../img/assets/tools/Pickaxe.png";
+import iconFish from "../../img/assets/materials/Fish.png";
+import iconMeat from "../../img/assets/materials/Meat.png";
+import iconIron from "../../img/assets/materials/Iron.png";
+import iconMonofolia from "../../img/assets/materials/Monofolia.png";
+import iconBifolia from "../../img/assets/materials/Bifolia.png";
+import iconCrimsonica from "../../img/assets/materials/Crimsonica.png";
+
+import player from "../control/player";
 import { addMessage } from "../control/messages";
 import { addXp } from "../control/experience";
 import { displayNumber, getEntries, getRandomInt, PartialRecord, sum } from "../util";
@@ -11,18 +22,8 @@ import levelUnlocks from "../data/levelUnlocks";
 import { sleep } from "../control/timing";
 import { getItemChances, getRandomLootFromTable, LootTable } from "./looting";
 import { wrapAction } from "../control/user";
+import { addStatistic, StatisticName } from "../control/statistics";
 
-
-import iconWood from "../../img/assets/materials/Wood.png";
-import iconStone from "../../img/assets/materials/Stone.png";
-import iconAxe from "../../img/assets/tools/stone_axe.png";
-import iconPickaxe from "../../img/assets/tools/Pickaxe.png";
-import iconFish from "../../img/assets/materials/Fish.png";
-import iconMeat from "../../img/assets/materials/Meat.png";
-import iconIron from "../../img/assets/materials/Iron.png";
-import iconMonofolia from "../../img/assets/materials/Monofolia.png";
-import iconBifolia from "../../img/assets/materials/Bifolia.png";
-import iconCrimsonica from "../../img/assets/materials/Crimsonica.png";
 export type GatheringCategoryName = "Wood" | "Stone" | "Food" | "Ore" | "Herb";
 
 export type GatheringCategory = {

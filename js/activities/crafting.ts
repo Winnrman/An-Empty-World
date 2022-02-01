@@ -1,3 +1,5 @@
+import "../../css/crafting.css";
+
 import * as dom from "../util/dom";
 import { addMessage } from '../control/messages';
 import { ownsEquipment } from "../control/equipment";
@@ -11,8 +13,6 @@ import { addLoot } from "./looting";
 import tools, { Tool, ToolName, toolsByName } from "../data/items/tools";
 import { sleep } from "../control/timing";
 import { wrapAction } from "../control/user";
-
-import "../../css/crafting.css";
 
 export type CraftableName = EquipmentName | PotionName | ToolName;
 export type Craftable = Equipment | Potion | Tool;

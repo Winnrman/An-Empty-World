@@ -1,3 +1,5 @@
+import "../../css/achievements.css";
+
 import * as dom from "../util/dom";
 import player from "./player";
 import { hasEquiped } from "./equipment";
@@ -5,8 +7,6 @@ import { addMessage } from './messages';
 import { EquipmentName } from "../data/items/equipment";
 import { displayNumber, getEntries, PartialRecord } from "../util";
 import levelUnlocks from "../data/levelUnlocks";
-
-import "../../css/achievements.css";
 
 const getEquipCount = (type: EquipmentName) => hasEquiped(type) ? 1 : 0;
 

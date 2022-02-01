@@ -1,16 +1,16 @@
+import "../../css/combat.css";
+
 import * as dom from '../util/dom';
 import { Enemy, EnemyName, enemiesByName } from "../data/enemies";
 import { addXp } from "../control/experience";
-import { randomLootDrop } from "./events";
-import player, { addGold, addStatistic, saveData } from "../control/player";
+import player from "../control/player";
 import { addMessage } from '../control/messages';
 import { getRandomInt, minMax } from '../util';
-import { addLoot } from './looting';
+import { addLoot, randomLootDrop } from './looting';
 import { wrapAction } from '../control/user';
-import { checkAchievements } from '../control/achievements';
 import { sleep } from '../control/timing';
-
-import "../../css/combat.css";
+import { addGold } from '../control/inventory';
+import { addStatistic } from '../control/statistics';
 
 type Fight = {
     enemy: Enemy;
@@ -129,8 +129,6 @@ function clearFight() {
     fight = undefined;
 
     renderCombat();
-    checkAchievements();
-    saveData("Clear fight");
 }
 
 export function addPlayerHealth(value: number) {

@@ -1,7 +1,7 @@
 import { Item } from ".";
 import { PartialRecord } from "../../util";
+import { StatisticName } from "../../control/statistics";
 import { GatheringCategoryName } from "../../activities/gathering";
-import { StatisticName } from "../../control/player";
 
 import iconIron from "../../../img/assets/materials/Iron.png";
 import iconCopper from "../../../img/assets/materials/Copper.png";

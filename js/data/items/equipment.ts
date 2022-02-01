@@ -1,7 +1,3 @@
-import { EquipmentSlot, Item, Rarity } from ".";
-import { ResourceName } from "./resources";
-import { PartialRecord } from "../../util";
-
 import iconWoodenHelmet from "../../../img/assets/equipment/Wooden/Wooden Helmet.png";
 import iconWoodenChestplate from "../../../img/assets/equipment/Wooden/Wooden Chestplate.png";
 import iconWoodenLeggings from "../../../img/assets/equipment/Wooden/Wooden Leggings.png";
@@ -40,6 +36,10 @@ import iconDragonScaleLeggings from "../../../img/assets/equipment/Dragon Scale/
 import iconDragonScaleBoots from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Boots.png";
 import iconDragonScaleSword from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Sword.png";
 import iconAmuletofLuck from "../../../img/assets/equipment//Amulet of Luck.png";
+
+import { EquipmentSlot, Item, Rarity } from ".";
+import { ResourceName } from "./resources";
+import { PartialRecord } from "../../util";
 
 export type EquipmentName = 
         "Wooden Helmet"       | "Wooden Chestplate"       | "Wooden Leggings"       | "Wooden Boots"       | "Wooden Sword"
