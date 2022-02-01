@@ -8,7 +8,7 @@ import { addMessage } from '../control/messages';
 import { getRandomInt, minMax } from '../util';
 import { addLoot, randomLootDrop } from './looting';
 import { wrapAction } from '../control/user';
-import { sleep } from '../control/timing';
+import { calculateTime, sleep } from '../control/timing';
 import { addGold } from '../control/inventory';
 import { addStatistic } from '../control/statistics';
 
@@ -86,13 +86,15 @@ export async function startCombat () {
 }
 
 function setNextPlayerAttack(fight: Fight) {
-    fight.timeUntilPlayerAttack = 1000 / player.playerSpeed;
-    dom.resetProgressbar("playerAttackProgress", fight.timeUntilPlayerAttack);
+    const timeUntilNextAttack = calculateTime(1000 / player.playerSpeed);
+    fight.timeUntilPlayerAttack = timeUntilNextAttack;
+    dom.resetProgressbar("playerAttackProgress", timeUntilNextAttack);
 }
 
 function setNextEnemyAttack(fight: Fight) {
-    fight.timeUntilEnemyAttack = 1000 / fight.enemy.speed;
-    dom.resetProgressbar("enemyAttackProgress", fight.timeUntilEnemyAttack);
+    const timeUntilNextAttack = calculateTime(1000 / fight.enemy.speed);
+    fight.timeUntilEnemyAttack = timeUntilNextAttack;
+    dom.resetProgressbar("enemyAttackProgress", timeUntilNextAttack);
 }
 
 function enemyDied(fight: Fight) {

@@ -11,7 +11,7 @@ import { resourcesByName } from "../data/items/resources";
 import { displayNumber, getEntries, getWithIndefiniteArticle } from "../util";
 import { addLoot } from "./looting";
 import tools, { Tool, ToolName, toolsByName } from "../data/items/tools";
-import { sleep } from "../control/timing";
+import { calculateTime, sleep } from "../control/timing";
 import { wrapAction } from "../control/user";
 
 export type CraftableName = EquipmentName | PotionName | ToolName;
@@ -67,8 +67,9 @@ export async function doCrafting() {
 
     isCrafting = true;
     renderCraftableDetails();
+    
+    craftingTime = calculateTime(craftingTime);
     dom.resetProgressbar("crafting-progress", craftingTime);
-
     await sleep(craftingTime);
 
     if (!isCrafting)
@@ -90,13 +91,13 @@ export async function doCrafting() {
     if (craftable.type === "Equipment") {
         const craftableEquipment = getCraftableEquipment();
         const nextCraftableIndex = craftableEquipment.length ? craftableIndex++ % craftableEquipment.length : -1;
-        player.selectedCraftable = craftableEquipment[nextCraftableIndex].name;
+        player.selectedCraftable = craftableEquipment[nextCraftableIndex]?.name;
     }
 
     if (craftable.type === "Tool") {
         const craftableTool = getCraftableTools();
         const nextCraftableIndex = craftableTool.length ? craftableIndex++ % craftableTool.length : -1;
-        player.selectedCraftable = craftableTool[nextCraftableIndex].name;
+        player.selectedCraftable = craftableTool[nextCraftableIndex]?.name;
     }
     
     renderCraftables();

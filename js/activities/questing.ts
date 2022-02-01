@@ -8,7 +8,7 @@ import transient from '../control/transient';
 import { getRandomInt, getRandomItem, getWithIndefiniteArticle } from '../util';
 import { Rarity } from "../data/items";
 import { addLoot, randomLootDrop } from "./looting";
-import { sleep } from "../control/timing";
+import { calculateTime, sleep } from "../control/timing";
 import { wrapAction } from "../control/user";
 import { addGold, removeGold } from "../control/inventory";
 import { addStatistic } from "../control/statistics";
@@ -153,7 +153,7 @@ async function doRandomAction(actions: (() => void)[]) {
 }
 
 async function waitForPart(time: number, message: string) {
-    await sleep(time);
+    await sleep(calculateTime(time));
     addMessage(message);
 }
 

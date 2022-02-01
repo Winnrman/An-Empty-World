@@ -17,6 +17,8 @@ const player: Player = getPlayerData();
 // player data migration
 if (player.isDev === undefined)
     player.isDev = false;
+if (player.isDev && !player.devSpeed)
+    player.devSpeed = 4;
 
 export default player;
 
@@ -108,7 +110,8 @@ export function getDefaultData() {
         selectedEquipmentSlot: undefined as EquipmentSlot | undefined,
         selectedEquipment: undefined as EquipmentName | undefined,
 
-        isDev: false
+        isDev: false,
+        devSpeed: undefined as number | undefined,
     }
 }
 

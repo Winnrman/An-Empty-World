@@ -19,7 +19,7 @@ import * as dom from "../util/dom";
 import { ToolName } from "../data/items/tools";
 import { showActivity } from "./activities";
 import levelUnlocks from "../data/levelUnlocks";
-import { sleep } from "../control/timing";
+import { calculateTime, sleep } from "../control/timing";
 import { getItemChances, getRandomLootFromTable, LootTable } from "./looting";
 import { wrapAction } from "../control/user";
 import { addStatistic, StatisticName } from "../control/statistics";
@@ -252,8 +252,9 @@ export async function startGatheringActivity() {
         
         if (activity.searchTime) {
             setStatus(`Searching for the next ${activity.category}${skippedItem ? ` (you found a ${skippedItem} that you didn't want)` : ''}...`);
-            dom.resetProgressbar("gathering-progress", activity.searchTime);
-            await sleep(activity.searchTime);
+            const searchTime = calculateTime(activity.searchTime);
+            dom.resetProgressbar("gathering-progress", searchTime);
+            await sleep(searchTime);
 
             if (player.currentGatheringActivityId !== currentActivityId)
                 return;
@@ -271,8 +272,9 @@ export async function startGatheringActivity() {
 
         setStatus(`Gathering ${itemName}...`);
 
-        dom.resetProgressbar("gathering-progress", activity.time);
-        await sleep(activity.time);
+        const gatherTime = calculateTime(activity.time);
+        dom.resetProgressbar("gathering-progress", gatherTime);
+        await sleep(gatherTime);
     
         if (player.currentGatheringActivityId !== currentActivityId)
             return;
