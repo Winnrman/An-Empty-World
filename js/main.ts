@@ -67,9 +67,9 @@ function startIntervals() {
 
 export function checkAndRenderEverything() {
     experience.checkLevelUnlocks();
+    activities.showCurrentActivity();
     equipment.updateArmour();
     effects.registerEffectExpiries();
-    activities.showCurrentActivity();
     settings.loadTheme();
     achievements.checkAchievements();
 
@@ -80,7 +80,6 @@ export function checkAndRenderEverything() {
     crafting.renderCraftables();
     questing.renderStamina();
     inventory.renderInventory();
-    combat.renderPreCombatInfo();
     gathering.resumeGatheringActivity();
 }
 

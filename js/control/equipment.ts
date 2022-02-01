@@ -18,6 +18,7 @@ import iconSlotRanged from "../../img/assets/equipment/Slot/Slot Ranged.png";
 import iconSlotShield from "../../img/assets/equipment/Slot/Slot Shield.png";
 
 import "../../css/equipment.css";
+import { renderCombat, renderCombatPlayer } from "../activities/combat";
 
 const emptyEquipmentIcons: Record<EquipmentSlot, string> = {
     "Helmet": iconSlotHelmet,
@@ -110,9 +111,9 @@ export function updateArmour() {
            1
         + getEffectValue("addSpeed");
 
-    dom.setHtml("playerDefenseValue", player.playerDefense.toString());
-    dom.setHtml("playerAttackValue", player.playerAttack.toString());
-    dom.setHtml("playerSpeedValue", player.playerSpeed.toString());
+    if (player.currentActivity === "Fighting") {
+        renderCombatPlayer();
+    }
 
     renderEquipment();
 }
@@ -214,9 +215,9 @@ export function renderSelectedEquipment() {
         html += `Armor: ${equipment.equipment.armor ?? 0}<br />`;
         html += "<br />";
         if (isEquipped)
-            html += `<button onClick="equipment.unequipSlot('${equipment.equipment!.slot}')" class="button">Unequip</button>`;
+            html += `<button onClick="equipment.unequipSlot('${equipment.equipment!.slot}')">Unequip</button>`;
         else
-            html += `<button onClick="equipment.equip('${equipment.name}')" class="button">Equip</button>`;
+            html += `<button onClick="equipment.equip('${equipment.name}')">Equip</button>`;
 
         html += "</div>";
 

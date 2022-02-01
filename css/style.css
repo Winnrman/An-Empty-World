@@ -21,7 +21,7 @@ select{
     padding:10px;
     border:1px solid black;
 }
-.button{
+button{
     font-size: 12px;
     border:1px solid black;
     background-color:white;
@@ -29,13 +29,13 @@ select{
     font-weight:100;
     padding:5px;
 }
-.button:hover{
+button:hover{
     background-color:rgb(212, 212, 212);
     color:black;
     cursor: pointer;
 }
 
-.button img{
+button img{
     width:20px;
     height:20px;
 }

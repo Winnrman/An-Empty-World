@@ -166,11 +166,11 @@ function renderSelectedItemDetails() {
         Amount owned: ${displayNumber(getInventoryCount(item.name))}<br />
         <br />
         ${"<h3>Actions<h3>"}
-        ${canSell ? `<button class="button" onclick="store.sell('${item.name}', 1)">Sell one</button>&nbsp;` : ""}
-        ${canSell ? `<button class="button" onclick="store.sell('${item.name}')">Sell all</button>&nbsp;` : ""}
-        ${canSell ? "" : `<button class="button" onclick="inventory.removeFromInventory('${item.name}', 1)">Drop one</button>&nbsp;`}
-        ${canSell ? "" : `<button class="button" onclick="inventory.removeAllFromInventory('${item.name}')">Drop all</button>&nbsp;`}
-        ${canDrink ? `<button class="button" onclick="inventory.drinkPotion('${item.name}')">Drink</button>&nbsp;` : ""}
+        ${canSell ?      `<button onclick="store.sell('${item.name}', 1)">Sell one</button>&nbsp;` : ""}
+        ${canSell ?      `<button onclick="store.sell('${item.name}')">Sell all</button>&nbsp;` : ""}
+        ${canSell ? "" : `<button onclick="inventory.removeFromInventory('${item.name}', 1)">Drop one</button>&nbsp;`}
+        ${canSell ? "" : `<button onclick="inventory.removeAllFromInventory('${item.name}')">Drop all</button>&nbsp;`}
+        ${canDrink ?     `<button onclick="inventory.drinkPotion('${item.name}')">Drink</button>&nbsp;` : ""}
     `;
 
     dom.setHtml("itemDetails", html);

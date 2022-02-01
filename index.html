@@ -90,50 +90,9 @@
                 <div id="equipment-chooser-selected"></div>
             </div>
             <div class="auto-column equipment" id="equipment"></div>
-            <div class="auto-column">
-                <div id="playerStats">
-                    <h4 style="text-decoration: underline;" id="playerHeader">Player</h4>
-                    <div class="progress-bar"><span id="playerHealthProgress" style="width: 100%;"></span></div><br />
-                    <div class="progress-bar"><span id="playerAttackProgress" style="width: 0%;"></span></div>
-                    <p id="playerHealth">Health: <span id="playerHealthValue">100/100</span></p>
-                    <p id="playerAttack">Attack: <span id="playerAttackValue">1</span></p>
-                    <p id="playerDefense">Defense: <span id="playerDefenseValue">1</span></p>
-                    <p id="playerSpeed">Speed: <span id="playerSpeedValue">1</span></p>
-                </div>
-            </div>
-            <div class="auto-column combat-actions" style="width: 100px">
-                <div>
-                    <button style="display: none;" id="attackButton" class="button"
-                        onclick="combat.startCombat()">Attack</button><br />
-                    <button style="display: none;" id="fleeButton" class="button"
-                        onclick="combat.doFlee()">Flee</button><br />
-                    <button style="display: none;" id="defendButton" class="button"
-                        onclick="combat.defend()">Defend</button><br />
-                    <button style="display: none;" id="specialButton" class="button"
-                        onclick="combat.special()">Special</button>
-                </div>
-            </div>
-            <div class="auto-column">
-                <select id="opponentSelector">
-                    <option value="">Select an opponent</option>
-                    <option value="Goblin">Goblin</option>
-                    <option value="Troll">Troll</option>
-                    <option value="Skeleton">Skeleton</option>
-                    <option value="Knight">Knight</option>
-                    <option value="King">King</option>
-                </select>
-                <button id="fightButton" class="button"
-                    onclick="combat.selectEnemy(document.getElementById('opponentSelector').value)">Fight</button>
-                <div id="enemyStats">
-                    <h4 style="text-decoration: underline;" id="enemyHeader">Enemy</h4>
-                    <div class="progress-bar"><span id="enemyHealthProgress" style="width: 0%;"></span></div><br />
-                    <div class="progress-bar"><span id="enemyAttackProgress" style="width: 0%;"></span></div>
-                    <p id="health">Health: <span id="healthValue">0</span></p>
-                    <p id="attack">Attack: <span id="attackValue">0</span></p>
-                    <p id="defense">Defense: <span id="defenseValue">0</span></p>
-                    <p id="speed">Speed: <span id="speedValue">0</span></p>
-                </div>
-            </div>
+            <div class="auto-column" id="combat-player"></div>
+            <div class="auto-column" id="combat-actions"></div>
+            <div class="auto-column" id="combat-enemy"></div>
         </div>
     </fieldset>
 

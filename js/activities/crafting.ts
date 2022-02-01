@@ -158,7 +158,7 @@ export function renderCraftableDetails() {
 
     if (isCrafting) {
         html += `<div class="progress-bar"><span id="crafting-progress" style="width: 0%;"></span></div>`;
-        html += `<button class="button" onClick="crafting.stopCrafting()">Stop</button>`;
+        html += `<button onClick="crafting.stopCrafting()">Stop</button>`;
     } else {
         html += `<h3>Ingredients</h3>`
         html += `<div class="crafting-ingredients">`
@@ -177,7 +177,7 @@ export function renderCraftableDetails() {
         html += "</div>";
     
         html += "<br />";
-        html += `<button class="button" onclick="crafting.doCrafting()">Craft</button>`;
+        html += `<button onclick="crafting.doCrafting()">Craft</button>`;
     }
 
     html += "</div>";

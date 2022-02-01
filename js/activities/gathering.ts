@@ -341,7 +341,7 @@ export function renderGatheringCategory() {
     let html = "";
     const availablecategories = gatheringActivities.filter(x => x.category === player.currentGatheringCategory && player.level >= x.requiredLevel);
     for (const activity of availablecategories) {
-        html += `<button class="button" onclick="gathering.showGatheringActivity('${activity.name}')"><img src='${activity.icon}' />${activity.name}</button> `;
+        html += `<button onclick="gathering.showGatheringActivity('${activity.name}')"><img src='${activity.icon}' />${activity.name}</button> `;
     }
     
     dom.setHtml("gathering-category", html);
@@ -375,7 +375,7 @@ export function renderGatheringActivity() {
             return;
         }
 
-        html += ` <button class="button" onClick="gathering.startGatheringActivity()">Start</button>`;
+        html += ` <button onClick="gathering.startGatheringActivity()">Start</button>`;
         html += "<br />";
         html += "<br />";
     }
@@ -387,7 +387,7 @@ export function renderGatheringActivity() {
 
     html += `${activityStatus}<br />`;
     html += `<div class="progress-bar"><span id="gathering-progress" style="width: 0%;"></span></div> `;
-    html += `<button class="button" onClick="gathering.clearGatheringActivity()">Stop</button>`;
+    html += `<button onClick="gathering.clearGatheringActivity()">Stop</button>`;
     dom.setHtml("gathering-activity", html);
 }
 

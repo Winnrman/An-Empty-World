@@ -8,6 +8,7 @@ import iconCoins from "../../img/assets/materials/Coins.png";
 import iconSword from "../../img/assets/equipment/Iron/Iron Sword.png";
 import iconAmulet from "../../img/assets/equipment/Amulet of Luck.png";
 import iconSpyGlass from "../../img/assets/tools/Spyglass.png";
+import { renderCombat } from "./combat";
 
 export type Activity = "Crafting" | "Fighting" | "Store" | "Gathering";
 
@@ -41,6 +42,8 @@ export function showCurrentActivity() {
     if (player.currentActivity === "Gathering") {
         renderGatheringCategory();
         renderGatheringActivity();
+    } else if (player.currentActivity === "Fighting") {
+        renderCombat();
     }
 }
 
@@ -50,7 +53,7 @@ export function renderActivities() {
             return "";
         
         const imagePart = image ? `<img src='${image}' />` : "";
-        return `<button class="button" onclick="${action}">${imagePart}${text}</button> `;
+        return `<button onclick="${action}">${imagePart}${text}</button> `;
     };
 
     let html = "";
