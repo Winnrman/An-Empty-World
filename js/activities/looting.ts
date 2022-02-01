@@ -3,8 +3,8 @@ import { addToInventory, addToolToInventory } from "../control/inventory";
 import equipment, { Equipment } from "../data/items/equipment";
 import potions, { Potion } from "../data/items/potions";
 import { Tool } from "../data/items/tools";
-import { getEntries, getRandomInt, PartialRecord, sum } from "../util";
-import { EquipmentSlot, Rarity } from "../data/items";
+import { getEntries, getKeys, getRandomInt, PartialRecord, sum } from "../util";
+import { EquipmentSlot } from "../data/items";
 import { getRandomItem } from "../util";
 
 export function randomLootDrop(): Loot {
@@ -18,13 +18,13 @@ export function randomLootDrop(): Loot {
 
 (window as any).randomLootDrop = randomLootDrop;
 
-function getRandomRarity(): Rarity {
-    const rarity = Math.floor(Math.random() * 16) + 1;
-    if (rarity < 5) return "common";
-    if (rarity < 10) return "uncommon";
-    if (rarity < 15) return "rare";
-    return "legendary";
-}
+// function getRandomRarity(): Rarity {
+//     const rarity = Math.floor(Math.random() * 16) + 1;
+//     if (rarity < 5) return "common";
+//     if (rarity < 10) return "uncommon";
+//     if (rarity < 15) return "rare";
+//     return "legendary";
+// }
 
 const itemTypes: (EquipmentSlot | "Potion")[] = ["Helmet", "Chestplate", "Leggings", "Boots", "Offhand", "Potion", "Shield"];
 
@@ -54,7 +54,7 @@ export function getAllPossibleItems<T extends string>(lootTable: LootTable<T>) {
         return items;
     }
 
-    for (const [key, value] of getEntries(lootTable as PartialRecord<T, number | ItemChance>)) {
+    for (const key of getKeys(lootTable as PartialRecord<T, number | ItemChance>)) {
         items.push(key);
     }
 

@@ -196,15 +196,15 @@ export async function showGatheringCategory(categoryName: GatheringCategoryName)
         return;
 
     player.currentGatheringCategory = categoryName;
-    clearGatheringActivity();
-    showActivity("Gathering");
+    await clearGatheringActivity();
+    await showActivity("Gathering");
 }
 
 export async function showGatheringActivity(activityName: GatheringActivityName) {
     if (player.currentGatheringActivity === activityName)
         return;
     
-    clearGatheringActivity();
+    await clearGatheringActivity();
     player.currentGatheringActivity = activityName;
     const activity = gatheringActivitiesByName[activityName];
     if (!activity.needsToChooseItem) {
@@ -212,7 +212,7 @@ export async function showGatheringActivity(activityName: GatheringActivityName)
         return;
     }
 
-    showActivity("Gathering");
+    await showActivity("Gathering");
 }
 
 const chosenItems = Array<ResourceName>();
@@ -248,7 +248,7 @@ export async function startGatheringActivity() {
         if ((activity.neededTools && !tool) || hasNoSpace())
             return clearGatheringActivity();
         
-        showActivity("Gathering");
+        await showActivity("Gathering");
         
         if (activity.searchTime) {
             setStatus(`Searching for the next ${activity.category}${skippedItem ? ` (you found a ${skippedItem} that you didn't want)` : ''}...`);
@@ -288,14 +288,14 @@ export async function startGatheringActivity() {
         addStatistic(statistic, amount);
         addXp(gatheringData.experience);
         if (tool)
-            decreaseToolHealth(tool);
+            await decreaseToolHealth(tool);
     }
 }
 
-export function clearGatheringCategory() {
+export async function clearGatheringCategory() {
     player.currentGatheringCategory = undefined;
     renderGatheringCategory();
-    clearGatheringActivity();
+    await clearGatheringActivity();
 }
 
 export async function clearGatheringActivity() {
@@ -306,13 +306,13 @@ export async function clearGatheringActivity() {
     renderGatheringActivity();
 }
 
-export function resumeGatheringActivity() {
+export async function resumeGatheringActivity() {
     const activity = player.currentGatheringActivity;
     if (!activity)
         return;
     
     player.currentGatheringActivity = undefined;
-    showGatheringActivity(activity);
+    await showGatheringActivity(activity);
 }
 
 function getTool(toolNames: ToolName[] | undefined, action: string) {

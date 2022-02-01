@@ -30,7 +30,7 @@ const emptyEquipmentIcons: Record<EquipmentSlot, string> = {
     "Offhand": iconSlotOffhand,
     "Ranged": iconSlotRanged,
     "Shield": iconSlotShield,
-}
+};
 
 export function addToOwnedEquipment(item: Equipment) {
     if (ownsEquipment(item.name)) {

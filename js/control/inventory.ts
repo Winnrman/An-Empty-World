@@ -72,12 +72,12 @@ export function removeGold(value: number) {
     renderInventory();
 }
 
-export function decreaseToolHealth(toolName: ToolName) {
+export async function decreaseToolHealth(toolName: ToolName) {
     player.toolHealth[toolName] -= 1;
     
     if (player.toolHealth[toolName] <= 0) {
         addMessage(`Your ${toolName} broke!`);
-        removeFromInventory(toolName, 1);
+        await removeFromInventory(toolName, 1);
     }
 
     renderInventory();
@@ -94,12 +94,12 @@ export async function drinkPotion(itemName: PotionName) {
     
     const potion = potionsByName[itemName];
     applyEffects(potion.effects);
-    removeFromInventory(itemName, 1);
+    await removeFromInventory(itemName, 1);
 }
 
 function getAllItemsInInventory () {
     return getKeys(player.inventory).filter(x => hasInInventory(x)).map(x => inventoryItemsByName[x]);
-};
+}
 
 export function renderInventory() {
     dom.setHtml("inventoryHeader", `Inventory (${displayNumber(calculateInventorySpace())}/${player.maxInventorySize})`);
@@ -173,7 +173,7 @@ function renderSelectedItemDetails() {
     const canSell = item.type !== "Tool" && player.currentActivity === "Store";
     const tool = item as Tool;
 
-    let html = `
+    const html = `
         <h3>Item details</h3>
         ${renderItemIcon(item, false)} ${item.name}<br />
         Description: ${item.description}<br />

@@ -80,7 +80,7 @@ export function checkAndRenderEverything() {
     crafting.renderCraftables();
     questing.renderStamina();
     inventory.renderInventory();
-    gathering.resumeGatheringActivity();
+    void gathering.resumeGatheringActivity();
 }
 
 startIntervals();

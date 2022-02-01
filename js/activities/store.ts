@@ -68,26 +68,26 @@ export type SellType = "Ores" | InventoryItemName;
 
 export async function sell(item: SellType, amount?: number) {
     if (item === "Ores") {
-        sellItems(["Iron", "Copper", "Tin", "Silver", "Gold", "Emerald", "Ruby", "Diamond"]);
+        await sellItems(["Iron", "Copper", "Tin", "Silver", "Gold", "Emerald", "Ruby", "Diamond"]);
         return;
     }
     
-    sellItem(item, amount);
+    await sellItem(item, amount);
 }
 
-function sellItems(itemNames: InventoryItemName[]) {
+async function sellItems(itemNames: InventoryItemName[]) {
     for (const itemName of itemNames) {
         addGold(getInventoryCount(itemName) * inventoryItemsByName[itemName].price);
-        removeAllFromInventory(itemName);
+        await removeAllFromInventory(itemName);
     }
     renderInventory();
 }
 
-function sellItem(itemName: InventoryItemName, amount?: number) {
+async function sellItem(itemName: InventoryItemName, amount?: number) {
     const ownedAmount = getInventoryCount(itemName);
     amount = Math.min(ownedAmount, amount ?? ownedAmount);
     addGold(amount * inventoryItemsByName[itemName].price);
-    removeFromInventory(itemName, amount);
+    await removeFromInventory(itemName, amount);
     renderInventory();
 }
 

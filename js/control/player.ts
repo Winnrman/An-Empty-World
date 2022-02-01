@@ -32,10 +32,10 @@ export function saveData(reason: string) {
 }
 
 function getPlayerData() {
-    return localStorage["player"] ? parsePlayer(localStorage["player"]) : getDefaultData();
+    return localStorage["player"] ? parsePlayer() : getDefaultData();
 }
 
-function parsePlayer(data: string): ReturnType<typeof getDefaultData> {
+function parsePlayer(): ReturnType<typeof getDefaultData> {
 
     const parseJsonValue = function (key: string, value: unknown) {
         // by default, Date gets converted to a string but not back again

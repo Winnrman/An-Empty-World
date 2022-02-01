@@ -13,21 +13,21 @@ import { renderCombat } from "./combat";
 export type Activity = "Crafting" | "Fighting" | "Store" | "Gathering";
 
 export async function goCrafting() {
-    showActivity("Crafting");
+    await showActivity("Crafting");
 }
 
 export async function goFighting() {
-    showActivity("Fighting");
+    await showActivity("Fighting");
 }
 
-export function goToStore() {
-    showActivity("Store");
+export async function goToStore() {
+    await showActivity("Store");
 }
 
 export async function showActivity(activity: Activity) {
     player.currentActivity = activity;
     if (activity != "Gathering")
-        clearGatheringCategory();
+        await clearGatheringCategory();
 
     showCurrentActivity();
     renderActivities();

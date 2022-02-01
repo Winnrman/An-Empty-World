@@ -61,7 +61,7 @@ export async function doCrafting() {
         return;
     
     let craftingTime = 5000;
-    for (const [ingredientName, amount] of getEntries(craftable.crafting.ingredients)) {
+    for (const amount of Object.values(craftable.crafting.ingredients)) {
         craftingTime += 2000 * amount;
     }
 
@@ -81,7 +81,7 @@ export async function doCrafting() {
         return;
         
     for (const [ingredientName, amount] of getEntries(craftable.crafting.ingredients)) {
-        removeFromInventory(ingredientName, amount);
+        await removeFromInventory(ingredientName, amount);
     }
 
     let craftableIndex = craftable.type === "Equipment" ? getCraftableEquipment().indexOf(craftable as Equipment) : 0;

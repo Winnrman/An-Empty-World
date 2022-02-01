@@ -96,8 +96,8 @@ const durationEffects: DurationEffectData[] = [
         getDescription: () => "Become invisible",
         type: EffectType.Duration,
         calculation: EffectCalculation.IsPresent,
-        start: () => {},
-        end: () => {},
+        start: () => { /**/ },
+        end: () => { /**/ },
     },
 ];
 
@@ -106,7 +106,7 @@ const durationEffectsByName: { [key in DurationEffectName]: DurationEffectData }
 
 export type EffectData = ImmediateEffectData | DurationEffectData;
 const effects: EffectData[] = [...immediateEffects, ...durationEffects];
-const effectsByName: { [key in EffectName]: EffectData } = Object.assign({}, ...effects.map(x => ({ [x.name]: x })));
+export const effectsByName: { [key in EffectName]: EffectData } = Object.assign({}, ...effects.map(x => ({ [x.name]: x })));
 
 export function applyEffects(itemEffects: ItemEffect[]) {
     for (const itemEffect of itemEffects) {

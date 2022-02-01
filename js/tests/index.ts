@@ -179,20 +179,20 @@ function gather(activityName: gathering.GatheringActivityName, amount: number, s
 
 function craftTool(toolName: ToolName, ...changes: ChangeSet) {
     return execute(async () => {
-        doCraft(toolName);
+        await doCraft(toolName);
     }, craftedTool(toolName), changes);
 }
 
 function craftEquipment(equipmentName: EquipmentName, ...changes: ChangeSet) {
     return execute(async () => {
-        doCraft(equipmentName);
+        await doCraft(equipmentName);
     }, craftedEquipment(equipmentName), changes);
 }
 
-function doCraft(craftableName: crafting.CraftableName) {
+async function doCraft(craftableName: crafting.CraftableName) {
     skipSleeps(1);
-    crafting.selectItemToCraft(craftableName)
-    crafting.doCrafting();
+    await crafting.selectItemToCraft(craftableName)
+    await crafting.doCrafting();
 }
 
 function equip(itemName: EquipmentName, ...changes: ChangeSet) {
@@ -309,7 +309,7 @@ function equippedItem(itemName: EquipmentName) {
 }
 
 function nothingHappened(reason: string) {
-    return () => {}
+    return () => { reason }
 }
 
 async function step(name: string, action:() => Promise<void>) {
@@ -321,7 +321,7 @@ function applyChanges(successChange: () => void, changes: (true | (() => void))[
     if (!changes.length)
         successChange();
     
-    for (var applyChange of changes) {
+    for (const applyChange of changes) {
         if (applyChange === true)
             successChange();
         else

@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     entry: './js/main.ts',
@@ -41,5 +42,8 @@ module.exports = {
             template: 'index.html'
         }),
         new CaseSensitivePathsPlugin(),
+        new ESLintPlugin({
+            "extensions": ["ts"]
+        }),
     ],
 };

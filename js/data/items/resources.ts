@@ -12,7 +12,6 @@ import iconEmerald from "../../../img/assets/materials/Emerald.png";
 import iconRuby from "../../../img/assets/materials/Ruby.png";
 import iconDiamond from "../../../img/assets/materials/Diamond.png";
 import iconStone from "../../../img/assets/materials/Stone.png";
-import iconTitanium from "../../../img/assets/materials/Titanium.png";
 import iconWood from "../../../img/assets/materials/Wood.png";
 import iconFish from "../../../img/assets/materials/Fish.png";
 import iconMeat from "../../../img/assets/materials/Meat.png"; 
