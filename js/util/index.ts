@@ -1,12 +1,22 @@
- // Returns a random integer between min (inclusive) and max (inclusive).
- export function getRandomInt(min: number, max: number) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+ const nextRandomResults = Array<number>();
+ 
+ export function setNextRandomResults(...results: number[]) {
+    nextRandomResults.push(...results);
+ }
+
+function random(canStub?: boolean) {
+    return canStub === false ? Math.random() : nextRandomResults.shift() ?? Math.random();
 }
 
-export function getRandomItem<T>(items: T[]) {
-    return items[Math.floor(Math.random()*items.length)];
+ // Returns a random integer between min (inclusive) and max (inclusive).
+ export function getRandomInt(min: number, max: number, canStub?: boolean) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(random(canStub) * (max - min + 1)) + min;
+}
+
+export function getRandomItem<T>(items: T[], canStub?: boolean) {
+    return items[Math.floor(random(canStub) * items.length)];
 }
 
 export function getKeys<T extends string | number | symbol, V>(record: Record<T, V> | PartialRecord<T, V>) {

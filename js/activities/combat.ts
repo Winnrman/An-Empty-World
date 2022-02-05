@@ -105,7 +105,7 @@ function enemyDied(fight: Fight) {
     addMessage(`You defeated the ${enemy.name} and earned ${gold} gold and ${enemy.defeatExperience} XP!`);
     addStatistic("killedEnemies", 1);
 
-    const droppedRandomLoot = Math.floor(Math.random() * 100);
+    const droppedRandomLoot = getRandomInt(1, 100);
     if (droppedRandomLoot < 25) {
         const item = randomLootDrop();
         addMessage(`The ${enemy.name} dropped ${item.name}!`);

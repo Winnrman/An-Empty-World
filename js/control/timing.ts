@@ -13,9 +13,9 @@ export function sleep(ms: number) {
     if (amountOfSleepsToSkip > 0) {
         amountOfSleepsToSkip--;
         return new Promise(resolve => {
-            if (amountOfSleepsToSkip === 0) 
+            if (amountOfSleepsToSkip === 0)
                 callbackWhenDone && callbackWhenDone();
-            return resolve(undefined);
+            return player.dev?.testSpeed ? setTimeout(resolve, player.dev.testSpeed) : resolve(undefined);
         });
     }
     
@@ -25,5 +25,5 @@ export function sleep(ms: number) {
 }
 
 export function calculateTime(time: number) {
-    return (player.isDev && player.devSpeed) ? time / player.devSpeed : time;
+    return player.dev?.isDev ? time / (player.dev.speed ?? 1) : time;
 }

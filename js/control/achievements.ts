@@ -76,7 +76,7 @@ export const achievements: AchievementData[] = [
     },
     {
         id: "mined_stones",
-        requirements: { level: levelUnlocks.mining },
+        requirements: { level: levelUnlocks.stoneCollecting },
         name: (progress) => `Mined ${progress} Stones`,
         reward: (level, levelValue) => levelValue * 5,
         getProgress: () => player.statistics.minedStone,

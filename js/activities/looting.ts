@@ -44,8 +44,8 @@ export function addLoot(item: Potion | Equipment | Tool) {
     }
 }
 
-export type ItemChance = { chance: number, min: number, max: number };
-export type LootTable<T extends string> = T | PartialRecord<T, number | ItemChance>;
+export type LootData = { chance: number, min: number, max: number };
+export type LootTable<T extends string> = T | PartialRecord<T, number | LootData>;
 
 export function getAllPossibleItems<T extends string>(lootTable: LootTable<T>) {
     const items: T[] = [];
@@ -54,35 +54,41 @@ export function getAllPossibleItems<T extends string>(lootTable: LootTable<T>) {
         return items;
     }
 
-    for (const key of getKeys(lootTable as PartialRecord<T, number | ItemChance>)) {
+    for (const key of getKeys(lootTable as PartialRecord<T, number | LootData>)) {
         items.push(key);
     }
 
     return items;
 }
 
-export const getItemChances = <T extends string>(lootTable: LootTable<T>, dropModifiers?: PartialRecord<T, number>) => {
-    const chances: PartialRecord<T, number> = {};
-    if (typeof lootTable === "string") {
-        chances[lootTable as T] = 1;
-        return chances;
-    }
-
-    for (const [key, value] of getEntries(lootTable as PartialRecord<T, number | ItemChance>)) {
-        const chance = typeof value === "number" ? value as number : (value as ItemChance).chance;
-        const dropModifier = dropModifiers ? dropModifiers[key] ?? 1 : 1;
-        chances[key] = chance * dropModifier
-    }
-    return chances;
+type ItemChance<T> = {
+    name: T;
+    chance: number
 }
 
-export function getRandomItemFromChanceList<T extends string | number | symbol>(items: PartialRecord<T, number>) {
-    const totalChance = sum(Object.values(items));
+export const getItemChances = <T extends string>(lootTable: LootTable<T>, dropModifiers?: PartialRecord<T, number>): ItemChance<T>[] => {
+    if (typeof lootTable === "string")
+        return [{ name: lootTable as T, chance: 1 }];
+
+    const chances = Array<ItemChance<T>>();
+    for (const [key, value] of getEntries(lootTable as PartialRecord<T, number | LootData>)) {
+        const chance = typeof value === "number" ? value as number : (value as LootData).chance;
+        const dropModifier = dropModifiers ? dropModifiers[key] ?? 1 : 1;
+        chances.push({ name: key, chance: chance * dropModifier });
+    }
+    return chances.sort((a, b) => b.chance - a.chance);
+}
+
+export function getRandomItemFromChanceList<T extends string | number | symbol>(chanceList: ItemChance<T>[]) {
+    if (chanceList.length === 1)
+        return chanceList[0].name;
+    
+    const totalChance = sum(chanceList.map(x => x.chance));
     let randomChance = getRandomInt(1, totalChance);
-    for (const [key, value] of getEntries(items)) {
-        randomChance -= value;
-        if (randomChance <= 0)
-            return key;
+    for (const chance of chanceList) {
+        randomChance -= chance.chance;
+        if (randomChance <= 0) 
+            return chance.name;
     }
     throw "reached end of chancelist";
 }
@@ -91,11 +97,11 @@ const getItemAmount = <T extends string>(lootTable: LootTable<T>, itemName: T) =
     if (typeof lootTable === "string")
         return 1;
 
-    const itemChance = (lootTable as PartialRecord<T, number | ItemChance>)[itemName];
+    const itemChance = (lootTable as PartialRecord<T, number | LootData>)[itemName];
     if (typeof itemChance === "number")
         return 1;
 
-    const minMax = itemChance as ItemChance;
+    const minMax = itemChance as LootData;
     return getRandomInt(minMax.min, minMax.max);
 }
 

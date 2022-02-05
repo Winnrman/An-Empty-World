@@ -85,3 +85,8 @@ export function checkAndRenderEverything() {
 
 startIntervals();
 checkAndRenderEverything();
+
+if (player.dev?.runTestsOnLoad)
+    setTimeout(() => {
+        void window.runTests(player.dev?.keepTestData);
+    }, 50);

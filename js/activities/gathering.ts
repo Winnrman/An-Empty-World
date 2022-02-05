@@ -12,7 +12,7 @@ import iconCrimsonica from "../../img/assets/materials/Crimsonica.png";
 import player from "../control/player";
 import { addMessage } from "../control/messages";
 import { addXp } from "../control/experience";
-import { displayNumber, getEntries, getRandomInt, PartialRecord, sum } from "../util";
+import { displayNumber, getRandomInt, PartialRecord, sum } from "../util";
 import { addToInventory, decreaseToolHealth, hasInInventory, isInventoryFull } from "../control/inventory";
 import { ResourceName, resourcesByName } from "../data/items/resources";
 import * as dom from "../util/dom";
@@ -167,7 +167,7 @@ const gatheringActivities: GatheringActivity[] = [
         neededTools: undefined,
         searchTime: 1000,
         time: 2000,
-        itemsTable: { "Monofolia": 6, "Bifolia": 4, "Trifolia": 2, "Crimsonica": 1, "Azurica": 1, "Okerica": 1 },
+        itemsTable: { "Monofolia": 6, "Bifolia": 4, "Trifolia": 2, "Azurica": 1, "Crimsonica": 1, "Okerica": 1 },
         icon: iconMonofolia,
     },
     {
@@ -177,7 +177,7 @@ const gatheringActivities: GatheringActivity[] = [
         neededTools: undefined,
         searchTime: 1000,
         time: 2000,
-        itemsTable: { "Monofolia": 6, "Bifolia": 4, "Trifolia": 2, "Crimsonica": 1, "Azurica": 1, "Okerica": 1 },
+        itemsTable: { "Monofolia": 6, "Bifolia": 4, "Trifolia": 2, "Azurica": 1, "Crimsonica": 1, "Okerica": 1 },
         needsToChooseItem: true,
         icon: iconCrimsonica,
     },
@@ -229,6 +229,7 @@ let skippedItem: ResourceName | undefined;
 
 const getDropModifiers = () => {
     const dropModifiers: PartialRecord<ResourceName, number> = {};
+    // give a bonus for choosing only a couple of items: 3x bonus when choosing one, 2x bonus when choosing 2
     if (chosenItems.length == 1) {
         dropModifiers[chosenItems[0]] = 3;
     } else if (chosenItems.length == 2) {
@@ -239,7 +240,7 @@ const getDropModifiers = () => {
 }
 
 export async function startGatheringActivity() {
-    const currentActivityId = getRandomInt(1, 999999);
+    const currentActivityId = getRandomInt(1, 999999, false);
     player.currentGatheringActivityId = currentActivityId;
     const activity = gatheringActivitiesByName[player.currentGatheringActivity!];
 
@@ -335,6 +336,23 @@ function hasNoSpace() {
     return true;
 }
 
+export const getItemChanceValueRanges = (activityName: GatheringActivityName, dropModifiers?: PartialRecord<ResourceName, number>) => {
+    const chanceList = getItemChances(gatheringActivitiesByName[activityName].itemsTable, dropModifiers)
+    const totalChance = sum(chanceList.map(x => x.chance));
+    let currentMin = 0;
+    const chances = [];
+    for (const chance of chanceList) {
+        const currentMax = currentMin + chance.chance;
+        chances.push({
+            name: chance.name,
+            min: Math.round(currentMin / totalChance * 1000) / 1000,
+            max: Math.round(currentMax / totalChance * 1000) / 1000
+        });
+        currentMin += chance.chance;
+    }
+    return chances;
+}
+
 export function renderGatheringCategory() {
     if (!player.currentGatheringCategory) {
         dom.setHtml("gathering-category", "");
@@ -365,12 +383,12 @@ export function renderGatheringActivity() {
         
         const dropModifiers = getDropModifiers();
         const itemChances = getItemChances(activity.itemsTable, dropModifiers);
-        const totalChance = sum(Object.values(itemChances));
+        const totalChance = sum(itemChances.map(x => x.chance));
 
-        for (const [resourceName, chance] of getEntries(itemChances)) {
-            const resource = resourcesByName[resourceName];
-            const itemChance = displayNumber(chance / totalChance * 100)
-            html += `<div onClick="gathering.toggleItem('${resource.name}')" class="item-icon ${chosenItems.includes(resource.name) ? 'selected' : ''}" title="${resource.name} - chance: ${itemChance}%"><img src="${resource.iconUrl}" /></div>`;
+        for (const itemChance of itemChances) {
+            const resource = resourcesByName[itemChance.name];
+            const chance = displayNumber(itemChance.chance / totalChance * 100)
+            html += `<div onClick="gathering.toggleItem('${resource.name}')" class="item-icon ${chosenItems.includes(resource.name) ? 'selected' : ''}" title="${resource.name} - chance: ${chance}%"><img src="${resource.iconUrl}" /></div>`;
         }
 
         if (chosenItems.length === 0) {

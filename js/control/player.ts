@@ -14,12 +14,6 @@ import { StatisticName } from './statistics';
 export type Player = ReturnType<typeof getPlayerData>;
 const player: Player = getPlayerData();
 
-// player data migration
-if (player.isDev === undefined)
-    player.isDev = false;
-if (player.isDev && !player.devSpeed)
-    player.devSpeed = 4;
-
 export default player;
 
 let isAllowedToSave = true;
@@ -27,7 +21,7 @@ let isAllowedToSave = true;
 export function saveData(reason: string) {
     if (isAllowedToSave) {
         localStorage["player"] = JSON.stringify(player);
-        player.isDev && console.log(`saving: ${reason}`)
+        player.dev?.isDev && console.log(`saving: ${reason}`)
     }
 }
 
@@ -110,8 +104,13 @@ export function getDefaultData() {
         selectedEquipmentSlot: undefined as EquipmentSlot | undefined,
         selectedEquipment: undefined as EquipmentName | undefined,
 
-        isDev: false,
-        devSpeed: undefined as number | undefined,
+        dev: undefined as {
+            isDev?: boolean,
+            speed?: number,
+            runTestsOnLoad?: boolean,
+            keepTestData?: boolean,
+            testSpeed?: number,
+        } | undefined
     }
 }
 
@@ -126,7 +125,7 @@ function checkAndSaveData() {
     const savedData = localStorage["player"];
     const currentData = JSON.stringify(player);
     if (savedData != currentData) {
-        if (player.isDev) {
+        if (player.dev?.isDev) {
             addMessage("Saving because something changed unexpectedly! Check data to see where a save needs to happen!");
             console.log(currentData);
             console.log(savedData);
