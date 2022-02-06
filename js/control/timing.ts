@@ -25,5 +25,13 @@ export function sleep(ms: number) {
 }
 
 export function calculateTime(time: number) {
+    return getTimeForDev(getTimeForLevel(time));
+}
+
+export function getTimeForLevel(time: number) {
+    return time * Math.pow(1 / 2, player.level / 10)
+}
+
+function getTimeForDev(time: number) {
     return player.dev?.isDev ? time / (player.dev.speed ?? 1) : time;
 }
