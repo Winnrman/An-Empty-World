@@ -1,5 +1,5 @@
 #achievementsContainer {
-    width: 600px;
+    width: calc(60% - 62px);
 }
 
 #achievementsContainer .auto-column {

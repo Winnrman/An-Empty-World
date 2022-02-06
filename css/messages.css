@@ -1,25 +1,12 @@
 #messagesContainer{
-    display: flex;
-    flex-direction: column;
-    width: 20%;
-    height: auto;
-    max-height: 85vh;
+    width: 400px;   
+    min-height: 0px;
     overflow-y: hidden; /* hide scrollbar */
-    padding: 10px;
-    margin:20px;
-    border:1px solid rgb(0, 0, 0);
-
-    /* place column on right of page */
-    position: absolute;
-    right: 0;
 }
+
 #messagesContainer li{
     text-align: left;
     padding-top:5px;
-}
-
-#messagesHeader{
-    position:fixed;
 }
 
 #messages li{

@@ -15,7 +15,6 @@ select{
     margin-right:10px;
 }
 .container{
-    width: 73%;
     margin: 5px 20px;
     height: auto;
     padding:10px;
@@ -38,14 +37,6 @@ button:hover{
 button img{
     width:20px;
     height:20px;
-}
-.header{
-    z-index:1;
-    margin-top:-26px;
-    background:white;
-    width: fit-content;
-    padding-left:2px;
-    padding-right:2px;
 }
 
 .disabled{

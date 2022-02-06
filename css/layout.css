@@ -1,3 +1,11 @@
+.root {
+    align-items: flex-start;
+}
+
+.content {
+    flex-grow: 1;
+}
+
 .row {
     display: flex;
     flex-direction: row;
