@@ -1,30 +1,31 @@
 import * as dom from "../util/dom";
 import { addMessage } from '../control/messages';
 import { ownsEquipment } from "../control/equipment";
-import player, { saveData } from "../control/player";
+import player from "../control/player";
 import { getInventoryCount, hasInInventory, removeFromInventory, renderInventory } from "../control/inventory";
 import equipment, { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
 import potions, { Potion, PotionName, potionsByName } from "../data/items/potions";
 import { resourcesByName } from "../data/items/resources";
 import { displayNumber, getEntries, getWithIndefiniteArticle } from "../util";
 import { addLoot } from "./looting";
-
-import "../../css/crafting.css";
 import tools, { Tool, ToolName, toolsByName } from "../data/items/tools";
 import { sleep } from "../control/timing";
+import { wrapAction } from "../control/user";
+
+import "../../css/crafting.css";
 
 export type CraftableName = EquipmentName | PotionName | ToolName;
 export type Craftable = Equipment | Potion | Tool;
 export const craftablesByName: Record<CraftableName, Craftable> = { ...equipmentByName, ...potionsByName, ...toolsByName };
 
-export function selectItemToCraft(craftableName: CraftableName) {
+export async function selectItemToCraft(craftableName: CraftableName) {
     player.selectedCraftable = craftablesByName[craftableName];
     renderCraftableDetails();
 }
 
 let isCrafting = false;
 
-export function stopCrafting() {
+export async function stopCrafting() {
     isCrafting = false;
     renderCraftableDetails();
 }
@@ -94,7 +95,6 @@ export async function doCrafting() {
     
     renderCraftables();
     renderInventory();
-    saveData();
 }
 
 const canCraft = (item: Craftable) => item.crafting && item.crafting.requiredLevel <= player.level;
@@ -183,4 +183,10 @@ export function renderCraftableDetails() {
     html += "</div>";
     
     dom.setHtml("craftable-details", html);
+}
+
+export const actions = {
+    selectItemToCraft: wrapAction(selectItemToCraft),
+    doCrafting: wrapAction(doCrafting),
+    stopCrafting: wrapAction(stopCrafting),
 }

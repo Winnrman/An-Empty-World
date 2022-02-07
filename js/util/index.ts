@@ -1,10 +1,4 @@
-/**
- * Returns a random integer between min (inclusive) and max (inclusive).
- * The value is no lower than min (or the next integer greater than min
- * if min isn't an integer) and no greater than max (or the next integer
- * lower than max if max isn't an integer).
- * Using Math.round() will give you a non-uniform distribution!
- */
+ // Returns a random integer between min (inclusive) and max (inclusive).
  export function getRandomInt(min: number, max: number) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -25,10 +19,14 @@ export function getEntries<T extends string | number | symbol, V>(record: Record
 
 export type PartialRecord<K extends keyof any, T> = {
     [P in K]?: T;
-  };
+};
 
 export function minMax(min: number, value: number, max: number) {
     return Math.min(Math.max(min, value), max)
+}
+
+export function sum(items: number[]) {
+    return items.reduce((a, b) => a + b);
 }
 
 export function tween(value: number, a: number, b: number) {
@@ -42,7 +40,6 @@ export function tweenArrays(value: number, a: number[], b: number[]) {
 export function displayNumber(value: number) {
     return Math.round(value * 10) / 10;
 }
-
 
 function startsWithVowelOrHPlusVowel(value: string) {
     const isVowel = (char: string) => "aeiou".indexOf(char) >= 0;

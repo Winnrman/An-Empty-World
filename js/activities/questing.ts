@@ -10,6 +10,7 @@ import { getRandomInt, getRandomItem, getWithIndefiniteArticle } from '../util';
 import { Rarity } from "../data/items";
 import { addLoot } from "./looting";
 import { sleep } from "../control/timing";
+import { wrapAction } from "../control/user";
 
 export async function doQuest() {
     if (transient.isQuesting == true) {
@@ -32,7 +33,6 @@ async function startQuest() {
         const eventActions = [startWalkEvent, startLootChestEvent, startFightMonsterEvent, startFindCaveEvent, startGetAmbushedEvent];
         const randomEventAction = getRandomItem(eventActions);
         await randomEventAction();
-        saveData();
     }
 }
 
@@ -65,7 +65,7 @@ async function startExitCaveEvent() {
     await waitForPart(2000, "You find nothing and leave the cave.");
 }
 
-async function doEvent(staminaCost: number, eventAction?: () => void) {
+async function doEvent(staminaCost: number, eventAction?: () => Promise<void>) {
     const hasInsufficientStamina = player.stamina < staminaCost;
     removeStamina(staminaCost);
     if (hasInsufficientStamina) {
@@ -170,6 +170,7 @@ export function startStaminaInterval() {
     setInterval(function () {
         if (player.stamina < player.maxStamina && !transient.isQuesting) {
             addStamina(1);
+            saveData("Stamina interval");
         }
     }, 2000);
 }
@@ -179,4 +180,8 @@ export function renderStamina() {
     dom.getElement("progressStamina").style.width = `${player.stamina / player.maxStamina * 100}%`;
     dom.getElement("progressStamina").style.transition = "width 1.5s";
     dom.setHtml("staminaAmount", player.stamina.toString());
+}
+
+export const actions = {
+    doQuest: wrapAction(doQuest),
 }

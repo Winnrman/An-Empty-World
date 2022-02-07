@@ -1,3 +1,6 @@
+import { checkAchievements } from "./achievements";
+import { saveData } from "./player";
+
 let amountOfSleepsToSkip = 0;
 let callbackWhenDone: (() => void) | undefined;
 
@@ -16,5 +19,7 @@ export function sleep(ms: number) {
         });
     }
     
+    checkAchievements();
+    saveData("Going to sleep");
     return new Promise(resolve => setTimeout(resolve, ms));
 }

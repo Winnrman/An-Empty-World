@@ -35,7 +35,10 @@ const potions: Potion[] = [
         effects: [ { name: "addHealth", value: 10, } ],
         crafting: {
             requiredLevel: 5,
-            ingredients: {}
+            ingredients: {
+                Monofolia: 5,
+                Crimsonica: 1,
+            }
         },
     },
     {
@@ -48,7 +51,11 @@ const potions: Potion[] = [
         effects: [{ name: "addAttack", value: 1, duration: 60000, }],
         crafting: {
             requiredLevel: 5,
-            ingredients: {}
+            ingredients: {
+                Monofolia: 2,
+                Bifolia: 3,
+                Okerica: 1,
+            }
         },
     },
     {
@@ -61,7 +68,11 @@ const potions: Potion[] = [
         effects: [{ name: "decreaseAttack", value: 2, duration: 15000, }],
         crafting: {
             requiredLevel: 5,
-            ingredients: {}
+            ingredients: {
+                Monofolia: 2,
+                Bifolia: 3,
+                Crimsonica: 1,
+            }
         },
     },
     {
@@ -74,7 +85,11 @@ const potions: Potion[] = [
         effects: [{ name: "addDefense", value: 1, duration: 60000, }],
         crafting: {
             requiredLevel: 5,
-            ingredients: {}
+            ingredients: {
+                Monofolia: 2,
+                Trifolia: 2,
+                Azurica: 1,
+            }
         },
     },
     {
@@ -87,7 +102,10 @@ const potions: Potion[] = [
         effects: [{ name: "addStamina", value: 10, }],
         crafting: {
             requiredLevel: 5,
-            ingredients: {}
+            ingredients: {
+                Trifolia: 3,
+                Azurica: 1,
+            }
         },
     },
     {
@@ -100,7 +118,11 @@ const potions: Potion[] = [
         effects: [{ name: "addSpeed", value: 1, duration: 60000, }],
         crafting: {
             requiredLevel: 5,
-            ingredients: {}
+            ingredients: {
+                Bifolia: 2,
+                Trifolia: 1,
+                Crimsonica: 1,
+            }
         },
     },
     {
@@ -113,7 +135,12 @@ const potions: Potion[] = [
         effects: [{ name: "makeInvisible", duration: 25000, value: 1 }],
         crafting: {
             requiredLevel: 5,
-            ingredients: {}
+            ingredients: {
+                Trifolia: 3,
+                Azurica: 1,
+                Crimsonica: 1,
+                Okerica: 1,
+            }
         },
     },
 ];

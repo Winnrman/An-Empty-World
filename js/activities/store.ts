@@ -2,14 +2,17 @@ import * as dom from '../util/dom';
 import { randomLootDrop } from "./events";
 import { addToolToInventory, getInventoryCount, hasInInventory, InventoryItemName, inventoryItemsByName, isInventoryFull, removeAllFromInventory, removeFromInventory, renderInventory } from "../control/inventory";
 import { addMessage } from '../control/messages';
-import player, { addGold, removeGold, saveData } from "../control/player";
+import player, { addGold, removeGold } from "../control/player";
 import { ToolName, toolsByName } from '../data/items/tools';
 import { addLoot } from './looting';
 import resources from '../data/items/resources';
 import { getWithIndefiniteArticle } from '../util';
 import levelUnlocks from '../data/levelUnlocks';
+import { wrapAction } from '../control/user';
 
-export function buyTool(toolName: ToolName) {
+import "../../css/store.css";
+
+export async function buyTool(toolName: ToolName) {
     const tool = toolsByName[toolName];
     if (player.gold < tool.price) {
         addMessage(`You don't have enough gold to buy ${getWithIndefiniteArticle(tool.name)}!`);
@@ -28,10 +31,9 @@ export function buyTool(toolName: ToolName) {
 
     removeGold(tool.price);
     addToolToInventory(tool);
-    saveData();
 }
 
-export function buySpecialDeal() {
+export async function buySpecialDeal() {
     if (player.gold < 1000) {
         addMessage("You do not have enough gold to buy this item!");
         return;
@@ -46,7 +48,7 @@ function getInventoryUpgradeCost() {
     return 10000 + 10000 * player.boughtInventoryUpgrade;
 }
 
-export function buyInventoryUpgrade() {
+export async function buyInventoryUpgrade() {
     if (player.boughtInventoryUpgrade >= 3)
         return;
 
@@ -61,12 +63,11 @@ export function buyInventoryUpgrade() {
     player.boughtInventoryUpgrade++;
     addMessage(`Inventory Space increased by 25! [Currently ${player.maxInventorySize}]`);
     renderInventory();
-    saveData();
 }
 
 export type SellType = "Ores" | InventoryItemName;
 
-export function sell(item: SellType, amount?: number) {
+export async function sell(item: SellType, amount?: number) {
     if (item === "Ores") {
         sellItems(["Iron", "Copper", "Tin", "Silver", "Gold", "Emerald", "Ruby", "Diamond"]);
         return;
@@ -81,15 +82,14 @@ function sellItems(itemNames: InventoryItemName[]) {
         removeAllFromInventory(itemName);
     }
     renderInventory();
-    saveData();
 }
 
 function sellItem(itemName: InventoryItemName, amount?: number) {
-    amount = Math.min(0, amount ?? getInventoryCount(itemName));
+    const ownedAmount = getInventoryCount(itemName);
+    amount = Math.min(ownedAmount, amount ?? ownedAmount);
     addGold(amount * inventoryItemsByName[itemName].price);
     removeFromInventory(itemName, amount);
     renderInventory();
-    saveData();
 }
 
 export function renderStore() {
@@ -106,7 +106,7 @@ export function renderStore() {
         return renderButton(requiredLevel, !hasInInventory(toolName), `buyTool('${toolName}')`, `Buy ${toolName}`, toolsByName[toolName].price);
     }
 
-    const ores = resources.filter(x => x.gathering.miningXp && x.name != "Stone");
+    const ores = resources.filter(x => x.gathering.Ore);
 
     let html = "";
     html += ``;
@@ -136,4 +136,11 @@ export function renderStore() {
     html += `</div>`;
 
     dom.setHtml("store", html);
+}
+
+export const actions = {
+    buyTool: wrapAction(buyTool),
+    buyInventoryUpgrade: wrapAction(buyInventoryUpgrade),
+    buySpecialDeal: wrapAction(buySpecialDeal),
+    sell: wrapAction(sell),
 }

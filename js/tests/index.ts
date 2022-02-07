@@ -15,16 +15,15 @@ import { skipSleeps } from "../control/timing";
 
 const data = getDefaultData();
 
-export default async function runTests(keepTestDataAfterwards?: boolean) {
+export default async function runTests(keepTestDataAfterwards?: boolean, levelUp?: boolean) {
     const start = new Date();
     pauseSaving();
-    saveData();
     resetData();
     resetAchievementsToCheck();
     equipment.updateArmour();
 
     try {
-        await runScenario();
+        await runScenario(levelUp);
         const end = new Date();
         const diff = end.getTime() - start.getTime();
         console.log(`Tests OK! Took ${diff / 1000}s`)
@@ -36,11 +35,11 @@ export default async function runTests(keepTestDataAfterwards?: boolean) {
         main.checkAndRenderEverything();
         resumeSaving();
     
-        saveData();
+        saveData("Saving after test");
     }
 }
 
-async function runScenario() {
+async function runScenario(levelUp?: boolean) {
     Object.assign(data, getDefaultData());
     data.inventory["Axe"] = 0;
     data.inventory["Wood"] = 0;
@@ -50,6 +49,8 @@ async function runScenario() {
     await runFishingScenario();
     await runCraftingScenario();
     await runEquipmentScenario();
+    if (levelUp)
+        await justLevelUp();
 }
 
 async function runWoodcuttingScenario() {
@@ -61,28 +62,28 @@ async function runWoodcuttingScenario() {
     await step("1.06", craftTool("Pickaxe")); 
     await step("1.07", cutDownTree(11,        true, levelled(2)));
     await step("1.08", cutDownTree(9,         true, toolBroke("Axe")));
-    await step("1.13", cutDownTree(1,         nothingHappened("no harpoon"))); 
-    await step("1.09", craftTool("Axe",       nothingHappened("no stone")));           
-    await step("1.10", drop("Wood", 1));      
-    await step("1.11", mineStone(5));         
-    await step("1.12", craftTool("Axe"));     
-    await step("1.13", cutDownTree(6,         true, gotAchievement("cut_down_trees", 1))); 
-    await step("1.13", cutDownTree(1,         nothingHappened("Inventory full"))); 
-    await step("1.14", drop("Wood", 8));
+    await step("1.19", cutDownTree(1,         nothingHappened("no harpoon"))); 
+    await step("1.10", craftTool("Axe",       nothingHappened("no stone")));           
+    await step("1.11", drop("Wood", 1));      
+    await step("1.12", mineStone(5));         
+    await step("1.13", craftTool("Axe"));     
+    await step("1.14", cutDownTree(6,         true, gotAchievement("cut_down_trees", 1))); 
+    await step("1.15", cutDownTree(1,         nothingHappened("Inventory full"))); 
+    await step("1.16", drop("Wood", 8));
 }
 
 async function runFishingScenario() {
     await step("2.01", craftTool("Wooden Harpoon"));
     await step("2.02", catchFish(10,                 true, toolBroke("Wooden Harpoon")));
-    await step("1.13", catchFish(1,                  nothingHappened("no harpoon"))); 
-    await step("2.03", craftTool("Wooden Harpoon")); 
-    await step("2.04", catchFish(7));       
-    await step("1.13", catchFish(1,                  nothingHappened("Inventory full"))); 
-    await step("2.05", drop("Fish", 17));       
-    await step("2.06", catchFish(3,                  true, toolBroke("Wooden Harpoon")));
-    await step("2.07", craftTool("Wooden Harpoon")); 
-    await step("2.08", catchFish(5,                  true, gotAchievement("catch_fish", 1)));
-    await step("2.09", drop("Fish", 8));
+    await step("2.03", catchFish(1,                  nothingHappened("no harpoon"))); 
+    await step("2.04", craftTool("Wooden Harpoon")); 
+    await step("2.05", catchFish(7));       
+    await step("2.06", catchFish(1,                  nothingHappened("Inventory full"))); 
+    await step("2.07", drop("Fish", 17));       
+    await step("2.08", catchFish(3,                  true, toolBroke("Wooden Harpoon")));
+    await step("2.09", craftTool("Wooden Harpoon")); 
+    await step("2.10", catchFish(5,                  true, gotAchievement("catch_fish", 1)));
+    await step("2.11", drop("Fish", 8));
 }
 
 async function runCraftingScenario() {
@@ -101,10 +102,41 @@ async function runCraftingScenario() {
 
 async function runEquipmentScenario() {
     await step("4.01", equip("Wooden Helmet"));
-    await step("4.01", equip("Wooden Chestplate"));
-    await step("4.01", equip("Wooden Leggings"));
-    await step("4.01", equip("Wooden Boots",        true, gotAchievement("wooden_armor", 1)));
-    await step("4.01", equip("Wooden Sword"));
+    await step("4.02", equip("Wooden Chestplate"));
+    await step("4.03", equip("Wooden Leggings"));
+    await step("4.04", equip("Wooden Boots",        true, gotAchievement("wooden_armor", 1)));
+    await step("4.05", equip("Wooden Sword"));
+}
+
+async function justLevelUp() {
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+
+    await collectStones(5)();
+    await craftTool("Pickaxe")();
+
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+    await mineIron(16)();
+    await drop("Iron", 16)();
+
+    await collectStones(5)();
+    await craftTool("Pickaxe")();
+    
+    await mineIron(16)();
+    await drop("Iron", 16)();
 }
 
 function sell(itemName: ResourceName, amount: number, ...changes: ChangeSet) {
@@ -135,10 +167,14 @@ function catchFish(amount: number, ...changes: ChangeSet) {
     return gather("Catch Fish", amount, caughtFish(amount), changes);
 }
 
+function mineIron(amount: number, ...changes: ChangeSet) {
+    return gather("Mine Iron", amount, minedIron(amount), changes);
+}
+
 function gather(activityName: gathering.GatheringActivityName, amount: number, successChange: () => void, changes: ChangeSet) {
     return execute(async () => {
         skipSleeps(amount, gathering.clearGatheringActivity);
-        await gathering.startGatheringActivity(activityName);
+        await gathering.showGatheringActivity(activityName);
     }, successChange, changes);
 }
 
@@ -172,14 +208,12 @@ function execute(action: () => Promise<void>, successChange: () => void, changes
     };
 }
 
-type XpName = "treeCuttingXp" | "miningXp" | "fishingXp"
-
-function gathered(resourceName: ResourceName, amount: number, toolname: ToolName | undefined, xpName: XpName) {
+function gathered(resourceName: ResourceName, amount: number, toolname: ToolName | undefined, category: gathering.GatheringCategoryName) {
     return () => {
         data.inventory[resourceName] = (data.inventory[resourceName] ?? 0) + amount;
         if (toolname)
             data.toolHealth[toolname] -= amount;
-        data.xp += resourcesByName[resourceName].gathering[xpName]! * amount;
+        data.xp += resourcesByName[resourceName].gathering[category]!.experience * amount;
     }
 }
 
@@ -191,23 +225,27 @@ function soldItem(itemName: ResourceName, amount: number) {
 }
 
 function cutWood(amount: number) {
-    return gathered("Wood", amount, "Axe", "treeCuttingXp");
+    return gathered("Wood", amount, "Axe", "Wood");
 }
 
 function collectedBranches(amount: number) {
-    return gathered("Wood", amount, undefined, "treeCuttingXp");
+    return gathered("Wood", amount, undefined, "Wood");
 }
 
 function collectedStones(amount: number) {
-    return gathered("Stone", amount, undefined, "miningXp");
+    return gathered("Stone", amount, undefined, "Stone");
 }
 
 function minedStone(amount: number) {
-    return gathered("Stone", amount, "Pickaxe", "miningXp");
+    return gathered("Stone", amount, "Pickaxe", "Stone");
+}
+
+function minedIron(amount: number) {
+    return gathered("Iron", amount, "Pickaxe", "Ore");
 }
 
 function caughtFish(amount: number) {
-    return gathered("Fish", amount, "Wooden Harpoon", "fishingXp");
+    return gathered("Fish", amount, "Wooden Harpoon", "Food");
 }
 
 function toolBroke(itemName: ToolName) {
@@ -294,8 +332,7 @@ function applyChanges(successChange: () => void, changes: (true | (() => void))[
 
 function verify(name?: string) {
     checkAchievements();
-    experience.checkLevelUnlocks();
-
+    
     const errors = Array<string>();
     verifyProperty(errors, "gold");
     verifyProperty(errors, "level");

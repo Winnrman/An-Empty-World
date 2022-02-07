@@ -1,13 +1,12 @@
 import * as dom from "../util/dom";
-import { checkAchievements } from "./achievements";
 import { EquipmentSlot } from "../data/items";
 import { addMessage } from './messages';
-import player, { addGold, saveData } from "./player";
+import player, { addGold } from "./player";
 import transient from "./transient";
 import { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
 import { getEffectValue } from "./effects";
-
-import "../../css/equipment.css";
+import { getWithIndefiniteArticle } from "../util";
+import { wrapAction } from "./user";
 
 import iconSlotHelmet from "../../img/assets/equipment/Slot/Slot Helmet.png";
 import iconSlotChest from "../../img/assets/equipment/Slot/Slot Chest.png";
@@ -17,7 +16,8 @@ import iconSlotWeapon from "../../img/assets/equipment/Slot/Slot Weapon.png";
 import iconSlotOffhand from "../../img/assets/equipment/Slot/Slot Offhand.png";
 import iconSlotRanged from "../../img/assets/equipment/Slot/Slot Ranged.png";
 import iconSlotShield from "../../img/assets/equipment/Slot/Slot Shield.png";
-import { getWithIndefiniteArticle } from "../util";
+
+import "../../css/equipment.css";
 
 const emptyEquipmentIcons: Record<EquipmentSlot, string> = {
     "Helmet": iconSlotHelmet,
@@ -45,7 +45,7 @@ export function addToOwnedEquipment(item: Equipment) {
     renderEquipmentChooser();
 }
 
-export function showEquipmentChooser(slot: EquipmentSlot | undefined) {
+export async function showEquipmentChooser(slot: EquipmentSlot | undefined) {
     if (player.selectedEquipmentSlot === slot) {
         slot = undefined;
     }
@@ -53,34 +53,30 @@ export function showEquipmentChooser(slot: EquipmentSlot | undefined) {
     player.selectedEquipmentSlot = slot;
     player.selectedEquipment = undefined;
     renderEquipmentChooser();
-    saveData();
 }
 
-export function selectEquipment(itemName: EquipmentName | undefined) {
+export async function selectEquipment(itemName: EquipmentName | undefined) {
     if (player.selectedEquipment === itemName)
         itemName = undefined;
     
     player.selectedEquipment = itemName;
     renderSelectedEquipment();
-    saveData();
 }
 
-export function equip(itemName: EquipmentName) {
+export async function equip(itemName: EquipmentName) {
     const equipment = equipmentByName[itemName];
     player.equipment[equipment.equipment.slot] = equipment.name;
     player.selectedEquipment = undefined;
     updateArmour();
     renderEquipmentChooser();
     renderSelectedEquipment();
-    saveData();
 }
 
-export function unequipSlot(slot: EquipmentSlot) {
+export async function unequipSlot(slot: EquipmentSlot) {
     player.equipment[slot] = undefined;
     updateArmour();
     renderEquipmentChooser();
     renderSelectedEquipment();
-    saveData();
 }
 
 export function ownsEquipment(itemName: EquipmentName) {
@@ -119,8 +115,6 @@ export function updateArmour() {
     dom.setHtml("playerSpeedValue", player.playerSpeed.toString());
 
     renderEquipment();
-    checkAchievements();
-    saveData();
 }
 
 export function renderEquipment() {
@@ -244,4 +238,11 @@ export function renderSelectedEquipment() {
     }
 
     dom.setHtml("equipment-chooser-selected", "");
+}
+
+export const actions = {
+    showEquipmentChooser: wrapAction(showEquipmentChooser),
+    selectEquipment: wrapAction(selectEquipment),
+    equip: wrapAction(equip),
+    unequipSlot: wrapAction(unequipSlot),
 }

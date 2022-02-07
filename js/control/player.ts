@@ -1,4 +1,4 @@
-import { AchievementName, checkAchievements } from './achievements';
+import { AchievementName } from './achievements';
 import { EquipmentSlot } from '../data/items';
 import { PlayerEffect } from './effects';
 import { EquipmentName } from '../data/items/equipment';
@@ -7,32 +7,24 @@ import { InventoryItemName, renderInventory } from './inventory';
 import { PartialRecord } from '../util';
 import { Activity } from '../activities/activities';
 import { Craftable } from '../activities/crafting';
-import { GatheringActivityName } from '../activities/gathering';
+import { GatheringActivityName, GatheringCategoryName } from '../activities/gathering';
+import { addMessage } from './messages';
 
 export type Player = ReturnType<typeof getPlayerData>;
 const player: Player = getPlayerData();
 
-// temporary fixes so other developers don't need to reset their data
-if (!player.completedAchievements) player.completedAchievements = {};
-if (!player.ownedEquipment.length) player.ownedEquipment = [];
-if (!player.statistics) player.statistics = {
-    cutWood: 0,
-    caughtFish: 0,
-    huntedMeat: 0,
-    minedRocks: 0,
-    killedEnemies: 0,
-    completedQuests: 0,
-    earnedGold: 0
-};
-if (!player.effects) player.effects = [];
+// player data migration
+if (player.isDev === undefined)
+    player.isDev = false;
 
 export default player;
 
 let isAllowedToSave = true;
 
-export function saveData() {
+export function saveData(reason: string) {
     if (isAllowedToSave) {
         localStorage["player"] = JSON.stringify(player);
+        player.isDev && console.log(`saving: ${reason}`)
     }
 }
 
@@ -77,7 +69,7 @@ export function restoreData() {
     resetData(getPlayerData());
 }
 
-export type StatisticName = "cutWood" | "caughtFish" | "huntedMeat" | "minedRocks" | "killedEnemies" | "completedQuests" | "earnedGold"
+export type StatisticName = "cutWood" | "minedStone" | "caughtFish" | "huntedMeat" | "minedOre" | "killedEnemies" | "completedQuests" | "earnedGold" | "scavengedHerbs"
 
 export function getDefaultData() {
     return {
@@ -109,12 +101,15 @@ export function getDefaultData() {
         completedAchievements: {} as PartialRecord<AchievementName, number>,
 
         currentActivity: "Crafting" as Activity,
+        currentGatheringCategory: undefined as GatheringCategoryName | undefined,
         currentGatheringActivity: undefined as GatheringActivityName | undefined,
         currentGatheringActivityId: undefined as number | undefined,
         selectedItemName: undefined as InventoryItemName | undefined,
         selectedCraftable: undefined as Craftable | undefined,
         selectedEquipmentSlot: undefined as EquipmentSlot | undefined,
         selectedEquipment: undefined as EquipmentName | undefined,
+
+        isDev: false
     }
 }
 
@@ -130,17 +125,33 @@ export function removeGold(value: number) {
     renderInventory();
 }
 
-export function addStatistic(type: StatisticName, amount: number) {
+export function addStatistic(type: StatisticName | undefined, amount: number) {
+    if (!type)
+        return;
+    
     player.statistics[type] = (player.statistics[type] ?? 0) + amount;
-    setTimeout(checkAchievements);
 }
 
 export let saveInterval: NodeJS.Timer | undefined;
 export function resumeSaving() {
     isAllowedToSave = true;
     if (!saveInterval)
-        saveInterval = setInterval(saveData, 5000);
+        saveInterval = setInterval(checkAndSaveData, 100);
 }
+
+function checkAndSaveData() {
+    const savedData = localStorage["player"];
+    const currentData = JSON.stringify(player);
+    if (savedData != currentData) {
+        if (player.isDev) {
+            addMessage("Saving because something changed unexpectedly! Check data to see where a save needs to happen!");
+            console.log(currentData);
+            console.log(savedData);
+        }
+        saveData("Failsafe");
+    }
+}
+
 export function pauseSaving() {
     isAllowedToSave = false;
     saveInterval && clearInterval(saveInterval);

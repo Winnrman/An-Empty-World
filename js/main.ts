@@ -15,55 +15,50 @@ import * as questing from "./activities/questing";
 import runTests from "./tests";
 
 import "../css/style.css";
-import "../css/achievements.css";
-import "../css/combat.css";
 import "../css/dark.css";
 import "../css/footer.css";
 import "../css/layout.css";
-import "../css/messages.css";
 import "../css/progress.css";
 import "../css/progress-bar.css";
-import "../css/store.css";
 
 declare global {
     interface Window {
         player: Player;
-        store: typeof store;
-        activities: typeof activities;
-        combat: typeof combat;
-        crafting: typeof crafting;
-        equipment: typeof equipment;
-        gathering: typeof gathering;
-        inventory: typeof inventory;
+        activities: typeof activities.actions;
+        combat: typeof combat.actions;
+        crafting: typeof crafting.actions;
+        equipment: typeof equipment.actions;
+        gathering: typeof gathering.actions;
+        inventory: typeof inventory.actions;
+        store: typeof store.actions;
         settings: typeof settings;
-        questing: typeof questing;
-        saveData: () => void;
+        questing: typeof questing.actions;
+        saveData: (reason: string) => void;
         resetData: () => void;
-        runTests: (x: boolean) => void;
+        runTests: (keepDataAfterwards?: boolean, levelUp?: boolean) => void;
     }
 }
+
 window.player = player;
-window.store = store;
-window.activities = activities;
-window.combat = combat;
-window.crafting = crafting;
-window.equipment = equipment;
-window.gathering = gathering;
-window.inventory = inventory;
+window.activities = activities.actions;
+window.combat = combat.actions;
+window.crafting = crafting.actions;
+window.equipment = equipment.actions;
+window.gathering = gathering.actions;
+window.inventory = inventory.actions;
+window.store = store.actions;
 window.settings = settings;
-window.questing = questing;
+window.questing = questing.actions;
 window.saveData = saveData;
 window.runTests = runTests;
-console.log("runTests is set");
 
 window.resetData = function () {
     resetData()
-    saveData();
+    saveData("Reset");
     window.location.reload();
 };
 
 function startIntervals() {
-    achievements.startCheckInterval();
     settings.startDarkmodeInterval();
     messages.startClearInterval();
     questing.startStaminaInterval();
@@ -76,6 +71,7 @@ export function checkAndRenderEverything() {
     effects.registerEffectExpiries();
     activities.showCurrentActivity();
     settings.loadTheme();
+    achievements.checkAchievements();
 
     experience.renderLevel();
     equipment.renderEquipment();

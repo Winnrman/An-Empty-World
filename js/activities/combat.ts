@@ -6,6 +6,10 @@ import player, { addGold, addStatistic, saveData } from "../control/player";
 import { addMessage } from '../control/messages';
 import { getRandomInt, minMax } from '../util';
 import { addLoot } from './looting';
+import { wrapAction } from '../control/user';
+
+import "../../css/combat.css";
+import { checkAchievements } from '../control/achievements';
 
 type Fight = {
     enemy: Enemy;
@@ -17,12 +21,12 @@ type Fight = {
 let selectedEnemy: Enemy | undefined;
 let currentFight: Fight | undefined;
 
-export function selectEnemy (enemyName: EnemyName) {
+export async function selectEnemy (enemyName: EnemyName) {
     selectedEnemy = enemiesByName[enemyName];
     renderPreCombatInfo();
 }
 
-export function startCombat () {
+export async function startCombat () {
     if (currentFight || !selectedEnemy)
         return;
     
@@ -113,7 +117,7 @@ function playerDied() {
     clearFight();
 }
 
-export function doFlee() {
+export async function doFlee() {
     addMessage("You fled!");
     setPlayerHealth(player.maxHealth);
     clearFight();
@@ -123,9 +127,11 @@ function clearFight() {
     currentFight?.playerAttackTimer && clearTimeout(currentFight.playerAttackTimer);
     currentFight?.enemyAttackTimer && clearTimeout(currentFight.enemyAttackTimer);
     currentFight = undefined;
+    selectedEnemy = undefined;
 
     renderPreCombatInfo();
-    saveData();
+    checkAchievements();
+    saveData("Clear fight");
 }
 
 export function addPlayerHealth(value: number) {
@@ -166,4 +172,10 @@ export function renderPreCombatInfo(){
     dom.setIsDisplayed("enemyStats", isInCombat);
 
     renderPlayerHealth();
+}
+
+export const actions = {
+    selectEnemy: wrapAction(selectEnemy),
+    startCombat: wrapAction(startCombat),
+    doFlee: wrapAction(doFlee),
 }

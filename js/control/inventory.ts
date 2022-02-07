@@ -10,6 +10,7 @@ import { addMessage } from "./messages";
 import iconCoins from "../../img/assets/materials/Coins.png";
 import { renderStore } from "../activities/store";
 import { renderActivities } from "../activities/activities";
+import { wrapAction } from "./user";
 
 import "../../css/inventory.css";
 
@@ -48,12 +49,12 @@ export function addToolToInventory(tool: Tool) {
     player.toolHealth[tool.name] = tool.tool.health;
 }
 
-export function removeFromInventory(itemName: InventoryItemName, amount: number) {
+export async function removeFromInventory(itemName: InventoryItemName, amount: number) {
     player.inventory[itemName] = Math.max(0, (player.inventory[itemName] ?? 0) - amount);
     renderInventory();
 }
 
-export function removeAllFromInventory(itemName: InventoryItemName) {
+export async function removeAllFromInventory(itemName: InventoryItemName) {
     player.inventory[itemName] = 0;
     renderInventory();
 }
@@ -69,12 +70,12 @@ export function decreaseToolHealth(toolName: ToolName) {
     renderInventory();
 }
 
-export function showItemDetails(itemName: InventoryItemName) {
+export async function showItemDetails(itemName: InventoryItemName) {
     player.selectedItemName = itemName;
     renderInventory();
 }
 
-export function drinkPotion(itemName: PotionName) {
+export async function drinkPotion(itemName: PotionName) {
     if (!hasInInventory(itemName))
         return;
     
@@ -173,4 +174,11 @@ function renderSelectedItemDetails() {
     `;
 
     dom.setHtml("itemDetails", html);
+}
+
+export const actions = {
+    showItemDetails: wrapAction(showItemDetails),
+    removeFromInventory: wrapAction(removeFromInventory),
+    removeAllFromInventory: wrapAction(removeAllFromInventory),
+    drinkPotion: wrapAction(drinkPotion),
 }

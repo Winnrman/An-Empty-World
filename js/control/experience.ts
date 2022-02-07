@@ -2,7 +2,6 @@ import * as dom from '../util/dom';
 import player from "./player";
 import { addMessage } from './messages';
 import { renderCraftables } from '../activities/crafting';
-
 import { renderActivities } from '../activities/activities';
 import { renderStore } from '../activities/store';
 
