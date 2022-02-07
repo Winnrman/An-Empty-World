@@ -1,6 +1,6 @@
-import * as dom from "../util/dom";
-
 import "../../css/messages.css";
+
+import * as dom from "../util/dom";
 
 type Message = {
     id: number;

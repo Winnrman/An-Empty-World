@@ -8,153 +8,109 @@
 <body>
     <script>
         function checkDarkMode() { // this code is here so it loads as fast as possible, to reduce page flickering on refresh
-            const theme = localStorage["theme"];
-            const hours = new Date().getHours();
-            if (theme === "dark" || theme != "light" && hours >= 15 || hours < 8) {
+            if (shouldBeDark()) {
                 document.body.classList.add("dark");
             } else {
                 document.body.classList.remove("dark");
             }
         }
+
+        function shouldBeDark() {
+            switch (localStorage["theme"]) {
+                case "dark": return true;
+                case "light": return false;
+                case "time": return new Date().getHours() >= 15 || new Date().getHours < 8;
+                default: return  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+        }
         checkDarkMode();
     </script>
 
-    <div class="sideContainer" id="messagesContainer">
-        <h2 id="messagesHeader" class="header">Messages</h2>
-        <div id="messages"></div>
-    </div>
+    <div class="row root">
+        <div class="content">
+            <div class="row">
+                <fieldset class="auto-column container" id="progressContainer">
+                    <legend>K0ng</legend>
+                    
+                    <h5>Level: <span id="lvl"></span> | Stamina: <span id="staminaAmount"></span></h5>
+                    <br />
+            
+                    XP: <div class="progress-bar"><span id="progressXp"></span></div>
+                    Stamina: <div class="progress-bar"><span id="progressStamina"></span></div>
+                </fieldset>
+                
+                <fieldset class="auto-column container" id="effectsContainer">
+                    <legend>Effects</legend>
+                    <div id="effects"></div>
+                </fieldset>
+                
+                <fieldset class="auto-column container" id="achievementsContainer">
+                    <legend>Achievements</legend>
+                    <div id="achievements"></div>
+                </fieldset>
+            </div>
+            <fieldset id="inventoryContainer" class="container">
+                <legend id="inventoryHeader">Inventory</legend>
+                <div class="row">
+                    <div class="column">
+                        <div id="inventory"></div>
+                    </div>
+                    <div class="column">
+                        <div id="itemDetails"></div>
+                    </div>
+                </div>
+            </fieldset>
+            
+            <fieldset id="activitiesContainer" class="container">
+                <legend>Activities</legend>
+                <div id="activities"></div>
+            </fieldset>
 
-    <div class="row" container>
-        <div class="auto-column" id="progressContainer">
-            <span style="display: inline-flex">
-                <h3 id="name">K0ng</h3>
-                <span style="display: inline-flex">
-                    <h4 style="padding-bottom:7px; margin-right: 2px;" class="subheader" id="levelSubheadr">Level:</h4>
-                    <h5 style="padding-top:6px;padding-right:4px;" id="lvl">0</h5>
-                </span>
-                &nbsp;| &nbsp;
-                <h4 style="padding-top:3px;">Stamina:</h4>
-                <h5 style="padding-top:5px;" id="staminaAmount">0</h5>
-            </span>
-            <br />
-    
-            XP:
-            <div class="progress-bar">
-                <span style="width: 0px;" id="progressXp"></span>
-            </div>
-    
-            Stamina:
-            <div class="progress-bar">
-                <span style="width: 0px;" id="progressStamina"></span>
-            </div>
+            <fieldset id="storeContainer" class="container">
+                <legend>Store</legend>
+                <div id="store"></div>
+            </fieldset>
+
+            <fieldset id="combatContainer" class="container">
+                <legend>Combat</legend>
+                <div class="row">
+                    <div class="auto-column equipment" id="equipment-chooser">
+                        <div id="equipment-chooser-selector"></div>
+                        <div id="equipment-chooser-selected"></div>
+                    </div>
+                    <div class="auto-column equipment" id="equipment"></div>
+                    <div class="auto-column" id="combat-player"></div>
+                    <div class="auto-column" id="combat-actions"></div>
+                    <div class="auto-column" id="combat-enemy"></div>
+                </div>
+            </fieldset>
+
+            <fieldset id="craftingContainer" class="container">
+                <legend>
+                    <span>Crafting</span>
+                    <span style="font-size: 0.65em;"> (Level <span id="craftingLevelValue">1)</span></span>
+                </legend>
+
+                <div class="row">
+                    <div class="column" id="craftables"></div>
+                    <div class="column" id="craftable-details"></div>
+                </div>
+            </fieldset>
+
+            <fieldset id="gatheringContainer" class="container">
+                <legend>Gathering</legend>
+
+                <div id="gathering-category"></div>
+                <div id="gathering-activity"></div>
+            </fieldset>
         </div>
-        
-        <fieldset class="auto-column container" id="effectsContainer">
-            <legend>Effects</legend>
-            <div id="effects"></div>
+
+        <fieldset id="messagesContainer"class="auto-column container">
+            <legend>Messages</legend>
+            <div id="messages"></div>
         </fieldset>
-        
-        <fieldset class="auto-column container" id="achievementsContainer">
-            <legend>Achievements</legend>
-            <div id="achievements"></div>
-        </fieldset>
+
     </div>
-
-    <fieldset id="inventoryContainer" class="container">
-        <legend id="inventoryHeader">Inventory</legend>
-        <div class="row">
-            <div class="column">
-                <div id="inventory"></div>
-            </div>
-            <div class="column">
-                <div id="itemDetails"></div>
-            </div>
-        </div>
-    </fieldset>
-    
-    <fieldset id="activitiesContainer" class="container">
-        <legend>Activities</legend>
-        <div id="activities"></div>
-    </fieldset>
-
-    <fieldset id="storeContainer" class="container">
-        <legend>Store</legend>
-        <div id="store"></div>
-    </fieldset>
-
-    <fieldset id="combatContainer" class="container">
-        <legend>Combat</legend>
-        <div class="row">
-            <div class="auto-column equipment" id="equipment-chooser">
-                <div id="equipment-chooser-selector"></div>
-                <div id="equipment-chooser-selected"></div>
-            </div>
-            <div class="auto-column equipment" id="equipment"></div>
-            <div class="auto-column">
-                <div id="playerStats">
-                    <h4 style="text-decoration: underline;" id="playerHeader">Player</h4>
-                    <div class="progress-bar"><span id="playerHealthProgress" style="width: 100%;"></span></div><br />
-                    <div class="progress-bar"><span id="playerAttackProgress" style="width: 0%;"></span></div>
-                    <p id="playerHealth">Health: <span id="playerHealthValue">100/100</span></p>
-                    <p id="playerAttack">Attack: <span id="playerAttackValue">1</span></p>
-                    <p id="playerDefense">Defense: <span id="playerDefenseValue">1</span></p>
-                    <p id="playerSpeed">Speed: <span id="playerSpeedValue">1</span></p>
-                </div>
-            </div>
-            <div class="auto-column combat-actions" style="width: 100px">
-                <div>
-                    <button style="display: none;" id="attackButton" class="button"
-                        onclick="combat.startCombat()">Attack</button><br />
-                    <button style="display: none;" id="fleeButton" class="button"
-                        onclick="combat.doFlee()">Flee</button><br />
-                    <button style="display: none;" id="defendButton" class="button"
-                        onclick="combat.defend()">Defend</button><br />
-                    <button style="display: none;" id="specialButton" class="button"
-                        onclick="combat.special()">Special</button>
-                </div>
-            </div>
-            <div class="auto-column">
-                <select id="opponentSelector">
-                    <option value="">Select an opponent</option>
-                    <option value="Goblin">Goblin</option>
-                    <option value="Troll">Troll</option>
-                    <option value="Skeleton">Skeleton</option>
-                    <option value="Knight">Knight</option>
-                    <option value="King">King</option>
-                </select>
-                <button id="fightButton" class="button"
-                    onclick="combat.selectEnemy(document.getElementById('opponentSelector').value)">Fight</button>
-                <div id="enemyStats">
-                    <h4 style="text-decoration: underline;" id="enemyHeader">Enemy</h4>
-                    <div class="progress-bar"><span id="enemyHealthProgress" style="width: 0%;"></span></div><br />
-                    <div class="progress-bar"><span id="enemyAttackProgress" style="width: 0%;"></span></div>
-                    <p id="health">Health: <span id="healthValue">0</span></p>
-                    <p id="attack">Attack: <span id="attackValue">0</span></p>
-                    <p id="defense">Defense: <span id="defenseValue">0</span></p>
-                    <p id="speed">Speed: <span id="speedValue">0</span></p>
-                </div>
-            </div>
-        </div>
-    </fieldset>
-
-    <fieldset id="craftingContainer" class="container">
-        <legend>
-            <span>Crafting</span>
-            <span style="font-size: 0.65em;"> (Level <span id="craftingLevelValue">1)</span></span>
-        </legend>
-
-        <div class="row">
-            <div class="column" id="craftables"></div>
-            <div class="column" id="craftable-details"></div>
-        </div>
-    </fieldset>
-
-    <fieldset id="gatheringContainer" class="container">
-        <legend>Gathering</legend>
-
-        <div id="gathering-category"></div>
-        <div id="gathering-activity"></div>
-    </fieldset>
 
     <footer id="footerContainer" class="footer">
         <a href="https://github.com/Winnrman/An-Empty-World" target="_blank" rel="noopener noreferrer">github</a>

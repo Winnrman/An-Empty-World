@@ -1,16 +1,17 @@
 import * as dom from "../util/dom";
 import { EnemyName, enemiesByName } from "../data/enemies";
-import { randomLootDrop } from "./events";
 import { addXp } from "../control/experience";
 import { hasEquiped } from "../control/equipment";
 import { addMessage } from '../control/messages';
-import player, { addGold, addStatistic, removeGold, saveData }  from "../control/player";
+import player, { saveData }  from "../control/player";
 import transient from '../control/transient';
 import { getRandomInt, getRandomItem, getWithIndefiniteArticle } from '../util';
 import { Rarity } from "../data/items";
-import { addLoot } from "./looting";
-import { sleep } from "../control/timing";
+import { addLoot, randomLootDrop } from "./looting";
+import { calculateTime, sleep } from "../control/timing";
 import { wrapAction } from "../control/user";
+import { addGold, removeGold } from "../control/inventory";
+import { addStatistic } from "../control/statistics";
 
 export async function doQuest() {
     if (transient.isQuesting == true) {
@@ -26,10 +27,15 @@ export async function doQuest() {
     await startQuest();
 }
 
+export async function stopQuesting() {
+    addMessage("You stopped your glorious quest.")
+    transient.isQuesting = false;
+}
+
 async function startQuest() {
     addMessage("You begin off on your quest, walking through this empty and barren world.");
     transient.isQuesting = true;
-    while(transient.isQuesting) {    
+    while(transient.isQuesting) {
         const eventActions = [startWalkEvent, startLootChestEvent, startFightMonsterEvent, startFindCaveEvent, startGetAmbushedEvent];
         const randomEventAction = getRandomItem(eventActions);
         await randomEventAction();
@@ -66,6 +72,9 @@ async function startExitCaveEvent() {
 }
 
 async function doEvent(staminaCost: number, eventAction?: () => Promise<void>) {
+    if (!transient.isQuesting)
+        return;
+    
     const hasInsufficientStamina = player.stamina < staminaCost;
     removeStamina(staminaCost);
     if (hasInsufficientStamina) {
@@ -120,7 +129,9 @@ async function fightMonster() {
 }
 
 async function lootChest() {
-    const goldAmount = hasAmuletOfLuck() ? Math.floor(Math.random() * 3000) + 12000 : Math.floor(Math.random() * 800);
+    const min = hasAmuletOfLuck() ? 12000 : 0;
+    const max = hasAmuletOfLuck() ? 15000 : 800;
+    const goldAmount = getRandomInt(min, max);
     addGold(goldAmount);
     addMessage(`You find ${goldAmount} gold in the old chest!`);
 
@@ -146,13 +157,16 @@ function questWasSuccessful() {
     addStatistic("completedQuests", 1);
 }
 
-async function doRandomAction(actions: (() => void)[]) {
+async function doRandomAction(actions: (() => Promise<void>)[]) {
     const randomAction = getRandomItem(actions);
     await randomAction();
 }
 
 async function waitForPart(time: number, message: string) {
-    await sleep(time);
+    await sleep(calculateTime(time));
+    if (!transient.isQuesting)
+        return;
+    
     addMessage(message);
 }
 

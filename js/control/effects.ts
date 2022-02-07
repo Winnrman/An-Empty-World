@@ -1,12 +1,12 @@
+import "../../css/effects.css";
+
 import { addPlayerHealth } from "../activities/combat";
 import { addStamina } from "../activities/questing";
-import player from "../control/player";
+import player, { saveData } from "../control/player";
 import { DurationItemEffect, ImmediateItemEffect, ItemEffect } from "../data/items";
 import { setHtml } from "../util/dom";
 import { updateArmour } from "./equipment";
 import { displayNumber } from "../util";
-
-import "../../css/effects.css";
 
 export type PlayerEffect = {
     name: DurationEffectName;
@@ -96,8 +96,8 @@ const durationEffects: DurationEffectData[] = [
         getDescription: () => "Become invisible",
         type: EffectType.Duration,
         calculation: EffectCalculation.IsPresent,
-        start: () => {},
-        end: () => {},
+        start: () => { /**/ },
+        end: () => { /**/ },
     },
 ];
 
@@ -106,7 +106,7 @@ const durationEffectsByName: { [key in DurationEffectName]: DurationEffectData }
 
 export type EffectData = ImmediateEffectData | DurationEffectData;
 const effects: EffectData[] = [...immediateEffects, ...durationEffects];
-const effectsByName: { [key in EffectName]: EffectData } = Object.assign({}, ...effects.map(x => ({ [x.name]: x })));
+export const effectsByName: { [key in EffectName]: EffectData } = Object.assign({}, ...effects.map(x => ({ [x.name]: x })));
 
 export function applyEffects(itemEffects: ItemEffect[]) {
     for (const itemEffect of itemEffects) {
@@ -156,9 +156,14 @@ function registerExpiry(effect: PlayerEffect) {
 }
 
 function removeEffect(effect: PlayerEffect) {
-    player.effects.splice(player.effects.indexOf(effect), 1);
+    const effectIndex = player.effects.indexOf(effect);
+    if (effectIndex === -1)
+        return;
+    
+    player.effects.splice(effectIndex, 1);
     const effectData = durationEffectsByName[effect.name];
     effectData.end!();
+    saveData("Effect ended");
     renderEffects();
 }
 

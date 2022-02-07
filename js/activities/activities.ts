@@ -1,32 +1,33 @@
-import player from "../control/player";
-import * as dom from "../util/dom";
-import { clearGatheringCategory, gatheringCategories, renderGatheringActivity, renderGatheringCategory } from "./gathering";
-import levelUnlocks from "../data/levelUnlocks";
-import { wrapAction } from "../control/user";
-
 import iconCoins from "../../img/assets/materials/Coins.png";
 import iconSword from "../../img/assets/equipment/Iron/Iron Sword.png";
 import iconAmulet from "../../img/assets/equipment/Amulet of Luck.png";
 import iconSpyGlass from "../../img/assets/tools/Spyglass.png";
+import player from "../control/player";
+
+import * as dom from "../util/dom";
+import { clearGatheringCategory, gatheringCategories, renderGatheringActivity, renderGatheringCategory } from "./gathering";
+import levelUnlocks from "../data/levelUnlocks";
+import { wrapAction } from "../control/user";
+import { renderCombat } from "./combat";
 
 export type Activity = "Crafting" | "Fighting" | "Store" | "Gathering";
 
 export async function goCrafting() {
-    showActivity("Crafting");
+    await showActivity("Crafting");
 }
 
 export async function goFighting() {
-    showActivity("Fighting");
+    await showActivity("Fighting");
 }
 
-export function goToStore() {
-    showActivity("Store");
+export async function goToStore() {
+    await showActivity("Store");
 }
 
 export async function showActivity(activity: Activity) {
     player.currentActivity = activity;
     if (activity != "Gathering")
-        clearGatheringCategory();
+        await clearGatheringCategory();
 
     showCurrentActivity();
     renderActivities();
@@ -41,6 +42,8 @@ export function showCurrentActivity() {
     if (player.currentActivity === "Gathering") {
         renderGatheringCategory();
         renderGatheringActivity();
+    } else if (player.currentActivity === "Fighting") {
+        renderCombat();
     }
 }
 
@@ -50,7 +53,7 @@ export function renderActivities() {
             return "";
         
         const imagePart = image ? `<img src='${image}' />` : "";
-        return `<button class="button" onclick="${action}">${imagePart}${text}</button> `;
+        return `<button onclick="${action}">${imagePart}${text}</button> `;
     };
 
     let html = "";

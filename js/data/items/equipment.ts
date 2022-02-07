@@ -1,7 +1,3 @@
-import { EquipmentSlot, Item, Rarity } from ".";
-import { ResourceName } from "./resources";
-import { PartialRecord } from "../../util";
-
 import iconWoodenHelmet from "../../../img/assets/equipment/Wooden/Wooden Helmet.png";
 import iconWoodenChestplate from "../../../img/assets/equipment/Wooden/Wooden Chestplate.png";
 import iconWoodenLeggings from "../../../img/assets/equipment/Wooden/Wooden Leggings.png";
@@ -18,28 +14,27 @@ import iconBronzeHelmet from "../../../img/assets/equipment/Bronze/Bronze Helmet
 import iconBronzeChestplate from "../../../img/assets/equipment/Bronze/Bronze Chestplate.png";
 import iconBronzeLeggings from "../../../img/assets/equipment/Bronze/Bronze Leggings.png";
 import iconBronzeBoots from "../../../img/assets/equipment/Bronze/Bronze Boots.png";
-import iconBronzeSword from "../../../img/assets/equipment/Bronze/Bronze Sword.png";
 import iconCopperHelmet from "../../../img/assets/equipment/Copper/Copper Helmet.png";
 import iconCopperChestplate from "../../../img/assets/equipment/Copper/Copper Chestplate.png";
 import iconCopperLeggings from "../../../img/assets/equipment/Copper/Copper Leggings.png";
 import iconCopperBoots from "../../../img/assets/equipment/Copper/Copper Boots.png";
-import iconCopperSword from "../../../img/assets/equipment/Copper/Copper Sword.png";
 import iconGoldHelmet from "../../../img/assets/equipment/Gold/Gold Helmet.png";  
 import iconGoldChestplate from "../../../img/assets/equipment/Gold/Gold Chestplate.png";  
 import iconGoldLeggings from "../../../img/assets/equipment/Gold/Gold Leggings.png";  
 import iconGoldBoots from "../../../img/assets/equipment/Gold/Gold Boots.png";  
-import iconGoldSword from "../../../img/assets/equipment/Gold/Gold Sword.png";
 import iconCrystalHelmet from "../../../img/assets/equipment/Crystal/Crystal Helmet.png";
 import iconCrystalChestplate from "../../../img/assets/equipment/Crystal/Crystal Chestplate.png";
 import iconCrystalLeggings from "../../../img/assets/equipment/Crystal/Crystal Leggings.png";
 import iconCrystalBoots from "../../../img/assets/equipment/Crystal/Crystal Boots.png";
-import iconCrystalSword from "../../../img/assets/equipment/Crystal/Crystal Sword.png";
 import iconDragonScaleHelmet from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Helmet.png";
 import iconDragonScaleChestplate from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Chestplate.png";
 import iconDragonScaleLeggings from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Leggings.png";
 import iconDragonScaleBoots from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Boots.png";
-import iconDragonScaleSword from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Sword.png";
 import iconAmuletofLuck from "../../../img/assets/equipment//Amulet of Luck.png";
+
+import { EquipmentSlot, Item, Rarity } from ".";
+import { ResourceName } from "./resources";
+import { PartialRecord } from "../../util";
 
 export type EquipmentName = 
         "Wooden Helmet"       | "Wooden Chestplate"       | "Wooden Leggings"       | "Wooden Boots"       | "Wooden Sword"

@@ -67,9 +67,9 @@ function startIntervals() {
 
 export function checkAndRenderEverything() {
     experience.checkLevelUnlocks();
+    activities.showCurrentActivity();
     equipment.updateArmour();
     effects.registerEffectExpiries();
-    activities.showCurrentActivity();
     settings.loadTheme();
     achievements.checkAchievements();
 
@@ -80,9 +80,13 @@ export function checkAndRenderEverything() {
     crafting.renderCraftables();
     questing.renderStamina();
     inventory.renderInventory();
-    combat.renderPreCombatInfo();
-    gathering.resumeGatheringActivity();
+    void gathering.resumeGatheringActivity();
 }
 
 startIntervals();
 checkAndRenderEverything();
+
+if (player.dev?.runTestsOnLoad)
+    setTimeout(() => {
+        void window.runTests(player.dev?.keepTestData);
+    }, 50);

@@ -6,7 +6,11 @@
     margin-bottom: 5px;
 }
 
-.combat-actions button {
+#combat-actions {
+    width: 100px;
+}
+
+#combat-actions button {
     width: 100px;
     margin-bottom: 5px;
 }

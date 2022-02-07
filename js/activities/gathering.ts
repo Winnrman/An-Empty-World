@@ -1,18 +1,3 @@
-import player, { addStatistic, StatisticName } from "../control/player";
-import { addMessage } from "../control/messages";
-import { addXp } from "../control/experience";
-import { displayNumber, getEntries, getRandomInt, PartialRecord, sum } from "../util";
-import { addToInventory, decreaseToolHealth, hasInInventory, isInventoryFull } from "../control/inventory";
-import { ResourceName, resourcesByName } from "../data/items/resources";
-import * as dom from "../util/dom";
-import { ToolName } from "../data/items/tools";
-import { showActivity } from "./activities";
-import levelUnlocks from "../data/levelUnlocks";
-import { sleep } from "../control/timing";
-import { getItemChances, getRandomLootFromTable, LootTable } from "./looting";
-import { wrapAction } from "../control/user";
-
-
 import iconWood from "../../img/assets/materials/Wood.png";
 import iconStone from "../../img/assets/materials/Stone.png";
 import iconAxe from "../../img/assets/tools/stone_axe.png";
@@ -23,6 +8,22 @@ import iconIron from "../../img/assets/materials/Iron.png";
 import iconMonofolia from "../../img/assets/materials/Monofolia.png";
 import iconBifolia from "../../img/assets/materials/Bifolia.png";
 import iconCrimsonica from "../../img/assets/materials/Crimsonica.png";
+
+import player from "../control/player";
+import { addMessage } from "../control/messages";
+import { addXp } from "../control/experience";
+import { displayNumber, getRandomInt, PartialRecord, sum } from "../util";
+import { addToInventory, decreaseToolHealth, hasInInventory, isInventoryFull } from "../control/inventory";
+import { ResourceName, resourcesByName } from "../data/items/resources";
+import * as dom from "../util/dom";
+import { ToolName } from "../data/items/tools";
+import { showActivity } from "./activities";
+import levelUnlocks from "../data/levelUnlocks";
+import { calculateTime, sleep } from "../control/timing";
+import { getItemChances, getRandomLootFromTable, LootTable } from "./looting";
+import { wrapAction } from "../control/user";
+import { addStatistic, StatisticName } from "../control/statistics";
+
 export type GatheringCategoryName = "Wood" | "Stone" | "Food" | "Ore" | "Herb";
 
 export type GatheringCategory = {
@@ -166,7 +167,7 @@ const gatheringActivities: GatheringActivity[] = [
         neededTools: undefined,
         searchTime: 1000,
         time: 2000,
-        itemsTable: { "Monofolia": 6, "Bifolia": 4, "Trifolia": 2, "Crimsonica": 1, "Azurica": 1, "Okerica": 1 },
+        itemsTable: { "Monofolia": 6, "Bifolia": 4, "Trifolia": 2, "Azurica": 1, "Crimsonica": 1, "Okerica": 1 },
         icon: iconMonofolia,
     },
     {
@@ -176,7 +177,7 @@ const gatheringActivities: GatheringActivity[] = [
         neededTools: undefined,
         searchTime: 1000,
         time: 2000,
-        itemsTable: { "Monofolia": 6, "Bifolia": 4, "Trifolia": 2, "Crimsonica": 1, "Azurica": 1, "Okerica": 1 },
+        itemsTable: { "Monofolia": 6, "Bifolia": 4, "Trifolia": 2, "Azurica": 1, "Crimsonica": 1, "Okerica": 1 },
         needsToChooseItem: true,
         icon: iconCrimsonica,
     },
@@ -195,15 +196,15 @@ export async function showGatheringCategory(categoryName: GatheringCategoryName)
         return;
 
     player.currentGatheringCategory = categoryName;
-    clearGatheringActivity();
-    showActivity("Gathering");
+    await clearGatheringActivity();
+    await showActivity("Gathering");
 }
 
 export async function showGatheringActivity(activityName: GatheringActivityName) {
     if (player.currentGatheringActivity === activityName)
         return;
     
-    clearGatheringActivity();
+    await clearGatheringActivity();
     player.currentGatheringActivity = activityName;
     const activity = gatheringActivitiesByName[activityName];
     if (!activity.needsToChooseItem) {
@@ -211,7 +212,7 @@ export async function showGatheringActivity(activityName: GatheringActivityName)
         return;
     }
 
-    showActivity("Gathering");
+    await showActivity("Gathering");
 }
 
 const chosenItems = Array<ResourceName>();
@@ -228,6 +229,7 @@ let skippedItem: ResourceName | undefined;
 
 const getDropModifiers = () => {
     const dropModifiers: PartialRecord<ResourceName, number> = {};
+    // give a bonus for choosing only a couple of items: 3x bonus when choosing one, 2x bonus when choosing 2
     if (chosenItems.length == 1) {
         dropModifiers[chosenItems[0]] = 3;
     } else if (chosenItems.length == 2) {
@@ -238,7 +240,7 @@ const getDropModifiers = () => {
 }
 
 export async function startGatheringActivity() {
-    const currentActivityId = getRandomInt(1, 999999);
+    const currentActivityId = getRandomInt(1, 999999, false);
     player.currentGatheringActivityId = currentActivityId;
     const activity = gatheringActivitiesByName[player.currentGatheringActivity!];
 
@@ -247,12 +249,13 @@ export async function startGatheringActivity() {
         if ((activity.neededTools && !tool) || hasNoSpace())
             return clearGatheringActivity();
         
-        showActivity("Gathering");
+        await showActivity("Gathering");
         
         if (activity.searchTime) {
             setStatus(`Searching for the next ${activity.category}${skippedItem ? ` (you found a ${skippedItem} that you didn't want)` : ''}...`);
-            dom.resetProgressbar("gathering-progress", activity.searchTime);
-            await sleep(activity.searchTime);
+            const searchTime = calculateTime(activity.searchTime);
+            dom.resetProgressbar("gathering-progress", searchTime);
+            await sleep(searchTime);
 
             if (player.currentGatheringActivityId !== currentActivityId)
                 return;
@@ -270,8 +273,9 @@ export async function startGatheringActivity() {
 
         setStatus(`Gathering ${itemName}...`);
 
-        dom.resetProgressbar("gathering-progress", activity.time);
-        await sleep(activity.time);
+        const gatherTime = calculateTime(activity.time);
+        dom.resetProgressbar("gathering-progress", gatherTime);
+        await sleep(gatherTime);
     
         if (player.currentGatheringActivityId !== currentActivityId)
             return;
@@ -285,14 +289,14 @@ export async function startGatheringActivity() {
         addStatistic(statistic, amount);
         addXp(gatheringData.experience);
         if (tool)
-            decreaseToolHealth(tool);
+            await decreaseToolHealth(tool);
     }
 }
 
-export function clearGatheringCategory() {
+export async function clearGatheringCategory() {
     player.currentGatheringCategory = undefined;
     renderGatheringCategory();
-    clearGatheringActivity();
+    await clearGatheringActivity();
 }
 
 export async function clearGatheringActivity() {
@@ -303,13 +307,13 @@ export async function clearGatheringActivity() {
     renderGatheringActivity();
 }
 
-export function resumeGatheringActivity() {
+export async function resumeGatheringActivity() {
     const activity = player.currentGatheringActivity;
     if (!activity)
         return;
     
     player.currentGatheringActivity = undefined;
-    showGatheringActivity(activity);
+    await showGatheringActivity(activity);
 }
 
 function getTool(toolNames: ToolName[] | undefined, action: string) {
@@ -332,6 +336,23 @@ function hasNoSpace() {
     return true;
 }
 
+export const getItemChanceValueRanges = (activityName: GatheringActivityName, dropModifiers?: PartialRecord<ResourceName, number>) => {
+    const chanceList = getItemChances(gatheringActivitiesByName[activityName].itemsTable, dropModifiers)
+    const totalChance = sum(chanceList.map(x => x.chance));
+    let currentMin = 0;
+    const chances = [];
+    for (const chance of chanceList) {
+        const currentMax = currentMin + chance.chance;
+        chances.push({
+            name: chance.name,
+            min: Math.round(currentMin / totalChance * 1000) / 1000,
+            max: Math.round(currentMax / totalChance * 1000) / 1000
+        });
+        currentMin += chance.chance;
+    }
+    return chances;
+}
+
 export function renderGatheringCategory() {
     if (!player.currentGatheringCategory) {
         dom.setHtml("gathering-category", "");
@@ -341,7 +362,7 @@ export function renderGatheringCategory() {
     let html = "";
     const availablecategories = gatheringActivities.filter(x => x.category === player.currentGatheringCategory && player.level >= x.requiredLevel);
     for (const activity of availablecategories) {
-        html += `<button class="button" onclick="gathering.showGatheringActivity('${activity.name}')"><img src='${activity.icon}' />${activity.name}</button> `;
+        html += `<button onclick="gathering.showGatheringActivity('${activity.name}')"><img src='${activity.icon}' />${activity.name}</button> `;
     }
     
     dom.setHtml("gathering-category", html);
@@ -362,12 +383,12 @@ export function renderGatheringActivity() {
         
         const dropModifiers = getDropModifiers();
         const itemChances = getItemChances(activity.itemsTable, dropModifiers);
-        const totalChance = sum(Object.values(itemChances));
+        const totalChance = sum(itemChances.map(x => x.chance));
 
-        for (const [resourceName, chance] of getEntries(itemChances)) {
-            const resource = resourcesByName[resourceName];
-            const itemChance = displayNumber(chance / totalChance * 100)
-            html += `<div onClick="gathering.toggleItem('${resource.name}')" class="item-icon ${chosenItems.includes(resource.name) ? 'selected' : ''}" title="${resource.name} - chance: ${itemChance}%"><img src="${resource.iconUrl}" /></div>`;
+        for (const itemChance of itemChances) {
+            const resource = resourcesByName[itemChance.name];
+            const chance = displayNumber(itemChance.chance / totalChance * 100)
+            html += `<div onClick="gathering.toggleItem('${resource.name}')" class="item-icon ${chosenItems.includes(resource.name) ? 'selected' : ''}" title="${resource.name} - chance: ${chance}%"><img src="${resource.iconUrl}" /></div>`;
         }
 
         if (chosenItems.length === 0) {
@@ -375,7 +396,7 @@ export function renderGatheringActivity() {
             return;
         }
 
-        html += ` <button class="button" onClick="gathering.startGatheringActivity()">Start</button>`;
+        html += ` <button onClick="gathering.startGatheringActivity()">Start</button>`;
         html += "<br />";
         html += "<br />";
     }
@@ -387,7 +408,7 @@ export function renderGatheringActivity() {
 
     html += `${activityStatus}<br />`;
     html += `<div class="progress-bar"><span id="gathering-progress" style="width: 0%;"></span></div> `;
-    html += `<button class="button" onClick="gathering.clearGatheringActivity()">Stop</button>`;
+    html += `<button onClick="gathering.clearGatheringActivity()">Stop</button>`;
     dom.setHtml("gathering-activity", html);
 }
 

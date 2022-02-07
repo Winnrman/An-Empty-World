@@ -1,13 +1,9 @@
 #progressContainer{
-    width:250px;
-    height:auto;
-    margin: 20px;
-    padding:10px;
-    border:1px solid;
+    width: calc(15% - 62px);
 }
 
 #progressContainer .progress-bar {
-    width: 95%;
+    width: 99%;
 }
 
 #progressXp {

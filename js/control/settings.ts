@@ -1,6 +1,6 @@
 import * as dom from "../util/dom";
 
-const themes = ["auto", "dark", "light"];
+const themes = ["auto", "time", "dark", "light"];
 
 declare global {
     interface Window {
@@ -23,4 +23,5 @@ export function loadTheme() {
 
 export function startDarkmodeInterval() {
     setInterval(window.checkDarkMode, 60000);
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', window.checkDarkMode);
 }

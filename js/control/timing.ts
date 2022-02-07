@@ -1,5 +1,5 @@
 import { checkAchievements } from "./achievements";
-import { saveData } from "./player";
+import player, { saveData } from "./player";
 
 let amountOfSleepsToSkip = 0;
 let callbackWhenDone: (() => void) | undefined;
@@ -13,13 +13,25 @@ export function sleep(ms: number) {
     if (amountOfSleepsToSkip > 0) {
         amountOfSleepsToSkip--;
         return new Promise(resolve => {
-            if (amountOfSleepsToSkip === 0) 
+            if (amountOfSleepsToSkip === 0)
                 callbackWhenDone && callbackWhenDone();
-            return resolve(undefined);
+            return player.dev?.testSpeed ? setTimeout(resolve, player.dev.testSpeed) : resolve(undefined);
         });
     }
     
     checkAchievements();
     saveData("Going to sleep");
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function calculateTime(time: number) {
+    return getTimeForDev(getTimeForLevel(time));
+}
+
+export function getTimeForLevel(time: number) {
+    return time * Math.pow(1 / 2, player.level / 10)
+}
+
+function getTimeForDev(time: number) {
+    return player.dev?.isDev ? time / (player.dev.speed ?? 1) : time;
 }

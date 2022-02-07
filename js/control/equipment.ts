@@ -1,12 +1,4 @@
-import * as dom from "../util/dom";
-import { EquipmentSlot } from "../data/items";
-import { addMessage } from './messages';
-import player, { addGold } from "./player";
-import transient from "./transient";
-import { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
-import { getEffectValue } from "./effects";
-import { getWithIndefiniteArticle } from "../util";
-import { wrapAction } from "./user";
+import "../../css/equipment.css";
 
 import iconSlotHelmet from "../../img/assets/equipment/Slot/Slot Helmet.png";
 import iconSlotChest from "../../img/assets/equipment/Slot/Slot Chest.png";
@@ -17,7 +9,17 @@ import iconSlotOffhand from "../../img/assets/equipment/Slot/Slot Offhand.png";
 import iconSlotRanged from "../../img/assets/equipment/Slot/Slot Ranged.png";
 import iconSlotShield from "../../img/assets/equipment/Slot/Slot Shield.png";
 
-import "../../css/equipment.css";
+import * as dom from "../util/dom";
+import { EquipmentSlot } from "../data/items";
+import { addMessage } from './messages';
+import player from "./player";
+import transient from "./transient";
+import { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
+import { getEffectValue } from "./effects";
+import { getWithIndefiniteArticle } from "../util";
+import { wrapAction } from "./user";
+import { renderCombatPlayer } from "../activities/combat";
+import { addGold } from "./inventory";
 
 const emptyEquipmentIcons: Record<EquipmentSlot, string> = {
     "Helmet": iconSlotHelmet,
@@ -28,7 +30,7 @@ const emptyEquipmentIcons: Record<EquipmentSlot, string> = {
     "Offhand": iconSlotOffhand,
     "Ranged": iconSlotRanged,
     "Shield": iconSlotShield,
-}
+};
 
 export function addToOwnedEquipment(item: Equipment) {
     if (ownsEquipment(item.name)) {
@@ -110,9 +112,9 @@ export function updateArmour() {
            1
         + getEffectValue("addSpeed");
 
-    dom.setHtml("playerDefenseValue", player.playerDefense.toString());
-    dom.setHtml("playerAttackValue", player.playerAttack.toString());
-    dom.setHtml("playerSpeedValue", player.playerSpeed.toString());
+    if (player.currentActivity === "Fighting") {
+        renderCombatPlayer();
+    }
 
     renderEquipment();
 }
@@ -214,9 +216,9 @@ export function renderSelectedEquipment() {
         html += `Armor: ${equipment.equipment.armor ?? 0}<br />`;
         html += "<br />";
         if (isEquipped)
-            html += `<button onClick="equipment.unequipSlot('${equipment.equipment!.slot}')" class="button">Unequip</button>`;
+            html += `<button onClick="equipment.unequipSlot('${equipment.equipment!.slot}')">Unequip</button>`;
         else
-            html += `<button onClick="equipment.equip('${equipment.name}')" class="button">Equip</button>`;
+            html += `<button onClick="equipment.equip('${equipment.name}')">Equip</button>`;
 
         html += "</div>";
 
