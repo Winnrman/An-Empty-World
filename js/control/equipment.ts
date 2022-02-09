@@ -92,7 +92,10 @@ const getEquipmentInSlot = (slot: EquipmentSlot) => getEquipmentNameInSlot(slot)
 
 export function updateArmour() {
     const getArmorValue = (slot: EquipmentSlot) => getEquipmentInSlot(slot)?.equipment.armor ?? 0;
-    player.playerDefense =
+    const getAttackValue = (slot: EquipmentSlot) => getEquipmentInSlot(slot)?.equipment.attack ?? 0;
+    const getLuckValue = (slot: EquipmentSlot) => getEquipmentInSlot(slot)?.equipment.luck ?? 0;
+    
+    player.defense =
           getArmorValue("Helmet")
         + getArmorValue("Chestplate")
         + getArmorValue("Leggings")
@@ -101,17 +104,20 @@ export function updateArmour() {
         + getArmorValue("Neck")
         + getEffectValue("addDefense");
 
-    const getAttackValue = (slot: EquipmentSlot) => getEquipmentInSlot(slot)?.equipment.attack ?? 0;
-    player.playerAttack =
+    player.attack =
           1
         + getAttackValue("Weapon")
         + getAttackValue("Neck")
         + getEffectValue("addAttack")
         - getEffectValue("decreaseAttack");
 
-    player.playerSpeed =
+    player.speed =
            1
         + getEffectValue("addSpeed");
+
+    player.luck =
+          getLuckValue("Neck")
+        + getEffectValue("addLuck");
 
     if (player.currentActivity === "Fighting") {
         renderCombatPlayer();

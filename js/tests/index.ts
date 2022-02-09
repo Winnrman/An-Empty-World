@@ -179,11 +179,11 @@ async function runScenario(step: Step) {
     await step("8b.05", equip("Iron Sword"));
 
     console.log("9: fight");
-    await step("9.01", attack("Goblin", 3, true, gotAchievement("killed_enemies", 1)));
-    await step("9.02", attack("Goblin", 3));
-    await step("9.03", attack("Goblin", 3));
-    await step("9.04", attack("Goblin", 3));
-    await step("9.05", attack("Goblin", 3, true, gotAchievement("killed_enemies", 2)));
+    await step("9.01", attack("Goblin", 4, true, gotAchievement("killed_enemies", 1)));
+    await step("9.02", attack("Goblin", 4));
+    await step("9.03", attack("Goblin", 4));
+    await step("9.04", attack("Goblin", 4));
+    await step("9.05", attack("Goblin", 4, true, gotAchievement("killed_enemies", 2)));
 
     console.log("10: mindlessly mine iron until we're level 8");
     await step("10.01a", mineIron(16, levelled(7, 440), gotAchievement("mined_ores", 2)));
@@ -208,7 +208,7 @@ async function runScenario(step: Step) {
     await step("11.01", startQuesting([eventChances.Walk], 1, eventCosts.Walk));
     await step("11.02", startQuesting([
         eventChances.LootChest,
-        0.999, // gold: max,
+        0.99999, // gold: max,
         4 / 7 // loot type: Offhand
-    ], 1, eventCosts.LootChest, gotAchievement("completed_quests", 1), gotGold(800), gotAchievement("earned_gold", 1)));
+    ], 1, eventCosts.LootChest, gotAchievement("completed_quests", 1), gotGold(1000), gotAchievement("earned_gold", 2)));
 }

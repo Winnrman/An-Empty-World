@@ -145,13 +145,13 @@ export function equippedItem(itemName: EquipmentName) {
         const item = equipmentByName[itemName];
         if (data.equipment[item.equipment!.slot]) {
             const oldItem = equipmentByName[data.equipment![item.equipment!.slot]!];
-            data.playerDefense -= oldItem.equipment.armor ?? 0;
-            data.playerAttack -= oldItem.equipment.attack ?? 0;
+            data.defense -= oldItem.equipment.armor ?? 0;
+            data.attack -= oldItem.equipment.attack ?? 0;
         }
 
         data.equipment[item.equipment!.slot] = itemName;
-        data.playerDefense += item.equipment.armor ?? 0;
-        data.playerAttack += item.equipment.attack ?? 0;
+        data.defense += item.equipment.armor ?? 0;
+        data.attack += item.equipment.attack ?? 0;
     }
 }
 

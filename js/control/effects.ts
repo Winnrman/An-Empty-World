@@ -27,7 +27,7 @@ enum EffectCalculation {
 }
 
 export type ImmediateEffectName = "addHealth" | "addStamina";
-export type DurationEffectName =  "addAttack" | "decreaseAttack" | "addDefense" | "addSpeed" | "makeInvisible";
+export type DurationEffectName =  "addAttack" | "decreaseAttack" | "addDefense" | "addSpeed" | "makeInvisible" | "addLuck";
 export type EffectName = ImmediateEffectName | DurationEffectName;
 
 type ImmediateEffectData = {
@@ -86,6 +86,14 @@ const durationEffects: DurationEffectData[] = [
     {
         name: "addSpeed",
         getDescription: (value) => `${value} Speed bonus`,
+        type: EffectType.Duration,
+        calculation: EffectCalculation.Maximum,
+        start: updateArmour,
+        end: updateArmour,
+    },
+    {
+        name: "addLuck",
+        getDescription: (value) => `${value} Luck bonus`,
         type: EffectType.Duration,
         calculation: EffectCalculation.Maximum,
         start: updateArmour,

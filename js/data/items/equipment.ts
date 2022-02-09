@@ -55,6 +55,7 @@ export type Equipment = Item & {
         slot: EquipmentSlot;
         armor?: number;
         attack?: number;
+        luck?: number;
     };
     crafting?: {
         requiredLevel: number;
@@ -593,7 +594,8 @@ const equipment: Equipment[] = [
         description: "A mysterious amulet which grants the user extreme luck.",
         type: "Equipment",
         equipment: {
-            slot: "Neck"
+            slot: "Neck",
+            luck: 3
         },
         rarity: "legendary",
         price: 9000,

@@ -55,15 +55,15 @@ export async function startCombat () {
 
         fight.timeUntilPlayerAttack -= timeUntilNextAttack;
         if (fight.timeUntilPlayerAttack <= 0) {
-            const damage = Math.max(0, player.playerAttack - fight.enemy.defense);
+            const damage = Math.max(0, player.attack - fight.enemy.defense);
             fight.enemyHealth = Math.max(0, fight.enemyHealth - damage);
             renderCombatEnemy();
         }
 
         fight.timeUntilEnemyAttack -= timeUntilNextAttack;
         if (fight.timeUntilEnemyAttack <= 0) {
-            const damage = Math.max(0, fight.enemy.attack - player.playerDefense);
-            setPlayerHealth(player.playerHealth - damage);
+            const damage = Math.max(0, fight.enemy.attack - player.defense);
+            setPlayerHealth(player.health - damage);
             setNextEnemyAttack(fight);
         }
         
@@ -76,7 +76,7 @@ export async function startCombat () {
             break;
         }
         
-        if (player.playerHealth <= 0) {
+        if (player.health <= 0) {
             playerDied();
             break;
         }
@@ -86,7 +86,7 @@ export async function startCombat () {
 }
 
 function setNextPlayerAttack(fight: Fight) {
-    const timeUntilNextAttack = calculateTime(1000 / player.playerSpeed);
+    const timeUntilNextAttack = calculateTime(1000 / player.speed);
     fight.timeUntilPlayerAttack = timeUntilNextAttack;
     dom.resetProgressbar("playerAttackProgress", timeUntilNextAttack);
 }
@@ -134,11 +134,11 @@ function clearFight() {
 }
 
 export function addPlayerHealth(value: number) {
-    setPlayerHealth(player.playerHealth + value);
+    setPlayerHealth(player.health + value);
 }
 
 function setPlayerHealth(value: number) {
-    player.playerHealth = minMax(0, value, player.maxHealth);
+    player.health = minMax(0, value, player.maxHealth);
     renderCombatPlayer();
 }
 
@@ -152,12 +152,12 @@ export function renderCombatPlayer() {
     let html = "";
     html += `<div>
                 <h4 style="text-decoration: underline;">Player</h4>
-                <div class="progress-bar"><span id="playerHealthProgress" style="width: ${player.playerHealth / player.maxHealth * 100}%;"></span></div><br />
+                <div class="progress-bar"><span id="playerHealthProgress" style="width: ${player.health / player.maxHealth * 100}%;"></span></div><br />
                 <div class="progress-bar"><span id="playerAttackProgress" style="width: 100%;"></span></div>
-                <p>Health: ${player.playerHealth}</p>
-                <p>Attack: ${player.playerAttack}</p>
-                <p>Defense: ${player.playerDefense}</p>
-                <p>Speed: ${player.playerSpeed}</p>
+                <p>Health: ${player.health}</p>
+                <p>Attack: ${player.attack}</p>
+                <p>Defense: ${player.defense}</p>
+                <p>Speed: ${player.speed}</p>
             </div>`;
     dom.setHtml("combat-player", html);
 }
