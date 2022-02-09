@@ -1,7 +1,6 @@
 import { AchievementName } from './achievements';
-import { EquipmentSlot } from '../data/items';
 import { PlayerEffect } from './effects';
-import { EquipmentName } from '../data/items/equipment';
+import { EquipmentName, EquipmentSlot } from '../data/items/equipment';
 import { ToolName } from '../data/items/tools';
 import { InventoryItemName } from './inventory';
 import { PartialRecord } from '../util';

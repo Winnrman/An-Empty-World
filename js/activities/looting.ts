@@ -1,10 +1,9 @@
 import { addToOwnedEquipment } from "../control/equipment";
 import { addToInventory, addToolToInventory } from "../control/inventory";
-import equipment, { Equipment } from "../data/items/equipment";
+import equipment, { Equipment, EquipmentSlot } from "../data/items/equipment";
 import potions, { Potion } from "../data/items/potions";
 import { Tool } from "../data/items/tools";
 import { getEntries, getKeys, getRandomInt, PartialRecord, sum } from "../util";
-import { EquipmentSlot } from "../data/items";
 import { getRandomItem } from "../util";
 
 export function randomLootDrop(): Loot {
@@ -26,7 +25,7 @@ export function randomLootDrop(): Loot {
 //     return "legendary";
 // }
 
-const itemTypes: (EquipmentSlot | "Potion")[] = ["Helmet", "Chestplate", "Leggings", "Boots", "Offhand", "Potion", "Shield"];
+const itemTypes: (EquipmentSlot | "Potion")[] = ["Helmet", "Chestplate", "Leggings", "Boots", "Offhand", "Potion", "Neck"];
 
 function getRandomItemType() {
     return getRandomItem(itemTypes);

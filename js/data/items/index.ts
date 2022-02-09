@@ -21,7 +21,6 @@ export type ItemEffect = ImmediateItemEffect | DurationItemEffect;
 export type ItemName = EquipmentName | PotionName | ResourceName | ToolName;
 export type ItemType = "Equipment" | "Potion" | "Resource" | "Tool";
 export type Rarity = "common" | "uncommon" | "rare" | "legendary";
-export type EquipmentSlot = "Helmet" | "Chestplate" | "Leggings" | "Boots" | "Weapon" | "Offhand" | "Ranged" | "Shield";
 
 export type Item = {
     name: ItemName;

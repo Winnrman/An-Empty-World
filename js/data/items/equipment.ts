@@ -32,9 +32,11 @@ import iconDragonScaleLeggings from "../../../img/assets/equipment/Dragon Scale/
 import iconDragonScaleBoots from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Boots.png";
 import iconAmuletofLuck from "../../../img/assets/equipment//Amulet of Luck.png";
 
-import { EquipmentSlot, Item, Rarity } from ".";
+import { Item, Rarity } from ".";
 import { ResourceName } from "./resources";
 import { PartialRecord } from "../../util";
+
+export type EquipmentSlot = "Helmet" | "Chestplate" | "Leggings" | "Boots" | "Weapon" | "Offhand" | "Ranged" | "Neck";
 
 export type EquipmentName = 
         "Wooden Helmet"       | "Wooden Chestplate"       | "Wooden Leggings"       | "Wooden Boots"       | "Wooden Sword"
@@ -292,7 +294,7 @@ const equipment: Equipment[] = [
         description: "An iron shield",
         type: "Equipment",
         equipment: {
-            slot: "Shield",
+            slot: "Offhand",
             armor: ResourceArmour.Iron + EquipmentArmour.Shield,
         },
         rarity: "common",
@@ -584,14 +586,14 @@ const equipment: Equipment[] = [
         }
     },
 
-    // Offhand
+    // Neck
     {
         name: "Amulet of Luck",
         iconUrl: iconAmuletofLuck,
         description: "A mysterious amulet which grants the user extreme luck.",
         type: "Equipment",
         equipment: {
-            slot: "Offhand"
+            slot: "Neck"
         },
         rarity: "legendary",
         price: 9000,
