@@ -17,6 +17,7 @@ type Fight = {
     enemyHealth: number;
     timeUntilPlayerAttack: number;
     timeUntilEnemyAttack: number;
+    isClearing?: boolean;
 }
 
 let selectedEnemy: Enemy | undefined;
@@ -41,6 +42,7 @@ export async function startCombat () {
         timeUntilPlayerAttack: 0,
         timeUntilEnemyAttack: 0
     };
+    renderCombatActions();
 
     setNextPlayerAttack(fight);
     setNextEnemyAttack(fight);
@@ -64,24 +66,25 @@ export async function startCombat () {
         if (fight.timeUntilEnemyAttack <= 0) {
             const damage = Math.max(0, fight.enemy.attack - player.defense);
             setPlayerHealth(player.health - damage);
-            setNextEnemyAttack(fight);
-        }
-        
-        if (fight.timeUntilPlayerAttack <= 0) {
-            setNextPlayerAttack(fight);
         }
         
         if (fight.enemyHealth <= 0) {
-            enemyDied(fight);
+            await enemyDied(fight);
             break;
         }
         
         if (player.health <= 0) {
-            playerDied();
+            await playerDied();
             break;
         }
 
-        setNextEnemyAttack(fight);
+        if (fight.timeUntilPlayerAttack <= 0) {
+            setNextPlayerAttack(fight);
+        }
+        
+        if (fight.timeUntilEnemyAttack <= 0) {
+            setNextEnemyAttack(fight);
+        }
     }
 }
 
@@ -97,7 +100,7 @@ function setNextEnemyAttack(fight: Fight) {
     dom.resetProgressbar("enemyAttackProgress", timeUntilNextAttack);
 }
 
-function enemyDied(fight: Fight) {
+async function enemyDied(fight: Fight) {
     const enemy = fight.enemy;
     addXp(enemy.defeatExperience)
     const gold = getRandomInt(enemy.gold.min, enemy.gold.max);
@@ -112,22 +115,33 @@ function enemyDied(fight: Fight) {
         addLoot(item);
     }
 
-    clearFight();
+    await clearFight(false);
 }
 
-function playerDied() {
+async function playerDied() {
     addMessage("You lose!");
-    clearFight();
+    await clearFight(false);
 }
 
 export async function doFlee() {
     addMessage("You fled!");
     setPlayerHealth(player.maxHealth);
-    clearFight();
+    await clearFight(true);
 }
 
-function clearFight() {
-    selectedEnemy = undefined;
+async function clearFight(clearEnemy: boolean) {
+    if (fight && !clearEnemy) {
+        fight.isClearing = true;
+        renderCombat();
+        await sleep(calculateTime(2000));
+    }
+
+    if (!fight)
+        return;
+    
+    if (clearEnemy)
+        selectedEnemy = undefined;
+
     fight = undefined;
 
     renderCombat();
@@ -164,23 +178,7 @@ export function renderCombatPlayer() {
 
 function renderCombatActions() {
     if (!selectedEnemy) {
-        dom.setHtml("combat-actions", "");
-        return;
-    }
-
-    let html = "";
-    html += `<div>
-                <button onclick="combat.startCombat()">Attack</button><br />
-                <button onclick="combat.doFlee()">Flee</button><br />
-                <button onclick="combat.defend()">Defend</button><br />
-                <button onclick="combat.special()">Special</button>
-            </div>`;
-    dom.setHtml("combat-actions", html);
-}
-
-function renderCombatEnemy() {
-    if (!selectedEnemy) {
-        let html = "";
+        let html = ""
         html += `<select id="opponentSelector">
                     <option value="">Select an opponent</option>
                     <option value="Goblin">Goblin</option>
@@ -190,7 +188,28 @@ function renderCombatEnemy() {
                     <option value="King">King</option>
                 </select>
                 <button onclick="combat.selectEnemy(document.getElementById('opponentSelector').value)">Fight</button>`;
-        dom.setHtml("combat-enemy", html);
+        dom.setHtml("combat-actions", html);
+        return;
+    }
+
+    let html = "";
+    html += `<div>`
+    if (!fight)
+        html += `<button onclick="combat.startCombat()">Attack</button><br />`;
+
+    if (fight?.isClearing)
+        html += `Clearing fight...<br />`;
+    else
+        html += `<button onclick="combat.doFlee()">Flee</button><br />`;
+    // html += `<button onclick="combat.defend()">Defend</button><br />`;
+    // html += `<button onclick="combat.special()">Special</button>`;
+    html +=`</div>`;
+    dom.setHtml("combat-actions", html);
+}
+
+function renderCombatEnemy() {
+    if (!selectedEnemy) {
+        dom.setHtml("combat-enemy", "");
         return;
     }
 
