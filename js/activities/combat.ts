@@ -5,7 +5,7 @@ import { Enemy, EnemyName, enemiesByName } from "../data/enemies";
 import { addXp } from "../control/experience";
 import player from "../control/player";
 import { addMessage } from '../control/messages';
-import { getRandomInt, minMax } from '../util';
+import { displayNumber, getRandomInt, minMax } from '../util';
 import { addLoot, randomLootDrop } from './looting';
 import { wrapAction } from '../control/user';
 import { calculateTime, sleep } from '../control/timing';
@@ -57,14 +57,14 @@ export async function startCombat () {
 
         fight.timeUntilPlayerAttack -= timeUntilNextAttack;
         if (fight.timeUntilPlayerAttack <= 0) {
-            const damage = Math.max(0, player.attack - fight.enemy.defense);
-            fight.enemyHealth = Math.max(0, fight.enemyHealth - damage);
-            renderCombatEnemy();
+            const damage = calculateDamage(player.attack, fight.enemy.defense);
+            setEnemyHealth(fight, fight.enemyHealth - damage);
+
         }
 
         fight.timeUntilEnemyAttack -= timeUntilNextAttack;
         if (fight.timeUntilEnemyAttack <= 0) {
-            const damage = Math.max(0, fight.enemy.attack - player.defense);
+            const damage = calculateDamage(fight.enemy.attack, player.defense);
             setPlayerHealth(player.health - damage);
         }
         
@@ -86,6 +86,12 @@ export async function startCombat () {
             setNextEnemyAttack(fight);
         }
     }
+}
+
+function calculateDamage(attack: number, defense: number) {
+    if (attack > defense)
+        return attack - defense / 2;
+    return attack * attack / defense / 2
 }
 
 function setNextPlayerAttack(fight: Fight) {
@@ -136,9 +142,6 @@ async function clearFight(clearEnemy: boolean) {
         await sleep(calculateTime(2000));
     }
 
-    if (!fight)
-        return;
-    
     if (clearEnemy)
         selectedEnemy = undefined;
 
@@ -153,7 +156,14 @@ export function addPlayerHealth(value: number) {
 
 function setPlayerHealth(value: number) {
     player.health = minMax(0, value, player.maxHealth);
-    renderCombatPlayer();
+    dom.setHtml("playerHealth", displayNumber(player.health).toString());
+    dom.getElement("playerHealthProgress").style.width = `${player.health / player.maxHealth * 100}%`;
+}
+
+function setEnemyHealth(fight: Fight, value: number) {
+    fight.enemyHealth = Math.max(0, value);
+    dom.setHtml("enemyHealth", displayNumber(fight.enemyHealth).toString());
+    dom.getElement("enemyHealthProgress").style.width = `${fight.enemyHealth / fight.enemy.health * 100}%`;
 }
 
 export function renderCombat() {
@@ -168,7 +178,7 @@ export function renderCombatPlayer() {
                 <h4 style="text-decoration: underline;">Player</h4>
                 <div class="progress-bar"><span id="playerHealthProgress" style="width: ${player.health / player.maxHealth * 100}%;"></span></div><br />
                 <div class="progress-bar"><span id="playerAttackProgress" style="width: 100%;"></span></div>
-                <p>Health: ${player.health}</p>
+                <p>Health: <span id="playerHealth">${displayNumber(player.health)}</span></p>
                 <p>Attack: ${player.attack}</p>
                 <p>Defense: ${player.defense}</p>
                 <p>Speed: ${player.speed}</p>
@@ -216,9 +226,9 @@ function renderCombatEnemy() {
     let html = "";
     html += `<div>
                 <h4 style="text-decoration: underline;">${selectedEnemy.name}</h4>
-                <div class="progress-bar"><span id="enemyHealthProgress" style="width: ${fight ? fight.enemyHealth/ fight.enemy.health * 100 : 100}%;"></span></div><br />
+                <div class="progress-bar"><span id="enemyHealthProgress" style="width: ${fight ? fight.enemyHealth / fight.enemy.health * 100 : 100}%;"></span></div><br />
                 <div class="progress-bar"><span id="enemyAttackProgress" style="width: 0%;"></span></div>
-                <p>Health: ${fight?.enemyHealth ?? selectedEnemy.health}</p>
+                <p>Health: <span id="enemyHealth">${displayNumber(fight?.enemyHealth ?? selectedEnemy.health)}</span></p>
                 <p>Attack: ${selectedEnemy.attack}</p>
                 <p>Defense: ${selectedEnemy.defense}</p>
                 <p>Speed: ${selectedEnemy.speed}</p>
