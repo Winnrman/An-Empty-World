@@ -51,12 +51,12 @@ export function removeClass(elementId: string, className: string) {
 }
 
 export function resetProgressbar(id: string, time: number) {
-    const element = getElement(id);
-    element.style.width = "0%";
-    element.classList.add('notransition');
-    setTimeout(() => {
-        element.classList.remove('notransition');
-        element.style.width = "100%";
-        element.style.transition = `width ${time}ms linear`;
-    }, 10);
+    getElement(id).animate([
+        { width: '0%' },
+        { width: '100%' }
+      ], time);
+}
+
+export function animateWidth(id: string, current: number, max: number, time: number) {
+    getElement(id).animate([{ width: `${current / max * 100}%` }], { duration: time, fill: 'forwards' });
 }

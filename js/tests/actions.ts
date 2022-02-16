@@ -14,7 +14,7 @@ import { getEntries, setNextRandomResults } from "../util";
 import { PotionName, potionsByName } from "../data/items/potions";
 import { EnemyName } from "../data/enemies";
 import { selectEnemy, startCombat } from "../activities/combat";
-import { doQuest, stopQuesting } from "../activities/questing";
+import { startQuest, stopQuest } from "../activities/questing";
 
 function gather(activityName: gathering.GatheringActivityName, amount: number, successChange: (data: Player) => void, changes: ChangeSet) {
     return execute(async () => {
@@ -140,8 +140,8 @@ export function attack(enemyName: EnemyName, amountOfAttacks: number, ...changes
 
 export function startQuesting(randoms: number[], amountOfSleeps: number, staminaCost: number, ...changes: ChangeSet) {
     return execute(async () => {
-        skipSleeps(amountOfSleeps, stopQuesting);
+        skipSleeps(amountOfSleeps, stopQuest);
         setNextRandomResults(...randoms);
-        await doQuest();
+        await startQuest();
     }, lostStamina(staminaCost), changes);
 }

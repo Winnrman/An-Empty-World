@@ -106,6 +106,7 @@ export function getDefaultData() {
         selectedCraftable: undefined as CraftableName | undefined,
         selectedEquipmentSlot: undefined as EquipmentSlot | undefined,
         selectedEquipment: undefined as EquipmentName | undefined,
+        isQuesting: false,
 
         dev: undefined as {
             isDev?: boolean,

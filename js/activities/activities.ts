@@ -5,29 +5,22 @@ import iconSpyGlass from "../../img/assets/tools/Spyglass.png";
 import player from "../control/player";
 
 import * as dom from "../util/dom";
-import { clearGatheringCategory, gatheringCategories, renderGatheringActivity, renderGatheringCategory } from "./gathering";
+import { clearGatheringCategory, gatheringCategories, renderGatheringActivity, renderGatheringCategory, resumeGatheringActivity } from "./gathering";
 import levelUnlocks from "../data/levelUnlocks";
 import { wrapAction } from "../control/user";
 import { renderCombat } from "./combat";
+import { renderQuests, resumeQuesting, stopQuest } from "./questing";
 
-export type Activity = "Crafting" | "Fighting" | "Store" | "Gathering";
-
-export async function goCrafting() {
-    await showActivity("Crafting");
-}
-
-export async function goFighting() {
-    await showActivity("Fighting");
-}
-
-export async function goToStore() {
-    await showActivity("Store");
-}
+export type Activity = "Crafting" | "Fighting" | "Store" | "Gathering" | "Questing";
 
 export async function showActivity(activity: Activity) {
     player.currentActivity = activity;
+    
     if (activity != "Gathering")
         await clearGatheringCategory();
+
+    if (activity != "Questing")
+        await stopQuest();
 
     showCurrentActivity();
     renderActivities();
@@ -38,13 +31,23 @@ export function showCurrentActivity() {
     dom.setIsDisplayed("combatContainer", player.currentActivity === "Fighting");
     dom.setIsDisplayed("storeContainer", player.currentActivity === "Store");
     dom.setIsDisplayed("gatheringContainer", player.currentActivity === "Gathering");
+    dom.setIsDisplayed("questingContainer", player.currentActivity === "Questing");
 
     if (player.currentActivity === "Gathering") {
         renderGatheringCategory();
         renderGatheringActivity();
     } else if (player.currentActivity === "Fighting") {
         renderCombat();
+    } else if (player.currentActivity === "Questing") {
+        renderQuests();
     }
+}
+
+export async function resumeActivity() {
+    if (player.currentActivity == "Gathering")
+        await resumeGatheringActivity();
+    else if (player.currentActivity === "Questing")
+        await resumeQuesting();
 }
 
 export function renderActivities() {
@@ -63,7 +66,7 @@ export function renderActivities() {
 
     html += renderButton(levelUnlocks.crafting, "activities.showActivity('Crafting')", "Go Crafting", iconAmulet);
     html += renderButton(levelUnlocks.fighting, "activities.showActivity('Fighting')", "Go Fighting", iconSword);
-    html += renderButton(levelUnlocks.questing, "questing.doQuest()",                  "Go Questing", iconSpyGlass);
+    html += renderButton(levelUnlocks.questing, "activities.showActivity('Questing')", "Go Questing", iconSpyGlass);
     html += renderButton(levelUnlocks.store,    "activities.showActivity('Store')",    "Go to Store", iconCoins);
 
     dom.setHtml('activities', html);

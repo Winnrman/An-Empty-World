@@ -8,6 +8,11 @@ function random(canStub?: boolean) {
     return canStub === false ? Math.random() : nextRandomResults.shift() ?? Math.random();
 }
 
+ // Returns a random number between min (inclusive) and max (inclusive).
+export function getRandomNumber(min: number, max: number, canStub?: boolean) {
+    return random(canStub) * (max - min + 1) + min;
+}
+
  // Returns a random integer between min (inclusive) and max (inclusive).
  export function getRandomInt(min: number, max: number, canStub?: boolean) {
     min = Math.ceil(min);
