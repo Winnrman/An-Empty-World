@@ -156,8 +156,10 @@ export function addPlayerHealth(value: number) {
 
 function setPlayerHealth(value: number) {
     player.health = minMax(0, value, player.maxHealth);
-    dom.setHtml("playerHealth", displayNumber(player.health).toString());
-    dom.getElement("playerHealthProgress").style.width = `${player.health / player.maxHealth * 100}%`;
+    if (player.currentActivity === "Fighting") {
+        dom.setHtml("playerHealth", displayNumber(player.health).toString());
+        dom.getElement("playerHealthProgress").style.width = `${player.health / player.maxHealth * 100}%`;
+    }
 }
 
 function setEnemyHealth(fight: Fight, value: number) {

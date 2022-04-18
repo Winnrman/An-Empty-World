@@ -10,6 +10,7 @@ export const wrapAction = (action: ((...args: any[]) => Promise<void>)) => {
             saveData("User action done");
         } catch(e) {
             messages.addMessage(e);
+            throw e;
         }
     }
 }

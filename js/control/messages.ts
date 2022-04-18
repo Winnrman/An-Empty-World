@@ -40,7 +40,7 @@ export function startClearInterval() {
     setInterval(() => {
         const minTimeForFadeout = new Date(new Date().getTime() - maxMessageTime);
         for (const message of messages.filter(x => !x.isFading && x.time < minTimeForFadeout)) {
-            dom.addClass(`message-${message.id}`, "fadeOut");
+            dom.getElement(`message-${message.id}`).animate([{ opacity: "0" }], { duration: 1000, fill: "forwards" });
             message.isFading = true;
         }
     

@@ -30,7 +30,6 @@ export function checkLevelUnlocks() {
 }
 
 export function renderLevel() {
-    dom.getElement("progressXp").style.width = `${player.xp / getNeededLevelUpXp() * 100}%`;
-    dom.getElement("progressXp").style.transition = "width 0.5s";
+    dom.animateWidth("progressXp", player.xp, getNeededLevelUpXp(), 500);
     dom.setHtml("lvl", player.level.toString());
 }

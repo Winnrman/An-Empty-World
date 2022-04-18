@@ -197,18 +197,18 @@ async function runScenario(step: Step) {
 
     console.log("11: questing");
     const eventChances = {
-        Walk: 0 / 5,
-        LootChest: 1 / 5
+        Walk: 0 / 11,
+        LootChest: 8 / 11
     }
     const eventCosts = {
         Walk: 1,
         LootChest: 2,
         LootChestWithLuck: 1
     }
-    await step("11.01", startQuesting([eventChances.Walk], 1, eventCosts.Walk));
+    await step("11.01", startQuesting([eventChances.Walk], 3, eventCosts.Walk));
     await step("11.02", startQuesting([
         eventChances.LootChest,
         0.99999, // gold: max,
         4 / 7 // loot type: Offhand
-    ], 1, eventCosts.LootChest, gotAchievement("completed_quests", 1), gotGold(1000), gotAchievement("earned_gold", 2)));
+    ], 5, eventCosts.LootChest, gotAchievement("completed_quests", 1), gotGold(1000), gotAchievement("earned_gold", 2)));
 }

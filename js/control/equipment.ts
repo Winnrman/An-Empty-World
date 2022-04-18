@@ -12,7 +12,6 @@ import iconSlotNeck from "../../img/assets/equipment/Slot/Slot Neck.png";
 import * as dom from "../util/dom";
 import { addMessage } from './messages';
 import player from "./player";
-import transient from "./transient";
 import { Equipment, equipmentByName, EquipmentName, EquipmentSlot } from "../data/items/equipment";
 import { getEffectValue } from "./effects";
 import { getWithIndefiniteArticle } from "../util";
@@ -33,7 +32,7 @@ const emptyEquipmentIcons: Record<EquipmentSlot, string> = {
 
 export function addToOwnedEquipment(item: Equipment) {
     if (ownsEquipment(item.name)) {
-        if (transient.isQuesting == true) {
+        if (player.isQuesting) {
             addMessage(`You already have ${getWithIndefiniteArticle(item.name)}, so you toss them away.`);
             return;
         }

@@ -52,25 +52,31 @@ export function getAllPossibleItems<T extends string>(lootTable: LootTable<T>) {
     return items;
 }
 
-type ItemChance<T> = {
+export type OptionChance<T> = {
     name: T;
     chance: number
 }
 
-export const getItemChances = <T extends string>(lootTable: LootTable<T>, dropModifiers?: PartialRecord<T, number>): ItemChance<T>[] => {
+export const getItemChances = <T extends string>(lootTable: LootTable<T>, dropModifiers?: PartialRecord<T, number>): OptionChance<T>[] => {
     if (typeof lootTable === "string")
         return [{ name: lootTable as T, chance: 1 }];
 
-    const chances = Array<ItemChance<T>>();
+    const chances = Array<OptionChance<T>>();
     for (const [key, value] of getEntries(lootTable as PartialRecord<T, number | LootData>)) {
-        const chance = typeof value === "number" ? value as number : (value as LootData).chance;
-        const dropModifier = dropModifiers ? dropModifiers[key] ?? 1 : 1;
-        chances.push({ name: key, chance: chance * dropModifier });
+        chances.push({ name: key, chance: typeof value === "number" ? value as number : (value as LootData).chance });
     }
-    return chances.sort((a, b) => b.chance - a.chance);
+
+    return getModifiedChanceList(chances, dropModifiers);
 }
 
-export function getRandomItemFromChanceList<T extends string | number | symbol>(chanceList: ItemChance<T>[]) {
+export function getModifiedChanceList<T extends string | number | symbol>(chanceList: OptionChance<T>[], chanceModifiers?: PartialRecord<T, number>) {
+    return chanceList.map(optionChance => {
+        const dropModifier = chanceModifiers ? chanceModifiers[optionChance.name] ?? 1 : 1;
+        return { name: optionChance.name, chance: optionChance.chance * dropModifier };
+    }).sort((a, b) => b.chance - a.chance);
+}
+
+export function getRandomItemFromChanceList<T extends string | number | symbol>(chanceList: OptionChance<T>[]) {
     if (chanceList.length === 1)
         return chanceList[0].name;
     
