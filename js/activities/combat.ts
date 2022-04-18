@@ -5,7 +5,7 @@ import { Enemy, EnemyName, enemiesByName } from "../data/enemies";
 import { addXp } from "../control/experience";
 import player from "../control/player";
 import { addMessage } from '../control/messages';
-import { getRandomInt, minMax } from '../util';
+import { displayNumber, getRandomInt, minMax } from '../util';
 import { addLoot, randomLootDrop } from './looting';
 import { wrapAction } from '../control/user';
 import { calculateTime, sleep } from '../control/timing';
@@ -17,6 +17,7 @@ type Fight = {
     enemyHealth: number;
     timeUntilPlayerAttack: number;
     timeUntilEnemyAttack: number;
+    isClearing?: boolean;
 }
 
 let selectedEnemy: Enemy | undefined;
@@ -41,6 +42,7 @@ export async function startCombat () {
         timeUntilPlayerAttack: 0,
         timeUntilEnemyAttack: 0
     };
+    renderCombatActions();
 
     setNextPlayerAttack(fight);
     setNextEnemyAttack(fight);
@@ -55,38 +57,45 @@ export async function startCombat () {
 
         fight.timeUntilPlayerAttack -= timeUntilNextAttack;
         if (fight.timeUntilPlayerAttack <= 0) {
-            const damage = Math.max(0, player.playerAttack - fight.enemy.defense);
-            fight.enemyHealth = Math.max(0, fight.enemyHealth - damage);
-            renderCombatEnemy();
+            const damage = calculateDamage(player.attack, fight.enemy.defense);
+            setEnemyHealth(fight, fight.enemyHealth - damage);
+
         }
 
         fight.timeUntilEnemyAttack -= timeUntilNextAttack;
         if (fight.timeUntilEnemyAttack <= 0) {
-            const damage = Math.max(0, fight.enemy.attack - player.playerDefense);
-            setPlayerHealth(player.playerHealth - damage);
-            setNextEnemyAttack(fight);
+            const damage = calculateDamage(fight.enemy.attack, player.defense);
+            setPlayerHealth(player.health - damage);
         }
         
+        if (fight.enemyHealth <= 0) {
+            await enemyDied(fight);
+            break;
+        }
+        
+        if (player.health <= 0) {
+            await playerDied();
+            break;
+        }
+
         if (fight.timeUntilPlayerAttack <= 0) {
             setNextPlayerAttack(fight);
         }
         
-        if (fight.enemyHealth <= 0) {
-            enemyDied(fight);
-            break;
+        if (fight.timeUntilEnemyAttack <= 0) {
+            setNextEnemyAttack(fight);
         }
-        
-        if (player.playerHealth <= 0) {
-            playerDied();
-            break;
-        }
-
-        setNextEnemyAttack(fight);
     }
 }
 
+function calculateDamage(attack: number, defense: number) {
+    if (attack > defense)
+        return attack - defense / 2;
+    return attack * attack / defense / 2
+}
+
 function setNextPlayerAttack(fight: Fight) {
-    const timeUntilNextAttack = calculateTime(1000 / player.playerSpeed);
+    const timeUntilNextAttack = calculateTime(1000 / player.speed);
     fight.timeUntilPlayerAttack = timeUntilNextAttack;
     dom.resetProgressbar("playerAttackProgress", timeUntilNextAttack);
 }
@@ -97,7 +106,7 @@ function setNextEnemyAttack(fight: Fight) {
     dom.resetProgressbar("enemyAttackProgress", timeUntilNextAttack);
 }
 
-function enemyDied(fight: Fight) {
+async function enemyDied(fight: Fight) {
     const enemy = fight.enemy;
     addXp(enemy.defeatExperience)
     const gold = getRandomInt(enemy.gold.min, enemy.gold.max);
@@ -112,34 +121,49 @@ function enemyDied(fight: Fight) {
         addLoot(item);
     }
 
-    clearFight();
+    await clearFight(false);
 }
 
-function playerDied() {
+async function playerDied() {
     addMessage("You lose!");
-    clearFight();
+    await clearFight(false);
 }
 
 export async function doFlee() {
     addMessage("You fled!");
     setPlayerHealth(player.maxHealth);
-    clearFight();
+    await clearFight(true);
 }
 
-function clearFight() {
-    selectedEnemy = undefined;
+async function clearFight(clearEnemy: boolean) {
+    if (fight && !clearEnemy) {
+        fight.isClearing = true;
+        renderCombat();
+        await sleep(calculateTime(2000));
+    }
+
+    if (clearEnemy)
+        selectedEnemy = undefined;
+
     fight = undefined;
 
     renderCombat();
 }
 
 export function addPlayerHealth(value: number) {
-    setPlayerHealth(player.playerHealth + value);
+    setPlayerHealth(player.health + value);
 }
 
 function setPlayerHealth(value: number) {
-    player.playerHealth = minMax(0, value, player.maxHealth);
-    renderCombatPlayer();
+    player.health = minMax(0, value, player.maxHealth);
+    dom.setHtml("playerHealth", displayNumber(player.health).toString());
+    dom.getElement("playerHealthProgress").style.width = `${player.health / player.maxHealth * 100}%`;
+}
+
+function setEnemyHealth(fight: Fight, value: number) {
+    fight.enemyHealth = Math.max(0, value);
+    dom.setHtml("enemyHealth", displayNumber(fight.enemyHealth).toString());
+    dom.getElement("enemyHealthProgress").style.width = `${fight.enemyHealth / fight.enemy.health * 100}%`;
 }
 
 export function renderCombat() {
@@ -152,35 +176,19 @@ export function renderCombatPlayer() {
     let html = "";
     html += `<div>
                 <h4 style="text-decoration: underline;">Player</h4>
-                <div class="progress-bar"><span id="playerHealthProgress" style="width: ${player.playerHealth / player.maxHealth * 100}%;"></span></div><br />
+                <div class="progress-bar"><span id="playerHealthProgress" style="width: ${player.health / player.maxHealth * 100}%;"></span></div><br />
                 <div class="progress-bar"><span id="playerAttackProgress" style="width: 100%;"></span></div>
-                <p>Health: ${player.playerHealth}</p>
-                <p>Attack: ${player.playerAttack}</p>
-                <p>Defense: ${player.playerDefense}</p>
-                <p>Speed: ${player.playerSpeed}</p>
+                <p>Health: <span id="playerHealth">${displayNumber(player.health)}</span></p>
+                <p>Attack: ${player.attack}</p>
+                <p>Defense: ${player.defense}</p>
+                <p>Speed: ${player.speed}</p>
             </div>`;
     dom.setHtml("combat-player", html);
 }
 
 function renderCombatActions() {
     if (!selectedEnemy) {
-        dom.setHtml("combat-actions", "");
-        return;
-    }
-
-    let html = "";
-    html += `<div>
-                <button onclick="combat.startCombat()">Attack</button><br />
-                <button onclick="combat.doFlee()">Flee</button><br />
-                <button onclick="combat.defend()">Defend</button><br />
-                <button onclick="combat.special()">Special</button>
-            </div>`;
-    dom.setHtml("combat-actions", html);
-}
-
-function renderCombatEnemy() {
-    if (!selectedEnemy) {
-        let html = "";
+        let html = ""
         html += `<select id="opponentSelector">
                     <option value="">Select an opponent</option>
                     <option value="Goblin">Goblin</option>
@@ -190,16 +198,37 @@ function renderCombatEnemy() {
                     <option value="King">King</option>
                 </select>
                 <button onclick="combat.selectEnemy(document.getElementById('opponentSelector').value)">Fight</button>`;
-        dom.setHtml("combat-enemy", html);
+        dom.setHtml("combat-actions", html);
+        return;
+    }
+
+    let html = "";
+    html += `<div>`
+    if (!fight)
+        html += `<button onclick="combat.startCombat()">Attack</button><br />`;
+
+    if (fight?.isClearing)
+        html += `Clearing fight...<br />`;
+    else
+        html += `<button onclick="combat.doFlee()">Flee</button><br />`;
+    // html += `<button onclick="combat.defend()">Defend</button><br />`;
+    // html += `<button onclick="combat.special()">Special</button>`;
+    html +=`</div>`;
+    dom.setHtml("combat-actions", html);
+}
+
+function renderCombatEnemy() {
+    if (!selectedEnemy) {
+        dom.setHtml("combat-enemy", "");
         return;
     }
 
     let html = "";
     html += `<div>
                 <h4 style="text-decoration: underline;">${selectedEnemy.name}</h4>
-                <div class="progress-bar"><span id="enemyHealthProgress" style="width: ${fight ? fight.enemyHealth/ fight.enemy.health * 100 : 100}%;"></span></div><br />
+                <div class="progress-bar"><span id="enemyHealthProgress" style="width: ${fight ? fight.enemyHealth / fight.enemy.health * 100 : 100}%;"></span></div><br />
                 <div class="progress-bar"><span id="enemyAttackProgress" style="width: 0%;"></span></div>
-                <p>Health: ${fight?.enemyHealth ?? selectedEnemy.health}</p>
+                <p>Health: <span id="enemyHealth">${displayNumber(fight?.enemyHealth ?? selectedEnemy.health)}</span></p>
                 <p>Attack: ${selectedEnemy.attack}</p>
                 <p>Defense: ${selectedEnemy.defense}</p>
                 <p>Speed: ${selectedEnemy.speed}</p>

@@ -1,12 +1,10 @@
 import * as dom from "../util/dom";
 import { EnemyName, enemiesByName } from "../data/enemies";
 import { addXp } from "../control/experience";
-import { hasEquiped } from "../control/equipment";
 import { addMessage } from '../control/messages';
 import player, { saveData }  from "../control/player";
 import transient from '../control/transient';
 import { getRandomInt, getRandomItem, getWithIndefiniteArticle } from '../util';
-import { Rarity } from "../data/items";
 import { addLoot, randomLootDrop } from "./looting";
 import { calculateTime, sleep } from "../control/timing";
 import { wrapAction } from "../control/user";
@@ -49,7 +47,7 @@ async function startWalkEvent() {
 
 async function startLootChestEvent() {
     await waitForPart(3000, "You find a chest!");
-    await doEvent(hasAmuletOfLuck() ? 1 : 2, lootChest);
+    await doEvent(player.luck >= 3 ? 1 : 2, lootChest);
 }
 
 async function startFightMonsterEvent() {
@@ -110,7 +108,7 @@ async function fightMonster() {
     const enemy = enemiesByName[getRandomItem<EnemyName>(["Goblin", "Troll", "Skeleton"])];
     await waitForPart(2000, `Upon closer inspection, the monster appears to be ${getWithIndefiniteArticle(enemy.name)}!`)
 
-    if (player.playerDefense > enemy.defense) {
+    if (player.defense > enemy.defense) {
         await waitForPart(2000, `After a brief battle, you manage to defeat the ${enemy.name}!`);
         
         const gold = getRandomInt(enemy.gold.min, enemy.gold.max);
@@ -129,28 +127,16 @@ async function fightMonster() {
 }
 
 async function lootChest() {
-    const min = hasAmuletOfLuck() ? 12000 : 0;
-    const max = hasAmuletOfLuck() ? 15000 : 800;
+    const min = player.luck * 4000;
+    const max = 1000 + player.luck * 5000;
     const goldAmount = getRandomInt(min, max);
     addGold(goldAmount);
     addMessage(`You find ${goldAmount} gold in the old chest!`);
 
-    const item = getLootDrop(hasAmuletOfLuck() ? ["rare", "legendary"] : ["common", "uncommon"]);
-    addMessage(`You found ${getWithIndefiniteArticle(item.name)}!${(hasAmuletOfLuck() ? " You feel lucky!" : "")}`);
+    const item = randomLootDrop();
+    addMessage(`You found ${getWithIndefiniteArticle(item.name)}!${(["rare", "legendary"].includes(item.rarity) ? " You feel lucky!" : "")}`);
     addLoot(item);
     questWasSuccessful();
-}
-
-function getLootDrop(rarities: Rarity[]) {
-    while(true) {
-        const item = randomLootDrop();
-        if (rarities.includes(item.rarity!)) 
-            return item;
-    }
-}
-
-function hasAmuletOfLuck() {
-    return hasEquiped("Amulet of Luck");
 }
 
 function questWasSuccessful() {

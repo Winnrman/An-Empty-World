@@ -88,8 +88,8 @@ export const enemies: Enemy[] = [
         drops:
         {
             "Dragon Scale": {
-                min: 400,
-                max: 500,
+                min: 1,
+                max: 2,
             }
         },
         defense: 100,

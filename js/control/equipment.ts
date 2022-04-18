@@ -7,14 +7,13 @@ import iconSlotBoots from "../../img/assets/equipment/Slot/Slot Boots.png";
 import iconSlotWeapon from "../../img/assets/equipment/Slot/Slot Weapon.png";
 import iconSlotOffhand from "../../img/assets/equipment/Slot/Slot Offhand.png";
 import iconSlotRanged from "../../img/assets/equipment/Slot/Slot Ranged.png";
-import iconSlotShield from "../../img/assets/equipment/Slot/Slot Shield.png";
+import iconSlotNeck from "../../img/assets/equipment/Slot/Slot Neck.png";
 
 import * as dom from "../util/dom";
-import { EquipmentSlot } from "../data/items";
 import { addMessage } from './messages';
 import player from "./player";
 import transient from "./transient";
-import { Equipment, equipmentByName, EquipmentName } from "../data/items/equipment";
+import { Equipment, equipmentByName, EquipmentName, EquipmentSlot } from "../data/items/equipment";
 import { getEffectValue } from "./effects";
 import { getWithIndefiniteArticle } from "../util";
 import { wrapAction } from "./user";
@@ -23,13 +22,13 @@ import { addGold } from "./inventory";
 
 const emptyEquipmentIcons: Record<EquipmentSlot, string> = {
     "Helmet": iconSlotHelmet,
+    "Neck": iconSlotNeck,
     "Chestplate": iconSlotChest,
     "Leggings": iconSlotLeggings,
     "Boots": iconSlotBoots,
     "Weapon": iconSlotWeapon,
     "Offhand": iconSlotOffhand,
     "Ranged": iconSlotRanged,
-    "Shield": iconSlotShield,
 };
 
 export function addToOwnedEquipment(item: Equipment) {
@@ -93,24 +92,32 @@ const getEquipmentInSlot = (slot: EquipmentSlot) => getEquipmentNameInSlot(slot)
 
 export function updateArmour() {
     const getArmorValue = (slot: EquipmentSlot) => getEquipmentInSlot(slot)?.equipment.armor ?? 0;
-    player.playerDefense =
+    const getAttackValue = (slot: EquipmentSlot) => getEquipmentInSlot(slot)?.equipment.attack ?? 0;
+    const getLuckValue = (slot: EquipmentSlot) => getEquipmentInSlot(slot)?.equipment.luck ?? 0;
+    
+    player.defense =
           getArmorValue("Helmet")
         + getArmorValue("Chestplate")
         + getArmorValue("Leggings")
         + getArmorValue("Boots")
-        + getArmorValue("Shield")
+        + getArmorValue("Offhand")
+        + getArmorValue("Neck")
         + getEffectValue("addDefense");
 
-    const getAttackValue = (slot: EquipmentSlot) => getEquipmentInSlot(slot)?.equipment.attack ?? 0;
-    player.playerAttack =
+    player.attack =
           1
         + getAttackValue("Weapon")
+        + getAttackValue("Neck")
         + getEffectValue("addAttack")
         - getEffectValue("decreaseAttack");
 
-    player.playerSpeed =
+    player.speed =
            1
         + getEffectValue("addSpeed");
+
+    player.luck =
+          getLuckValue("Neck")
+        + getEffectValue("addLuck");
 
     if (player.currentActivity === "Fighting") {
         renderCombatPlayer();
@@ -138,14 +145,14 @@ export function renderEquipment() {
     
     html += `<div class="row">`
     html += `<div class="column"></div>`
-    html += `<div class="column"></div>`
+    html += `<div class="column">${renderEquipmentIconForSlot("Neck")}</div>`
     html += `<div class="column"></div>`
     html += `</div>`
     
     html += `<div class="row">`
     html += `<div class="column">${renderEquipmentIconForSlot("Weapon")}</div>`
     html += `<div class="column">${renderEquipmentIconForSlot("Chestplate")}</div>`
-    html += `<div class="column">${renderEquipmentIconForSlot("Shield")}</div>`
+    html += `<div class="column">${renderEquipmentIconForSlot("Offhand")}</div>`
     html += `</div>`
     
     html += `<div class="row">`

@@ -1,7 +1,6 @@
 import { AchievementName } from './achievements';
-import { EquipmentSlot } from '../data/items';
 import { PlayerEffect } from './effects';
-import { EquipmentName } from '../data/items/equipment';
+import { EquipmentName, EquipmentSlot } from '../data/items/equipment';
 import { ToolName } from '../data/items/tools';
 import { InventoryItemName } from './inventory';
 import { PartialRecord } from '../util';
@@ -13,6 +12,10 @@ import { StatisticName } from './statistics';
 
 export type Player = ReturnType<typeof getPlayerData>;
 const player: Player = getPlayerData();
+
+// due to a webpack bug, player?.dev becomes player.dev so make sure it's not undefined: https://github.com/webpack/webpack/issues/12960
+if (!player.dev)
+    player.dev = {};
 
 export default player;
 
@@ -82,12 +85,12 @@ export function getDefaultData() {
 
         toolHealth: {} as Record<ToolName, number>,
 
-        playerHealth: 100,
+        health: 100,
         maxHealth: 100,
-        playerAttack: 1,
-        playerDefense: 1,
-        playerSpeed: 1,
-        armorBonus: 0,
+        attack: 1,
+        defense: 1,
+        speed: 1,
+        luck: 0,
 
         effects: [] as PlayerEffect[],
 
