@@ -8,6 +8,7 @@ import iconIron from "../../img/assets/materials/Iron.png";
 import iconMonofolia from "../../img/assets/materials/Monofolia.png";
 import iconBifolia from "../../img/assets/materials/Bifolia.png";
 import iconCrimsonica from "../../img/assets/materials/Crimsonica.png";
+import iconBranch from "../../img/assets/materials/wood-stick.png";
 
 import player from "../control/player";
 import { addMessage } from "../control/messages";
@@ -95,7 +96,7 @@ const gatheringActivities: GatheringActivity[] = [
         requiredLevel: levelUnlocks.branchCollecting,
         time: 5000,
         itemsTable: "Wood",
-        icon: iconWood,
+        icon: iconBranch,
     },
     {
         name: "Collect Stones",

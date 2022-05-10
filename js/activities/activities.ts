@@ -1,6 +1,7 @@
 import iconCoins from "../../img/assets/materials/Coins.png";
 import iconSword from "../../img/assets/equipment/Iron/Iron Sword.png";
-import iconAmulet from "../../img/assets/equipment/Amulet of Luck.png";
+// import iconAmulet from "../../img/assets/equipment/Amulet of Luck.png";
+import iconCrafting from "../../img/assets/equipment/crafting.png";
 import iconSpyGlass from "../../img/assets/tools/Spyglass.png";
 import player from "../control/player";
 
@@ -64,7 +65,7 @@ export function renderActivities() {
         html += renderButton(category.requiredLevel, `gathering.showGatheringCategory('${category.name}')`, category.name, category.icon);
     }
 
-    html += renderButton(levelUnlocks.crafting, "activities.showActivity('Crafting')", "Go Crafting", iconAmulet);
+    html += renderButton(levelUnlocks.crafting, "activities.showActivity('Crafting')", "Go Crafting", iconCrafting);
     html += renderButton(levelUnlocks.fighting, "activities.showActivity('Fighting')", "Go Fighting", iconSword);
     html += renderButton(levelUnlocks.questing, "activities.showActivity('Questing')", "Go Questing", iconSpyGlass);
     html += renderButton(levelUnlocks.store,    "activities.showActivity('Store')",    "Go to Store", iconCoins);

@@ -22,10 +22,11 @@ import iconTrifolia from "../../../img/assets/materials/Trifolia.png";
 import iconCrimsonica from "../../../img/assets/materials/Crimsonica.png";
 import iconAzurica from "../../../img/assets/materials/Azurica.png";
 import iconOkerica from "../../../img/assets/materials/Okerica.png";
+import iconBranch from "../../../img/assets/materials/wood-stick.png";
 
 export type MiningResourceName = "Iron" | "Copper" | "Tin" | "Silver" | "Gold" | "Emerald" | "Ruby" | "Diamond" | "Stone" | "Titanium";
 export type HerbResourceName = "Monofolia" | "Bifolia" | "Trifolia" | "Crimsonica" | "Azurica" | "Okerica";
-export type ResourceName = "Wood" | "Fish" | "Meat" | MiningResourceName | HerbResourceName | "Dragon Scale";
+export type ResourceName = "Branch" | "Wood" | "Fish" | "Meat" | MiningResourceName | HerbResourceName | "Dragon Scale";
 
 export type Resource = Item & { 
     name: ResourceName;
@@ -37,10 +38,20 @@ export type Resource = Item & {
 
 const resources: Resource[] = [
     {
+        name: "Branch",
+        iconUrl: iconBranch,
+        type: "Resource",
+        description: "A small branch. Not very interesting.",
+        price: 5,
+        gathering: {
+            "Wood": { experience: 5, },
+        },
+    },
+    {
         name: "Wood",
         iconUrl: iconWood,
         type: "Resource",
-        description: "Wood you got by hurting a tree. Hurting it more will probably give you more wood.",
+        description: "A piece of wood. Can be crafted into crude tools, breaks easily.",
         price: 5,
         gathering: {
             "Wood": { experience: 10, },
@@ -50,7 +61,7 @@ const resources: Resource[] = [
         name: "Fish",
         iconUrl: iconFish,
         type: "Resource",
-        description: "A fish. You're not sure whether it's dead or alive.",
+        description: "A fish. Obtained by fishing in the water. Delicious when cooked.",
         price: 10,
         gathering: {
             "Food": {
@@ -63,7 +74,7 @@ const resources: Resource[] = [
         name: "Meat",
         iconUrl: iconMeat,
         type: "Resource",
-        description: "You managed to find a weak animal and decided it had lived long enough. This is what remains.",
+        description: "Meat of some animal. Can be cooked into food.",
         price: 20,
         gathering: {
             "Food": {
@@ -76,7 +87,7 @@ const resources: Resource[] = [
         name: "Iron",
         iconUrl: iconIron,
         type: "Resource",
-        description: "You cannot figure out how this material is supposed to protect you, but add wood to it and somehow it does!",
+        description: "Iron mined from the ground. Can be used to craft strong tools.",
         price: 120,
         gathering: {
             "Ore": { experience: 110, },
@@ -86,7 +97,7 @@ const resources: Resource[] = [
         name: "Copper",
         iconUrl: iconCopper,
         type: "Resource",
-        description: "This looks like it might make some better armour than Iron",
+        description: "Material used to make coins, and to make bronze armor and weapons.",
         price: 125,
         gathering: {
             "Ore": { experience: 112, },
@@ -96,7 +107,7 @@ const resources: Resource[] = [
         name: "Tin",
         iconUrl: iconTin,
         type: "Resource",
-        description: "According to other games you can combine this with Copper to get Bronze. Let's find out if they are right?",
+        description: "Not a very strong material, but can be used to make crude armor and weapons.",
         price: 115,
         gathering: {
             "Ore": { experience: 113, },
@@ -106,7 +117,7 @@ const resources: Resource[] = [
         name: "Silver",
         iconUrl: iconSilver,
         type: "Resource",
-        description: "This doesn't seem very useful, unless you were being hunted by a werewolf. Which you are not, we promise! Or not?",
+        description: "More valuable as a coin than as a metal used for armor, but it can be used to make silver armor and weapons.",
         price: 150,
         gathering: {
             "Ore": { experience: 119, },
@@ -116,7 +127,7 @@ const resources: Resource[] = [
         name: "Gold",
         iconUrl: iconGold,
         type: "Resource",
-        description: "You'd think this can't make good armour, but you'd be wrong",
+        description: "One of the weakest metals, this serves better as a coin than as armor.",
         price: 125,
         gathering: {
             "Ore": { experience: 125, },
@@ -126,7 +137,7 @@ const resources: Resource[] = [
         name: "Emerald",
         iconUrl: iconEmerald,
         type: "Resource",
-        description: "A nice gem shining with a nice green colour. If only you could see things in this game!",
+        description: "A nice gem shining with a nice green color.",
         price: 130,
         gathering: {
             "Ore": { experience: 130, },
@@ -136,7 +147,7 @@ const resources: Resource[] = [
         name: "Ruby",
         iconUrl: iconRuby,
         type: "Resource",
-        description: "The Kaiser Chiefs seem to really like these. Maybe they'll give you a good price for it!",
+        description: "A nice gem shining with a red color.",
         price: 160,
         gathering: {
             "Ore": { experience: 150, },
@@ -146,7 +157,7 @@ const resources: Resource[] = [
         name: "Diamond",
         iconUrl: iconDiamond,
         type: "Resource",
-        description: "This would be great to put on a ring and give to your significant other. If only it wasn't virtual.",
+        description: "The rarest of materials, can only be mined from the ground, and is practically indestructible.",
         price: 1100,
         gathering: {
             "Ore": { experience: 200, },
@@ -156,7 +167,7 @@ const resources: Resource[] = [
         name: "Stone",
         iconUrl: iconStone,
         type: "Resource",
-        description: "A popular method of execution, according to the bible.",
+        description: "A stone, picked up from off the ground or mined. Can be used to make basic stone weapons.",   
         price: 5,
         gathering: {
             "Stone": { experience: 5 },

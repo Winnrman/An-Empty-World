@@ -158,8 +158,9 @@ function checkAchievement(achievement: AchievementToCheckData) {
             return false;
         }
 
-        addMessage(`You have completed the ${achievement.name(levelValue)} achievement! You feel like you earned a reward, but you don't know what.`);
+        addMessage(`You have completed the ${achievement.name(levelValue)} achievement! For your hard work, you receive ${achievement.reward(level, levelValue)} gold!`);
         player.completedAchievements[achievement.id] = level + 1;
+        player.gold += achievement.reward(level, levelValue);
     }
 
     return (player.completedAchievements[achievement.id] ?? 0) >= levels.length;

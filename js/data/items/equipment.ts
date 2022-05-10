@@ -31,6 +31,7 @@ import iconDragonScaleChestplate from "../../../img/assets/equipment/Dragon Scal
 import iconDragonScaleLeggings from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Leggings.png";
 import iconDragonScaleBoots from "../../../img/assets/equipment/Dragon Scale/Dragon Scale Boots.png";
 import iconAmuletofLuck from "../../../img/assets/equipment//Amulet of Luck.png";
+// import iconCrafting from "../../../img/assets/equipment/crafting.png";
 
 import { Item, Rarity } from ".";
 import { ResourceName } from "./resources";
@@ -140,7 +141,7 @@ const equipment: Equipment[] = [
     {
         name: "Wooden Boots",
         iconUrl: iconWoodenBoots,
-        description: "A wooden boots.",
+        description: "Some wooden boots.",
         type: "Equipment",
         equipment: {
             slot: "Boots",
@@ -216,7 +217,7 @@ const equipment: Equipment[] = [
     {
         name: "Iron Leggings",
         iconUrl: iconIronLeggings,
-        description: "An iron leggings.",
+        description: "Some iron leggings.",
         type: "Equipment",
         equipment: {
             slot: "Leggings",
@@ -235,7 +236,7 @@ const equipment: Equipment[] = [
     {
         name: "Iron Boots",
         iconUrl: iconIronBoots,
-        description: "An iron boots.",
+        description: "Some iron boots.",
         type: "Equipment",
         equipment: {
             slot: "Boots",
@@ -292,7 +293,7 @@ const equipment: Equipment[] = [
     {
         name: "Iron Shield",
         iconUrl: iconIronShield,
-        description: "An iron shield",
+        description: "An iron shield. Can block most hits.",
         type: "Equipment",
         equipment: {
             slot: "Offhand",
@@ -313,7 +314,7 @@ const equipment: Equipment[] = [
     {
         name: "Bronze Helmet",
         iconUrl: iconBronzeHelmet,
-        description: "A bronze helmet.",
+        description: "A bronze helmet. Typically weaker than iron, but cheaper to make.",
         type: "Equipment",
         equipment: {
             slot: "Helmet",
@@ -325,7 +326,7 @@ const equipment: Equipment[] = [
     {
         name: "Bronze Chestplate",
         iconUrl: iconBronzeChestplate,
-        description: "A bronze chestplate.",
+        description: "A bronze chestplate. Typically weaker than iron, but cheaper to make.",
         type: "Equipment",
         equipment: {
             slot: "Chestplate",
@@ -337,7 +338,7 @@ const equipment: Equipment[] = [
     {
         name: "Bronze Leggings",
         iconUrl: iconBronzeLeggings,
-        description: "A bronze leggings.",
+        description: "A bronze leggings. Typically weaker than iron, but cheaper to make.",
         type: "Equipment",
         equipment: {
             slot: "Leggings",
@@ -349,7 +350,7 @@ const equipment: Equipment[] = [
     {
         name: "Bronze Boots",
         iconUrl: iconBronzeBoots,
-        description: "A bronze boots.",
+        description: "Some bronze boots. Typically weaker than iron, but cheaper to make.",
         type: "Equipment",
         equipment: {
             slot: "Boots",
@@ -449,7 +450,7 @@ const equipment: Equipment[] = [
     {
         name: "Gold Boots",
         iconUrl: iconGoldBoots,
-        description: "A gold boots.",
+        description: "Some gold boots.",
         type: "Equipment",
         equipment: {
             slot: "Boots",
@@ -463,7 +464,7 @@ const equipment: Equipment[] = [
     {
         name: "Crystal Helmet",
         iconUrl: iconCrystalHelmet,
-        description: "Ultra rare crystal helmet.",
+        description: "Ultra rare crystal helmet. Found in the depths of the cave world.",
         type: "Equipment",
         equipment: {
             slot: "Helmet",
@@ -475,7 +476,7 @@ const equipment: Equipment[] = [
     {
         name: "Crystal Chestplate",
         iconUrl: iconCrystalChestplate,
-        description: "Ultra rare crystal chestplate.",
+        description: "Ultra rare crystal chestplate. Found in the depths of the cave world.",
         type: "Equipment",
         equipment: {
             slot: "Chestplate",
@@ -487,7 +488,7 @@ const equipment: Equipment[] = [
     {
         name: "Crystal Leggings",
         iconUrl: iconCrystalLeggings,
-        description: "Ultra rare crystal leggings.",
+        description: "Ultra rare crystal leggings. Found in the depths of the cave world.",
         type: "Equipment",
         equipment: {
             slot: "Leggings",
@@ -499,7 +500,7 @@ const equipment: Equipment[] = [
     {
         name: "Crystal Boots",
         iconUrl: iconCrystalBoots,
-        description: "Ultra rare boots.",
+        description: "Ultra rare boots. Found in the depths of the cave world.",
         type: "Equipment",
         equipment: {
             slot: "Boots",
@@ -513,7 +514,7 @@ const equipment: Equipment[] = [
     {
         name: "Dragon Scale Helmet",
         iconUrl: iconDragonScaleHelmet,
-        description: "Made from the scales of the scariest beast, this helmet is said to be the stuff of legends.",
+        description: "Made from the scales of the scariest beast, this helmet is said to be the stuff of legend.",
         type: "Equipment",
         equipment: {
             slot: "Helmet",
@@ -532,7 +533,7 @@ const equipment: Equipment[] = [
     {
         name: "Dragon Scale Chestplate",
         iconUrl: iconDragonScaleChestplate,
-        description: "Made from the scales of the scariest beast, this chestplate is said to be the stuff of legends.",
+        description: "Made from the scales of the scariest beast, this chestplate is said to be the stuff of legend.",
         type: "Equipment",
         equipment: {
             slot: "Chestplate",
@@ -551,7 +552,7 @@ const equipment: Equipment[] = [
     {
         name: "Dragon Scale Leggings",
         iconUrl: iconDragonScaleLeggings,
-        description: "Made from the scales of the scariest beast, this leggings are said to be the stuff of legends.",
+        description: "Made from the scales of the scariest beast, this leggings are said to be the stuff of legend.",
         type: "Equipment",
         equipment: {
             slot: "Leggings",
@@ -570,7 +571,7 @@ const equipment: Equipment[] = [
     {
         name: "Dragon Scale Boots",
         iconUrl: iconDragonScaleBoots,
-        description: "Made from the scales of the scariest beast, these boots are said to be the stuff of legends.",
+        description: "Made from the scales of the scariest beast, these boots are said to be the stuff of legend.",
         type: "Equipment",
         equipment: {
             slot: "Boots",
